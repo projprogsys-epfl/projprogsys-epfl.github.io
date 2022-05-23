@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>s. 13 : CryptKVS webserver : `set` | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/13-server-set/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "13 Server Set",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/13-server-set/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;piazza.com&#x2F;class&#x2F;kzfgffdjsc95by">Piazza</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>Général</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/bareme/">Évaluation</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Échauffement</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout01/">Semaine 1</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout02/">Semaine 2</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout03/">Semaine 3</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Projet</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">CryptKVS : description générale</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-stats/">s. 4 : CryptKVS : la commande `stats`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-get/">s. 5 : CryptKVS : la commande `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-set/">s. 6 : CryptKVS : la commande `set`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-new/">s. 7 &amp; 8 : CryptKVS : la commande `new`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/09-refactoring/">s. 9 : CryptKVS : refactoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/10-client/">s. 10 : CryptKVS webserver : API et client</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/11-server/">s. 11 &amp; 12 : CryptKVS webserver : `stats` &amp; `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/13-server-set/">s. 13 : CryptKVS webserver : `set`</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>s. 13 : CryptKVS webserver : `set`</h1>
+          
+          <h1 id="description-du-travail-a-faire">Description du travail à faire</h1>
+<p>Pour cette dernière étape du projet (la dernière semaine du semestre vous étant laissée libre pour finaliser votre projet), le travail consiste à améliorer le client et le serveur pour qu'ils supportent les requêtes de type <code>set</code>.</p>
+<p>Il y aura donc deux grandes parties :</p>
+<ul>
+<li>
+<p>l'implémentation du <code>set</code> pour le client, qui doit générer <code>auth_key</code> à partir de la clef et du mot de passe, ainsi que <code>c2</code> (aléatoirement) afin d'encrypter le secret puis envoyer celui-ci via un HTTP POST au serveur, sous format JSON et encodé en hexadécimal ;</p>
+</li>
+<li>
+<p>l'implémentation du <code>set</code> pour le serveur, qui doit recevoir cette requête, trouver l'entrée correspondante à <code>key</code> et <code>auth_key</code> et « hex-décoder », puis écrire la valeur encryptée envoyée par le client.</p>
+</li>
+</ul>
+<p>Nos serveurs de tests étant, pour des raisons évidentes, protégés contre le <code>set</code>, il ne vous sera pas possible de tester pleinement votre client avant d'avoir fini votre propre server. Si vous ne trouvez pas cela trop difficile (mais cela peut l'être, car la structure des URL n'est, à notre avis, que pleinement comprise avec la partie « client »), vous pouvez commencer par implémenter votre server (lequel peut être testé sans client, mais simplement avec <code>curl</code>).</p>
+<h2 id="etape-1-ckvs-post-pour-le-client">Étape 1 : <code>ckvs_post()</code> pour le client</h2>
+<p>Il s'agit ici d'implémenter <code>ckvs_post()</code> (dans <code>ckvs_rpc.c</code>), la méthode que le client utilisera pour contacter le serveur tout en transmettant un (potentiellement gros) fichier.</p>
+<ol>
+<li>
+<p>Spécifiez l'url de la même façon que dans <code>ckvs_rpc()</code>;</p>
+</li>
+<li>
+<p>ajoutez l'entête <code>&quot;Content-Type: application/json&quot;</code> à la liste de headers (voir <a href="https://curl.se/libcurl/c/curl_slist_append.html"><code>curl_slist_append</code></a>, puis <a href="https://curl.se/libcurl/c/CURLOPT_HTTPHEADER.html"><code>CURLOPT_HTTPHEADER</code></a>, aussi mentionné dans les <a href="https://curl.se/libcurl/c/CURLOPT_POSTFIELDS.html"><code>CURLOPT_POSTFIELDS</code></a>);</p>
+</li>
+<li>
+<p>spécifiez le contenu du HTTP POST pour votre requête (voir <a href="https://curl.se/libcurl/c/CURLOPT_POSTFIELDS.html"><code>CURLOPT_POSTFIELDS</code></a>) :</p>
+</li>
+<li>
+<p>envoyez la requête au serveur ;</p>
+</li>
+<li>
+<p>recommencez les étapes 3 et 4 pour la requête vide (= la chaîne vide) afin de signifier au server que les données sont terminées.</p>
+</li>
+</ol>
+<p>Notez que :</p>
+<ol>
+<li>
+<p>si le serveur vous retourne un message <em>non</em> vide, c'est qu'il s'agit d'une erreur ; vous devez alors afficher cette réponse et retourner ERR_IO ;</p>
+</li>
+<li>
+<p>nous vous demandons ici d'implémenter la version simple d'un POST : on envoie tout en une seule fois, puis la chaîne vide ; en réalité ce genre d'échanges (POST) se produisent par différents morceaux (« <em>chunks</em>») successifs, dont il faut gérer les tailles et les offsets ; nous avons voulu alléger la quantité de travail et ne demandons que la version simple en un seul morceau (plus chaîne vide) ; plus de détails dans la section suivante.</p>
+</li>
+</ol>
+<h2 id="etape-2-ckvs-client-set-pour-le-client">Étape 2 : <code>ckvs_client_set()</code> pour le client</h2>
+<p>Dans un souci d'économie de RAM du serveur, les gros fichiers sont en général envoyés morceau par morceau (« <em>chunk</em> ») en plusieurs <code>POST</code> successifs par le client - sans quoi le client voit en général sa requête refusée avec un <a href="https://developer.mozilla.org/fr/docs/Web/HTTP/Status/413">413 Payload too large</a>.</p>
+<p>Lors de l'implémentation du serveur, nous utiliserons la fonction <a href="https://github.com/cesanta/mongoose/tree/a204c80308c0b2a8d53038d8381d549963a017c1/docs#mg_http_upload"><code>mg_http_upload()</code></a> pour reconstruire progressivement les <em>chunks</em> (deux, dans notre version simple) en un seul fichier.<br />
+(<strong>Attention</strong> : la fonction <code>mg_http_upload()</code> n'est plus documentée dans les versions récentes de mongoose, vous ne la trouverez donc pas sur le site web de la documentation, mais vous pouvez utiliser le lien ce-dessus. Par ailleurs, l'exemple mentionné dans la documentation peut être trouvé <a href="https://github.com/cesanta/mongoose/blob/a204c80308c0b2a8d53038d8381d549963a017c1/examples/file-upload/main.c#L13">ici</a>).</p>
+<p>Cette fonction nécessite d'avoir deux arguments <strong>DANS L'URL</strong> :</p>
+<ul>
+<li>
+<p><code>name</code> : pour le nom du fichier à reconstituer (on choisira une constante <code>&quot;data.json&quot;</code>);</p>
+</li>
+<li>
+<p><code>offset</code> : qui décrit depuis quel byte du fichier mongoose doit écrire (0 pour commencer).</p>
+</li>
+</ul>
+<p>Par exemple (voir d'autres exemple plus complets dans la section « Test » en fin de ficher) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>http://127.0.0.1:8000/set?name=data.json&amp;offset=0
+</span></code></pre>
+<p>(<strong>Note :</strong> notre vrai URL complet sera bien sûr plus complexe et fournira aussi la clé et l'<code>auth_key</code> :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>http://127.0.0.1:8000/set?name=data.json&amp;offset=0&amp;key=proust&amp;auth_key=10d2c75fe298fd7b783d31982ecf0dcc7e4aa485f3b232557b36941ceeb35a10
+</span></code></pre>
+<p>L'ordre des arguments séparés par <code>&amp;</code> n'est pas important.)</p>
+<p>Même si par souci de simplicité on a décidé d'envoyer le fichier en un seul POST, le client a néanmoins besoin d'ajouter ces deux arguments dans l'url pour que <code>mg_http_upload()</code> puisse fonctionner.</p>
+<p>Dans <code>ckvs_client.c</code>, créez la fonction</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>int ckvs_client_set(const char *url, int optargc, char **optargv)
+</span></code></pre>
+<p>Si ce n'est pas déjà fait, ajoutez la au tableau des commandes de <code>cryptkvs.c</code>.</p>
+<p>Dans cette fonction, il faut :</p>
+<ol>
+<li>
+<p>générer <code>auth_key</code>, <code>c2</code> et <code>master_key</code>, de la même manière que pour un <code>set</code> en local ;</p>
+</li>
+<li>
+<p>lire le fichier contenant le secret à envoyer et le chiffrer;</p>
+</li>
+<li>
+<p>initialiser la connection au serveur;</p>
+</li>
+<li>
+<p>préparer l'url de la requête, qui doit contenir les arguments <code>key</code> (url-escaped), <code>auth_key</code> (hex-encodée), ainsi que <code>name</code> et <code>offset</code> comme décrit ci-dessus ;</p>
+</li>
+<li>
+<p>préparer le corps du POST : une chaîne de caractères au format JSON contenant la nouvelle valeur de <code>c2</code> (hex-encodée) et la valeur encryptée <code>data</code> (hex-encodée également) ; voir un exemple dans la section « Tests » ci-dessous ;</p>
+</li>
+<li>
+<p>appeler <code>ckvs_post</code> avec les arguments ainsi préparés.</p>
+</li>
+</ol>
+<p>Notez que de nombreuses opérations parmi celles décrites plus haut ont déjà été implémentées, en plus ou moins grande partie. Il serait judicieux de modulariser votre code déjà existant pour en réutiliser le plus possible. Vous êtes libres de créer et d'exposer de nouvelles fonctions (dans le module <code>ckvs_io</code> par exemple).</p>
+<h2 id="etape-3-handle-set-call-pour-le-server">Étape 3 : <code>handle_set_call()</code> pour le server</h2>
+<p>Dans <code>ckvs_httpd.c</code>, ajoutez la fonction <code>handle_set_call()</code>, chargée de répondre à un <code>set</code> du client. Cette fonction est appelée quand un évenement de type <code>MG_EV_HTTP_MSG</code> est reçu, similairement à <code>handle_stats_call()</code> et <code>handle_get_call()</code>.</p>
+<p>Cette fonction a deux parties dans son fonctionnement :</p>
+<ul>
+<li>
+<p>collecter les morceaux tant qu'il y en a avec <code>mg_http_upload()</code> ; on utilisera simplement le répertoire <code>/tmp</code> comme lieu de stockage temporaire (ce n'est pas un problème de fuite de sécurité, puisque la valeur est déjà encryptée) ;</p>
+<p>dans notre cas cette partie du fonctionnement ne sera utilisée qu'une seule fois par transfert, puisque notre client envoie le fichier en une seule fois, mais cette façon de faire permettrait de gérer sans modifications du serveur la réception d'un fichier fragmenté en plusieurs <em>chunks</em> ;</p>
+<p>à noter que chaque requête engendre un appel à <code>handle_set_call()</code> ; cette fonction ne doit donc pas faire de boucle sur <code>mg_http_upload()</code>, mais simplement un test (un seul).</p>
+</li>
+<li>
+<p>exécuter le <code>set</code> lors de la réception du dernier « morceau », c-à-d. lorsque la requête vide (<code>body.len</code> = 0) est reçue.</p>
+</li>
+</ul>
+<p>Dans cette seconde partie, il faudra alors :</p>
+<ol>
+<li>
+<p>récupérer les valeurs de <code>key</code>, <code>auth_key</code> et trouver l'entrée correspondante ;</p>
+</li>
+<li>
+<p>récupérer l'argument <code>name</code> depuis l'url (on fixera une taille arbitraire raisonnable qu'on veillera à ne pas dépasser) et lire le fichier temporaire <code>/tmp/&lt;name&gt;</code> en entier ;</p>
+</li>
+<li>
+<p>utiliser <code>json_tokener_parse()</code> pour lire les valeurs dans le fichier JSON, puis les « hex-décoder » ;</p>
+</li>
+<li>
+<p>écrire la valeur encryptée, ainsi que la nouvelle valeur de <code>c2</code> ;</p>
+</li>
+<li>
+<p>répondre au client avec le code <code>HTTP_OK_CODE</code> (le contenu doit être laissé vide).</p>
+</li>
+</ol>
+<p>En cas d'erreur, n'oubliez pas d'envoyer au client un message d'erreur pour ne pas le laisser bloqué.</p>
+<p><strong>Remarque :</strong> les plus observatrices/observateurs d'entre vous auront sans doute remarqué que le contenu du <code>set</code> est encrypté, mais qu'il n'y a pas d'autenticité ni d'authentification. C'est un choix que nous avons fait par souci de simplicité, la garantie de ces deux autres propriétés complexifiant trop la tâche pour un projet à 2 crédits.</p>
+<h1 id="tests">Tests</h1>
+<p>Pour tester le server sans le <code>set</code> du client, vous pouvez le lancer comme la semaine passée (avec <code>small.ckvs</code>), vérifiez que vous avec la bonne valeur p.ex. pour l'entrée <code>proust</code> (soit avec <code>curl</code> (voir la semaine passée), soit avec un <code>get</code> de votre client), puis vous pouvez simuler un <code>set</code> avec <code>curl</code> comme ceci :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>curl -sS -H &quot;Content-Type:application/json&quot; -d &#39;{ &quot;c2&quot;: &quot;e4c0141c8503fc521188eb137f9906e23812da91ad3c84e8ca1bef1a561bf13f&quot;, &quot;data&quot;: &quot;5b3325a08a593d6758508912af86cbebe8cbdc3819e34e4cad48508b7ca93c8d&quot; }&#39; &#39;http://127.0.0.1:8000/set?name=data.json&amp;offset=0&amp;key=proust&amp;auth_key=10d2c75fe298fd7b783d31982ecf0dcc7e4aa485f3b232557b36941ceeb35a10&#39;
+</span><span>
+</span><span>curl -sS -H &quot;Content-Type:application/json&quot; -d &#39;&#39; &#39;http://127.0.0.1:8000/set?name=data.json&amp;offset=0&amp;key=proust&amp;auth_key=10d2c75fe298fd7b783d31982ecf0dcc7e4aa485f3b232557b36941ceeb35a10&#39;
+</span></code></pre>
+<p>(si votre server tourne à l'URL <code>http://127.0.0.1:8000</code>).</p>
+<p>Notez qu'il faut <strong>LES DEUX</strong> commandes <code>curl</code> l'une après l'autre pour que le <code>set</code> soit effectivement effectué (la seconde commande envoie la chaîne vide).</p>
+<p>Refaites ensuite un <code>get</code> sur l'entrée <code>proust</code>. La nouvelle valeur devrait alors être : « <code>ceci est un test</code> ».</p>
+<p><strong>ATTENTION !</strong> lorsque vous lancez un server, assurez-vous que vous n'avez pas déjà un autre server qui tourne à la même adresse http.</p>
+<p>Pour tester la commande <code>set</code> de votre client, essayez de modifier la valeur d'une clé déjà existante, puis d'envoyer un get pour vérifier que les modifications ont été prises en compte. Par exemple :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs http://localhost:&lt;port&gt; set thekey 1 ../provided/13.server-set.md
+</span><span>./cryptkvs http://localhost:&lt;port&gt; get thekey 1
+</span></code></pre>
+<p>Testez aussi tous les cas d'erreur auxquels vous pouvez penser !</p>
+<p>Par ailleurs, nous fournissions également trois tests « boîte noire » (mais pas de test unitaire).</p>
+<p><strong>Rappel :</strong> lorsque vous lancez des tests de server, assurez-vous que vous n'avez pas déjà un autre server (p.ex. lancé à la main) qui tourne à la même adresse http.</p>
+<h2 id="rendu-final-du-projet">Rendu final du projet</h2>
+<p>Tout le code du projet (c.-à-d. tout le travail depuis la semaine 4, éventuellement corrigé des deux retours de correction) constitue le <strong>rendu final</strong>  de ce cours. Il est à rendre avant le <strong>dimanche 5 juin 23:59</strong>. Aucune extension de délai d'aucune sorte ne saurait être accordée.</p>
+<p>Ajoutez également un fichier <code>README.md</code> à votre projet (<strong>dans <code>done/</code></strong>), contenant :</p>
+<ol>
+<li>
+<p>la réponse aux deux questions suivantes :</p>
+<ul>
+<li>Jusqu'où avez-vous été ? (quelle semaine ?)</li>
+<li>Qu'est-ce que vous avez fait/pas fait ? (cela peut inclure des sous-parties des semaines citées ci-dessus)</li>
+</ul>
+</li>
+<li>
+<p>tout commentaire que vous jugeriez utile de nous passer concernant la réalisation de votre projet (compilation, cas particuliers, ...).</p>
+</li>
+</ol>
+<p>Si vous le <em>souhaitez</em>, vous pouvez ajouter des extensions à votre projet, totalement <em>optionnelles</em>.<br />
+Annoncez-les et expliquez les brièvement en fin de ce fichier <code>README.md</code>.</p>
+<p>Comme tout le reste du projet, ce fichier <code>README.md</code> doit par contre rester anonyme.</p>
+<p>Pour rendre le projet, il n'y aura rien à faire de plus que d'avoir bien ajouté (<code>git add</code>), validé (<code>git commit</code>) et transmis (<code>git push</code>) toutes vos dernières versions de tous <em>vos</em> fichiers sources <code>.c</code> et <code>.h</code>, ainsi que le <code>Makefile</code>. Ce sera en effet la version se trouvant dans votre branche principale (<code>master</code>) à la date limite de rendu qui sera considérée comme votre rendu final. Il n'y a donc <strong>pas</strong> de « submit » à faire cette fois ci.</p>
+<p>Enfin n'oubliez pas de mettre une dernière fois à jour votre fichier <code>time.csv</code> et d'ajouter le fichier <code>README.md</code> comme demandé ci-dessus.</p>
+<p>Toute bonne finalisation et bon rendu !</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 23&#x2F;05&#x2F;2022</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

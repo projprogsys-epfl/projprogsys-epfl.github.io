@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>s. 9 : CryptKVS : refactoring | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/09-refactoring/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "09 Refactoring",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/09-refactoring/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;piazza.com&#x2F;class&#x2F;kzfgffdjsc95by">Piazza</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>Général</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/bareme/">Évaluation</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Échauffement</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout01/">Semaine 1</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout02/">Semaine 2</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout03/">Semaine 3</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Projet</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">CryptKVS : description générale</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-stats/">s. 4 : CryptKVS : la commande `stats`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-get/">s. 5 : CryptKVS : la commande `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-set/">s. 6 : CryptKVS : la commande `set`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-new/">s. 7 &amp; 8 : CryptKVS : la commande `new`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/09-refactoring/">s. 9 : CryptKVS : refactoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/10-client/">s. 10 : CryptKVS webserver : API et client</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/11-server/">s. 11 &amp; 12 : CryptKVS webserver : `stats` &amp; `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/13-server-set/">s. 13 : CryptKVS webserver : `set`</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>s. 9 : CryptKVS : refactoring</h1>
+          
+          <p>Le but du travail de cette semaine est de mettre en œuvre vos nouveaux savoirs sur les pointeurs pour écrire du code plus « pro ». Nous allons pour cela devoir faire ce qui se passe assez souvent dans de vrais projets : réviser le code déjà écrit (« <em>code refactoring</em> »). Nous allons en particulier pouvoir</p>
+<ul>
+<li>incorporer l'allocation dynamique de mémoire et limiter l'utilisation dangereuse des tableaux statique et des VLAs ;</li>
+<li>traiter de façon plus portable les arguments de ligne de commande en utilisant la fonctionnalité des pointeurs sur fonctions.</li>
+</ul>
+<h2 id="1-allocation-dynamique">1. Allocation dynamique</h2>
+<h3 id="1-a-travail-a-faire">1.a Travail à faire</h3>
+<p>Actuellement, le champ <code>entries</code> de <code>struct CKVS</code> consiste en un tableau de taille fixe, alloué statiquement sur la pile, donc.</p>
+<p>Cette définition a l'avantage de la simplicité de programmation, puisque que toutes les entrées <em>a priori</em> utilisables sont déjà stockées dans la même structure (et de manière contiguë en mémoire). Malheureusement, cette simplicité a un coût important du point de vue de l'occupation mémoire et de la flexibilité : le nombre maximum d'entrées stockées occupe déjà toute la place et est par ailleurs lié à une constante de compilation (<code>CKVS_FIXEDSIZE_TABLE</code>).  Idéalement, le nombre maximum d'entrées devrait être laissé à la discrétion de l'utilisateur du programme, et non à celle de celui/celle qui l'a écrit.<br />
+Cette approche a un troisième défaut -- rédhibitoire celui-là : le programme ne fonctionne correctement que si la valeur <code>CKVS_FIXEDSIZE_TABLE</code> ne change pas entre la création du fichier et son utilisation.  Tout changement de cette valeur, suivi d'une recompilation du programme, rendrait impossible la lecture des bases de données CKVS crées pour une version précédente !</p>
+<p>L'objectif est donc d'offrir flexibilité à l'utilisateur et robustesse à l'usage.</p>
+<p>Les changements doivent avoir lieu à plusieurs endroits :</p>
+<ul>
+<li>
+<p>Le champ <code>entries</code> de la structure <code>struct CKVS</code> doit devenir un pointeur. Ce pointeur doit ensuite être initialisé en allouant la mémoire de manière dynamique dans <code>ckvs_open()</code>. N'oubliez pas de libérer la mémoire allouée en fermant la base de données CKVS. </p>
+<p>Mettez à jour toute partie du code devant l'être suite aux changements précédents. Vous pouvez donc supprimer <code>CKVS_FIXEDSIZE_TABLE</code> de <code>ckvs.h</code> (mais ce n'est pas strictement nécessaire).</p>
+</li>
+<li>
+<p>Dans <code>ckvs_local_getset()</code>, si besoin, remplacez les allocations de buffer statiques par des allocations dynamiques (pour toutes les données à dimension variable). Attention aux cas d'erreurs, lesquels rendent malheureusement la fonction un peu plus complexe à écrire.</p>
+</li>
+<li>
+<p>Enfin, dans <code>ckvs_client_encrypt_pwd()</code> (<code>ckvs_crypto.c</code>), allouez dynamiquement le buffer contenant la concaténation de la clef et du mot de passe (<strong>Note :</strong> l'allocation dynamique n'est pas ici pour une raison de durée de vie par rapport à la portée, mais bien pour forcer l'utilisation du tas (« <em>heap</em> ») plutôt que de la pile (« <em>stack</em> »)).</p>
+</li>
+</ul>
+<p>Pour allouer la mémoire, préférez la fonction <code>calloc()</code> à <code>malloc()</code>. Si nécessaire, revoyez le cours ou regardez la « <em>man page</em> » pour plus d'explications et n'oubliez pas que la fonction peut retourner une erreur. En cas d'erreur, votre fonction doit retourner <code>ERR_OUT_OF_MEMORY</code> (voir <code>error.h</code> et <code>error.c</code>). </p>
+<p>Enfin, n'oubliez jamais de libérer la mémoire allouée, aussi bien en cas de succès (libération souvent plus tard alors) que d'erreur (libération pouvant aussi alors être locale -- typiquement s'il y a plusieurs ressources).</p>
+<h3 id="1-b-outils">1.b Outils</h3>
+<p>Avec l'arrivée des pointeurs, et surtout cette semaine de l'allocation dynamique, il peut être utile de connaître d'autres outils que <a href="https://projprogsys-epfl.github.io/tutorials/gdb/">le débogueur</a> pour trouver des erreurs liées à la mémoire. Nous avons pour cela écrit <a href="https://projprogsys-epfl.github.io/tutorials/dbg-ptr/">un autre document d'aide, spécifiquement sur les outils de débogage de mémoire</a>. Nous vous recommandons cependant de <em>continuer</em> à utiliser un débogueur : les nouveaux outils présentés sont <em>complémentaires</em> de celui-ci. Nous vous recommandons, bien sûr, de les utiliser <em>aussi</em>.</p>
+<h2 id="2-analyse-parsing-des-arguments-de-ligne-de-commande">2. Analyse (« <em>parsing</em> ») des arguments de ligne de commande</h2>
+<h3 id="2-a-unification-de-la-signature-des-fonctions-de-commande">2.a Unification de la signature des fonctions de commande</h3>
+<p>Regardez la fonction <code>ckvs_do_one_cmd()</code> dans la version actuelle de <code>cryptkvs.c</code> : elle contient à la fois le <em>parsing</em> des commandes (par exemple, « <code>stats</code> », « <code>get</code> », etc.), ainsi que le <em>parsing</em> des arguments de ces fonctions (par exemple, <code>ckvs_local_stats()</code> prend 1 argument, et <code>ckvs_local_get()</code> en prend 2). Cette double logique rend le code difficile à maintenir et à faire évoluer (ajout de nouvelles commandes). Par exemple, si l'on décide de changer les arguments d'une commande particulière, il faut à la fois changer l'implémentation de de cette commande, ainsi que changer l'appel à cette fonction dans le <code>main()</code>.</p>
+<p>Le second objectif de cette semaine est d'unifier la gestion des commandes reçues en utilisant les pointeurs sur fonction. On pourrait même imaginer (extension hors du projet, non demandée) transformer le programme en un interpréteur de commandes (tournant sans fin jusqu'à la commande <code>quit</code> par exemple).</p>
+<p>Tout d'abord, vous devez changer la signature de toutes les fonctions <code>ckvs_local_COMMAND()</code>. Actuellement, elles ont chacune une signature propre.
+Pour simplifier la logique, nous devons uniformiser leur signature. La solution est toute simple : plutôt que de <em>parser</em> les arguments dans <code>main()</code>, il suffit de déléguer le <em>parsing</em> à ces fonctions et de passer tous les arguments de ligne de commande à ces fonctions :</p>
+<pre data-lang="C" style="background-color:#2b303b;color:#c0c5ce;" class="language-C "><code class="language-C" data-lang="C"><span>	</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">ckvs_local_COMMAND</span><span>(</span><span style="color:#b48ead;">const char</span><span>* </span><span style="color:#bf616a;">filename</span><span>, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">optargc</span><span>, </span><span style="color:#b48ead;">char</span><span>* </span><span style="color:#bf616a;">optargv</span><span>[])
+</span></code></pre>
+<p>Maintenant, <code>ckvs_do_one_cmd()</code> peut simplement appeler de manière identique chaque fonction qui gère une commande.</p>
+<h3 id="2-b-utilisation-de-tables-pour-simplifier-la-logique">2.b Utilisation de tables pour simplifier la logique</h3>
+<p>La version originale de <code>ckvs_do_one_cmd()</code> utilise une approche « <em>if-then-else</em> » pour traiter des différentes commandes possibles. Cette approche rend plus difficile le rajout de nouvelles commandes, puisqu'il faut à chaque fois rajouter un nouveau cas. Elle rend aussi le code rapidement illisible en cas de nombreuses commandes.</p>
+<p>La seconde modification proposée ici a pour but d'éliminer ces tests répétitifs en les remplaçant par une simple boucle. L'objectif de cette boucle est tout simplement de rechercher la commande parmi une liste de commandes possibles (« <em>stats</em> », « <em>get</em> » ...) et d'appeler la fonction correspondant à chaque commande. Cette table étant petite, une recherche linéaire suffit ici.</p>
+<p>Nous allons donc mettre les différentes fonctions <code>ckvs_local_COMMAND()</code> précédemment unifiées dans un tableau. On en profitera pour associer les noms des commandes avec leur fonctions respectives (p.ex. la chaîne <code>&quot;stats&quot;</code> avec la fonction <code>ckvs_local_stats()</code>).</p>
+<p>Pour cela, dans <code>cryptkvs.c</code> :</p>
+<ol>
+<li>définissez un type <code>ckvs_command</code>, pointeur sur fonction telles que celles unifiées ci-dessus ;</li>
+<li>définissez un type <code>struct ckvs_command_mapping</code> contenant :
+<ul>
+<li>une chaîne de caractères (constante) pour le nom ;</li>
+<li>une chaîne de caractères (constante elle aussi) pour la description d'utilisation de la commande ; </li>
+<li>une <code>ckvs_command</code> qui pointera sur la fonction à appeler.</li>
+</ul>
+</li>
+</ol>
+<p>Utilisez ensuite ces définitions pour créer un tableau nommé <code>commands</code> associant chaque commande « <em>stats</em> », « <em>get</em> » ..., à son usage et fonction correspondants.</p>
+<p>Finalement, vous réécriverez le <code>ckvs_do_one_cmd()</code> en utilisant ce tableau à l'intérieur d'une boucle. Utilisez <code>sizeof</code> pour connaître la taille du tableau <code>commands</code> (on peut le faire puisqu'il est définit dans la <em>même</em> portée).</p>
+<p>Lorsque la bonne commande est trouvée, il vous suffit d'appeler la fonction pointée dans l'entrée correspondante du tableau, en passant les arguments de ligne de commande. Il faut cependant transformer les arguments <code>argc</code> et <code>argv</code> de <code>main()</code> avant de les passer aux diverses fonctions <code>ckvs_local_COMMAND()</code>. Comme vous verrez la fonction <code>main()</code> et ses arguments dans une prochaine leçon, le code pour cette transformation vous est fourni ici :</p>
+<pre data-lang="C" style="background-color:#2b303b;color:#c0c5ce;" class="language-C "><code class="language-C" data-lang="C"><span style="color:#b48ead;">int</span><span> optargc = argc - </span><span style="color:#d08770;">3</span><span>;
+</span><span style="color:#b48ead;">char</span><span>** optargv = argv + </span><span style="color:#d08770;">3</span><span>;
+</span></code></pre>
+<p>Par exemple, si vous appelez le programme</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs ./small.ckvs get thekey 1
+</span></code></pre>
+<p>alors, votre code doit appeler <code>ckvs_local_get()</code> avec les paramètres suivants : <code>filename</code> (qui vaut <code>&quot;./small.ckvs&quot;</code> dans cet exemple), <code>optargc</code> (qui vaut <code>2</code>) et <code>optargv</code> (qui vaut <code>{ &quot;thekey&quot;, &quot;1&quot; }</code>).</p>
+<p>Votre code doit correctement traiter le cas où la commande n'est pas définie : appeler <code>usage()</code> et retourner <code>ERR_INVALID_COMMAND</code> dans ce cas-là.</p>
+<h3 id="2-c-simplification-de-usage">2.c Simplification de <code>usage()</code></h3>
+<p>Pour afficher la liste des commandes disponibles, il suffit maintenant d'itérer sur la table <code>commands</code> en affichant, par exemple, le nom de la commande suivie de son descriptif d'utilisation.</p>
+<h3 id="2-d-gestion-des-parametres">2.d Gestion des paramètres</h3>
+<p>Maintenant que l'infrastructure de <em>parsing</em> est plus flexible, il est temps de déplacer le traitement des arguments dans les fonctions <code>ckvs_local_COMMAND()</code> correspondantes. Rien de bien compliqué ici : il suffit juste de vérifier que le nombre d'arguments est correct, et de récupérer leur valeur au début de chaque fonction. Le reste de la fonction ne devrait pas changer.</p>
+<p><strong>Note :</strong> si vous rencontrez l'erreur « unused parameter 'argv' » lors de la compilation pour la fonction <code>ckvs_local_stats()</code>, vous pouvez ajouter l'attribut <code>_unused</code> (défini dans <code>utils.h</code>) devant <code>argv</code> dans l'implémentation de cette fonction.</p>
+<h2 id="tests">Tests</h2>
+<p>Une fois que vous avez terminé, vérifiez que l'entièreté des tests passe toujours.</p>
+<p>Nous avons pour cela adapté les tests unitaires aux modifications de cette semaine (les tests «_ end-to-end_ » ne changent pas, bien sûr) et vous les fournissions dans <code>provided/tests/unit-week09</code>.</p>
+<p>Si vous utilisez <code>make check</code> (et avez apporté à votre code les modifications demandées cette semaine), il suffit simplement d'adapter le répertoire dans la règle <code>check:</code> du <code>Makefile</code> :<br />
+changez la fin de la ligne</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make SRC_DIR=${PWD} -B -C ../provided/tests/unit
+</span></code></pre>
+<p>par :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make SRC_DIR=${PWD} -B -C ../provided/tests/unit-week09
+</span></code></pre>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 23&#x2F;05&#x2F;2022</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

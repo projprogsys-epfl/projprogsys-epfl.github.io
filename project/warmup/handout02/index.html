@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Semaine 2 | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/warmup/handout02/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Warmup",
+            "item": "https://projprogsys-epfl.github.io/project/warmup/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "Handout02",
+            "item": "https://projprogsys-epfl.github.io/project/warmup/handout02/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;piazza.com&#x2F;class&#x2F;kzfgffdjsc95by">Piazza</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>Général</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/bareme/">Évaluation</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Échauffement</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout01/">Semaine 1</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/warmup/handout02/">Semaine 2</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout03/">Semaine 3</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Projet</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">CryptKVS : description générale</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-stats/">s. 4 : CryptKVS : la commande `stats`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-get/">s. 5 : CryptKVS : la commande `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-set/">s. 6 : CryptKVS : la commande `set`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-new/">s. 7 &amp; 8 : CryptKVS : la commande `new`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/09-refactoring/">s. 9 : CryptKVS : refactoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/10-client/">s. 10 : CryptKVS webserver : API et client</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/11-server/">s. 11 &amp; 12 : CryptKVS webserver : `stats` &amp; `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/13-server-set/">s. 13 : CryptKVS webserver : `set`</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>Semaine 2</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>Cette semaine, nous souhaitons vous faire approfondir la compilation séparée (<code>Makefile</code>) et utiliser une seconde bibliothèque nécessaire à notre projet (libmongoose). Nous vous proposons pour cela deux exercices :</p>
+<ol>
+<li>
+<p>sur la base de <code>cluedo.c</code> de la semaine passée, écrire un embryon de webserver, créé à partir de  2 fichiers sources plus une bibliothèque locale  ;</p>
+</li>
+<li>
+<p>écrire le <code>Makefile</code> d'un projet plus ambitieux déjà fourni.</p>
+</li>
+</ol>
+<p>Vous aurez à rendre le(s) code(s) correspondant(s) d'ici au dimanche 13 mars 23:59.</p>
+<h2 id="materiel-fourni">Matériel fourni</h2>
+<p>Pour récupérez les fichiers fournis pour cette semaine, il vous faut rejoindre <a href="https://classroom.github.com/a/TGs4BnbB">le second devoir de ce cours en suivant ce lien : https://classroom.github.com/a/TGs4BnbB</a>.</p>
+<p>Vous devriez alors avoir accès à un nouveau dépôt du genre <code>pps22-week02-YOURGITHUBID.git</code>, qu'il vous faudra donc cloner sur votre machine :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git clone git@github.com:projprogsys-epfl/pps22-week02-YOURGITHUBID.git
+</span></code></pre>
+<p>Ce dépôt contient deux répertoires :</p>
+<ul>
+<li>
+<p>un répertoire <code>done/myprj</code> qui sera le répertoire pour votre propre micro-projet de webserver (détails ci-dessous) ;</p>
+</li>
+<li>
+<p>un répertoire <code>done/bigprj</code> qui contient déjà un « gros » projet complet, dont vous n'aurez à écrire que le <code>Makefile</code>. Mais commencez au préalable par votre propre micro-projet, plus simple.</p>
+</li>
+</ul>
+<p>Pour tout ce qui concerne <code>git</code> et de son fonctionnement, n'hésitez pas à revoir <a href="https://projprogsys-epfl.github.io/tutorials/git-recitation/">cette page complémentaire</a> (semaine passée).<br />
+Et pour tout ce qui relève de <code>make</code> et des <code>Makefile</code>, revoyez aussi <a href="https://projprogsys-epfl.github.io/tutorials/make/">cette documentation déjà fournie la semaine passée</a>. Vous pouvez également si vous le souhaitez (optionnel/complémentaire) regarder <a href="https://tube.switch.ch/videos/e9bcc30f">ce cours</a> (1h de vidéo).<br />
+<strong>Nous insistons sur ce point</strong> (bien prendre le temps cette semaine d'approfondir les <code>Makefiles</code>) car l'an passé plusieurs n'ont pas fait cette étape assez sérieusement et en ont pâti par la suite.</p>
+<h2 id="i-votre-propre-projet">I. Votre propre projet</h2>
+<h3 id="i-1-reorganisation-du-code-de-la-semaine-passee">I.1 Réorganisation du code de la semaine passée</h3>
+<p>Commencez par aller dans le répertoire <code>done/myprj</code> et copiez y votre fichier <code>cluedo.c</code> de la semaine passée :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>    cp ../../../pps22-week01-YOURID/done/cluedo.c .
+</span></code></pre>
+<p>Editez ensuite ce fichier et commencez par y ajouter (au début (ou juste après l'éventuel commentaire Doxygen de départ)) le code suivant (copiez-collez le depuis ici) :</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">stdio.h</span><span>&gt;
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">string.h</span><span>&gt;
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">stdlib.h</span><span>&gt;
+</span><span>
+</span><span style="color:#65737e;">// ======================================================================
+</span><span style="color:#b48ead;">char</span><span>* </span><span style="color:#8fa1b3;">create_json_string</span><span>(</span><span style="color:#b48ead;">const char</span><span>* </span><span style="color:#bf616a;">input</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">static const char</span><span>* </span><span style="color:#b48ead;">const</span><span> fmt = &quot;</span><span style="color:#a3be8c;">{ </span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">answer</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">: </span><span style="color:#96b5b4;">\&quot;</span><span style="color:#d08770;">%s</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;"> }</span><span>&quot;;
+</span><span>    </span><span style="color:#b48ead;">const </span><span>size_t  fmt_len = </span><span style="color:#96b5b4;">strlen</span><span>(fmt) - </span><span style="color:#d08770;">2</span><span>; </span><span style="color:#65737e;">// -2: for %s
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(input == </span><span style="color:#d08770;">NULL</span><span>) input = &quot;&quot;;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">char</span><span>* output = </span><span style="color:#96b5b4;">malloc</span><span>(</span><span style="color:#96b5b4;">strlen</span><span>(input) + fmt_len + </span><span style="color:#d08770;">1</span><span>);
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(output == </span><span style="color:#d08770;">NULL</span><span>) </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">NULL</span><span>;
+</span><span>
+</span><span>    </span><span style="color:#96b5b4;">sprintf</span><span>(output, fmt, input);
+</span><span>    </span><span style="color:#b48ead;">return</span><span> output;
+</span><span>}
+</span></code></pre>
+<p>Remplacez ensuite la ligne</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>int main(void)
+</span></code></pre>
+<p>par</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>char* create_answer(int homme, int moustaches, int chapeau, int lunettes)
+</span></code></pre>
+<p>Terminez ensuite la modification de ce fichier (<code>cluedo.c</code>) en éditant le corps de l'ancien <code>main()</code> pour ne plus y poser les questions, mais simplement utiliser les valeurs reçues en argument. Remplacez également les <code>puts</code> par des <code>return create_json_string</code> (sachez utiliser efficacement votre éditeur ; c'est peut être le moment de découvrir comment faire des remplacements systématiques). Le <code>return</code> final devra également être ajusté (à quelque chose qui fait sens, selon <em>votre</em> choix (ce ne sera pas testé)).</p>
+<p>Créer ensuite un fichier <code>cluedo.h</code> permettant « d'exporter » la fonction <code>create_answer()</code> (afin qu'elle puisse être connue d'autres fichiers).</p>
+<p>Complétez enfin le <code>Makefile</code> pour pouvoir compiler et créer <code>webserver</code> à partir de <code>cluedo.o</code>, <code>webserver.o</code> et les bibliothèques nécessaires, dont la bibliothèque <code>libmongoose</code> fournie en local.<br />
+A noter que :</p>
+<ol>
+<li>
+<p>la compilation de la bibliothèque locale <code>libmongoose</code> (c.-à.-d. la création du fichier <code>libmongoose/libmongoose.so</code>) est déjà fournie (dans le <code>Makefile</code>, c'est la cible <code>lib</code> ;</p>
+</li>
+<li>
+<p>cette partie («<em>Complétez le <code>Makefile</code></em>... ») est au final très courte à écrire, mais il est <em>normal</em> que vous ne sachiez pas encore faire cela « en 5 minutes » et deviez lire la documentation et chercher par vous-même ; c'est bien <em>un des buts</em> de cette partie (vous enseigner la compilation séparée les <code>Makefile</code> par la pratique) ;</p>
+</li>
+<li>
+<p><code>webserver.c</code> n'est pas terminé et fait l'objet de la partie ci-dessous;</p>
+</li>
+<li>
+<p>lors de l'exécution d'un programme utilisant des bibliothèques non standard (comme p.ex. <code>webserver</code> utilisant la bibliothèque locale <code>libmongoose</code>), il faut <em>au préalable</em> indiquer à l'aide de la variable <code>LD_LIBRARY_PATH</code>, les endroits où se trouvent ces bibliothèques; par exemple (à ne faire qu'une seule fois par Shell) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> export LD_LIBRARY_PATH=&quot;${PWD}&quot;/libmongoose
+</span></code></pre>
+</li>
+</ol>
+<h3 id="i-2-completion-de-la-partie-webserver">I.2 Complétion de la partie « webserver »</h3>
+<p>La bibliothèque fournie <code>libmongoose</code> est une bibliothèque très simple à utiliser qui implémente le protocole HTTP (comme par exemple <code>apache</code> ou <code>nginx</code>, qui sont des serveurs web plus robustes et avec plus de fonctionnalités, mais également beaucoup plus difficile à intégrer).<br />
+Sa documentation se trouve ici : <a href="https://github.com/cesanta/mongoose/tree/master/docs">https://github.com/cesanta/mongoose/tree/master/docs</a>. Le but cette semaine n'est pas maintenant de tout lire/comprendre, mais simplement s'assurer que vous arrivez à l'utiliser.<br />
+Pour cela, vous n'aurez qu'à utilise la fonction <code>mg_http_reply()</code> dont la documentation se trouve <a href="https://github.com/cesanta/mongoose/tree/master/docs#mg_http_reply">ici</a>.</p>
+<p>Noter que le type de header que nous utilisons est « <code>application/json</code> » (voir example dans la documentation mongoose).</p>
+<p>Complétez <code>webserver.c</code> à l'endroit demandé pour « servir » la réponse désirée. </p>
+<p>Pour tester votre programme, lancez le p.ex. comme suit : </p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./webserver 1 0 1 0
+</span></code></pre>
+<p>Si un message du genre :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>2022-02-02 12:17:37  I mongoose.c:2925:mg_listen 1 accepting on http://localhost:8000
+</span></code></pre>
+<p>s'affiche, c'est que le server Web tourne et vous pouvez alors aller consulter la solution proposée à <a href="http://localhost:8000/get">cet URL ci</a>. Si vous avez <code>curl</code>, vous pouvez directement vérifier la sortie avec la commande :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>curl -s http://localhost:8000/get
+</span></code></pre>
+<p>(Note : et si vous voulez voir l'entête HTML (pour vérifier) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>curl -s -I http://localhost:8000/get
+</span></code></pre>
+<p>)</p>
+<h2 id="ii-savoir-rentrer-dans-un-plus-gros-projet">II. Savoir rentrer dans un plus gros projet</h2>
+<p>Une des compétences qui vous sera aussi utile à l'avenir (hors de ce cours) est de savoir appréhender de gros projets déjà existants. Dans cet esprit, et aussi afin de vous faire pratiquer encore un peu plus les <code>Makefile</code>, nous fournissons (dans <code>done/bigprj</code>) un projet C déjà existant, dont vous avez à écrire le <code>Makefile</code> (toujours dans <code>done/bigprj</code>).</p>
+<p><strong>REMARQUE IMPORTANTE :</strong> le code fourni ici est soumis à droit d'auteur et ne doit en aucun cas être recopié ailleurs, ni réutilisé en aucune façon.<br />
+(Il est par ailleurs criticable de plusieurs points de vue et n'est donc <em>pas du tout</em> fourni en tant que source d'inspiration...)<br />
+Il vous est fourni <em>uniquement</em> pour que vous écriviez un <code>Makefile</code> permettant de le compiler.</p>
+<p>Le code fourni utilise des sous-répertoires et une fonction de C99 (<code>roundf()</code>).</p>
+<p>Pour indiquer de rechercher des fichiers d'en-tête dans des sous-répertoires, il faut ajouter une option <code>-I</code> par sous-répertoire voulu. Par exemple, lors de la compilation de <code>machin.c</code>, pour demander au compilateur de rechercher un fichier d'en-tête dans le sous-répertoire <code>truc</code>, il faut faire :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -c -I truc machin.c -o machin.o
+</span></code></pre>
+<p>(Voir aussi la variable <code>CFLAGS</code> dans <a href="https://projprogsys-epfl.github.io/tutorials/make/">la documentation sur <code>make</code> fournie la semaine passée</a>.)</p>
+<p>Pour compiler suivant la norme C99 (ou au dessus), passer l'option <code>-std=c99</code> (ou <code>-std=c11</code> ou <code>-std=c17</code> ou <code>-std=c2x</code>) au compilateur (voir la variable <code>CFLAGS</code>).</p>
+<p>Enfin, pour pouvoir utiliser la fonction <code>roundf()</code> de C99, il faut faire l'édition de liens avec la bibliothèque mathématique en ajoutant <code>-lm</code>.
+(Voir aussi la variable <code>LDLIBS</code> dans <a href="https://projprogsys-epfl.github.io/tutorials/make/">la documentation sur <code>make</code> fournie la semaine passée</a>.)</p>
+<p><strong>Notes :</strong> </p>
+<ol>
+<li>
+<p>Le code fourni compile avec moult « <em>warnings</em> ». Nous <strong>ne</strong> vous demandons <strong>pas</strong> de corriger ces erreurs, mais simplement d'écrire un <code>Makefile</code> qui parvient à produire un exécutable <code>main</code>.</p>
+</li>
+<li>
+<p>Il n'est pas nécessaire de lancer le <code>main</code> en question. Si vous l'avez fait, vous pouvez simplement le quitter en tapant <code>Ctrl-C</code>.</p>
+</li>
+<li>
+<p>Pour avoir tous les points, votre <code>Makefile</code> devra non seulement produire un exécutable <code>main</code> lorsque l'on tape <code>make</code>, mais aussi <em>avoir toutes les dépendances correctement spécifiées</em>.</p>
+</li>
+</ol>
+<h2 id="feedback-tests">Feedback tests</h2>
+<p>Le feedback via Docker doit toujours être demandé depuis <code>done/</code> lui-même. Comme nous avons cette semaine des sous-répertoires, la façon de le faire est de lancer :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make -f myprj/Makefile feedback
+</span></code></pre>
+<p>(depuis <code>done/</code>, donc) ; c.-à-d. que l'on indique à <code>make</code> où aller chercher son <code>Makefile</code>.</p>
+<h2 id="rendu">Rendu</h2>
+<p>Pour rendre le devoir, « validez » (<code>commit</code>) et « poussez » (<code>push</code>) toutes vos modifications avant le dimanche 13 mars 23:59. Pensez également à mettre votre fichier <code>time.csv</code> tel que <a href="https://projprogsys-epfl.github.io/project/index/bareme/">décrit dans le barème du cours</a>. Le rendu se fera automatiquement en prenant la version enregistrée (<code>commit</code> + <code>push</code>) dans le répertoire <code>done/</code> de votre dépôt GitHub (branche <code>master</code>) à cette date. Il est donc impératif que vous ayez <code>commit</code> puis <code>push</code> votre version finale avant cette date. Aucune autre solution ne sera acceptée.</p>
+<p>Nous vous rappelons également que vous devez rendre du code anonyme : ne mettez ni nom d'auteur(e), ni SCIPER, email, ...</p>
+<p>Et n'oubliez pas de faire le rendu de la semaine passée avant ce dimanche soir.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 23&#x2F;05&#x2F;2022</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

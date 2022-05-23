@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>s. 11 & 12 : CryptKVS webserver : `stats` & `get` | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/11-server/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "11 Server",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/11-server/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;piazza.com&#x2F;class&#x2F;kzfgffdjsc95by">Piazza</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>Général</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/bareme/">Évaluation</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Échauffement</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout01/">Semaine 1</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout02/">Semaine 2</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout03/">Semaine 3</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Projet</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">CryptKVS : description générale</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-stats/">s. 4 : CryptKVS : la commande `stats`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-get/">s. 5 : CryptKVS : la commande `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-set/">s. 6 : CryptKVS : la commande `set`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-new/">s. 7 &amp; 8 : CryptKVS : la commande `new`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/09-refactoring/">s. 9 : CryptKVS : refactoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/10-client/">s. 10 : CryptKVS webserver : API et client</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/11-server/">s. 11 &amp; 12 : CryptKVS webserver : `stats` &amp; `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/13-server-set/">s. 13 : CryptKVS webserver : `set`</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>s. 11 &amp; 12 : CryptKVS webserver : `stats` &amp; `get`</h1>
+          
+          <p>Cette semaine, le projet arrive dans sa version finale.  Après avoir implémenté le client, vous allez implémenter le serveur (en partie).</p>
+<h1 id="description-des-fichiers-fournis-a-ecrire">Description des fichiers fournis / à écrire</h1>
+<p>Cette semaine, nous vous avons fourni les fichiers additionnels <code>ckvs_httpd.(c|h)</code>, ainsi que la <code>libmongoose</code> comme en semaine 02 (allez peut être revoir ce que vous aviez fait cette semaine là).</p>
+<p>Pour rappel, <code>mongoose</code> est une bibliothèque utilisée pour la création de serveurs web embarqués, avec <a href="https://mongoose.ws/documentation/">documentation</a> et <a href="https://github.com/cesanta/mongoose">code source</a>.  Aucune modification à cette bibliothèque n'est nécessaire.</p>
+<p>Comme d'habitude, ces fichiers sont dans le répertoire <code>/provided</code> de votre dépôt de groupe. 
+Pensez à les récupérer avec la commande</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git pull
+</span></code></pre>
+<p>puis à les copier dans votre répertoire <code>/done</code>. Pour rappel, vous <strong>ne</strong> devez <strong>pas</strong> modifier le contenu du répertoire <code>/provided</code>.</p>
+<h1 id="description-du-travail-a-faire">Description du travail à faire</h1>
+<p>Nous allons tout d'abord étendre la syntaxe générale de <code>cryptkvs</code> afin de créer un serveur web :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cryptkvs &lt;database&gt; httpd &lt;url&gt;
+</span></code></pre>
+<p>Il s'agit donc d'exposer le contenu d'une database locale via l'URL spécifié. Cette semaine, nous implémenterons les fonctions <code>stats</code> et <code>get</code>, avec comme objectif que votre serveur ait la même fonctionnalité que celui disponible à <code>https://cs212.epfl.ch</code>. </p>
+<p>La seule différence est que :</p>
+<ul>
+<li>votre serveur répondra aux requêtes sur un port local <code>http://127.0.0.1:8000</code> ;</li>
+<li>l'utilisation de SSL (et la configuration des clefs qui va avec) pour <code>https</code> n'est pas nécessaire.</li>
+</ul>
+<h2 id="environnement-de-travail">Environnement de travail</h2>
+<p>Pour utiliser la <code>libmongoose</code>, procédez comme en semaine 2, y compris les ajouts nécessaires au <code>Makefile</code>.</p>
+<h2 id="etape-1-rajouter-la-commande-httpd">Étape 1 : rajouter la commande httpd</h2>
+<p>La commande est déjà implémentée dans le fichier <code>ckvs_httpd.c</code>. Il suffit de l'appeler depuis le module central (<code>cryptkvs.c</code>). Notez que cette fonction nécessite d'ajouter un nouveau champ <code>const char* listening_addr</code> dans votre <code>struct CKVS</code> dans <code>ckvs_io.h</code>, ainsi que, bien sûr, l'ajout de ligne correspondante à cette commande dans le tableau de commandes dans <code>cryptkvs.c</code>.</p>
+<p>Cette commande est uniquement valable lorsque le premier argument est une database locale.</p>
+<p>Pour valider cette première étape, vous devez démarrer le serveur dans un terminal</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs small.ckvs httpd http://127.0.0.1:8000
+</span></code></pre>
+<p>(sans l'arrêter)
+et le contacter depuis un autre terminal</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs http://127.0.0.1:8000 stats
+</span></code></pre>
+<p>La commande stats n'est pas encore implémentée; le serveur doit donc retourner au client un message <code>Error: Invalid Command</code>. En cas de doute sur votre <em>client</em>, vous pouvez également tester votre <em>server</em> avec l'utilitaire <code>curl</code> :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>curl http://127.0.0.1:8000/stats
+</span></code></pre>
+<h2 id="etape-2-implementation-de-handle-stats-call">Étape 2 : implémentation de <code>handle_stats_call()</code></h2>
+<p>Dans <code>ckvs_httpd.c</code>, créez la fonction</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>static void handle_stats_call(struct mg_connection *nc, struct CKVS *ckvs, 
+</span><span>                              _unused struct mg_http_message *hm)
+</span><span>{
+</span><span>    mg_error_msg(nc, NOT_IMPLEMENTED);
+</span><span>}
+</span></code></pre>
+<p>qui doit être appelée par <code>ckvs_event_handler()</code> lors du traitement d'événements de type <code>MG_EV_HTTP_MSG</code>, qui correspondent à la réception d'une requête HTTP complète.</p>
+<p>Plus précisément, elle doit être appelée lorsque la fonction URI <code>&quot;/stats&quot;</code> est demandée. Pour cela, la fonction <code>mg_http_match_uri()</code> vous sera utile (regardez la documentation de mongoose). Il n'y a pas d'argument additionnel à traiter.</p>
+<p>Vous utiliserez essentiellement la bibliothèque json pour créer votre réponse, en particulier les fonctions :</p>
+<ul>
+<li>
+<p><a href="https://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#a68c383f54544fca19b5f2425be397600"><code>json_object_new_object()</code></a> pour créer un objet JSON (dont vous êtes « propriétaire », cf. <code>json_object_put()</code> plus loin) ;</p>
+</li>
+<li>
+<p><a href="https://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#a27bd808a022251059a43f1f6370441cd"><code>json_object_object_add()</code></a> pour ajouter des « sous-objets » ;</p>
+</li>
+<li>
+<p><a href="https://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#ae92f0770fb4b3c884ce35de52d3d7de8"><code>json_object_new_int()</code></a> ;</p>
+</li>
+<li>
+<p><a href="https://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#a7b7b5302b3903c9347eeb1f4a64d657b"><code>json_object_new_string()</code></a> ;</p>
+</li>
+<li>
+<p><a href="https://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#a84f7f8c0774c4600d958561d7548d649"><code>json_object_new_array()</code></a> ;</p>
+</li>
+<li>
+<p><a href="https://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#a18cdd9a7455e09f36cdf6e5756b7f586"><code>json_object_array_add()</code></a> ;</p>
+</li>
+<li>
+<p><a href="https://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#add3770a3ba3d01a8f9adedfcd6bd8dbb"><code>json_object_to_json_string()</code></a> pour « sérialiser » un objet JSON ;</p>
+</li>
+<li>
+<p><a href="https://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#afabf61f932cd64a4122ca8092452eed5"><code>json_object_put()</code></a> pour libérer un objet JSON.</p>
+</li>
+</ul>
+<p>Une fois que le contenu JSON est finalisé, un seul appel est nécessaire pour transmettre la réponse :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>mg_http_reply(nc, HTTP_OK_CODE, &quot;Content-Type: application/json\r\n&quot;, &quot;%s\n&quot;, json_string);
+</span></code></pre>
+<p>Pour vérifier cette étape, les appels suivants doivent être identiques :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs http://127.0.0.1:8000 stats
+</span><span>./cryptkvs https://cs212.epfl.ch stats
+</span></code></pre>
+<h2 id="etape-3-les-arguments-de-get">Étape 3 : les arguments de get</h2>
+<p>Nous allons implémenter <code>get</code> en plusieurs étapes.</p>
+<p>Dans une première étape, vous devez :</p>
+<ul>
+<li>créer la fonction <code>handle_get_call()</code>, qui doit être appelée lorsque le URI est <code>&quot;/get&quot;</code> ;</li>
+<li>utiliser la fonction <code>get_urldecoded_argument()</code> (voir ci-dessous) pour extraire l'argument <code>key</code> depuis la requête HTML ;</li>
+<li>puis utiliser la fonction <code>mg_http_get_var()</code> pour extraire l'argument <code>auth_key</code> (toujours avec <code>hm-&gt;query</code> ; cf commentaire ci-dessous) ;</li>
+<li>et le convertir qu'il soit utilisable par le reste de votre code ;</li>
+<li>en cas d'erreur(s), envoyer un message avec <code>mg_error_msg(nc, err)</code> (cette fonction est fournie dans <code>ckvs_httpd.c</code>).</li>
+</ul>
+<p>L'argument <code>key</code> est encodé en « <em>url-escape</em> ». Implémentez la fonction :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>static char* get_urldecoded_argument(struct mg_http_message *hm, const char *arg)
+</span><span>{
+</span><span>    // TODO
+</span><span>}
+</span></code></pre>
+<p>dont l'objectif est de </p>
+<ul>
+<li>
+<p>extraire la valeur de l'argument spécifié par <code>arg</code> (<code>&quot;key&quot;</code> dans ce cas) à l'aide de <a href="https://mongoose.ws/documentation/#mg_http_get_var"><code>mg_http_get_var()</code></a>  ; passer ici <code>hm-&gt;query</code> à <code>mg_http_get_var()</code> et non pas <code>hm-&gt;body</code> comme indiqué dans la documentation de mongoose ; une taille de 1024 suffira ici pour le buffer ;</p>
+</li>
+<li>
+<p>retourner NULL en cas d'erreur (valable pour tous les cas d'erreur rencontrés) ;</p>
+</li>
+<li>
+<p>utiliser la bibliothèque curl et la fonction <a href="https://curl.se/libcurl/c/curl_easy_unescape.html"><code>curl_easy_unescape()</code></a> et en retourner la valeur de retour à l'appelant.</p>
+</li>
+</ul>
+<p>Attention : les valeurs retournées par <code>curl_easy_unescape()</code> doivent être dé-allouées lorsqu'elles ne sont plus nécessaires.</p>
+<h2 id="etape-4-implementation-de-get">Étape 4 : implementation de &quot;get&quot;</h2>
+<p>Maintant que les bases sont posées, <code>get</code> peut être complété comme suit : dans</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>static void handle_get_call(struct mg_connection *nc, struct CKVS *ckvs, struct mg_http_message *hm)
+</span></code></pre>
+<ul>
+<li>
+<p>extraire l'argument &quot;key&quot; à l'aide de <code>get_urldecoded_argument()</code> ;</p>
+</li>
+<li>
+<p>extraire l'argument &quot;auth_key&quot; et le convertir depuis le format hexencodé ;</p>
+</li>
+<li>
+<p>en cas d'erreur(s), envoyer un message avec <code>mg_error_msg(nc, err)</code> (cette fonction est fournie) ;</p>
+</li>
+<li>
+<p>trouver l'entrée correspondant a &quot;key&quot; dans la base de donnée ;</p>
+</li>
+<li>
+<p>envoyer un message en cas d'erreur ; le cas où l'entrée n'a pas de valeur est aussi consideré comme une erreur (<code>ERR_NO_VALUE</code>) ;</p>
+</li>
+<li>
+<p>en cas de succès, créer un objet JSON ;</p>
+</li>
+<li>
+<p>rajouter dans le JSON la clef <code>&quot;c2&quot;</code> avec la valeur attendue en format hexencodé ;</p>
+</li>
+<li>
+<p>rajouter dans le JSON la clef <code>&quot;data&quot;</code> avec la valeur encryptée, également en format hexencodé ;</p>
+</li>
+<li>
+<p>renvoyer le JSON au client avec la fonction <code>mg_http_reply()</code> ;</p>
+</li>
+<li>
+<p>gérer tous les cas d'erreur.</p>
+</li>
+</ul>
+<p>La gestion de la mémoire est particulièrement importante ici car plusieurs objets sont dynamiques, au minimum : </p>
+<ul>
+<li>la chaîne retournée par <code>get_urldecoded_argument()</code> ;</li>
+<li>la chaîne hexencodée <code>&quot;data&quot;</code> (qui ne doit pas être sur la pile car potentiellement très grande) ;</li>
+<li>l'objet JSON.</li>
+</ul>
+<h1 id="tests-finaux">Tests finaux</h1>
+<p>Equivalence des résultats entre <code>https://cs212.epfl.ch</code> et <code>http://127.0.0.1:8000</code> pour les commandes &quot;stats&quot; et &quot;get&quot; pour</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs &lt;url&gt; stats
+</span><span>./cryptkvs &lt;url&gt; get proust marcel
+</span><span>./cryptkvs &lt;url&gt; get proust william
+</span><span>./cryptkvs &lt;url&gt; get &#39;de beauvoir&#39; simone
+</span><span>./cryptkvs &lt;url&gt; get &#39;de beauvoir&#39; sartre
+</span></code></pre>
+<p>Une fois les tests exécutés, arrêter l'execution du serveur (en pressant Ctrl-C sur le terminal).  Vous ne devez pas avoir de fuites de mémoire.</p>
+<p>Par ailleurs, nous fournissions comme d'habitude des tests « boîte noire » (mais pas de test unitaire ; par contre, le test unitaire <code>unit-test-ios.c</code> change un peu entre la semaine 10 et la semaine 11 en raison de l'ajout du champs <code>listening_addr</code> ; nous vous l'avons donc re-fourni).</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 23&#x2F;05&#x2F;2022</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

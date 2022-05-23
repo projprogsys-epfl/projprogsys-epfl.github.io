@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>s. 4 : CryptKVS : la commande `stats` | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/04-stats/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "04 Stats",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/04-stats/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;piazza.com&#x2F;class&#x2F;kzfgffdjsc95by">Piazza</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>Général</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/bareme/">Évaluation</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Échauffement</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout01/">Semaine 1</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout02/">Semaine 2</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout03/">Semaine 3</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Projet</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">CryptKVS : description générale</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/04-stats/">s. 4 : CryptKVS : la commande `stats`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-get/">s. 5 : CryptKVS : la commande `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-set/">s. 6 : CryptKVS : la commande `set`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-new/">s. 7 &amp; 8 : CryptKVS : la commande `new`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/09-refactoring/">s. 9 : CryptKVS : refactoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/10-client/">s. 10 : CryptKVS webserver : API et client</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/11-server/">s. 11 &amp; 12 : CryptKVS webserver : `stats` &amp; `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/13-server-set/">s. 13 : CryptKVS webserver : `set`</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>s. 4 : CryptKVS : la commande `stats`</h1>
+          
+          <p>Le but du travail de cette semaine est de pouvoir ouvrir la base de données fournie, et d'en extraire le contenu, à l'aide d'un utilitaire en ligne de commande (à écrire).</p>
+<p>Pour cela, vous aurez à modifier les fichiers <code>ckvs_io.c</code> et <code>cryptkvs.c</code>, et à créer les fichiers <code>ckvs_local.c</code> et <code>ckvs_utils.c</code>.
+Dans chaque fichier <code>.c</code>, vous implémenterez les fonctions déclarées dans le fichier <code>.h</code> correspondant et décrites plus bas. À noter que ces fichiers <code>.h</code> fournis font pleinement partie de la donnée : ils doivent être lus en même temps que ce document-ci, qui les complémente.</p>
+<h1 id="description-des-fichiers-fournis-a-ecrire">Description des fichiers fournis / à écrire</h1>
+<h2 id="materiel-fourni">Matériel fourni</h2>
+<p>Dans votre dépôt GitHub de groupe (répertoire <code>provided</code>), vous trouverez, en plus du sujet et de matériel utile dans le futur, les fichiers suivants utiles pour cette semaine :</p>
+<ul>
+<li>
+<p>un <code>Makefile</code> assez complet avec plein de cibles possiblement utiles, que vous devriez pouvoir utiliser en l'état (<em>a priori</em> rien à modifier) ;</p>
+</li>
+<li>
+<p><code>ckvs.h</code> :   définion des parties (« <em>header</em> » et « <em>entry</em> ») de la base de données ;</p>
+</li>
+<li>
+<p><code>cryptkvs.c</code> : contient le <code>main()</code> et interprête les commandes entrées par l'utilisateur ;</p>
+</li>
+<li>
+<p><code>ckvs_io.h</code> :   définion du format sur disque de la base de données (<code>CKVS_t</code> / <code>struct CKVS</code>) et des fonctions d'entrées/sorties associées ;</p>
+</li>
+<li>
+<p><code>ckvs_local.h</code> :   différentes commandes qui sont utilisées en mode « local », lorsque la base de données est disponible sur disque localement, c.-à-.d lorsque la partie « client » et la partie « serveur » (qui n'existent pas vraiment) sont intégrées dans un seul et même exécutable ;</p>
+</li>
+<li>
+<p><code>ckvs_utils.h</code> : fonctions utilitaires pour convertir en format hexadécimal ;</p>
+</li>
+<li>
+<p><code>error.h</code> : le « fichier d'en-tête » pour l'utilisation des codes et des messages d'erreurs ;</p>
+</li>
+<li>
+<p><code>error.c</code> : les messages d'erreurs associés ;</p>
+</li>
+<li>
+<p><code>util.h</code> : macros utiles (génériques) ;</p>
+</li>
+<li>
+<p><code>small.ckvs</code> : petite base de données fournie pour vos tests ;</p>
+</li>
+<li>
+<p><code>output-w04.txt</code> : le format de sortie attendu pour cette semaine.</p>
+</li>
+</ul>
+<h2 id="fichiers-a-ecrire">Fichiers à écrire</h2>
+<p>En plus de compléter les fichiers <code>.h</code> fournis (à recopier de <code>/provided</code> vers <code>/done</code>) et d'écrire les fichiers <code>.c</code> correspondant, vous devez aussi fournir :</p>
+<ul>
+<li>
+<p><code>cryptkvs.c</code> : le fichier principal avec la fonction <code>main()</code> ; c'est le seul fichier <code>.c</code> qui n'as pas de <code>.h</code> correspondant ;   ce fichier s'occupera principalement du traitement de arguments de commandes fournis au programme principal ; vous devrez y rajouter le traitement des fonctions d'erreurs (voir <code>NOT_IMPLEMENTED</code> dans ce code source) ;</p>
+</li>
+<li>
+<p><code>ckvs_local.c</code> : cette semaine, le fichier contiendra la fonction <code>ckvs_local_stats()</code> ; d'autres se rajouteront au fil du semestre ;</p>
+</li>
+<li>
+<p><code>ckvs_utils.c</code> : fonctions utilitaires de conversions, essentiellement <code>print_SHA()</code> cette semaine.</p>
+</li>
+</ul>
+<h1 id="description-du-travail-a-faire">Description du travail à faire</h1>
+<p>Le but est donc de créer un outil en ligne de commande (programme <code>cryptkvs</code>) pour manipuler des bases de données « clé-valeur » encryptées. Il aura la syntaxe générale suivante :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cryptkvs &lt;database&gt; &lt;command&gt;  [arg] [arg]
+</span></code></pre>
+<p>En particulier, cette semaine nous implémentons la commande suivante :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cryptkvs &lt;database&gt; stats
+</span></code></pre>
+<p>Le fichier <code>small.ckvs</code> vous est fourni comme base de données de test. La commande</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs small.ckvs stats
+</span></code></pre>
+<p>doit être implémentée afin d'imprimer <em>exactement</em> le contenu suivant :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>CKVS Header type       : CS212 CryptKVS v1
+</span><span>CKVS Header version    : 1
+</span><span>CKVS Header table_size : 64
+</span><span>CKVS Header threshold  : 16
+</span><span>CKVS Header num_entries: 5
+</span><span>    Key   : thekey
+</span><span>    Value : off 7696 len 16
+</span><span>    Auth  : 23dd03927923da49ec205831d18b5fcb90aaa08d11646e9044eb18064c4ce0ac
+</span><span>    C2    : d99fb850e5a1a9ac0c85b53499a57a7b5ca83c075baac3e21023fb24560abf74
+</span><span>    Key   : de beauvoir
+</span><span>    Value : off 7712 len 1136
+</span><span>    Auth  : 06bf988ffaec043094c6d5c242ce89e9fa3823d9310f068b58f1c3918e4426c7
+</span><span>    C2    : 63dbefbb238aef7a90753898b95d3f6ddb94f057f0906cd674307b0ef7ed800d
+</span><span>    Key   : shakespeare
+</span><span>    Value : off 7216 len 464
+</span><span>    Auth  : ab380c3d706e2b94eb0a7b6184bf62939a647ba6f013c8798f1035feac1b768f
+</span><span>    C2    : be95447bd4d6db38a926d1cee1552c1b2a669444d99f1883f73d2564a4b34e1b
+</span><span>[...]
+</span></code></pre>
+<p>N.B. : seules les 3 premières entrées sont listées ci-dessus, d'où le « <code>[...]</code> ».</p>
+<h2 id="etape-par-etape">Etape par étape</h2>
+<p>Nous vous recommandons de procéder en 4 étapes, en debuggant votre code à chaque étape.</p>
+<p><strong>Important :</strong> Tout au long de ce projet, nous vous demandons d'utiliser <code>pps_printf()</code> (définie dans <code>ckvs_utils.h</code>) à la place de <code>printf()</code> quand vous devez imprimer du texte sur la ligne de commande.  Cette macro fournie est exactement équivalente à <code>printf()</code> lors de l'usage normal de votre progamme, mais elle nous permettra une plus grande flexibilité lors des tests.</p>
+<p>Notez aussi la présence de <code>debug_printf()</code> dans <code>error.h</code>, bien utile pour déboguer votre programme.</p>
+<h3 id="etape-1-struct-ckvs-et-ckvs-t">Etape 1 : <code>struct CKVS</code> et <code>CKVS_t</code></h3>
+<p>Commencez par compléter le fichier <code>ckvs_io.h</code> pour y définir le type <code>struct CKVS</code>, et son alias <code>CKVS_t</code>, format sur disque de la base de données qui, à ce stade, comprend :</p>
+<ul>
+<li>un « <em>header</em> » <code>header</code> (<code>struct ckvs_header</code>) ;</li>
+<li>un tableau <code>entries</code> de <code>CKVS_FIXEDSIZE_TABLE</code> entrées (<code>struct ckvs_entry</code>) ;</li>
+<li>un flot <code>file</code>.</li>
+</ul>
+<h3 id="etape-2-main-et-usage">Etape 2 : <code>main()</code> et <code>usage()</code></h3>
+<p>La fonction <code>main()</code> du projet est dans le fichier <code>cryptkvs.c</code>. Elle ne sera pas modifiée durant la durée du projet.<br />
+<code>main()</code> utilise la fonction <code>ckvs_do_one_cmd()</code> pour interpréter les arguments du programme.</p>
+<p>En cas d'erreur, la fonction <code>usage()</code> est appelée.  L'implémentation de <code>usage()</code> doit être retravaillée (1 ligne) afin de :</p>
+<ol>
+<li>
+<p>si <code>err</code> vaut <code>ERR_INVALID_COMMAND</code>, afficher la liste des commandes possibles. Pour l'instant, la seule commande disponible est <code> - cryptkvs &lt;database&gt; stats</code> ;</p>
+</li>
+<li>
+<p>sinon, si <code>err</code> est un code d'erreur valide (voir les valeurs dans <code>error.h</code>), afficher le message suivant :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> pps_printf(&quot;%s exited with error: %s\n\n\n&quot;, execname, ERR_MESSAGES[err]);
+</span></code></pre>
+</li>
+<li>
+<p>sinon, afficher le message suivant :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> pps_printf(&quot;%s exited with error: %d (out of range)\n\n\n&quot;, execname, err);
+</span></code></pre>
+</li>
+</ol>
+<h3 id="etape-3-ckvs-local-stats">Etape 3 : <code>ckvs_local_stats()</code></h3>
+<p><code>main()</code> appelle <code>ckvs_do_one_cmd()</code> qui doit appeler la fonction <code>ckvs_local_stats()</code> (définie dans <code>ckvs_local.c</code>) lorsque le troisième argument (c.-à.d. <code>argv[2]</code>) est <code>&quot;stats&quot;</code> (utilisez <code>strcmp()</code> qui retourne 0 si deux chaînes sont égales ; <code>man strcmp()</code> si nécessaire).</p>
+<p>Dans <code>ckvs_local.c</code>, implémenter la fonction <code>ckvs_local_stats()</code>, qui doit effectuer les étapes suivantes :</p>
+<ol>
+<li>
+<p>ouvrir le fichier <code>filename</code> en lecture</p>
+<ul>
+<li>en cas d'erreur, retourner <code>ERR_IO</code> ;</li>
+</ul>
+</li>
+<li>
+<p>lire (données binaires) le header de type <code>struct ckvs_header</code> (voir <code>ckvs.h</code>)</p>
+<ul>
+<li>en cas d'erreur, retourner <code>ERR_IO</code> ;</li>
+</ul>
+</li>
+<li>
+<p>vérifier que le header correspond bien aux valeurs attendues, à savoir :</p>
+<ul>
+<li>
+<p>que le <strong>préfixe</strong> de <code>header_string</code> est bien <code>&quot;CS212 CryptKVS&quot;</code> (utiliser <code>strncmp()</code>) ;</p>
+</li>
+<li>
+<p>que <code>version</code> est 1 ;</p>
+</li>
+<li>
+<p>que <code>table_size</code> est une puissance de 2 ;</p>
+</li>
+<li>
+<p>en cas d'erreur, retourner <code>ERR_CORRUPT_STORE</code> ;</p>
+</li>
+</ul>
+</li>
+<li>
+<p>appeler la fonction <code>print_header()</code> dont le rôle est d'imprimer les champs du header de manière identique au rendu attendu décrit plus haut ;  vous devez implémenter la fonction <code>print_header()</code> dans le fichier <code>ckvs_utils.c</code> ;</p>
+</li>
+<li>
+<p>comme vous n'avez pas encore vu en cours les allocations dynamiques, il vous est pour le moment possible de partir du principe que <code>table_size == CKVS_FIXEDSIZE_TABLE</code> ;</p>
+<ul>
+<li>si la <code>table_size</code> du header n'est pas égale à <code>CKVS_FIXEDSIZE_TABLE</code> retourner <code>ERR_CORRUPT_STORE</code> ;</li>
+<li>lire <code>CKVS_FIXEDSIZE_TABLE</code> entrées (binaires) ;</li>
+<li>en cas d'erreur, retourner <code>ERR_IO</code> ;</li>
+</ul>
+</li>
+<li>
+<p>une entrée est valide seulement si sa clef (<code>key</code>) n'est pas vide (utiliser <code>strlen()</code>) ; pour chaque entrée stockée en mémoire, vérifiez si elle est valide ; si c'est le cas, appeler la fonction <code>print_entry()</code> en passant le pointeur attendu.</p>
+</li>
+<li>
+<p>implémenter la fonction <code>print_entry()</code> dans <code>ckvs_utils.c</code> ; cette fonction doit :</p>
+<ul>
+<li>imprimer la clef (<code>key</code>) en faisant bien attention à sa taille maximale (<code>CKVS_MAXKEYLEN</code>) ; utilisez pour cela la macro <code>STR_LENGTH_FMT()</code> fournie dans <code>util.h</code> ;</li>
+<li>imprimer les champs <code>value_off</code> et <code>value_len</code> (leur signification deviendra plus clair la semaine prochaine) ;</li>
+<li>pour les champs <code>Auth</code> et <code>C2</code>, appeler la fonction <code>print_SHA()</code> (voir ci-dessous) avec les entêtes <code>&quot;␣␣␣␣Auth␣␣&quot;</code> (4 espaces avant et 2 après) et <code>&quot;␣␣␣␣C2␣␣␣␣&quot;</code> (4 espaces avant et après).</li>
+</ul>
+</li>
+<li>
+<p>Retourner <code>ERR_NONE</code> pour signaler le succès de la fonction.</p>
+</li>
+</ol>
+<p><strong>Note :</strong> Il est nécessaire de correctement traiter les cas d'erreurs possibles. Si nécessaire, les ressources doivent être correctement déallouées en cas d'erreur. Dans tous les cas (erreur ou succès), le fichier doit aussi être explicitement fermé.
+<strong>[fin de note]</strong></p>
+<h3 id="etape-4-print-sha">Etape 4 : <code>print_SHA()</code></h3>
+<p>Le fichier <code>ckvs_utils.c</code> contiendra les utilitaires de conversion et de comparaison des hashes sécurisés utilisés par la fonction SHA256.  Le format natif est 256 bits, qui correspondent à 32 octets.  Le type <code>struct ckvs_sha</code> encapsule la structure de données.</p>
+<p>Cette semaine, vous devez implémenter la fonction <code>print_SHA()</code>, définie dans <code>ckvs_utils.h</code>, qui prend deux arguments :</p>
+<ul>
+<li>une chaine de charactères (le préfixe)</li>
+<li>un pointeur sur <code>ckvs_sha</code>, à convertir en format hexadécimal imprimable</li>
+</ul>
+<p>Le tout est simplement imprimé avec</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>    pps_printf(&quot;%-5s: %s\n&quot;, prefix, buffer);
+</span></code></pre>
+<p>où <code>buffer</code> est une « chaîne de caractères » que vous devez créer. Comme nous n'avons pas encore vu les chaînes de caractère en cours, ce sera ici simplement un tableau de <code>SHA256_PRINTED_STRLEN</code> caractères.</p>
+<p><code>print_SHA()</code> doit appeler la fonction <code>SHA256_to_string()</code> (à écrire) pour faire la conversion en format hexadecimal imprimable, qui sera utile par la suite. Cette fonction s'écrit simplement en une ligne en utilisant la fonction <code>hex_encode()</code> (à écrire aussi).</p>
+<p><code>SHA256_to_string()</code> doit convertir les <code>SHA256_DIGEST_LENGTH</code> bytes contenu dans <code>sha</code>, dans le buffer <code>out</code>.<br />
+<code>hex_encode()</code> doit convertir les <code>len</code> bytes de <code>*in</code> dans le buffer <code>out</code>. Voir pour cela le code de <code>print_SHA()</code> fourni en semaine 1.</p>
+<h1 id="exemples-et-tests">Exemples et tests</h1>
+<h2 id="tests-globaux-black-box-testing">Tests globaux (« <em>black-box testing</em> »)</h2>
+<p>Vérifier que la commande</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs small.ckvs stats
+</span></code></pre>
+<p>imprime <em>exactement</em> le contenu attendu, dans le format attendu.</p>
+<p>Et pensez à vérifier le plus de cas d’erreur possible.</p>
+<p><strong>NOTE :</strong> vous pouvez contrôler vos résultats en faisant par exemple :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs small.ckvs stats &gt; mon_res.txt
+</span><span>diff -w ../provided/output-w04.txt mon_res.txt
+</span></code></pre>
+<p>pour comparer avec le fichier de test fourni.</p>
+<p>Pour plus de détails : <code>man diff</code>.</p>
+<p><strong>[fin de note.]</strong></p>
+<p>Exceptionnellement cette semaine, nous vous fournissons aussi dans le répertoire <code>tests</code> l'ensemble des tests unitaires que nous tournons dans <code>make feedback</code> afin que vous puissiez aussi les faire tourner en local (largement recommandé <strong>avant</strong> de faire des <code>make feedback</code> !), voire que vous puissiez écrire vos propres tests (allez voir comment ils sont faits). Pour les lancer en local, faites (depuis votre <code>done/</code>) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make SRC_DIR=${PWD} -B -C ../provided/tests/unit
+</span></code></pre>
+<p><strong>Notes :</strong> </p>
+<ol>
+<li>
+<p>ces tests utilisent la bibliothèque <a href="https://libcheck.github.io/check/">Check</a>, qui, sur Ubuntu s'installe simplement avec :</p>
+<p>sudo apt install check</p>
+</li>
+<li>
+<p>la bibliothèque <a href="https://libcheck.github.io/check/">Check</a> lance les tests en parallèle (« fork ») ce qui n'est pas très pratique pour déboguer. Si vous voulez déboguer, il faudra mettre la variable d'environnement <code>CK_FORK</code> à <code>no</code> (et, bien sûr, avoir compilé avec l'option <code>-g</code>). Voici p.ex. comment procéder :</p>
+</li>
+</ol>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make SRC_DIR=${PWD} CXXFLAGS+=-g -B -C ../provided/tests/unit ## ajout de -g pour debug
+</span><span>cd ../provided/tests/unit
+</span><span>gdb ./unit-test-stats
+</span><span>set environment CK_FORK=no       # empeche les fork
+</span><span>break stats_invalid_header_1_fn  # par exemple
+</span><span>run
+</span></code></pre>
+<p><strong>[fin de note]</strong></p>
+<p>Vous pouvez aussi, bien sûr recopier ce répertoire <code>tests</code> dans votre <code>done/</code> et adapter ces tests ou les compléter avec des nouveaux.</p>
+<p>Enfin, comme d'habitude, nous fournissons également, <em>à bien plaire</em>, un <code>make feedback</code> (<code>make feedback-VM-CO</code> si vous travaillez sur les VM de l'Ecole) qui donne un retour <em>partiel</em> sur votre travail. Ceci est normalement à utiliser pour une vérification <em>minimale</em> <strong>finale</strong> de votre travail, avant de rendre. Préférez auparavant faire des tests <strong>locaux</strong> directement sur votre machine (et y compris plus de tests que vous aurez vous-même ajoutés si nécessaire).</p>
+<p>L'image Docker utilisé par <code>make feedback</code> sera chaque semaine marquée de l'étiquette <code>latest</code>, mais si vous souhaitez faire tourner le feedback d'une semaine spécifique, changez (dans le <code>Makefile</code> à la ligne qui définit <code>IMAGE</code>) cette étiquette <code>latest</code> par <code>weekNN</code> où <code>NN</code> est le numéro de semaine désiré, p.ex. :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>IMAGE=chappeli/pps22-feedback:week04
+</span></code></pre>
+<h1 id="organisation-du-travail">Organisation du travail</h1>
+<p>Libre à vous de vous organiser au mieux dans votre travail suivant vos objectifs et vos contraintes ; mais pensez à vous répartir correctement la tâche entre les deux membres du groupe.
+A ce sujet (charge de travail), si vous ne l'avez pas encore lue entièrement, nous vous conseillons la lecture de la fin de <a href="https://projprogsys-epfl.github.io/project/index/bareme/#time">la page expliquant le barème du cours</a>.</p>
+<h1 id="rendu">Rendu</h1>
+<p>Vous n'avez pas à rendre de suite le travail de cette première semaine de projet, celui-ci ne sera à rendre qu'à la fin de la semaine 7 (délai : le jeudi 14 avril 23:59, en fait) en même temps que le travail des semaines 5 et 6.</p>
+<p>Ceci dit, nous vous conseillons de marquer par un commit lorsque vous pensez avoir terminé le travail correspondant à cette semaine (vous pouvez en faire d'autres avant, bien sûr !) :</p>
+<ol>
+<li>
+<p>ajoutez les nouveaux fichiers : <code>ckvs_local.c</code>, <code>ckvs_utils.c</code> au répertoire <code>done/</code> (de votre dépôt GitHub <strong>de groupe</strong> ; c.à.d. correspondant au projet), ainsi qu'éventuellement vos propres tests :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> git add ckvs_local.c ckvs_utils.c
+</span></code></pre>
+</li>
+<li>
+<p>ajoutez aussi les fichiers modifiés (mais <strong>PAS</strong> les <code>.o</code>, ni les exécutables, svp !) : <code>cryptkvs.c</code> :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> git add -u
+</span></code></pre>
+</li>
+<li>
+<p>vérifiez bien que tout est ok :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> git status
+</span></code></pre>
+<p>voire :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> git status -uno
+</span></code></pre>
+<p>pour cacher les fichiers non voulus, mais attention à ne justement pas cacher un fichier voulu !... ;</p>
+</li>
+<li>
+<p>puis faites le commit  :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> git commit -m &quot;version finale week04&quot;
+</span></code></pre>
+</li>
+</ol>
+<p>Nous vous conseillons en effet fortement de travailler régulièrement et faire systématiquement ces commits réguliers, au moins hebdomadaires, lorsque votre travail est opérationnel. Cela vous aidera à sauvegarder votre travail et à mesurer votre progression.</p>
+<p>Et n'oubliez pas de faire le rendu (individuel, depuis votre dépôt <em>personnel</em>) de la semaine passée avant ce dimanche soir.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 23&#x2F;05&#x2F;2022</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

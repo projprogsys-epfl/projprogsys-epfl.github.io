@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Semaine 1 | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/warmup/handout01/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Warmup",
+            "item": "https://projprogsys-epfl.github.io/project/warmup/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "Handout01",
+            "item": "https://projprogsys-epfl.github.io/project/warmup/handout01/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;piazza.com&#x2F;class&#x2F;kzfgffdjsc95by">Piazza</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>Général</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/bareme/">Évaluation</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Échauffement</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/warmup/handout01/">Semaine 1</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout02/">Semaine 2</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout03/">Semaine 3</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Projet</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">CryptKVS : description générale</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-stats/">s. 4 : CryptKVS : la commande `stats`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-get/">s. 5 : CryptKVS : la commande `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-set/">s. 6 : CryptKVS : la commande `set`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-new/">s. 7 &amp; 8 : CryptKVS : la commande `new`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/09-refactoring/">s. 9 : CryptKVS : refactoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/10-client/">s. 10 : CryptKVS webserver : API et client</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/11-server/">s. 11 &amp; 12 : CryptKVS webserver : `stats` &amp; `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/13-server-set/">s. 13 : CryptKVS webserver : `set`</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>Semaine 1</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>Bienvenue dans ce « cours-projet » !<br />
+Il sera composé de <strong>deux parties indépendantes</strong> :</p>
+<ol>
+<li>
+<p>une prise en main, sur trois semaines, de l'environnement et des outils, constituée de trois rendus individuels ;</p>
+</li>
+<li>
+<p>le développement, sur neuf semaines, du projet propremement dit, constitué trois rendus de groupe (de deux étudiants) ; ce projet consiste cette année en la création d'un système de gestion de paires clé-valeur sécurisé, tel que par exemple utilisé par l'application de communication <a href="https://en.wikipedia.org/wiki/Signal_(software)">SIGNAL</a> ; ce projet est lui-même décomposé en deux grosses parties :</p>
+<ol>
+<li>
+<p>un utilitaire en ligne de commande pour gérer des « bases de données » clé-valeur sécurisées ; </p>
+</li>
+<li>
+<p>un serveur (et un client) Web pour gérer ces mêmes « bases de données » ;</p>
+</li>
+</ol>
+</li>
+</ol>
+<p>(et trois semaines supplémentaires : deux pour souffler un peu en milieu de projet et une pour tout terminer correctement tout à la fin.)</p>
+<p>Le détail hebdomadaire se trouve ici : <a href="https://projprogsys-epfl.github.io/">https://projprogsys-epfl.github.io/</a></p>
+<p><strong>Les objectifs</strong> de ce cours-projet sont de vous permettre :</p>
+<ol>
+<li>
+<p>de développer une application concrète en C incluant des pointeurs et une gestion simple de fichiers ;</p>
+</li>
+<li>
+<p>d'avoir un premier contact expérimental avec plusieurs outils usuels de « développement système », tels que le contrôle de versions (<a href="https://git-scm.com"><code>git</code></a>), les pages de documentation (manpages), les Makefiles et les outils de débogage ;</p>
+</li>
+<li>
+<p>d'installer et utiliser des bibliothèques logicielles (« <em>libraries</em> » en anglais) ;</p>
+</li>
+<li>
+<p>de « <em>refactoriser</em> » du code au fur et à mesure des contraintes.</p>
+</li>
+</ol>
+<p>A partir de la 4<sup>e</sup> semaine, vous devrez travailler par groupes de deux. Chaque groupe aura son propre dépôt (« <em>github repository</em> »). Vous aurez chaque semaine de nouvelles instructions sur <a href="https://projprogsys-epfl.github.io/">ce site</a> et recevrez parfois du nouveau code via <code>git</code>, un outil permettant la gestion du travail en commun (« outil de gestion de versions »).</p>
+<h2 id="concretement-cette-semaine">Concrètement, cette semaine</h2>
+<h3 id="objectifs">Objectifs</h3>
+<p>Cette semaine, nous allons procéder à la mise en place et la découverte des outils qui vous seront utiles dans votre projet :</p>
+<ol>
+<li>mise en place de GitHub ;</li>
+<li>découverte de Git ;</li>
+<li>découverte des manpages Unix ;</li>
+<li>compilation, modification et soumission d'un code C (sera approfondi la semaine prochaine) ;</li>
+<li>documentation du code avec Doxygen.</li>
+</ol>
+<p>Ce que vous aurez à rendre pour cette semaine (délai : dimanche 6 mars 23h59) sera (expliqué plus loin, mais résumé ici) :</p>
+<ul>
+<li>une version traduite en français de <code>hello_world.c</code> ;</li>
+<li>une version complète de <code>cluedo.c</code> (arbre de décision) ;</li>
+<li>une version opérationnelle de <code>sha.c</code> (calcul de SHA256 de chaînes) ;</li>
+<li>un <code>Makefile</code> simple compilant ces trois programmes.</li>
+</ul>
+<h3 id="environnement-de-travail">Environnement de travail</h3>
+<p>Pour ce cours-projet, vous pouvez travailler :</p>
+<ul>
+<li>en accédant à distance aux machines virtuelles IC-CO-IN-SC (Ubuntu 18.04) depuis votre propre machine via <a href="https://vdi.epfl.ch">vdi.epfl.ch</a> [plus de détails sous <a href="https://support.epfl.ch/help?id=epfl_kb_article_view&amp;sys_kb_id=f7581e2adb4b978cef64731b8c961903">ce lien</a> si nécessaire, ou sur <a href="https://progmaph.epfl.ch/series/serie1.html#exo1">cette page d'un autre cours de M. Chappelier</a>] ;</li>
+<li>ou sur votre propre machine si elle est sous Linux ;<br />
+(<strong>Note :</strong> sous Windows, depuis Windows 10, il existe aussi un « terminal Ubuntu » que vous pouvez peut être [pas testé] utiliser pour ce cours ; plus de détails <a href="https://progmaph.epfl.ch/series/Ubuntu_sous_Windows.html">ici en html</a>, <a href="https://progmaph.epfl.ch/series/Ubuntu_sous_Windows.pdf">ici en PDF</a> et <a href="https://progmaph.epfl.ch/series/Ubuntu_sous_Windows.md">ici en Markdown</a>, changez simplement <code>g++</code> en <code>gcc</code> et <code>.cc</code> en <code>.c</code>) ;</li>
+<li>ou via un container Docker (voir <a href="https://projprogsys-epfl.github.io/tutorials/docker/">cette page</a>) ;</li>
+<li>ou sur une machine virtuelle Ubuntu que vous aurez créée (voir <a href="https://projprogsys-epfl.github.io/tutorials/vmvb/">cette page pour VirtualBox</a> ou <a href="https://projprogsys-epfl.github.io/tutorials/vmware/">cette page pour VMWare</a>).</li>
+</ul>
+<p><strong>Aucun</strong> autre système ne sera supporté (ni accepté). Si vous travaillez sur votre propre environnement (autre que ceux cités ci-dessus), c'est donc à vos propres risques et périls, <strong>sans garantie de soutien de notre part</strong>. (Nous fournissons néanmoins <a href="https://projprogsys-epfl.github.io/tutorials/macos/">ici un bref guide pour l'installation d'un environnement de développement sur macOS</a>.) </p>
+<p>En plus d'un environnement de développement C usuel (compilateur, éditeur, débogueur), il vous faudra les outils suivants (<code>sudo apt install &lt;package&gt;</code> pour les installer sur une Debian/Ubuntu):</p>
+<ul>
+<li><code>git</code> pour la gestion du projet (cf ci-dessous) ;</li>
+<li>un client SSH comme par exemple <code>openssh-client</code> pour communiquer avec GitHub (voir ci-dessous) ;</li>
+<li>les pages de documentation (<em>manpages</em>) : <code>manpages</code> et <code>manpages-dev</code> ;</li>
+<li><code>doxygen</code> pour produire automatiquement de la documentation à partir de votre code ;</li>
+<li><code>graphviz</code> une bibliothèque de visualisation de graphes utilisée par doxygen ;</li>
+<li><code>libssl-dev</code> une bibliothèque de cryptographie que nous utiliserons pour calculer des « clés » ;</li>
+<li><code>libcurl4-openssl-dev</code> une bibliothèque pour le client de communication avec le webserver ;</li>
+<li><code>libjson-c-dev</code> une bibliothèque pour la gestion du format JSON (de communication avec le webserver).</li>
+</ul>
+<p>Nous utiliserons également la bibliothèque <a href="https://github.com/cesanta/mongoose">Mongoose</a> pour créer le server Web, mais le code source (de cette bibliothèque) vous sera fourni directement.</p>
+<p><strong>Remarque spécifique aux VM fournies</strong> IC-CO-IN-SC (Ubuntu 18.04) : pour de (mauvaises) raisons techniques, il n'est pas possible de compiler n'importe où (= dans n'importe quel répertoire) sur ces VMs. <strong>Seuls deux endroits</strong> permettent de compiler :</p>
+<ul>
+<li>(conseillé) soit dans le répertoire <code>posixfs</code> (mais ce répertoire n'est pas visible en tant que tel dans votre myfiles sur d'autres OS ; ce qui n'est pas un inconvénient pour ce projet-ci...) ;</li>
+<li>soit dans le répertoire <code>myfiles/Programmation</code> qui est à créer, une fois pour toute en début de semestre, en lançant la commande : <code>create_prog</code>.</li>
+</ul>
+<h3 id="github">GitHub</h3>
+<p>GitHub est un dépôt Git public accessible sur le Web. Chaque étudiant va recevoir au départ un dépôt personnel sur GitHub pour le premier devoir de ce cours (inscription individuelle ci-dessous). Plus tard, vous recevrez des dépots GiHub supplémentaires (individuel ou par groupe) pour chaque rendu pour lequel ce sera nécessaire. Tout cela sera précisé ultérieurement.</p>
+<p>La première chose dont vous avez besoin est donc un compte GitHub. Si vous n'en avez pas encore, veuillez en créer un en <a href="https://github.com/join">vous enregistrant ici</a>. Un compte gratuit suffit pour ce cours, il n'est pas du tout nécessaire d'avoir un compte payant.<br />
+(et si vous avez déjà un compte GitHub, utilisez le pour ce cours).</p>
+<p><strong>Ensuite</strong>, une fois que vous avez un compte GitHub, il vous faut rejoindre <a href="https://classroom.github.com/a/rxC5PPTL">le premier devoir de ce cours en suivant ce lien : https://classroom.github.com/a/rxC5PPTL</a>.</p>
+<p>GitHub Classroom va (peut être) alors vous demander le droit d'accéder à vos dépôts :</p>
+<p><img src="/img/week01/classroom_permission.png" alt="Demande d'authorisation du module GitHub Classrooms." /></p>
+<p>puis de rejoindre le premier devoir (cliquez bien sur <strong>votre numéro SCIPER</strong> ; <em>ne</em> prennez <em>pas</em> celui de quelqu'un d'autre !) :</p>
+<p><img src="/img/week01/week01_assignmt_join.png" alt="Rejoindre le premier devoir." /></p>
+<p>et enfin de créer un dépôt GitHub pour ce premier devoir :</p>
+<p><img src="/img/week01/week01_assignmt_repository.png" alt="Créer un dépôt pour le le premier devoir." /></p>
+<p>Une fois ces deux invitations acceptées, vous devriez recevoir un message de GitHub vous indiquant que vous avez rejoint le devoir « Week01 » et vous avez dans vos dépôts GitHub, un dépôt <code>pps22-week01-VOTRE_GITHUB_ID</code> dont l'URI devrait ressembler à ceci :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git@github.com:projprogsys-epfl/pps22-week01-GITHUBID.git
+</span></code></pre>
+<p>Pour que cet URI fonctionne, vous devez enregistrer votre clé publique SSH dans GitHub. Vous pouvez le <a href="https://github.com/settings/ssh">faire ici</a>.</p>
+<p>Si vous n'avez pas encore de clé SSH, vous pouvez en générer une sous Linux en faisant</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>ssh-keygen
+</span></code></pre>
+<p>puis copiez le contenu du fichier <code>~/.ssh/id_rsa.pub</code> dans GitHub à l'endroit mentionné ci-dessus.<br />
+Demandez de l'aide aux assistants si vous en avez besoin sur ce point (SSH).</p>
+<p><strong>NOTE :</strong> vous pouvez aussi utiliser <code>https</code> pour votre <code>REPO_URI</code> :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>https://github.com/projprogsys-epfl/pps22-week01-YOURID.git
+</span></code></pre>
+<p>mais vous aurez à vous authentifier à chaque fois.</p>
+<h3 id="git">Git</h3>
+<p>Ce n'est pas le but de ce cours-projet que de vous <em>enseigner</em> les gestionnaire de versions, ni tous les détails de <code>git</code> ; cela sera fait dans votre cours de « Software Engineering » l'an prochain. Le but ici est de vous faire prendre un premier contact avec ce genre d'outils et vous permettre de travailler efficacement en utilisant une partie miminale de ce qu'il offre.</p>
+<p>Pour ce cours, vous ne devriez pas avoir besoin de connaître plus de quelques commandes simple de <code>git</code>:</p>
+<ul>
+<li><code>git clone [REPO_URI]</code></li>
+<li><code>git pull</code></li>
+<li><code>git add [FILE]</code></li>
+<li><code>git commit -m &quot;Commit message&quot;</code></li>
+<li><code>git push</code></li>
+<li><code>git status</code></li>
+<li><code>git tag</code></li>
+</ul>
+<p>Pour chaque commande, vous pouvez obtenir de l'aide de la part de <code>git</code> en tapant :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git help &lt;COMMAND&gt;
+</span></code></pre>
+<p>Pour découvrir git : voyez <a href="https://projprogsys-epfl.github.io/tutorials/git-recitation/">cette page complémentaire</a>.</p>
+<h3 id="et-ensuite">Et ensuite...</h3>
+<p>Allez maintenant récupérer la suite de ce TP dans votre repo GitHub
+(si tant est que vous ayez reçu l'email de confirmation !).
+Pour cela, exécutez la commande suivante :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git clone REPO_URI
+</span></code></pre>
+<p>Cela doit créer un répertoire local sur votre machine, de même nom : <code>pps22-week01-YOURID</code> (avec <em>votre</em> identifiant GitHub à la place).</p>
+<p>Allez dans ce répertoire :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cd pps22-week01-YOURID
+</span></code></pre>
+<p>Vous devriez y trouver un répertoire <code>done</code> contenant :</p>
+<ul>
+<li>un fichier MarkDown <code>what_to_do_next.md</code> ;</li>
+<li>trois fichiers C : <code>hello_world.c</code>, <code>cluedo.c</code> et <code>sha.c</code> ;</li>
+<li>un <code>Makefile</code> (partiel) ;</li>
+<li>deux répertoires : <code>ex_single</code> et <code>ex_multiple</code> servant d'exemple pour la suite (Makefiles).</li>
+</ul>
+<p>Ouvrez le <code>what_to_do_next.md</code> (soit dans un éditeur de texte, soit dans un viewer markdown ;
+sur les VMs du cours vous pouvez utilisez ReText (<code>retext</code>) qui fait les deux)
+et continuez les exercices de cette semaine depuis là-bas.</p>
+<p><strong>NOTE :</strong> pour voir du MarkDown directement dans Firefox, vous pouvez ajouter un plugin comme ceux-ci :</p>
+<ul>
+<li><a href="https://addons.mozilla.org/fr/firefox/addon/markdown-viewer-chrome/">https://addons.mozilla.org/fr/firefox/addon/markdown-viewer-chrome/</a></li>
+<li><a href="https://addons.mozilla.org/fr/firefox/addon/markdown-viewer-webext/">https://addons.mozilla.org/fr/firefox/addon/markdown-viewer-webext/</a></li>
+</ul>
+<p>ou similaires.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Nous reproduisons ici la conclusion que vous devez trouver en fin du fichier <code>what_to_do_next.md</code> (<strong>ATTENTION !!</strong> Ici, ce <strong>N'EST PAS</strong> la fin de la série ; vous <strong>devez</strong> continuer par le fichier <code>what_to_do_next.md</code> ; nous reproduisons ici sa conclusion uniquement pour information et rappel) :</p>
+<p><strong><span style="color: teal">[Kostas] &quot;tel que décrit ci-dessus&quot; means &quot;above&quot; right? But the description on time.csv is in what_to_do_next.md</span></strong></p>
+<p>Les quatre choses que vous ayez à rendre, d'ici au dimanche 6 mars 23h59, sont les fichiers <code>hello_world.c</code>, <code>cluedo.c</code>, <code>sha.c</code> et <code>Makefile</code> corrigés/complété comme demandé, ainsi que le fichier <code>time.csv</code> tel que décrit ci-dessus et dans <a href="https://projprogsys-epfl.github.io/project/index/bareme/#time">le barème du cours</a> ; ils sont à mettre dans votre dépôt GitHub dans le répertoire <code>done/</code> (et à <code>commit</code> + <code>push</code>). Nous vous recommandons de faire un <code>make feedback</code> avant de faire votre rendu définitif.</p>
+<p>Faites également attention à rendre du code anonyme : ne mettez ni nom d'auteur(e), ni SCIPER, email, ...</p>
+<p>Le rendu se fait simplement avec le <code>commit + push</code>. Nous clônerons de notre coté l'état de votre dépôt le lundi matin dès la première heure.</p>
+<p>Par ailleurs, vous pouvez commencer à rechercher un binôme pour la partie travail par groupe de deux qui commencera dès le 16 mars. Nous vous indiquerons le moment venu comment inscrire votre groupe.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 23&#x2F;05&#x2F;2022</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>s. 5 : CryptKVS : la commande `get` | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/05-get/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "05 Get",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/05-get/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;piazza.com&#x2F;class&#x2F;kzfgffdjsc95by">Piazza</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>Général</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/bareme/">Évaluation</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Échauffement</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout01/">Semaine 1</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout02/">Semaine 2</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout03/">Semaine 3</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Projet</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">CryptKVS : description générale</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-stats/">s. 4 : CryptKVS : la commande `stats`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/05-get/">s. 5 : CryptKVS : la commande `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-set/">s. 6 : CryptKVS : la commande `set`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-new/">s. 7 &amp; 8 : CryptKVS : la commande `new`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/09-refactoring/">s. 9 : CryptKVS : refactoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/10-client/">s. 10 : CryptKVS webserver : API et client</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/11-server/">s. 11 &amp; 12 : CryptKVS webserver : `stats` &amp; `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/13-server-set/">s. 13 : CryptKVS webserver : `set`</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>s. 5 : CryptKVS : la commande `get`</h1>
+          
+          <p>Le but du travail de cette semaine est de rajouter une nouvelle commande à l'utilitaire démarré la semaine passée : la commande <code>get</code>, dont le but est de lire la valeur associée à une clef.</p>
+<p>Pour cela, vous allez modifier les fichiers <code>cryptkvs.c</code>, <code>ckvs_local.c</code> et <code>ckvs_utils.c</code> (déjà existants), compléter le fichier <code>ckvs_crypto.c</code> nouvellement fourni, et écrire le fichier <code>ckvs_io.c</code>.<br />
+(Complétez le <code>Makefile</code> lorsque nécessaire pour ces nouveaux fichiers -- modification mineure.)</p>
+<h1 id="description-des-fichiers-fournis-a-ecrire">Description des fichiers fournis / à écrire</h1>
+<p>Cette semaine, nous vous avons fourni les fichiers additionnels <code>ckvs_crytpo.h</code> et <code>ckvs_crypto.c</code>. </p>
+<p>Comme d'habitude, ils sont dans le répertoire <code>provided</code> de votre dépôt de groupe. 
+Pensez à les récupérer avec la commande</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git pull
+</span></code></pre>
+<p>puis à les copier dans votre répertoire <code>done</code>. Pour rappel, vous <strong>ne</strong> devez <strong>pas</strong> modifier le contenu du répertoire <code>provided</code>.</p>
+<h2 id="fichiers-a-modifier">Fichiers à modifier</h2>
+<ul>
+<li>
+<p><code>cryptkvs.c</code> : une modification nécessaire pour rajouter la 2ème commande <code>get</code> ;</p>
+</li>
+<li>
+<p><code>ckvs_local.c</code> : implémentation de la fonction <code>ckvs_local_get()</code> ;</p>
+</li>
+<li>
+<p><code>ckvs_io.c</code> : utilitaires d'entrées/sorties pour la base de données ;</p>
+</li>
+<li>
+<p><code>ckvs_crypto.c</code> : implémentation de 3 fonctions cryptographiques qui seront utilisées dans plusieurs contextes.</p>
+</li>
+</ul>
+<p>Comme toujours, assurez-vous que les nouveaux fichiers sont bien rajoutés dans le repo <code>git</code> en utilisant la commande <code>git add</code>.</p>
+<h1 id="description-du-travail-a-faire">Description du travail à faire</h1>
+<p>Pour rappel, les commandes répondent à la syntaxe générale </p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cryptkvs &lt;database&gt; &lt;command&gt; [arg] [arg]
+</span></code></pre>
+<p>et vous avez déjà implémenté </p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cryptkvs &lt;database&gt; stats 
+</span></code></pre>
+<p>Cette semaine, nous implémentons </p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cryptkvs &lt;database&gt; get &lt;key&gt; &lt;password&gt; 
+</span></code></pre>
+<p>Pour les tests locaux, nous utilisons la même base de données que celle fournie la semaine passée (<code>small.ckvs</code>). Les clefs sont visibles en clair dans la base de données (voir la semaine passée). Les mots de passe sont :</p>
+<ul>
+<li>si la clef correspond à un auteur célèbre, le mot de passe est le prénom de celui/celle-ci ;</li>
+<li>sinon, le mot de passe est simplement « 1 ».</li>
+</ul>
+<p>En cas de succès, la commande <code>get</code> doit écrire sur le terminal le contenu de la valeur correspondant à la clef dans la base de données.</p>
+<p>En cas d'erreur, la commande <code>get</code> retourne simplement un code d'erreur de la fonction <code>usage()</code>. Les erreurs possibles sont :</p>
+<ul>
+<li><code>ERR_NOT_ENOUGH_ARGUMENTS</code> : lorsque l'utilitaire n'a pas les arguments nécessaires ;</li>
+<li><code>ERR_CORRUPT_STORE</code> : lorsque <code>&lt;database&gt;</code> ne correspond pas au format attendu ;</li>
+<li><code>ERR_KEY_NOT_FOUND</code> : lorsque <code>&lt;key&gt;</code> n'est pas présente dans <code>&lt;database&gt;</code> ;</li>
+<li><code>ERR_DUPLICATE_ID</code> : lorsque <code>&lt;password&gt;</code> ne peut pas être validé ;</li>
+<li><code>ERR_IO</code> : en cas d'erreur retournée par l'OS et les fonctions POSIX.</li>
+</ul>
+<h2 id="etape-par-etape">Etape par étape</h2>
+<h3 id="etape-1-une-nouvelle-commande">Etape 1 : une nouvelle commande</h3>
+<p>Le fichier principal (<code>cryptkvs.c</code>) doit pouvoir traiter la commande <code>get</code> en plus de <code>stat</code>. Comme indiqué plus haut, toutes les commandes répondent à la syntaxe suivante :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cryptkvs &lt;database&gt; &lt;command&gt; [arg] [arg]
+</span></code></pre>
+<p>Dans le cas de <code>get</code>, il faut appeler la commande (définie dans <code>ckvs_local.h</code>).</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>int ckvs_local_get(const char *filename, const char *key, const char *pwd);
+</span></code></pre>
+<p>où :</p>
+<ul>
+<li><code>filename</code> correspond à <code>&lt;database&gt;</code>, à savoir l'argument avant la commande ;</li>
+<li><code>key</code> correspond à <code>&lt;key&gt;</code> c.-à-d. la clef qui suit la commande <code>get</code> ;</li>
+<li><code>pwd</code> correspond à <code>&lt;password&gt;</code> c.-à-d. la clef qui suit la commande <code>get</code> ;</li>
+</ul>
+<p>Pour valider cette première étape, implémenter une version minimale de <code>ckvs_local_get()</code> qui :</p>
+<ul>
+<li>imprime « filename », « key » et « password » ;</li>
+<li>retourne <code>ERR_NONE</code>.</li>
+</ul>
+<p>Puis modifier <code>ckvs_do_one_cmd()</code> dans <code>cryptkvs.c</code> pour prendre en charge la commande <code>get</code>:</p>
+<ul>
+<li>si le nombre d'arguments est correct, appeler <code>ckvs_local_get()</code> avec les bons arguments ;</li>
+<li>s'il est trop petit, retourner <code>ERR_NOT_ENOUGH_ARGUMENTS</code> ;</li>
+<li>s'il est trop grand, retourner <code>ERR_TOO_MANY_ARGUMENTS</code>.</li>
+</ul>
+<h3 id="etape-2-modularisation-des-fonctions-d-entrees-sorties">Etape 2 : modularisation des fonctions d'entrées/sorties</h3>
+<p>Lors de la semaine précédente, vous avez très probablement implémenté les fonctions génériques d'accès de la base de données à l'intérieur de la fonction <code>ckvs_local_stats()</code>.  Évidemment, certaines de ces fonctions peuvent (et doivent) être partagées entre différentes commandes.</p>
+<p>Le fichier <code>ckvs_io.h</code> définit (entre autres) les deux fonctions suivantes qui doivent maintenant être utilisées par <code>ckvs_local_stats()</code>  (refactorisation si nécessaire) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>int ckvs_open(const char *filename, struct CKVS *ckvs);
+</span><span>void ckvs_close(struct CKVS *ckvs);
+</span></code></pre>
+<p>Ces fonctions opèrent sur la <code>struct CKVS</code> (que vous avez définie la semaine passée).</p>
+<p>La fonction <code>ckvs_open()</code> a deux paramètres : </p>
+<ul>
+<li><code>filename</code> est le nom du fichier à ouvrir (« input parameter ») ;</li>
+<li>et <code>ckvs</code>, la structure qui contiendra en mémoire tous les éléments pertinents à la base de donnée. </li>
+</ul>
+<p>Cette fonction doit :</p>
+<ol>
+<li>initialiser à zéro tous les champs de <code>struct CKVS</code> ;</li>
+<li>ouvrir le fichier correspondant à <code>filename</code> (en lecture et écriture, car les prochaines étapes nécessiteront de modifier ce fichier) ; retourner <code>ERR_IO</code> en cas d'erreur ;</li>
+<li>lire le header et en valider le contenu selon le même algorithme que la semaine passée ;</li>
+<li>valider la taille de la table (<code>CKVS_FIXEDSIZE_TABLE</code>) et lire le contenu en mémoire, comme la semaine passée.</li>
+</ol>
+<p>La fonction <code>ckvs_close()</code> doit simplement fermer le fichier s’il est ouvert.</p>
+<p>Pour valider cette étape, modifier le code de <code>ckvs_local_stats()</code> pour utiliser ces deux fonctions et éviter toute redondance ; vérifier que le résulat est toujours correct.</p>
+<h3 id="etape-3-mise-en-place-de-ckvs-crypto-h">Etape 3 : mise en place de <code>ckvs_crypto.h</code></h3>
+<p>Le fichier <code>ckvs_crypto.h</code> définit les fonctions essentielles de l'algorithme de cryptage. Il définit aussi une structure qui regroupe 4 valeurs de type <code>struct ckvs_sha</code> (essentiellement un <code>SHA256</code>) qui sont :</p>
+<ul>
+<li><code>stretched_key</code> ;</li>
+<li><code>auth_key</code> ;</li>
+<li><code>c1</code> ;</li>
+<li><code>master_key</code>.</li>
+</ul>
+<p>Il n'y a rien d'autre à faire ici qu'à mettre ce fichier dans votre <code>done</code> et regarder son contenu.</p>
+<h3 id="etape-4-ckvs-client-encrypt-pwd">Etape 4 : <code>ckvs_client_encrypt_pwd()</code></h3>
+<p>La fonction <code>ckvs_client_encrypt_pwd()</code> calcule les 3 premières valeurs en fonction de <code>key</code> et <code>pwd</code>. A implémenter dans <code>ckvs_crypto.c</code>.</p>
+<p>C'est la première étape de <code>get</code>.</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>int ckvs_client_encrypt_pwd(struct ckvs_memrecord *mr, const char *key, const char *pwd);
+</span></code></pre>
+<p>Pour cette fonction, et au vu de son importance centrale dans ce projet, nous vous recommandons de relire <a href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">le tutorial principal</a>. </p>
+<p>L'<em>algorithme</em> est comme suit (ceci <strong>n'</strong> est <strong>pas</strong> du code C, mais une écriture « pseudo-code » de l'algorithme) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>stretched_key = SHA256( key + &quot;|&quot; + pwd )
+</span><span>auth_key      = HMAC-SHA256( key=stretched_key, &quot;Auth Key&quot; )
+</span><span>c1            = HMAC-SHA256( key=stretched_key, &quot;Master Key Encryption&quot; )
+</span></code></pre>
+<p>La fonction effecture les étapes suivantes : </p>
+<ol>
+<li>
+<p>(comme toujours) vérification des paramètres qui doivent être non-NULL (<code>ERR_INVALID_ARGUMENT</code> -- voir <code>M_REQUIRE_NON_NULL</code> dans <code>error.h</code>) ;</p>
+</li>
+<li>
+<p>initialization de la structure <code>mr</code> (dont le type est défini dans <code>ckvs_crypto.h</code>) ;</p>
+</li>
+<li>
+<p>concaténation de <code>&lt;key&gt;</code> <code>&quot;|&quot;</code> et <code>&lt;pwd&gt;</code> dans une chaîne (= tableau à ce stade) de caractères suffisement grande (<code>2*CKVS_MAXKEYLEN+2</code> ; utilisez <code>strncat()</code> pour copier les <code>n</code> premiers caractères d'une chaîne à la fin d'une autre) ;</p>
+</li>
+<li>
+<p>calcul du SHA256 de cette chaîne de caractères ; le résultat est (le <code>.sha</code> de) la <code>stretched_key</code> de la structure <code>mr</code> ;</p>
+</li>
+<li>
+<p>calcul <code>auth_key</code> comme le « <em>Message Authentication Code</em> » (HMAC) d'un message constant (<code>man HMAC</code>) ;</p>
+<ul>
+<li>comme premier paramètre, (le retour de l'appel à) la fonction <code>EVP_sha256()</code> qui sélectionne l'algorithme ;</li>
+<li>comme <code>key</code>, nous utilisons la <code>stretched_key</code> du point 4 ;</li>
+<li>la longueur est évidemment <code>SHA256_DIGEST_LENGTH</code> ;</li>
+<li>le message est « <code>&quot;Auth Key&quot;</code> » (cf <code>AUTH_MESSAGE</code> dans <code>ckvs_crypto.c</code>) ;</li>
+<li>le résultat doit être stocké dans le (<code>.sha</code> du) champ <code>auth_key</code> de <code>mr</code> ;</li>
+<li>vérification de la longeur du résultat, qui doit être <code>SHA256_DIGEST_LENGTH</code> ;</li>
+<li>en cas d’erreur, retourner <code>ERR_INVALID_COMMAND</code> ;</li>
+</ul>
+</li>
+<li>
+<p>procéder de même pour le « c1 » avec comme message « <code>&quot;Master Key Encryption&quot;</code> » (cf <code>C1_MESSAGE</code> dans <code>ckvs_crypto.c</code>), à mettre dans  le (<code>.sha</code> du) champ <code>c1</code> de <code>mr</code> ;</p>
+</li>
+<li>
+<p>succès : retourner <code>ERR_NONE</code>.</p>
+</li>
+</ol>
+<p>(Note : pour celles et ceux qui savent de quoi on parle et qui se poseraient la question : par convention, le <code>'\0'</code> terminal ne fait pas partie des clefs/messages --- cela ne devrait pas impacter votre implémentation : on peut donc, sans autre, utiliser leur taille (<code>strlen()</code> ou <code>strnlen()</code> lorsque nécessaire).)</p>
+<p>Pour tester cette fonction, appeler</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs small.ckvs get thekey 1
+</span></code></pre>
+<p>En instrumentant votre code et utilisant la fonction <code>print_SHA()</code>, vous <strong>devez</strong> trouver les valeurs suivantes :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>Buffer: thekey|1
+</span><span>stretched key : 4fd465936234243a301a9b87301b0a6545c68d1093c6acfe26d87959a2d1355d
+</span><span>Auth key    : 23dd03927923da49ec205831d18b5fcb90aaa08d11646e9044eb18064c4ce0ac
+</span><span>C1       : d16328a7aac2d43a5caea83ef9ebce5119e82a259ecbb3165de0b229fbcdd51f
+</span></code></pre>
+<h3 id="etape-5-ckvs-find-entry">Etape 5: <code>ckvs_find_entry()</code></h3>
+<p>Une fois que <code>auth_key</code> est calculé, on peut retrouver l'entrée correspondante dans la table d'entrée. C'est l'objectif de la fonction <code>ckvs_find_entry()</code> de <code>ckvs_io.c</code> :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>int ckvs_find_entry(struct CKVS *ckvs, const char *key, struct ckvs_sha *auth_key, struct ckvs_entry **e_out);
+</span></code></pre>
+<p>Ses paramètres sont : </p>
+<ul>
+<li>un <code>CKVS</code> correctement initialisé par <code>ckvs_open()</code> (voir l'étape 2 précédente) ;</li>
+<li><code>key</code>, le paramètre de recherche principal dans la table ;</li>
+<li>un <code>auth_key</code> calculé par <code>ckvs_client_encrypt_pwd()</code> ;</li>
+<li>un paramètre de sortie (double pointeur) ; en cas de succès, la valeur pointée contiendra l'addresse en mémoire de l'entrée recherchée ; c'est un <em>double</em> pointeur  simplement parce que c'est un pointeur que l'on veut modifier, donc un pointeur passé par référence.</li>
+</ul>
+<p>Les codes d'erreur à retourner sont :</p>
+<ul>
+<li>(comme toujours -- on ne le redira sûrement plus -- <code>ERR_INVALID_ARGUMENT</code> si un des arguments n'est pas un pointeur correct ;)</li>
+<li><code>ERR_KEY_NOT_FOUND</code> : si <code>key</code> n'est pas dans la table ;</li>
+<li><code>ERR_DUPLICATE_ID</code> : si <code>auth_key</code> (soumis et stockés) ne correspondent pas ;</li>
+<li>et, comme toujours, <code>ERR_NONE</code> si tout va bien.</li>
+</ul>
+<p>Pour implémenter cette fonction, vous vous reposerez sur ;</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>int ckvs_cmp_sha(const struct ckvs_sha *a, const struct ckvs_sha *b);
+</span></code></pre>
+<p>que vous implémenterez dans <code>ckvs_utils.c</code>.<br />
+(Vous pouvez l'implémenter comme bon vous semble, avec une boucle à vous ou en utilisant <code>memcmp()</code> (<code>man memcmp</code>) si vous voyez comment faire.)</p>
+<p>Il y a deux implémentations possibles de l'algorithme de recherche de <code>key</code> dans la table :</p>
+<ul>
+<li>une recherche linéaire des entrées -- que nous allons implémenter cette semaine ;</li>
+<li>en utilisant une fonction de hash linéaire -- les détails seront fournis en semaine 7.</li>
+</ul>
+<p>Pour tester cette fonction, il suffit de tester :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs small.ckvs get thekey 1
+</span><span>./cryptkvs small.ckvs get thekey wrongpassword
+</span><span>./cryptkvs small.ckvs get wrongkey 1
+</span></code></pre>
+<p>La fonction doit retourner <code>ERR_NONE</code> uniquement dans le premier test. Dans ce cas <code>print_SHA(entry-&gt;c2)</code> doit donner la valeur suivante :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>C2       : d99fb850e5a1a9ac0c85b53499a57a7b5ca83c075baac3e21023fb24560abf74
+</span></code></pre>
+<h3 id="etape-6-ckvs-client-compute-masterkey">Etape 6 : <code>ckvs_client_compute_masterkey()</code></h3>
+<p>Selon l'algorithme de SIGNAL.appl, la valeur <code>c2</code>, combinée avec <code>c1</code>, permet de calculer le <code>masterkey</code>.  C'est l'objectif de la fonction </p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>int ckvs_client_compute_masterkey(struct ckvs_memrecord *mr, const struct ckvs_sha *c2);
+</span></code></pre>
+<p>La fonction se base sur les champs déjà calculés de <code>mr</code> pour déterminer <code>master_key</code> :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>master_key   = HMAC-SHA256(key=c1, c2)
+</span></code></pre>
+<p>L'implémentation suit le même schéma que <code>ckvs_client_encrypt_pwd()</code></p>
+<p>Retourne <code>ERR_NONE</code> ou <code>ERR_INVALID_COMMAND</code> en cas de problème avec HMAC.</p>
+<p>Pour tester :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs small.ckvs get thekey 1
+</span><span>[...]
+</span><span>master_key   : 46232b49f4d182696f2203fd80f24ae45bf755c4198f4fe23f14fc1cdc23bb8b
+</span></code></pre>
+<h3 id="etape-7-determiner-la-valeur-encryptee">Etape 7 : déterminer la valeur encryptée</h3>
+<p>Complétons <code>ckvs_local_get()</code> : <code>entry-&gt;value_off</code> et <code>entry-&gt;value_len</code> encode la position et la longueur de la valeur dans le fichier de base de données. Utilisez la fonction <code>fseek()</code>.</p>
+<h3 id="etape-8-decryptage-et-impression">Etape 8 : décryptage et impression</h3>
+<p>La dernière fonction est </p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>int ckvs_client_crypt_value(struct ckvs_memrecord *mr, const int do_encrypt, const unsigned char *inbuf, size_t inbuflen, unsigned char *outbuf, size_t *outbuflen )
+</span></code></pre>
+<p>avec comme paramètres :</p>
+<ul>
+<li><code>mr</code>, dont on utilisera <code>master_key</code> pour le cryptage et le décryptage ;</li>
+<li><code>do_encrypt</code> avec une valeur de 1 pour l'encryption et de 0 pour le décryptage ;</li>
+<li><code>inbuf</code>, un pointeur sur <code>inbuflen</code> octets ;</li>
+<li><code>outbuf</code>, un pointeur sur <code>inbuflen + EVP_MAX_BLOCK_LENGTH</code> octets (la macro <code>EVP_MAX_BLOCK_LENGTH</code> est fournie par <code>openssl/evp.h</code>).</li>
+</ul>
+<p>La bonne nouvelle est qu'elle est implémentée pour vous !  Assurez-vous de bien l'utiliser, en particulier veillez aux tailles des buffers d'entrées et de sortie (tableaux locaux de caractères, de taille maximale possible).<br />
+Pour les tests que nous passons, vous pouvez considérer que la taille maximale  de secret est 1200.</p>
+<p><strong>N'oubliez pas d'utiliser <code>pps_printf()</code> et non <code>printf()</code> !</strong></p>
+<p>(Note : pour celles et ceux qui savent de quoi on parle et qui se poseraient la question : pour information, dans la base de données fournie, les valeurs sont encodées avec le <code>'\0'</code> terminal compris --- cela ne devrait pas impacter votre implémentation puisque les tailles lues depuis le disque seront cohérentes.)</p>
+<p>Test final :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs small.ckvs get thekey 1
+</span><span>[...]
+</span><span>hello world
+</span></code></pre>
+<h2 id="tests">Tests</h2>
+<p>La base de données contient plusieurs entrées valables. La commande <code>stats</code> en donne la liste.</p>
+<p>Concernant les auteurs et autrices célèbres, le mot de passe en est leur prénom. Le contenu est le « <em>best of</em> » de leurs citations les plus célèbres.</p>
+<p>Les tests suivants permettent une certaine couverture des cas d'erreurs</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">./cryptkvs</span><span> small.ckvs get thekey 1
+</span><span style="color:#bf616a;">./cryptkvs</span><span> small.ckvs badcommand
+</span><span style="color:#bf616a;">./cryptkvs</span><span> small.ckvs get thekey 1 thirdlegargument
+</span><span style="color:#bf616a;">./cryptkvs</span><span> small.ckvs get thekey
+</span><span style="color:#bf616a;">./cryptkvs</span><span> small.ckvs get notakey
+</span><span style="color:#bf616a;">./cryptkvs</span><span> small.ckvs get thekey badpassword
+</span></code></pre>
+<p>PS : une autrice a un nom composé. L’utilisation d’apostrophes permet de passer les bons arguments depuis le shell à l’utilitaire, p.ex. :</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">./ma_commande_preferee </span><span>&#39;</span><span style="color:#a3be8c;">un argument avec des blancs</span><span>&#39;
+</span></code></pre>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 23&#x2F;05&#x2F;2022</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

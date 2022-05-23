@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>s. 7 & 8 : CryptKVS : la commande `new` | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/07-new/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "07 New",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/07-new/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;piazza.com&#x2F;class&#x2F;kzfgffdjsc95by">Piazza</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>Général</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/bareme/">Évaluation</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Échauffement</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout01/">Semaine 1</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout02/">Semaine 2</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout03/">Semaine 3</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Projet</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">CryptKVS : description générale</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-stats/">s. 4 : CryptKVS : la commande `stats`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-get/">s. 5 : CryptKVS : la commande `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-set/">s. 6 : CryptKVS : la commande `set`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/07-new/">s. 7 &amp; 8 : CryptKVS : la commande `new`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/09-refactoring/">s. 9 : CryptKVS : refactoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/10-client/">s. 10 : CryptKVS webserver : API et client</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/11-server/">s. 11 &amp; 12 : CryptKVS webserver : `stats` &amp; `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/13-server-set/">s. 13 : CryptKVS webserver : `set`</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>s. 7 &amp; 8 : CryptKVS : la commande `new`</h1>
+          
+          <p>Le but du travail de cette semaine est de rajouter la commande <code>new</code>, dont le but est de créer une nouvelle paire <code>&lt;key&gt; &lt;pwd&gt;</code> dans la base de données. Une fois la clef créée, des nouvelles valeurs peuvent être ajoutées avec la fonction <code>set</code> de la semaine précédente.</p>
+<h1 id="description-des-fichiers-fournis-a-ecrire">Description des fichiers fournis / à écrire</h1>
+<p>Nous ne fournissions cette semaine aucun nouveau fichier pour le cœur du projet lui-même, mais simplement un script Shell pour faire le rendu (voir section suivante).
+Par ailleurs, comme toujours, tout votre travail doit être effectué dans le répertoire <code>/done</code>.</p>
+<p>Avant de décrire le travail à faire cette semaine, expliquons comme faire le premier rendu (le travail de cette semaine <em>ne</em> fait <em>pas</em> partie du premier rendu).</p>
+<h1 id="premier-rendu-du-projet">Premier rendu du projet</h1>
+<p>Comme vous le savez, à la fin de cette semaine (délai finalement étendu au <strong>jeudi 14 avril 23:59</strong>, mais veillez à ne pas accumuler de retard et bien vous répartir le travail), constitue le <strong>premier rendu</strong> du projet.</p>
+<p>Pensez donc à faire des commits réguliers de votre travail et n'oubliez pas de mettre à jour votre fichier <code>time.csv</code>.</p>
+<p>Pour effectuer ce rendu, le plus simple est de faire (sur une machine ayant un Shell Unix)</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make submit1
+</span></code></pre>
+<p>dans votre répertoire <code>done/</code>.<br />
+(Vous pouvez aussi faire cela différemment, par vous-même, comme expliqué plus bas.)</p>
+<p><strong>ATTENTION</strong> : avant la soumission, vérifiez avoir bien ajouté (<code>git add</code>), validé (<code>git commit</code>) et transmis (<code>git push</code>) toutes vos dernières versions des fichiers sources <code>.c</code> et <code>.h</code>, ainsi que le <code>Makefile</code> que vous souhaitez soumettre (ne pas ajouter les fichiers de cette semaine, surtout si cela ne compile pas ; il faut rendre un projet qui compile). Merci de <strong>ne pas</strong> ajouter les fichiers <code>.o</code>, ni les exécutables.</p>
+<p>Avant de soumettre, veuillez également retirer (ou commenter) tous les appels à <code>printf()</code> superflus que vous auriez pu ajouter (p.ex. pour déboguer). Nous vous conseillons d'ailleurs d'utiliser plutôt le flux d'erreur <code>stderr</code> (<code>fprintf(stderr,</code>) pour vos messages supplémentaires, car nous ne testons pas son contenu.</p>
+<p>Ce qui sera considéré comme rendu sera ce que l'on trouvera dans (la branche <code>main</code> de) votre dépôt à la date indiquée ci-dessus et marqué d'une étiquette (« <em>tag</em> ») <code>projet01_NB</code>. C'est ce que fait la commande</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make submit1
+</span></code></pre>
+<p>La raison pour laquelle nous étiquetons (<code>git tag</code>) votre contenu est pour vous permettre de continuer à travailler et prendre de l'avance (typiquement le travail de cette semaine) : ainsi si votre dépôt contient à la date de rendu une version en avance sur le rendu et qui n'est pas fonctionnelle, ce n'est pas grave, nous ne prendrons que la dernière version pour laquelle vous aurez fait</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make submit1
+</span></code></pre>
+<p>Ne faites donc pas de « <code>make submit1</code> » sur une version qui ne compile pas !..<br />
+Mais vous pouvez faire plusieurs fois « <code>make submit1</code> » si vous vous apercevez d'une erreur. Nous ajouterons simplement une nouvelle étiquette <code>projet01_NB</code>, avec <code>NB</code> augmenté de 1.</p>
+<p>Si vous préférez faire l'étiquetage vous-même, par exemple pour étiqueter un ancien commit ou parce que vous êtes sur une machine sur laquelle <code>submit.sh</code> ne fonctionne pas, vous pouvez aussi bien sûr le faire :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span># pour être sûr d&#39;où vous en êtes :
+</span><span>git status -suno
+</span><span>
+</span><span># aussi pour voir où vous en êtes, choisir votre commit à étiqueter :
+</span><span>git log --graph --oneline --all --decorate
+</span><span>
+</span><span># pour voir les tags que vous auriez déjà mis :
+</span><span>git tag -l
+</span><span>
+</span><span>
+</span><span># POUR FAIRE LE RENDU LUI-MÊME :
+</span><span># choisissez bien X (p.ex. 1) et Y (numéro de commit)
+</span><span># p.ex. :
+</span><span># git tag -a projet01_1 -m &quot;rendu&quot; e8ec3e8
+</span><span>
+</span><span>git tag -a projet01_X -m &quot;premier rendu projet&quot; Y
+</span><span>git push --tags
+</span><span>git push
+</span></code></pre>
+<p>Faites bien attention de faire ces trois dernières commandes (en particulier les <em>deux</em> <code>push</code>).<br />
+Allez ensuite vérifier sur GitHub que vous y avez bien un tag et qu'il correspond bien au commit que vous voulez.</p>
+<h1 id="description-du-travail-a-faire">Description du travail à faire</h1>
+<p>Maintenant que vous avez « sauvegardé » (= « étiqueté ») le travail à rendre, vous pouvez passer au travail à faire cette semaine.</p>
+<p>Pour rappel, les commandes répondent à la syntaxe générale :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cryptkvs &lt;database&gt; &lt;command&gt; [arg] [arg]
+</span></code></pre>
+<p>et vous avez déjà implémenté :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cryptkvs &lt;database&gt; stats 
+</span><span>cryptkvs &lt;database&gt; get &lt;key&gt; &lt;password&gt; 
+</span><span>cryptkvs &lt;database&gt; set &lt;key&gt; &lt;password&gt; &lt;filename&gt;
+</span></code></pre>
+<p>Cette semaine, nous implémentons :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cryptkvs &lt;database&gt; new &lt;key&gt; &lt;password&gt; 
+</span></code></pre>
+<p>La commande <code>new</code> doit :</p>
+<ol>
+<li>s'assurer que la table dispose de la capacité nécessaire ;</li>
+<li>vérifier que <code>&lt;key&gt;</code> n'existe pas déjà dans la table ;</li>
+<li>écrire la nouvelle entrée dans la base.</li>
+</ol>
+<p>En cas d'erreur, la commande <code>new</code> retourne simplement un code d'erreur de la fonction <code>usage()</code>. Les erreurs possibles sont :</p>
+<ul>
+<li><code>ERR_NOT_ENOUGH_ARGUMENTS</code> : lorsque l'utilitaire n'a pas les arguments nécessaires ;</li>
+<li><code>ERR_CORRUPT_STORE</code> : lorsque <code>&lt;database&gt;</code> ne correspond pas au format attendu ;</li>
+<li><code>ERR_MAX_FILES</code>: lorsque il n'y a plus de place dans la table ;</li>
+<li><code>ERR_DUPLICATE_ID</code> : lorsque <code>&lt;key&gt;</code> existe déjà dans la table ;</li>
+<li><code>ERR_IO</code> : en cas d'erreur retournée par l'OS et les fonctions POSIX ;</li>
+<li>et, comme toujours, <code>ERR_NONE</code> en cas de succès.</li>
+</ul>
+<h1 id="utilisation-d-une-hash-table">Utilisation d'une hash table</h1>
+<p>Vous avez probablement remarqué que les entrées valides sont dispersées à l'intérieur de la table <code>small.ckvs</code>. C'est simplement parce que le format utilise une fonction hash pour y accéder.</p>
+<h1 id="etape-par-etape">Étape par étape</h1>
+<h3 id="etape-1-une-nouvelle-commande">Étape 1 : une nouvelle commande</h3>
+<p>Travail similaire aux semaine passées (<code>get</code>, en semaine 5, et <code>set</code> la semaine passée). La commande <code>new</code> appelle la fonction <code>ckvs_local_new()</code> laquelle, après avoir ouvert le fichier (<code>ckvs_open()</code>) et encrypté généré l'« auth_key » (<code>ckvs_client_encrypt_pwd()</code>), « délègue » l'essentiel du travail à <code>ckvs_new_entry()</code> (à mettre dans <code>ckvs_io.c</code>, voir sa description dans <code>ckvs_io.h</code> et l'étape 3 ci-dessous).</p>
+<h3 id="etape-2-hash-table">Étape 2 : hash table</h3>
+<p>La structure de données utilisée est une simple fonction hash suivie, en cas de collision, d'un sondage (« <em>probing</em> ») linéaire d'incrément 1 et circulaire (une approche appelée « <em>closed hashing</em> » ou « <em>open addressing</em> » est utilisée ; voir si nécessaire <a href="https://en.wikipedia.org/wiki/Hash_table">cette page Wikipedia</a>).</p>
+<p>La fonction hash :</p>
+<ul>
+<li>calcule le SHA256 de <code>&lt;key&gt;</code> (car SHA256 est une fonction à distribution robuste) ;</li>
+<li>utilise  uniquement les 4 premiers octets de la réponse, à interpréter comme un <code>uint32_t</code> ; faites attention à bien vérifier ici (débogueur) ce que vous faites ;</li>
+<li>utilise les bits les moins significatifs (« <em>LSB: least significant bits</em> ») de cette valeur ;</li>
+<li>en partant de l'hypothèse que <code>header.table_size</code> est une puissance de 2 (ceci a normalement déjà été vérifié (fait en semaine 4) dans <code>ckvs_open()</code>) ; <em>donc</em> <code>header.table_size - 1</code> est le masque des LSB (tous à 1) à appliquer à la valeur précédente.</li>
+</ul>
+<p>Par exemple pour la clef « <code>thekey</code> » de <code>small.ckvs</code> cela donne la valeur <code>0x14</code> comme le masquage de <code>0xf5345554</code> par <code>0x3f</code>. Notez que <code>0xf5345554</code> est la valeur <code>uint32_t</code> du début du SHA de « <code>thekey</code> » (qui est <code>545534f5b8d8e02d42ba515ffde1c25ccd81c04b9909a7d0db07d97aab3906fb</code>) ; c'est à vous de construire cette valeur.</p>
+<p>La fonction hash elle-même doit être implémentée dans <code>ckvs_io.c</code> comme suit :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>static uint32_t ckvs_hashkey(struct CKVS *ckvs, const char *key)
+</span><span>{
+</span><span>    // TODO
+</span><span>}
+</span></code></pre>
+<p>A noter : une implémentation efficace de cette fonction ne requiert ni division, ni modulo, ni multiplication, mais presque exclusivement des opérations « bit-à-bit ».</p>
+<p>Pour valider cette première étape, modifiez <code>ckvs_find_entry()</code> afin d'utiliser <code>ckvs_hashkey</code> pour une implémentation en O(1) (amortie). <code>ckvs_find_entry()</code> doit :</p>
+<ul>
+<li>utiliser <code>ckvs_hashkey()</code> comme point d'entrée dans une boucle (fournit donc l'index initial de recherche de l'entrée) ;</li>
+<li>comparer <code>&lt;key&gt;</code> avec la valeur dans la table pour déterminer s'il y a un « <em>hit</em> » ;<br />
+une clef vide (<code>'\0'</code>) est un « <em>miss</em> » ;</li>
+<li>en cas de collision, effectuer un sondage linéaire et circulaire (« <em>linear probing</em> ») avec incrément de 1 : il faut simplement ajouter 1 à l'index, sans oublier le modulo effectué via le masquage des LSB (<code>header.table_size - 1</code> ; cf ci-dessus).</li>
+</ul>
+<p>Pour valider cette première étape, assurez-vous que la commande <code>get</code> fonctionne toujours correctement.</p>
+<h3 id="etape-3-new">Etape 3 : <code>new</code></h3>
+<p>Implémenter <code>ckvs_new_entry()</code> (à mettre dans <code>ckvs_io.c</code>) en respectant la spécification suivante :</p>
+<ol>
+<li>le nombre d'entrées (<code>header.num_entries</code>) doit être mis à jour (si tout se passe bien) ;</li>
+<li>le nombre d'entrées ne doit pas dépasser <code>header.threshold_entries</code> ; retourner <code>ERR_MAX_FILES</code> si c'est le cas ;</li>
+<li>si la clef existe déjà, retourner <code>ERR_DUPLICATE_ID</code> ;</li>
+<li>si la clef est trop grande, retourner <code>ERR_INVALID_ARGUMENT</code> ;</li>
+<li>tous les champs de <code>entry</code> doivent être correctement initialisés, en particulier :
+<ul>
+<li>si la clef fait exactement <code>CKVS_MAXKEYLEN</code> caractères, <code>entry.key</code> n'est pas « <em>null-terminated</em> » (sinon, elle l'est comme d'habitude) ;</li>
+<li><code>auth_key</code> doit être calculé avec le mot de passe fourni ;</li>
+<li>les autres champs sont initialisés à zéro ;</li>
+</ul>
+</li>
+<li>utiliser <code>ckvs_write_entry_to_disk()</code> (implémentée pendant la semaine 6) et s'assurer de mettre également à jour le header du fichier <code>.ckvs</code>.</li>
+</ol>
+<h3 id="etape-4-get-lorsque-la-valeur-n-est-pas-specifiee">Etape 4 : <code>get</code> lorsque la valeur n'est pas spécifiée</h3>
+<p>Il est maintenant possible d'avoir dans la table des entrées avec <code>&lt;key&gt; &lt;password&gt;</code> sans valeur associée. Dans ce cas, la fonction <code>get</code> doit simplement retourner ERR_NO_VALUE.</p>
+<h3 id="etape-5-validation-finale">Etape 5 : validation finale</h3>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs small.ckvs new mykey mypwd
+</span><span>./cryptkvs small.ckvs get mykey mypwd
+</span><span>./cryptkvs small.ckvs set mykey mypwd ckvs.h
+</span><span>./cryptkvs small.ckvs get mykey mypwd
+</span></code></pre>
+<p>Le premier <code>get</code> doit afficher « <code>NO VALUE</code> » ; le deuxième le contenu du fichier <code>ckvs.h</code>.</p>
+<p>Comme d'habitude, nous vous fournissons également d'autres tests, à faire tourner de préférence en local chez vous <em>avant</em> de lancer le <code>make feedback</code>.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 23&#x2F;05&#x2F;2022</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

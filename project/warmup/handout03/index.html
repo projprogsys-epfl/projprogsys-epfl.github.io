@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Semaine 3 | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/warmup/handout03/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Warmup",
+            "item": "https://projprogsys-epfl.github.io/project/warmup/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "Handout03",
+            "item": "https://projprogsys-epfl.github.io/project/warmup/handout03/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;piazza.com&#x2F;class&#x2F;kzfgffdjsc95by">Piazza</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>Général</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/bareme/">Évaluation</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Échauffement</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout01/">Semaine 1</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout02/">Semaine 2</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/warmup/handout03/">Semaine 3</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Projet</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">CryptKVS : description générale</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-stats/">s. 4 : CryptKVS : la commande `stats`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-get/">s. 5 : CryptKVS : la commande `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-set/">s. 6 : CryptKVS : la commande `set`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-new/">s. 7 &amp; 8 : CryptKVS : la commande `new`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/09-refactoring/">s. 9 : CryptKVS : refactoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/10-client/">s. 10 : CryptKVS webserver : API et client</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/11-server/">s. 11 &amp; 12 : CryptKVS webserver : `stats` &amp; `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/13-server-set/">s. 13 : CryptKVS webserver : `set`</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>Semaine 3</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>Cette semaine, nous voulons vous faire travailler les outils de débogage qui vous seront utiles pour la suite afin d'être plus efficaces dans la production de votre projet.</p>
+<p>Le rendu de cette semaine comporte deux codes à déboguer : un petit, <code>stats.c</code>, et un plus conséquent, <code>muimp.c</code>.</p>
+<h2 id="materiel-fourni">Matériel fourni</h2>
+<p>Pour récupérez les fichiers fournis pour cette semaine, il vous faut rejoindre <a href="https://classroom.github.com/a/_VEpY-li">le troisième devoir de ce cours en suivant ce lien : https://classroom.github.com/a/_VEpY-li</a>.</p>
+<p>Vous devriez alors avoir accès à un nouveau dépôt du genre <code>pps21-week03-YOURGITHUBID.git</code>, qu'il vous faudra donc cloner sur votre machine :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git clone git@github.com:projprogsys-epfl/pps22-week03-YOURGITHUBID.git
+</span></code></pre>
+<p>Comme d'habitude, ce dépôt contient un répertoire <code>done</code> qui contient deux programmes fournis, que vous devrez cette fois corriger.</p>
+<h2 id="outils-pour-deboguer">Outils pour déboguer</h2>
+<p>Pour vous aider à trouver des fautes dans un code (en particulier dans votre propre code plus tard dans le projet ; pensez-y !), il existe plusieurs outils :</p>
+<ul>
+<li>les options du compilateur ;</li>
+<li>l'analyse statique de code ;</li>
+<li>l'analyse dynamique de mémoire (non présenté ici ; mais nous y reviendrons lorsque vous aurez des pointeurs dans votre projet (semaine 6)) ;</li>
+<li>et bien sûr les débogueurs.</li>
+</ul>
+<h3 id="options-utiles-du-compilateur">Options utiles du compilateur</h3>
+<p>Le compilateur est d'une grande aide lorsque l'on sait bien l'utiliser et interpréter ses messages.
+Son comportement, plus ou moins verbeux, peut être modifié à l'aide d'options de compilation, dont nous vous détaillons les plus utiles ici.</p>
+<p>Dans le même état d'esprit (utiliser le compilateur pour trouver des erreurs), il peut aussi être utile d'utiliser différents compilateurs (avec les options ci-dessous) sur le même code, car ils ne détectent pas forcément les mêmes choses. Sur les VMs, vous avez <code>gcc</code> et <code>clang</code>.</p>
+<p>La première chose à faire est de bien spécifier la norme utilisée (car il existe de nombreux « dialectes » non normés). Cela se fait avec l'option <code>-std=</code>. Nous vous recommandons <code>-std=c99</code> ou <code>-std=c17</code>. Pour coller strictement à la norme spécifiée (et rejeter le « dialecte GNU » associé) ajoutez l'option <code>-pedantic</code>.</p>
+<p>Ensuite, il peut être utile de laisser le compilateur nous avertir avec plein de <em>warning</em> usuels. Cela se fait avec l'option <code>-Wall</code> (comme « <em>all warnings</em>», même si en fait ils ne sont <strong>pas</strong> tous là <code>;-)</code>).</p>
+<p>Pour avoir encore plus de warning, ajoutez <code>-Wextra</code>.</p>
+<p>Et en voici encore d'autres que nous trouvons utiles d'ajouter (libre à vous de ne pas le faire si vous les trouvez trop pointilleux) :</p>
+<ul>
+<li><code>-Wuninitialized</code> : avertit en cas de variable non initialisée ;</li>
+<li><code>-Wfloat-equal</code> : avertit en cas de test d'égalité sur des nombres à virgule flottante ;</li>
+<li><code>-Wshadow</code> : avertit si un nom en masque un autre (risque de problème de portée) ;</li>
+<li><code>-Wbad-function-cast</code> : avertit en cas de mauvaise convertion de type de retour de fonctions ;</li>
+<li><code>-Wcast-qual</code> : avertit en cas de conversion de type pointé qui supprime un qualificatif (comme <code>const</code> typiquement) ;</li>
+<li><code>-Wcast-align</code> : avertit en cas de de conversion de type pointé qui ne respecte pas l'alignement des mots mémoire ;</li>
+<li><code>-Wwrite-strings</code> : avertit en cas de (risque de) confusion entre <code>const char *</code> et <code>char *</code> ;</li>
+<li><code>-Wconversion</code> : avertit en cas de conversion <em>implicite</em> de type ;</li>
+<li><code>-Wunreachable-code</code> : avertit en cas de code inutile (non atteignable) ;</li>
+<li><code>-Wformat=2</code> : augmente par rapport à <code>-Wall</code> le niveau d'avertissement au sujet des formats (tel que <code>printf</code> et <code>scan</code>) ;</li>
+<li><code>-Winit-self</code> : avertit en cas de d'initialisation récursive (tel que <code>int i = 3 * i;</code>) ;</li>
+<li><code>-Wstrict-prototypes</code> : avertit en cas de déclaration de fonction sans ses arguments ;</li>
+<li><code>-Wmissing-declarations</code> : avertit en cas de fonction définie mais non prototypée ; cela peut être utile pour détecter l'oubli d'un prototype dans un <code>.h</code> (ou l'oubli d'un <code>#include</code>).</li>
+</ul>
+<p>Enfin, vous pouvez bien sûr rajouter d'autres options si elles vous semblent utiles. Comme d'habitude, allez voir les « <em>man pages</em> » pour plus de détails.</p>
+<h3 id="analyse-statique-de-code">Analyse statique de code</h3>
+<p>L'analyseur statique de code est un outil qui essaye de trouver des erreurs dans du code en « imaginant » tous les chemins d'exécution possibles. L'analyseur <code>scan-build</code> (et <code>scan-view</code>) est disponible sur les VMs. Il s'utilise en ajoutant simplement <code>scan-build</code> devant la commande de compilation, comme par exemples :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>scan-build make
+</span><span>scan-build make cecicela
+</span><span>scan-build gcc -o monexo monexo.c
+</span></code></pre>
+<p>Le plus simple est d'essayer :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>scan-build gcc stats.c -lm
+</span></code></pre>
+<p>Cette commande vous dit (tout à la fin) de regarder son analyse en utilisant <code>scan-view</code>, p.ex. :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>scan-view /tmp/scan-build-2020-01-17-175346-107146-1
+</span></code></pre>
+<p>(mais ce dernier nom de fichier change à chaque fois).</p>
+<p>Nous vous laissons regarder ce qu'elle a trouvé...</p>
+<h3 id="utilisation-d-un-debogueur">Utilisation d'un débogueur</h3>
+<p>Voir <a href="https://projprogsys-epfl.github.io/tutorials/gdb/">ce tutoriel</a> pour l'utilisation du débogueur <code>gdb</code>.</p>
+<h3 id="methodologie-pour-debogueur">Méthodologie pour débogueur</h3>
+<p>Pour trouver efficacement une erreur, nous vous proposons les conseils <em>généraux</em> suivants (d'autres conseils plus spécifiques au travail à faire sont également fournis plus bas) :</p>
+<ol>
+<li>
+<p>ne cherchez à corriger qu'un seul bug à la fois ;</p>
+</li>
+<li>
+<p>commencez toujours par la première erreur ;</p>
+</li>
+<li>
+<p>isolez/identifiez bien le bug de façon reproductible : re-testez toujours avec <em>exactement</em> les mêmes valeurs à chaque fois ;</p>
+</li>
+<li>
+<p>appliquez la méthodologie suivante (cela peut sembler trivial, mais nous avons trop souvent vus des étudiants perdre leur temps à chercher des bugs au mauvais endroit car l'un des 2 « points » suivants n'était pas placé du bon coté ; souvent en raison d'hypothèses trop forte (suppositions fausses) ou de déductions fausses/trop rapides) :</p>
+<ul>
+<li>
+<p>ayez toujours 2 endroits (2 « points ») clairs dans votre code :</p>
+<ul>
+<li>un endroit où vous êtes <strong>absolument sûr</strong> que le bug ne s'est pas encore produit (par exemple le tout début du programme) ;</li>
+<li>et un autre où vous êtes <strong>absolument sûr</strong> que le bug s'est produit (par exemple l'endroit où le programme crashe, ou simplement la fin début du programme) ;</li>
+</ul>
+</li>
+<li>
+<p>déplacez (avancez/remontez) le plus prometteur de ces points en étant sûr de ne pas « passer de l'autre coté » du bug ; vérifier cet aspect (« ne pas être passer de l'autre coté ») avec certitude ;</p>
+</li>
+<li>
+<p>à la fin de ce processus (de recherche dichotomique en fait), les 2 « points » seront exactement sur l'endroit du bug.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>si vous cherchez vos bugs à l'aide de messages affichés (<code>printf()</code>) :</p>
+<ul>
+<li>
+<p>mettez toujours un <code>\n</code> à la fin de chacun des messages ;</p>
+</li>
+<li>
+<p>marquez le début de <strong>chacun</strong> de vos messages de débogage par un identifiant clair réservé uniquement à cela (p.ex. « <code>#### </code> ») ; cela vous permet :</p>
+<ol>
+<li>de voir facilement ces messages dans la sortie du programme ;</li>
+<li>de les retrouver ensuite facilement dans votre code pour les éditer/supprimer plus tard ;</li>
+</ol>
+</li>
+<li>
+<p>ayez dans <strong>chaque</strong> message une partie qui lui est unique (p.ex. « debug(1): », « debug(2): », « debug(3): », etc., ou encore « ici i= », « ici j= », « ici k= », etc. ; vous pouvez bien sûr combiner) ;</p>
+</li>
+</ul>
+<p>avoir cette discipline avec ses messages de débogage peut sembler une perte de temps (surtout quand on est en train de chercher le bug), mais, croyez moi, cela <em>sauve</em> en fait <em>beaucoup</em> de temps au final !</p>
+</li>
+</ol>
+<h2 id="travail-a-rendre-cas-simple">Travail à rendre : cas simple</h2>
+<p>Tous les outils précédents vous seront utiles pour être plus efficaces dans votre projet. Nous vous demandons donc de commencer à les pratiquer pour corriger le code <code>stats.c</code> fourni.</p>
+<p>Le premier rendu pour cette semaine (délai : dimanche 20 mars 23:59) consiste en la version <em>entièrement</em> corrigée de <code>stats.c</code> dont le but est de calculer la moyenne et l'écart-type (non biaisé) de l'âge d'un ensemble de 1 à 1024 personnes (attention ! il contient <em>plusieurs</em> erreurs, de différente nature ; il n'y a par contre pas d'erreur de nature mathématique : les <em>formules</em> sont correctes du point de vue mathématique ; mais notez cependant que l'écart-type d'une population réduite à un seul individu doit être zéro).</p>
+<p>Le code rendu doit être correct et robuste à toute entrée de type entier (mais nous <strong>ne</strong> vous demandons <strong>pas</strong> de traiter le cas d'entrées non entières composées de caractères quelconques ; nous ne testerons votre code qu'avec des entiers, positifs, négatifs ou nuls).</p>
+<p>Le rendu se fera automatiquement le dimanche 20 mars à 23:59 en prenant la version enregistrée (<code>commit</code> + <code>push</code>) dans le répertoire <code>done</code> votre dépôt GitHub (branche <code>master</code>). Il est donc impératif que vous ayez <code>commit</code> puis <code>push</code> votre version finale avant cette date. Aucune autre solution ne sera acceptée.</p>
+<h2 id="travail-a-rendre-second-cas-plus-complexe">Travail à rendre : second cas, plus complexe</h2>
+<p>Le deuxième rendu pour cette semaine (délai : dimanche 20 mars 23:59, aussi) est la version <em>entièrement</em> corrigée de code <code>muimp.c</code> fourni (quand nous disons «<em>entièrement</em>», c'est du point de vue d'un enseignant de programmation, tous les aspects, bugs, mais aussi toute mauvaise pratique, doivent être corrigés ; et il y en a beaucoup, de tous ordres). Ce code, une fois les erreurs corrigées, devrait permettre de créer une image numérique simplifiée, l'afficher (en mode texte), l'écrire et la lire depuis un fichier ainsi que de lui appliquer un filtrage par convolution. La description détaillée de la structure et des fonctionnalités attendues de ce code se trouve <a href="https://projprogsys-epfl.github.io/not_indexed/muimp/">ici</a>. Il n'est pas forcément nécessaire de commencer par lire cette description car le code <code>muimp.c</code> fourni contient tellement d'erreurs (de différentes natures) que commencer par lire le code lui-même, le compiler avec des options, etc. devrait déjà permettre de corriger plusieurs choses. Lisez le descriptif en question que pour trouver des erreurs plus subtiles ou en cas de doute lors de la lecture du code fourni. C'est toujours le descriptif qui fait foi (jamais le programme fourni).</p>
+<p>Comme pour l'exercice précédent, le rendu se fera automatiquement le dimanche 20 mars à 23:59 en prenant la version enregistrée (<code>commit</code> + <code>push</code>) dans le répertoire <code>done</code> de votre dépôt GitHub (branche <code>master</code>). Il est donc impératif que vous ayez <code>commit</code> puis <code>push</code> votre version finale avant cette date. Aucune autre solution ne sera acceptée.</p>
+<h2 id="tests">Tests</h2>
+<p>Bien sûr, pour corriger des programmes il faut aussi les tester pendant leur exécution !!</p>
+<p>Pensez donc à tester vos programmes au delà des exemples de déroulement éventuellement fournis (cela fait aussi partie des objectifs de ce devoir et devrait être -- sinon devenir -- un réflexe systématique).<br />
+Imaginez non seulement les cas standards, mais aussi <strong>tous</strong> les cas particuliers.</p>
+<p>Comme d'habitude, nous fournissons également, <em>à bien plaire</em>, un <code>make feedback</code> (<code>make feedback-VM-CO</code> si vous travaillez sur les VM de l'Ecole) qui donne un retour <em>partiel</em> sur votre travail.</p>
+<p>Voici également quelques pistes spécifiques à la correction des deux programmes demandés :</p>
+<h3 id="stats"><code>stats</code></h3>
+<p>La première chose à faire serait peut être de compléter le <code>Makefile</code> pour qu'il puisse produire <code>stats</code> avec les informations utiles au débogueur (option <code>-g</code>). Vous pourriez aussi en profiter pour allumer les <em>warnings</em> du compilateur et regarder en détail ce qu'il vous dit et surtout comprendre <em>pourquoi</em> il vous le dit.</p>
+<p>Une fois que le programme compile, si possible sans <em>warning</em>, voici 3 pistes pour aller plus loin dans la correction du programme:</p>
+<ol>
+<li>testez des valeurs qui sont <em>hors</em> des limites attendues, et regardez si le programme réagit comme vous attendriez. Par exemple : que se passe-t-il si on entre un nombre négatif de personnes ? un age négatif ?</li>
+<li>calculez à la main la moyenne et l'écart-type (suivant la formule <em>donnée</em> !) d'un petit échantillon et comparez les à la sorite de votre programme. S'il y a des différence, utilisez le débogueur pour chercher d'où elles viennent ;</li>
+<li>pensez à tester <em>tous</em> les cas limites de ces formules.</li>
+</ol>
+<h3 id="muimp"><code>muimp</code></h3>
+<p>Dans ce programme, il n'y a pas que des erreurs fonctionnelles, mais aussi beaucoup d'erreurs de style, de « bonnes pratiques » ou même de logique (p.ex. vous semble-t-il logique de commencer à demander la diagonale si celle-ci doit être inférieure à la largeur et la hauteur ?). Autre exemple, vous devriez déjà savoir qu'il n'est pas bon d'avoir des « <em>magic numbers</em> » dans un programme. Les 2 tests fourni dans <code>make feedback</code> ne testent <strong>que</strong> les fonctionnalités, pas le reste (de plus, ces tests attendent un format plus ou moins précis pour les entrées sorties, en particulier l'ordre des arguments est : largeur, hauteur, diagonale). Il est donc nécessaire que vous prenniez du recul par rapport à ce feedback.<br />
+(Et, encore une fois, ceci est normal : vous n'aurez jamais, dans la vraie vie, la vraie réponse absolue (si tant est qu'elle existe !) ; c'est bien une composante à par entière du métier d'ingénieur informaticien que de prévoir les cas de tests.)</p>
+<p>Après avoir lu le code et corrigé les erreurs les plus évidentes, y compris celles détectées par le compilateurs, ses <em>warnings</em> et l'analyse statique, nous vous suggérons de continuer comme pour <code>stats</code> en essayant par exemple des valeurs hors des bornes attendues.
+Après cela, vous pouvez envisager de regarder des cas plus complexes comme les deux testés par <code>make feedback</code>.</p>
+<p>Ces deux scénarios testés par <code>make feedback</code>, ils sont conçus pour mettre le doigt sur 2 erreurs dans la logique du code. Là encore, ce serait à notre avis plus efficace d'utiliser le débogueur comme expliqué <a href="https://projprogsys-epfl.github.io/project/warmup/handout03/#methodologie-pour-debogueur">plus haut</a>. Afin de vous aider à suivre ces deux scénarios, <code>make feedback</code> affiche les paramètres qu'il utilise pour tester <code>muimp</code>.</p>
+<p>Le premier de ces deux tests, « <em>feedback_diag</em> » vérifique que le code produit une « image » rectangle de la bonne taille et le losange correspondant. Utilisez les paramètres indiqués par <code>make feedback</code> pour déboguer le code, si nécessaire.<br />
+Le second test, « <em>feedback_str_filter</em> » teste la possibitilté d'avoir de long noms de fichiers, ainsi que le fait que <code>filter()</code> fonctionne correctement. </p>
+<p>Happy debugging! All bugs are puzzles that need to be solved. :)</p>
+<p>En espérant que cette semaine vous apportera les moyens d'être plus efficace dans votre vie de développeuse/développeur...</p>
+<h2 id="rendu">Rendu</h2>
+<p>Pour rendre le devoir, « commitez » (<code>commit</code>) et « poussez » (<code>push</code>) toutes vos modifications (fichiers <code>stats.c</code> et <code>muimp.c</code>) avant le dimanche 20 mars 23:59. Pensez également à mettre votre fichier <code>time.csv</code> tel que <a href="https://projprogsys-epfl.github.io/project/index/bareme/#time">décrit dans le barème du cours</a>. Le rendu se fera automatiquement en prenant la version enregistrée (<code>commit</code> + <code>push</code>) dans le répertoire <code>done</code> de votre dépôt GitHub (branche <code>master</code>) à cette date. Il est donc impératif que vous ayez <code>commit</code> puis <code>push</code> votre version finale avant cette date. Aucune autre solution ne sera acceptée.</p>
+<p>Et n'oubliez pas de faire le rendu de la semaine passée avant dimanche soir (de cette semaine).</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 23&#x2F;05&#x2F;2022</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

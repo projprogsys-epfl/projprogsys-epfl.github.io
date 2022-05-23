@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>CryptKVS : description générale | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "04 Main",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/04-main/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;piazza.com&#x2F;class&#x2F;kzfgffdjsc95by">Piazza</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>Général</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/bareme/">Évaluation</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Échauffement</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout01/">Semaine 1</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout02/">Semaine 2</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout03/">Semaine 3</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Projet</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">CryptKVS : description générale</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-stats/">s. 4 : CryptKVS : la commande `stats`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-get/">s. 5 : CryptKVS : la commande `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-set/">s. 6 : CryptKVS : la commande `set`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-new/">s. 7 &amp; 8 : CryptKVS : la commande `new`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/09-refactoring/">s. 9 : CryptKVS : refactoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/10-client/">s. 10 : CryptKVS webserver : API et client</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/11-server/">s. 11 &amp; 12 : CryptKVS webserver : `stats` &amp; `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/13-server-set/">s. 13 : CryptKVS webserver : `set`</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>CryptKVS : description générale</h1>
+          
+          <h2 id="plan-de-ce-document">Plan de ce document</h2>
+<ol>
+<li>Contexte</li>
+<li>Buts</li>
+<li>Description générale</li>
+<li>Principales étapes</li>
+</ol>
+<h2 id="contexte">Contexte</h2>
+<p>Le but premier de ce projet est de vous faire développer un large programme en C sur une thématique « système ».</p>
+<p>La gestion des données confidentielles dans le cloud est un des enjeux majeurs de notre époque.  Il suffit de lire les journaux pour comprendre les enjeux liés aux pertes de données massives lorsqu'elles sont gérées de manière centralisée, que ce soit dans des serveurs locaux ou dans le cloud.</p>
+<p>La gestion des mots de passe est un bon exemple.  Le site <a href="https://haveibeenpwned.com/">haveibeenpwned</a> regroupe un ensemble de données volées dans plus de 500 sites web, pour un total de 11 milliards de comptes.  Votre email en fait peut-être partie, du reste.</p>
+<p>Idéalement, les données confidentielles ne sont jamais disponibles dans un site centralisé.  Les systèmes de communication avec encryptage de bout-en-bout (« <em>end-to-end encryption</em> ») garantissent que les serveurs qui servent de relais ne peuvent pas décrypter le contenu des messages. Les applications mobiles <a href="https://en.wikipedia.org/wiki/Signal_(software)">SIGNAL</a> et WhatsApp en sont deux exemples très connus ; elles utilisent toutes les deux des variantes du même protocole cryptographique.</p>
+<p>SIGNAL est particulièrement reconnue pour son respect maximal de la vie privée.  L'objectif de la fondation qui l'opère est d'offrir un service de déploiement mondial (plus de 40 millions d'utilisateurs actifs) tout en minimisant les informations collectées par leurs serveurs (voir <a href="https://en.wikipedia.org/wiki/Signal_(software)">Wikipedia</a>).</p>
+<p>SIGNAL a introduit une nouvelle fonctionnalité qui permet à un utilisateur de copier la liste de ses contacts dans le cloud.  Cette fonctionnalité est utile si vous devez changer de téléphone. La liste est protégée par un PIN à 6 chiffres.  Si vous êtes utilisateur/utilisatrice de l'application mobile, elle vous demande de rentrer régulièrement le PIN afin d'être sûr de ne pas l'oublier.</p>
+<p>La technologie sous-jacente s'appelle « <em>secure value recovery</em> » ; elle est décrite ici: <a href="https://signal.org/blog/secure-value-recovery/">https://signal.org/blog/secure-value-recovery/</a>.   Cette solution utilise un nombre de technologies avancées de divers domaines tels que la cryptographie, le hardware (les enclaves SGX) et a même nécessité une modification de compilateur.</p>
+<h2 id="buts">Buts</h2>
+<p>Durant ce projet, vous allez construire une version simplifiée de « <em>secure value recovery</em> » qui encrypte les données dans une base de données partagée : un « <em>(en)crypted key-value store</em> » (d'où le nom du projet : « CryptKVS »).</p>
+<p><strong>NOTE DE SECURITE IMPORTANTE :</strong>  par raison de simplification, la solution que vous implémenterez n'est pas résistante aux attaques de type « force brute », comme nous l'expliquons plus bas.  Dans le domaine de la sécurité, toute simplification ou changement a des effets de bords qui doivent être analysés en détail. Ceci n'est pas l'objectif de ce cours.</p>
+<p>L'objectif pédagogique principal est de vous donner un aperçu des outils et technique de construction de programmation orientée système, y compris les librairies cryptographiques basiques, mais il ne s'agit pas d'un cours de sécurité informatique. <strong>[fin de note]</strong></p>
+<p>Durant les premières semaines, il s'agira d'abord d'implémenter les fonctions de base du système, à savoir :</p>
+<ul>
+<li>lister les informations (métadonnées, liste des données) ;</li>
+<li>décrypter une valeur lorsqu'on connait la clef et le mot de passe ;</li>
+<li>créer une clef et associer une valeur correspondante.</li>
+</ul>
+<p>Dans cette première phase, les fonctions seront exposées via un utilitaire en ligne de commande. Durant les dernières semaines du semestre, vous construirez un véritable serveur web qui exposera la même fonctionnalité en séparant les fonctions client et les fonctions serveur.</p>
+<p>Durant ce projet, vous allez pouvoir mettre en pratique et découvrir :</p>
+<ul>
+<li>la programmation en C dans le cadre d'un projet de taille moyenne ;</li>
+<li>les outils de debugging présentés durant les 3 premières semaines (<code>gdb</code>, <code>asan</code>, etc.) ;  l'accent sera mis sur la gestion correcte de la mémoire (allocation, déallocation, bounds checking) ;</li>
+<li>la gestions de fichiers avec la librarie POSIX ;</li>
+<li>la librairie cryptographique <code>openssl</code> ;</li>
+<li>la programmation client-serveur en C utilisant <code>libcurl</code>(côté client) et <code>libmongoose</code> côté serveur. ;</li>
+<li>le protocole <code>https</code> et la gestion des certificats SSL.</li>
+</ul>
+<p>Durant les 10 semaines de ce projet, vous allez devoir implémenter, graduellement morceau par morceau les composants clés mentionnés ci-dessus et décrits plus bas, puis détaillés dans les sujets hebdomadaires.</p>
+<p>Vous allez aussi devoir développer des tests complémentaires utiles pour observer et analyser le fonctionnement du système. Ces tests seront développés sous forme d'exécutables indépendants du cœur principal.</p>
+<p>Afin de faciliter au mieux l'organisation de votre travail (dans le groupe et dans le temps), nous vous conseillons de consulter <a href="https://projprogsys-epfl.github.io/project/index/bareme/">la page de barème du cours</a> (et la lire en entier !!).</p>
+<h2 id="description-generale">Description générale</h2>
+<p>Nous décrivons ici de façon générale les principaux concepts et structures de données que ce projet nécessitera. Leurs détails d'implémentation seront précisés plus tard lorsque nécessaire dans chaque sujet hebdomadaire correspondant.</p>
+<p>Considérons le problème de stocker un secret dans le cloud. Chaque secret a :</p>
+<ul>
+<li>
+<p>une clef unique (<code>key</code>), par exemple le nom de l'utilisateur, son numéro de téléphone, etc.<br />
+Dans notre solution, il s'agit d'un string de 32 caractères au maximum (<code>'\0'</code> non compris) ;  c'est le seul élément visible en clair dans la base de données ;</p>
+</li>
+<li>
+<p>un mot de passe, connu uniquement de l'utilisateur ;  la combinaison de la clef et du mot de passe forment la base d'une double chaîne cryptographique utilisée pour :</p>
+<ol>
+<li>vérifier que le mot de passe est correct et</li>
+<li>encrypter et décrypter le contenu ;</li>
+</ol>
+</li>
+<li>
+<p>le secret lui-même (c.-à-d. la valeur). L'objectif principal est d'en protéger le contenu, afin que seul le client puisse le récupérer.</p>
+</li>
+</ul>
+<p>La solution s’inspire du protocole SIGNAL « <em>secure value recovery</em> », qui est décrit comme suit (expliqué ci-dessous) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>stretched_key = Argon2(passphrase=user_passphrase, output_length=32)
+</span><span>
+</span><span>auth_key    = HMAC-SHA256(key=stretched_key, &quot;Auth Key&quot;)
+</span><span>c1          = HMAC-SHA256(key=stretched_key, &quot;Master Key Encryption&quot;)
+</span><span>c2          = Secure-Random(output_length=32)
+</span><span>
+</span><span>master_key      = HMAC-SHA256(key=c1, c2)
+</span></code></pre>
+<p>Evidemment, cette notation nécessite quelques explications :</p>
+<ul>
+<li>
+<p><code>user_passphrase</code> est la concaténation de la clef (<code>key</code>) et du mot de passe (<code>password</code>) ;  dans le protocole original, la concaténation est ensuite « étirée » sur 32 octets par la fonction cryptographique <code>Argon2</code> ;  cette opération a lieu sur le client ;  par simplification, nous nous contentons de faire la concaténation (sans <code>Argon2</code>) ;</p>
+</li>
+<li>
+<p>le client génère ensuite <code>auth_key</code> et <code>c1</code>, en utilisant <code>stretched_key</code> pour signer de manière numérique deux « documents » ; ces « documents » sont des constantes ayant ici respectivement pour contenu <code>&quot;Auth key&quot;</code> et <code>&quot;Master Key Encryption&quot;</code> ;<br />
+le contenu n'est pas important -- puisque ce sont des constantes du protocole ;  l'important est que ce sont deux documents <em>différents</em>, ce qui rend impossible à un adversaire de lier un résultat avec l'autre.</p>
+</li>
+<li>
+<p>le serveur génère la valeur <code>c2</code> de manière aléatoire (32 octets) ; il stocke dans une table <code>key</code>, <code>auth_key</code> and <code>c2</code> ;</p>
+</li>
+<li>
+<p>lorsque le client souhaite lire ou écrire une valeur, le client soumet <code>auth_key</code> comme authentification ; le serveur répond avec <code>c2</code> ;</p>
+</li>
+<li>
+<p>seul le client peut générer <code>master_key</code>, qui est ensuite utilisée par le client comme clef symétrique pour encrypter (écriture) ou décrypter (lecture) la valeur.</p>
+</li>
+</ul>
+<p>Ce protocole a un certain nombre de propriétés intéressantes, disponible dans la solution de SIGNAL (et pas dans le projet):</p>
+<ul>
+<li>
+<p>l'entropie offerte par <code>c2</code> dans <code>master_key</code> implique qu’un attaquant avec des moyens illimités ne pourrait pas décoder les valeurs secrètes sauf s’il a accès à <code>c2</code> ;<br />
+les secrets peuvent donc être stockés dans le cloud (p.ex. sur disque) pour autant que <code>c2</code> est protégé, ce qui est le cas avec l'utilisation des enclaves SGX ;  dans notre projet, pour simplifier tout est stocké dans le même fichier ;</p>
+</li>
+<li>
+<p>dans la version déployée par SIGNAL, le service limite le nombre d'essais de comparaison de <code>auth_key</code>, ce qui évite une attaque par force brute.</p>
+</li>
+</ul>
+<h2 id="etapes-de-developpement-du-projet">Étapes de développement du projet</h2>
+<ul>
+<li>
+<p>Semaine 4 (cette semaine, donc !) : la commande « stats » : opération en lecture pour accéder au format sur disque de la base de données.</p>
+</li>
+<li>
+<p>Semaine 5 : command « get » :  implement the logic to compute the various keys and decode a secret stored in the provided file.  exercises the openssl library functions, etc.</p>
+</li>
+<li>
+<p>Semaine 6 : command « set » : requires fseek, fwrite, to append the new value and update an existing entry.</p>
+</li>
+<li>
+<p><strong>Premier rendu :</strong> correspond au travail des semaines 4 à 6 ; à rendre en fin de semaine 7 ;</p>
+</li>
+<li>
+<p>Semaine 7 : command « new » : create a new key.  This is where we introduce open hashing instead of linear scan.  Move away from fixed-sized tables to a dynamic approach where the table size is set in the header.</p>
+</li>
+<li>
+<p>Semaine 9 : refactoring of the CLI to be table-driven; also preparation for client-server programming; (students will likely not be asked to implement &quot;create-kvs&quot; to create a table)</p>
+</li>
+<li>
+<p><strong>Second rendu :</strong> correspond au travail des semaines 4 à 9 ; à rendre en fin de semaine 10 ;</p>
+</li>
+<li>
+<p>Semaine 10 : command &quot;stat&quot;/network and &quot;get&quot;/network : instructors provide the running server (shared by all).   HTTP client programming.  Requires mongoose.</p>
+</li>
+<li>
+<p>Semaine 11 : command &quot;httpd&quot; : students connect to their own webserver.   Students implement  &quot;stat&quot;/network &quot;get&quot;/network.</p>
+</li>
+<li>
+<p>Semaine 12 : command &quot;set&quot;/network and &quot;new&quot;/network. (client-side and server side).  For simplicity, &quot;set&quot; is implemented using &quot;GET&quot; rather than &quot;POST&quot; (small secrets only); les étudiants plus avancées peuvent par contre bien sûr implémenter un « POST ».</p>
+</li>
+<li>
+<p><strong>Rendu final :</strong> correspond au travail des semaines 4 à 14 ; à rendre en fin de semestre.</p>
+</li>
+</ul>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 23&#x2F;05&#x2F;2022</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

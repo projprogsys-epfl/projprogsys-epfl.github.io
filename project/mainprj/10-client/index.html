@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>s. 10 : CryptKVS webserver : API et client | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/10-client/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "10 Client",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/10-client/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;piazza.com&#x2F;class&#x2F;kzfgffdjsc95by">Piazza</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>Général</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/bareme/">Évaluation</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Échauffement</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout01/">Semaine 1</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout02/">Semaine 2</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout03/">Semaine 3</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Projet</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">CryptKVS : description générale</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-stats/">s. 4 : CryptKVS : la commande `stats`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-get/">s. 5 : CryptKVS : la commande `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-set/">s. 6 : CryptKVS : la commande `set`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-new/">s. 7 &amp; 8 : CryptKVS : la commande `new`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/09-refactoring/">s. 9 : CryptKVS : refactoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/10-client/">s. 10 : CryptKVS webserver : API et client</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/11-server/">s. 11 &amp; 12 : CryptKVS webserver : `stats` &amp; `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/13-server-set/">s. 13 : CryptKVS webserver : `set`</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>s. 10 : CryptKVS webserver : API et client</h1>
+          
+          <p>Cette semaine, le projet se transforme pour se rapprocher de sa version finale. En effet, l'outil que vous développez, et le protocole sous-jacent, ne font de sens que si la base de données chiffrée et l'utilisateur.trice opèrent sur deux machines différentes. Nous passons donc cette semaine d'un modèle intégré à un modèle « client-serveur ».</p>
+<p>Par ailleurs, n'oubliez pas qu'à la fin de cette semaine (<strong>dimanche 8 mai 23:59</strong>) vous devez effectuer votre second rendu du projet : tout le code du « <em>command line manager</em> » que vous avez produit jusqu'à la semaine passé sera (r)évalué. Pensez à y incorporer les corrections que vous jugez nécessaires sur votre travail des semaines 4 à 6. Plus de détails sur ce rendu en toute dernière section de ce document.</p>
+<h1 id="description-des-fichiers-fournis-a-ecrire">Description des fichiers fournis / à écrire</h1>
+<p>Cette semaine, nous vous avons fourni les fichiers additionnels <code>ckvs_rpc.c</code>, <code>ckvs_rpc.h</code> et <code>ckvs_client.h</code>.</p>
+<p>Le fichier <code>ckvs_rpc.c</code> doit être complété. Le fichier <code>ckvs_client.c</code> doit être créé.</p>
+<p>Comme d'habitude, ils sont dans le répertoire <code>provided</code> de votre dépôt de groupe. Pensez à les récupérer avec la commande</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git pull
+</span></code></pre>
+<p>puis à les copier dans votre répertoire <code>done</code>.<br />
+Pour rappel, vous <strong>ne</strong> devez <strong>pas</strong> modifier le contenu du répertoire <code>provided</code>.</p>
+<h1 id="description-du-travail-a-faire">Description du travail à faire</h1>
+<p>Nous allons tout d'abord étendre la syntaxe générale de <code>cryptkvs</code> comme suit :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cryptkvs [&lt;database&gt;|&lt;URL&gt;] &lt;command&gt; [arg] [arg]
+</span></code></pre>
+<p>Jusqu'à maintenant, le premier argument était le nom d'un fichier local. Cette semaine, nous rajoutons la possibilité de remplacer le fichier local par un URL. La détermination se fait sur la base des préfixes <code>https://</code> et <code>http://</code></p>
+<p>Cette semaine, vous allez également implémenter les fonctions <code>stats</code> et <code>get</code> en mode client-serveur.</p>
+<p>L'implémentation se concentre dans deux modules aux fonctionnalités clairement différenciées :</p>
+<ul>
+<li>
+<p>le module de communication (<code>ckvs_rpc.c</code>) utilise la bibliothèque <code>libcurl</code> et s'occupe de la couche HTTP ;</p>
+</li>
+<li>
+<p>le module qui implémente le protocole cryptographique CKVS (<code>ckvs_client.c</code>) de manière similaire à <code>ckvs_local</code>, mais en utilisant le module de communication <code>ckvs_rpc</code> ainsi que la bibliothèque <code>libjson-c</code> pour le parsing des réponses HTTP.</p>
+</li>
+</ul>
+<h1 id="environnement-de-travail">Environnement de travail</h1>
+<p>Un serveur implémentant le protocole CKVS est disponible sur <code>https://cs212.epfl.ch</code>.</p>
+<p>Vous pouvez vérifier que le serveur fonctionne avec un navigateur et l'URL suivant : <a href="https://cs212.epfl.ch/stats">https://cs212.epfl.ch/stats</a></p>
+<p>Il faut également vérifier que cela fonctionne avec l'utilitaire <code>curl</code> :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>curl https://cs212.epfl.ch/stats
+</span></code></pre>
+<p>Sur votre système, vous devez vous assurer que les bons paquets sont installés. Les commandes suivantes <em>pourraient</em> être nécessaires en fonction de votre environnement (sur Ubuntu) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>sudo apt install libcurl4-openssl-dev
+</span><span>sudo apt install libjson-c-dev
+</span></code></pre>
+<p>Vous aurez aussi besoin d'ajouter les bibliothèques <code>libcurl</code> et <code>libjson-c</code> à votre <code>Makefile</code>. Dans la plupart des cas, cette version simple devrait suffire :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>LDLIBS += -lcurl -ljson-c
+</span></code></pre>
+<h1 id="etape-par-etape">Étape par étape</h1>
+<h3 id="etape-1-database-ou-url">Étape 1 : database ou URL ?</h3>
+<p>Modifiez le fichier <code>cryptkvs.c</code> de façon à ce que les fonctions <code>ckvs_local_*</code> soient appelées si le premier argument est une base de donnée CKVS et les fonctions <code>ckvs_client_*</code> soient appelées si le premier argument est un URL.</p>
+<p>Pour cela, vous devez utiliser la même approche que la semaine précédente (augmentez la struct <code>ckvs_command_mapping</code> d'une <code>ckvs_command</code>).</p>
+<p>Pour valider l'étape, vous devez</p>
+<ul>
+<li>
+<p>pouvoir appeler <code>ckvs_client_stats()</code> et <code>ckvs_client_get()</code> si l'argument est un URL pour les commandes <code>stats</code> et <code>get</code> ;</p>
+</li>
+<li>
+<p>sans rien casser des fonctionnalités précédentes lorsque l'argument n'est pas un URL.</p>
+</li>
+</ul>
+<h3 id="etape-2-le-module-ckvs-rpc-c">Étape 2 : le module <code>ckvs_rpc.c</code></h3>
+<p>Nous allons utiliser la librairie <code>libcurl</code> pour accéder au serveur, dans un mode où la réponse aux appels HTTP(S) est stockée en mémoire (voir <a href="https://curl.se/libcurl/c/getinmemory.html">https://curl.se/libcurl/c/getinmemory.html</a>).</p>
+<p>Dans le fichier <code>ckvs_rpc.c</code>, vous devez implémenter <code>ckvs_rpc()</code> qui doit :</p>
+<ol>
+<li>
+<p>Spécifier l'URL avec la fonction</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> CURLcode ret = curl_easy_setopt(conn-&gt;curl, CURLOPT_URL, url);
+</span></code></pre>
+<p>où <code>url</code> contient la concaténation du nom DNS (spécifié par le champ <code>url</code> de l'argument <code>conn</code>, lequel aura été par ailleurs initialisé via <code>ckvs_rpc_init()</code> ; à faire plus tard dans <code>ckvs_client.c</code>) et de l'argument fourni <code>GET</code>. Retournez <code>ERR_OUT_OF_MEMORY</code> si <code>curl_easy_setopt()</code> échoue (cf <a href="https://curl.se/libcurl/c/CURLOPT_URL.html">https://curl.se/libcurl/c/CURLOPT_URL.html</a>).</p>
+</li>
+<li>
+<p>Appeler la fonction</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> CURLcode ret = curl_easy_perform(conn-&gt;curl);
+</span></code></pre>
+</li>
+<li>
+<p>Traiter les cas d'erreur courants et retournez :</p>
+<ul>
+<li><code>ERR_INVALID_ARGUMENT</code> en cas d'argument invalide ;</li>
+<li><code>ERR_OUT_OF_MEMORY</code> en cas de problème d'allocation mémoire ;</li>
+<li><code>ERR_TIMEOUT</code> si <code>curl_easy_perform()</code> ne retourne pas <code>CURLE_OK</code>.</li>
+</ul>
+</li>
+</ol>
+<p>Notez qu'après un appel réussi à <code>curl_easy_perform()</code>, le contenu téléchargé est automatiquement stocké dans <code>conn-&gt;resp_buf</code> par <code>ckvs_curl_WriteMemoryCallback()</code>. Vous n'avez donc pas à le faire.</p>
+<h3 id="etape-3-premier-test-avec-la-commande-stats">Étape 3 : premier test avec la commande /stats</h3>
+<p>Implémenter une version triviale de</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cryptkvs https://cs212.epfl.ch stats
+</span></code></pre>
+<p>qui soit équivalente à</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>curl https://cs212.epfl.ch/stats
+</span></code></pre>
+<p>Le code est à écrire dans <code>ckvs_client.c</code> (de façons similaire à ce que vous avez fait dans <code>ckvs_local.c</code>) et appelle évidemment les fonctions de <code>ckvs_rpc.h</code>. Faites pour le moment une version triviale de test pour la commande <code>stats</code>.</p>
+<h3 id="etape-4-parsing-avec-json">Étape 4 : parsing avec JSON</h3>
+<p>La réponse HTTP à l'appel <code>/stats</code> est encodée en format JSON. Il s'agit d'un format extrêmement courant dans toutes les applications Web modernes, avec des facilités d'intégration dans tous les langages de programmation.</p>
+<p>Ici, nous utiliserons <a href="https://json-c.github.io/json-c/json-c-0.15/doc/html/">la bibliothèque <code>libjson-c</code></a> afin de convertir les réponses du serveur.</p>
+<p>L'objectif de cette étape 4 est d'imprimer la réponse à <code>/stats</code> avec le format suivant :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>CKVS Header type       : CS212 CryptKVS v1
+</span><span>CKVS Header version    : 1
+</span><span>CKVS Header table_size : 64
+</span><span>CKVS Header threshold  : 16
+</span><span>CKVS Header num_entries: 5
+</span><span>  Key             : thekey
+</span><span>  Key             : de beauvoir
+</span><span>  Key             : shakespeare
+</span><span>  Key             : verylongverylongverylongverylong
+</span><span>  Key             : proust
+</span></code></pre>
+<p>Pour ce faire, utilisez les fonctions :</p>
+<ul>
+<li>
+<p><a href="https://json-c.github.io/json-c/json-c-current-release/doc/html/json__tokener_8h.html#a236ef64d079822a4411d13eae7190c4d"><code>json_tokener_parse()</code></a> pour créer la structure JSON ;</p>
+</li>
+<li>
+<p><a href="https://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#a90d5f16d58636f01d2ed1a6030c7366a"><code>json_object_object_get_ex()</code></a> pour en extraire les éléments ;</p>
+</li>
+<li>
+<p><a href="https://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#a8c56dc58a02f92cd6789ba5dcb9fe7b1"><code>json_object_get_[int|string]()</code></a> pour convertir en valeurs exploitables ;</p>
+</li>
+<li>
+<p><a href="https://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#ab9ea8f9c72d5adf83fdcbfe69f97fa44"><code>json_object_array_length()</code></a> pour déterminer la taille d'un array ;</p>
+</li>
+<li>
+<p><a href="https://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#a676711a76545d4ec65cc75f100f5fd19"><code>json_object_array_get_idx()</code></a> pour itérer dans un array ;</p>
+</li>
+<li>
+<p><a href="https://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#afabf61f932cd64a4122ca8092452eed5"><code>json_object_put()</code></a> pour désallouer la structure JSON.</p>
+</li>
+</ul>
+<p>En cas d'erreur, affichez l'éventuel message d'erreur avec <code>pps_printf()</code> (lorsqu'il y en a un ; p.ex. avec <code>json_tokener_parse()</code>), et retournez <code>ERR_IO</code>.</p>
+<h3 id="etape-5-conversion-en-format-hexadecimal-des-arguments-de-type-sha">Étape 5 : conversion en format hexadécimal des arguments de type SHA</h3>
+<p>Nous utiliserons le protocole HTTP GET pour soumettre les arguments au serveur CKVS, sous la forme de chaînes de caractères. L'argument <code>&lt;auth_key&gt;</code> doit être la représentation en format hexadécimal (« <em>hex-encoding</em> ») de la valeur SHA256.</p>
+<p>Pour cela, le module <code>ckvs_utils</code> doit être complété avec la fonction</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>int SHA256_from_string(const char *input, struct ckvs_sha *sha)
+</span></code></pre>
+<p>qui appelle</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>int hex_decode(const char *input, uint8_t *output)
+</span></code></pre>
+<p>La fonction <code>hex_decode()</code> décode une valeur hexadécimale écrite sous forme de chaîne de caractères dans sa valeur codée comme un tableau d'octets (Hint : <code>man strtoul</code>). Cette fonction <code>hex_decode()</code> doit pouvoir convertir des chaînes de longueur arbitraire, car elle sera utilisée par la suite. Elle retourne le nombre d'octets écrits dans <code>output</code> ou -1 en cas d'erreur (pour les cas d'erreurs possible, voir <code>man strtoul</code> ; le contenu de <code>output</code> est alors non défini).</p>
+<p>Pour valider l'étape 5, faites un test unitaire qui prend des valeurs SHA256, et pour chacune, la convertit en format hexadécimal, puis la reconvertit à l'original et les compare.</p>
+<h3 id="etape-6-la-commande-get">Étape 6 : La commande « get »</h3>
+<p>Vous avez maintenant presque tous les éléments en place pour implémenter la fonctionnalité « <em>get</em> » pour accéder à un serveur CVKS. Le code va dans <code>ckvs_client_get()</code> (dans <code>ckvs_client.c</code>, bien sûr).</p>
+<p>Comme point de départ, copiez (ou inspirez vous de) votre code de <code>ckvs_local_getset()</code> et réflechissez aux changements nécessaires d'un point de vue algorithmique. Il s'agit de décomposer :</p>
+<ol>
+<li>
+<p>la phase de préparation des arguments ;</p>
+</li>
+<li>
+<p>l'appel au serveur (<code>ckvs_rpc()</code>) au format suivant</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> https://cs212.epfl.ch/get?key=&lt;key&gt;&amp;auth_key=&lt;auth_key&gt;
+</span></code></pre>
+</li>
+<li>
+<p>dans cet appel, <code>&lt;key&gt;</code> est le nom de la clef ;<br />
+Attention : cet argument est une chaîne de caractères qui ne peut être passée telle quelle comme argument dans tous les cas, mais qui doit être « <em>url-escaped</em> » (voir <a href="https://curl.se/libcurl/c/curl_easy_escape.html"><code>curl_easy_escape()</code></a> ; si <code>curl_easy_escape()</code> échoue, retourner <code>ERR_OUT_OF_MEMORY</code>) ;</p>
+</li>
+<li>
+<p>dans cet appel, <code>&lt;auth_key&gt;</code> est la clef d'authentification « hex-encodée » ;</p>
+</li>
+<li>
+<p>après l'appel, il vous faudra analyser/décomposer la réponse, laquelle sera en format JSON ; les valeurs sont encodées en représentation hexadécimale ;</p>
+</li>
+<li>
+<p>enfin, vous pourrez utiliser les fonctions du module <code>ckvs_crypt()</code> pour décoder le secret ;<br />
+<strong>n'oubliez pas d'utiliser <code>pps_printf()</code> et non <code>printf()</code> !</strong></p>
+</li>
+</ol>
+<p>En cas d'erreur :</p>
+<ul>
+<li>d'une fonction à nous, retournez son code d'erreur ;</li>
+<li>d'une fonction externe (curl ou JSON), affichez l'éventuel message d'erreur avec <code>pps_printf()</code> et retournez soit <code>ERR_OUT_OF_MEMORY</code> si c'est un problème d'allocation mémoire ou d'initialisation, soit <code>ERR_IO</code>.</li>
+</ul>
+<h3 id="etape-7-tests-finaux">Étape 7 : Tests finaux</h3>
+<p>Les tests suivants permettent une certaine couverture des cas d'erreur :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs https://cs212.epfl.ch stats
+</span><span>./cryptkvs https://cs212.epfl.ch get proust marcel
+</span><span>./cryptkvs https://cs212.epfl.ch get &#39;de beauvoir&#39; simone
+</span></code></pre>
+<p>Nous mettons également à votre disposition un second serveur retournant des réponses malformées. Ce serveur est accessible à l'adresse <code>http://cs212.epfl.ch</code> (attention : <strong>http</strong> et non pas <strong>https</strong> !). Les commandes suivantes doivent retourner une erreur :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs http://cs212.epfl.ch stats
+</span><span>./cryptkvs http://cs212.epfl.ch get proust marcel
+</span><span>./cryptkvs http://cs212.epfl.ch get invalid-json test
+</span></code></pre>
+<h1 id="second-rendu-du-projet">Second rendu du projet</h1>
+<p>Comme dit en introduction, le travail effectué jusqu'à la semaine passée constitue, y compris avec la révision du travail des semaines 4 à 6 déjà soumis, le <strong>second rendu</strong> du projet. </p>
+<p>Le délai pour effectuer ce rendu est fixé au <strong>dimanche 8 mai 23:59</strong>.</p>
+<p>Comme pour le premier rendu du projet, le plus simple pour effectuer ce rendu est de faire</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make submit2
+</span></code></pre>
+<p>(<strong>attention</strong> au <strong>2</strong> ici !) depuis votre répertoire <code>done/</code>, ou sinon d'ajouter vous-mêmes un tag <code>projet02_1</code> à votre commit de rendu (<strong>attention</strong> au <strong>2</strong> juste après <code>projet0</code> !) .</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 23&#x2F;05&#x2F;2022</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

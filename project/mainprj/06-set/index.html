@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>s. 6 : CryptKVS : la commande `set` | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/06-set/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "06 Set",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/06-set/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;piazza.com&#x2F;class&#x2F;kzfgffdjsc95by">Piazza</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>Général</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/bareme/">Évaluation</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Échauffement</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout01/">Semaine 1</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout02/">Semaine 2</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout03/">Semaine 3</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Projet</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">CryptKVS : description générale</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-stats/">s. 4 : CryptKVS : la commande `stats`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-get/">s. 5 : CryptKVS : la commande `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/06-set/">s. 6 : CryptKVS : la commande `set`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-new/">s. 7 &amp; 8 : CryptKVS : la commande `new`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/09-refactoring/">s. 9 : CryptKVS : refactoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/10-client/">s. 10 : CryptKVS webserver : API et client</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/11-server/">s. 11 &amp; 12 : CryptKVS webserver : `stats` &amp; `get`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/13-server-set/">s. 13 : CryptKVS webserver : `set`</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>s. 6 : CryptKVS : la commande `set`</h1>
+          
+          <p>Le but du travail de cette semaine est de rajouter la commande <code>set</code>, dont le but est d'associer (= écrire) une valeur à une clef.</p>
+<h1 id="description-des-fichiers-fournis-a-ecrire">Description des fichiers fournis / à écrire</h1>
+<p>Nous ne fournissons cette semaine aucun nouveau fichier (autres que les tests) ; mais
+vous avez modifié les fichiers <code>ckvs_io.c</code>, <code>ckvs_local.c</code> et <code>cryptkvs.c</code>
+(comme toujours, tous le travail doit être fait dans le répertoire <code>/done</code>).</p>
+<h1 id="description-du-travail-a-faire">Description du travail à faire</h1>
+<p>Pour rappel, les commandes répondent à la syntaxe générale :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cryptkvs &lt;database&gt; &lt;command&gt; [arg] [arg]
+</span></code></pre>
+<p>et vous avez déjà implémenté :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cryptkvs &lt;database&gt; stats 
+</span><span>cryptkvs &lt;database&gt; get &lt;key&gt; &lt;password&gt; 
+</span></code></pre>
+<p>Cette semaine, nous implémentons :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cryptkvs &lt;database&gt; set &lt;key&gt; &lt;password&gt; &lt;filename&gt;
+</span></code></pre>
+<p>La commande <code>set</code> doit </p>
+<ol>
+<li>s'assurer que la clef existe et que le mot de passe correspond ;</li>
+<li>régénérer la valeur <code>c2</code> (revoir <a href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">la description générale</a> et/ou <a href="https://projprogsys-epfl.github.io/project/mainprj/05-get/">le sujet de la semaine passée</a>) ; ceci améliore l'entropie du cryptage (ou plutôt évite une dégradation) ;</li>
+<li>lire le contenu de <code>&lt;filename&gt;</code> (cela constituera la valeur associée à la clef) et le stocker de manière encryptée dans <code>&lt;database&gt;</code> ;</li>
+<li>retourner un code d'erreur (ou pas).</li>
+</ol>
+<p>En cas d'erreur, la commande <code>set</code> retourne simplement un code d'erreur de la fonction <code>usage()</code>. Les erreurs possibles sont </p>
+<ul>
+<li><code>ERR_NOT_ENOUGH_ARGUMENTS</code> : lorsque l'utilitaire n'a pas les arguments nécessaires ;</li>
+<li><code>ERR_CORRUPT_STORE</code> : lorsque <code>&lt;database&gt;</code> ne correspond pas au format attendu ;</li>
+<li><code>ERR_KEY_NOT_FOUND</code> : lorsque <code>&lt;key&gt;</code> n'est pas présente dans <code>&lt;database&gt;</code> ;</li>
+<li><code>ERR_DUPLICATE_ID</code> : lorsque <code>&lt;password&gt;</code> ne peut être validé ;</li>
+<li><code>ERR_INVALID_FILENAME</code> : lorsque <code>&lt;filename&gt;</code> ne peut être lu ;</li>
+<li><code>ERR_IO</code> : en cas d'erreur retournée par l'OS et les fonctions POSIX ;</li>
+<li>et, comme toujours, <code>ERR_NONE</code> en cas de succès.</li>
+</ul>
+<h2 id="etape-par-etape">Etape par étape</h2>
+<h3 id="etape-1-une-nouvelle-commande">Etape 1 : une nouvelle commande</h3>
+<p>Travail similaire à la semaine passée. La commande <code>set</code> appelle la fonction <code>ckvs_local_set()</code>. </p>
+<h3 id="etape-2-modularisation-de-get-set">Etape 2 : modularisation de get/set</h3>
+<p>Dans <code>ckvs_local.c</code>, les fonctions « get » et « set » partageront une grande partie de leur fonctionnalité. Commencez par définir une fonction locale qui puisse être partagée par les deux fonctionnalités :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>int ckvs_local_getset(const char *filename, const char *key, const char *pwd, const char* set_value);
+</span></code></pre>
+<p>(Repartez du travail fait la semaine passée.)</p>
+<p>Lorsque le paramètre <code>set_value</code> est à <code>NULL</code>, cette fonction effectue un « get » ; dans le cas contraire elle effectue un « set » avec <code>set_value</code> pour valeur.</p>
+<p>Transformez ensuite <code>get</code> pour utiliser cette fonction ; puis vérifiez qu'il fonctionne toujours (repassez tous vos tests).</p>
+<h3 id="etape-3-lire-filename">Etape 3 : lire <code>&lt;filename&gt;</code></h3>
+<p>Avant d'appeler <code>ckvs_local_getset()</code>, <code>ckvs_local_set()</code> doit d'abord ouvrir <code>value_filename</code> et stocker son contenu, afin de le passer à cette première.</p>
+<p>Écrivez pour cela la fonction <code>read_value_file_content()</code> dans <code>ckvs_io.c</code> :</p>
+<ul>
+<li>le paramètre <code>filename</code> spécifie un fichier ASCII que vous devez ouvrir en lecture ;</li>
+<li>le paramètre <code>buffer_ptr</code> est un pointeur sur le contenu (ce pointeur est passé par référence) ;</li>
+<li>le paramètre <code>buffer_size</code> est la taille du contenu (passée par référence).</li>
+</ul>
+<p>Cette fonction <code>read_value_file_content()</code> doit :</p>
+<ul>
+<li>(après l'avoir ouvert,) récupérer la taille de ce fichier (<code>fseek()</code> + <code>ftell()</code>) ;</li>
+<li>allouer (dynamiquement) un tableau d'octets (<code>char</code>) à cette taille (pour y mettre le contenu).</li>
+</ul>
+<p>Vous pouvez ensuite lire le fichier en un seul appel POSIX ; il suffit d'avoir alloué un buffer assez grand. Attention toutefois : le contenu du buffer doit se terminer par un <code>'\0'</code>.<br />
+Affectez bien sûr les paramètres (contenu et taille) en conséquence.</p>
+<p>Une fois cette fonction écrite, <code>ckvs_local_set()</code> peut simplement l'appeler (puis appeler ensuite <code>ckvs_local_getset()</code>).</p>
+<h3 id="etape-4-regeneration-de-c2">Etape 4 : régénération de <code>c2</code></h3>
+<p>La valeur <code>c2</code> est garante d'une entropie maximale pour le contenu encrypté (pour autant qu'elle reste secrète, ce qui n'est pas une garantie absolue dans le cadre de ce projet <em>simplifié</em>, comme expliqué dans <a href="https://projprogsys-epfl.github.io/project/mainprj/04-main/">le descriptif général</a>).</p>
+<p>(Dans <code>ckvs_local_getset()</code>), en cas de <code>get</code>, <code>c2</code> est lue de la table (<code>ckvs_entry()</code>). En cas de <code>set</code>, <code>c2</code> doit être régénérée aléatoirement avec la fonction <code>RAND_bytes()</code> (fournie par <code>openssl/rand.h</code>).</p>
+<p>Si <code>RAND_bytes()</code> échoue, <code>ckvs_local_getset()</code> retourne <code>ERR_IO</code>.</p>
+<h3 id="etape-5-crypter-le-contenu-filename">Etape 5 : crypter le contenu <code>&lt;filename&gt;</code></h3>
+<p>Une fois que vous avez validé que le couple <code>&lt;key&gt; &lt;password&gt;</code> est bien présent dans la base (étape 2), il faut maintenant encrypter <code>set_value</code>.</p>
+<ul>
+<li>Allouez dynamiquement un buffer temporaire pour y stocker la valeur cryptée, en respectant bien les règles d'allocation spécifiées par <code>ckvs_client_crypt_value()</code> (ou alors réutilisez le tableau  de taille fixe à 1200 octets déjà utilisé la semaine passée ; la semaine 9 aura pour but de changer les allocations statiques en allocations dynamiques, vous pouvez donc, comme vous le souhaitez, laisser pour le moment cela de coté) ;</li>
+<li>appeler <code>ckvs_client_crypt_value()</code> pour crypter la donnée avec la clef symétrique. Attention, le <em>NULL byte</em> de la chaîne à encrypter doit être inclu dans le tableau passé à <code>ckvs_client_crypt_value()</code>.</li>
+</ul>
+<p>Pour valider unitairement cette étape (étape de debugging uniquement), allouer (préférablement dynamiquement, mais sinon de taille fixe -- à changer en semaine 9) un troisième buffer et décrypter le contenu crypté. Vérifier la correspondance.<br />
+Mettez ce code entre <code>#ifdef DEBUG</code> et <code>#endif</code> (chacun sur une ligne) :</p>
+<pre data-lang="C" style="background-color:#2b303b;color:#c0c5ce;" class="language-C "><code class="language-C" data-lang="C"><span style="color:#b48ead;">#ifdef</span><span> DEBUG
+</span><span>
+</span><span style="color:#65737e;">// ... votre 3e allocation + vérification ici
+</span><span>
+</span><span style="color:#b48ead;">#endif
+</span></code></pre>
+<p>et compilez (étape de debugging uniquement ; pas de façon permanente !) avec l'option <code>-DDEBUG</code>.</p>
+<h3 id="etape-6-ecriture-de-la-valeur-cryptee">Etape 6 : écriture de la valeur cryptée</h3>
+<p>Dans <code>ckvs_io.c</code>, implémentez</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>int ckvs_write_encrypted_value(struct CKVS *ckvs, struct ckvs_entry *e, 
+</span><span>    const unsigned char *buf, uint64_t buflen);
+</span></code></pre>
+<p>comme suit : </p>
+<ul>
+<li>la valeur encryptée sera stockée en fin du fichier <code>.ckvs</code> ; utilisez <code>fseek()</code> pour vous placer facilement à la fin du fichier ;</li>
+<li>le contenu peut être écrit avec un seul appel POSIX ;</li>
+<li>les champs <code>entry-&gt;value_off</code> et <code>entry-&gt;value_len</code> de la <code>struct ckvs_entry</code> doivent être mis à jour avec les valeurs correspondantes ;</li>
+<li>la dernière étape est d'écrire la struct entière <code>*e</code> dans le fichier <code>.ckvs</code> puisque 3 champs ont été modifiés (<code>c2</code>, <code>value_off</code> et <code>value_len</code>).</li>
+</ul>
+<p>Pour cela, implémentez (toujours dans <code>ckvs_io.c</code>) et utilisez une fonction utilitaire :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>static int ckvs_write_entry_to_disk(struct CKVS *ckvs, uint32_t idx);
+</span></code></pre>
+<p>chargée de ré-écrire dans le fichier <code>.ckvs</code> la valeur de l'entrée à l'index <code>idx</code>.  Il est essentiel que la structure soit écrite <em>au bon endroit</em> à l'intérieur du fichier (réfléchissez à la structure d'un fichier <code>.ckvs</code> --- nous vous conseillons de faire un dessin). Pour calculer <code>idx</code>, vous pouvez partir du principe que <code>e</code> est un pointeur à l'intérieur du tableau <code>entries</code>, continu en mémoire (et qui contient toutes les entrées). La différence entre ces deux adresses (<code>e</code> et <code>entries</code>) donne donc la bonne valeur.</p>
+<p>Pour valider, mettre à jour « thekey » avec le contenu d'un fichier.</p>
+<h2 id="tests">Tests</h2>
+<p>Les tests suivants permettent une certaine couverture des cas d'erreur</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./cryptkvs small.ckvs set thekey 1 ckvs.h
+</span><span>./cryptkvs small.ckvs get thekey 1
+</span><span>./cryptkvs small.ckvs set thekey 1 filedoesnotexist.h
+</span></code></pre>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 23&#x2F;05&#x2F;2022</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>
