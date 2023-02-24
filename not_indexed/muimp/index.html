@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Traitement d'images numériques | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/not_indexed/muimp/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Not_indexed",
+            "item": "https://projprogsys-epfl.github.io/not_indexed/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Muimp",
+            "item": "https://projprogsys-epfl.github.io/not_indexed/muimp/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+    
+      <!-- KaTeX -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+      <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+      <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    
+  
+
+</head>
+
+  
+    
+  
+
+<body class="page single">
+  
+    
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=15187">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+  
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xxl-8">
+        <article>
+          <div class="page-header">
+            <h1>Traitement d&#x27;images numériques</h1>
+          </div>
+          
+          <p>On souhaite avoir un programme permettant de créer une image numérique simplifiée, l'afficher (en mode texte), l'écrire et la lire depuis le disque ainsi que de lui appliquer un filtrage par convolution.</p>
+<p>Tout le code est écrit dans un seul fichier nommé <code>muimp.c</code> (pour « micro (<strong>\(\mu\)</strong>) <strong>im</strong>age <strong>p</strong>rocessor »).</p>
+<h2 id="i-creation-d-une-image">I. Création d'une image</h2>
+<p>Une image numérique est définie comme un tableau à 2 dimensions de taille <code>hauteur * largeur</code> contenant des pixels.</p>
+<p>Définissez un <em>type</em> <code>Pixel</code> correspondant à un pixel, lesquels ont une valeur réelle (<code>double</code>). Utilisez ensuite ce type pour créer une <em>structure de données</em> <code>Image</code> contenant un tableau à double entrée de <code>Pixel</code>. Ce tableau sera alloué statiquement aux dimensions définies dans des constantes (macros) <code>MAX_IMAGE_HEIGHT</code> et <code>MAX_IMAGE_WIDTH</code>, les deux de valeur 100.</p>
+<p><strong>Attention</strong>: <code>MAX_IMAGE_HEIGHT</code> et <code>MAX_IMAGE_WIDTH</code> définissent les dimensions <em>maximales</em>, mais pas forcément les dimensions exactes de l'image ! Vous devez donc ajouter deux attributs (<code>height</code> et <code>width</code>) à chaque image, correspondant aux dimensions exactes.</p>
+<p><strong>Note :</strong> l'allocation statique est une mauvaise chose en général, typiquement dans ce cas (objet de taille inconnue). Mais nous n'avons pas encore abordé en cours l'allocation dynamique, qui viendra plus tard. N'ayez donc pas l'impression que, parce que nous vous l'imposons dans ce premier devoir, l'allocation statique soit une bonne chose. Non ! Elle est effectivement à proscrire en général (sauf cas particuliers).</p>
+<p>Définissez ensuite une fonction <code>diamond</code> qui retourne une image remplie avec un losange au centre de l'image. La valeur des pixels à l'intérieur du losange est 1.0 et celle des pixels à l'extérieur du losange de 0.0 (cf. exemple dans la section suivante).</p>
+<p>Les dimensions de l'image ainsi que la taille de la diagonale du losange (on supposera les deux diagonales égales : c'est en fait un carré, pivoté de 45 degrés) doivent être passées (dans cet ordre) en arguments à la fonction <code>diamond</code>.</p>
+<p>Pour créer le losange, déterminez pour chaque ligne \(y_p\) de l'image les deux pixels de chaque bords du losange. Ces points \(P_1(x_1,y_p)\) et \(P_2(x_2,y_p)\) vérifient les équations suivantes : </p>
+<p>$$x_1 = x_c - (y_p - y_c + D / 2)$$</p>
+<p>$$x_2 = x_c + (y_p - y_c + D / 2)$$</p>
+<p>où \(D\) est la diagonale et \(C(x_c,y_c)\) le centre de l'image.</p>
+<p><strong>Consigne</strong> : Utiliser la symétrie horizontale du losange pour ne parcourir que la moitié des lignes de l'image.</p>
+<p><strong>Note :</strong> pour ne pas avoir d'ambiguïté sur le centre de l'image, on ne considérera que des images de taille impaire. Pour forcer cela, utiliser le code suivant :</p>
+<pre data-lang="C" style="background-color:#2b303b;color:#c0c5ce;" class="language-C "><code class="language-C" data-lang="C"><span style="color:#65737e;">// Make sure width and height are odd
+</span><span>width  |= </span><span style="color:#d08770;">1</span><span>;
+</span><span>height |= </span><span style="color:#d08770;">1</span><span>;
+</span></code></pre>
+<p>Dans le <code>main()</code>, appliquer la fonction losange à l'image précédemment définie. Demandez à l'utilisateur de choisir les dimensions de l'image, ainsi que la taille de la diagonale (plus petite que la taille de l'image). N'oubliez pas d'effectuer un <em>contrôle strict</em> des entrées et traiter les cas particuliers ! Votre programme <em>devra</em> être robuste.</p>
+<p>Et pensez à modulariser votre code... (ça devrait aller de soit, on ne vous le rappellerait plus !)</p>
+<h2 id="ii-affichage-de-l-image">II. Affichage de l'image</h2>
+<p>Dans une vraie image numérique, la valeur de chaque pixel représente une couleur. Pour simplifier, nous utiliserons ici des symboles prédéfinis en fonction de la valeur du pixel.</p>
+<p>Nous vous demandons d'étendre votre fichier <code>muimp.c</code> précédent en définissant une fonction <code>display</code> qui prend en argument un flot (<code>FILE*</code>) et une image numérique telle que définie précédemment et qui, pour chaque pixel de l'image, affiche dans le flot :</p>
+<ul>
+<li>«<code>. </code>» si sa valeur est 0, </li>
+<li>«<code>+ </code>» si sa valeur est 1, </li>
+<li>«<code>* </code>» sinon.</li>
+</ul>
+<p>Dans le <code>main()</code>, utiliser la fonction <code>display</code> pour afficher sur la sortie standard l'objet image créé précédemment. Par exemple, pour une image de <code>11 * 17</code> et une diagonale de <code>11</code>, vous obtiendrez le résultat suivant :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>. . . . . . . . + . . . . . . . .
+</span><span>. . . . . . . + + + . . . . . . .
+</span><span>. . . . . . + + + + + . . . . . .
+</span><span>. . . . . + + + + + + + . . . . .
+</span><span>. . . . + + + + + + + + + . . . .
+</span><span>. . . + + + + + + + + + + + . . .
+</span><span>. . . . + + + + + + + + + . . . .
+</span><span>. . . . . + + + + + + + . . . . .
+</span><span>. . . . . . + + + + + . . . . . .
+</span><span>. . . . . . . + + + . . . . . . .
+</span><span>. . . . . . . . + . . . . . . . .
+</span></code></pre>
+<h2 id="iii-ecriture-et-lecture-d-images-depuis-un-fichier">III. Ecriture et lecture d'images depuis un fichier</h2>
+<p>Écrivez une fonction <code>write_to_file</code> qui prend un nom fichier et une image en paramètre et qui écrit dans le fichier :</p>
+<ul>
+<li>la largeur de l'image, sur une ligne ;</li>
+<li>la hauteur de l'image, sur une ligne ;</li>
+<li>le dessin de l'image comme ci-dessus.</li>
+</ul>
+<p>En cas d'erreur (ouverture du fichier), la fonction <code>write_to_file</code> retournera un entier non nul. Elle retournera <code>0</code> en cas de succès.</p>
+<p>Écrivez également une fonction <code>read_from_file</code> qui prend un nom de fichier (correspondant au format précédent, y compris les blancs), lit l'image depuis le fichier et la retourne.<br />
+En cas d'erreur (soit on n'arrive pas à lire les tailles, soit elles sont trop grandes, soit on n'arrive pas à lire toute l'image, etc.), la fonction retournera une image dont la largeur ou la hauteur sont à <code>0</code>.</p>
+<p>Dans le <code>main()</code>, demandez à l'utilisateur de fournir un nom de fichier, utilisez la fonction <code>write_to_file</code> pour écrire l'objet image créé précédemment dans ce fichier.<br />
+Ensuite, ouvrez ce même fichier en lecture et utilisez la fonction <code>read_from_file</code> pour lire l'image à nouveau et l'afficher. Elle devrait être identique à l'image affichée ci-dessus.</p>
+<p>Là aussi, n'oubliez pas d'effectuer un <em>contrôle strict</em> de toutes les informations et situations. Votre programme <em>doit</em> toujours être robuste...</p>
+<h2 id="iv-filtrage-d-image">IV. Filtrage d'image</h2>
+<p>Une méthode très utilisée en traitement d'images numériques est l'utilisation du « filtrage par convolution ». Cela consiste à calculer, pour chaque pixel de l'image, la somme des produits de chaque point du « masque de convolution » avec le point de l'image correspondant :</p>
+<p><img src="/img/other/filtrage.png" alt="Exemple de filtrage sur image" /></p>
+<p>Si l'on note \(g_{i,j}\) la valeur du pixel \((i,j)\) de l'image filtrée, \(a_{i,j}\) celle du pixel de l'image d'origine, et \(b\) le masque (de taille \(N\)), alors :</p>
+<p>$$g_{i,j} = \sum_{k=1}^{N} \sum_{l=1}^{N} a_{i+\left\lfloor N/2 \right\rfloor-k+1,j+\left\lfloor N/2 \right\rfloor-l+1} \cdot b_{k,l}$$</p>
+<p>(la formule est donnée ici en « indices mathématiques », compris entre 1 et la taille correspondante ; si l'on indexe entre 0 et taille moins 1, on aurait :
+$$g_{i,j} = \sum_{k=0}^{N-1} \sum_{l=0}^{N-1} a_{i+\left\lfloor N/2 \right\rfloor-k,j+\left\lfloor N/2 \right\rfloor-l} \cdot b_{k,l}$$
+).</p>
+<p>On vous demande d'étendre à nouveau votre fichier <code>muimp.c</code> pour ajouter une fonction de filtrage d'image.</p>
+<p>Pour commencer, définissez dans le <code>main()</code> un masque de filtrage tel que celui-ci : </p>
+<pre data-lang="C" style="background-color:#2b303b;color:#c0c5ce;" class="language-C "><code class="language-C" data-lang="C"><span> -</span><span style="color:#d08770;">2.0   </span><span>-</span><span style="color:#d08770;">2.0   </span><span>-</span><span style="color:#d08770;">2.0 
+</span><span>  0</span><span style="color:#d08770;">.0    0.0    0.0 
+</span><span>  2</span><span style="color:#d08770;">.0    2.0    2.0
+</span></code></pre>
+<p>Pour simplifier, utilisez le type <code>Image</code> pour représenter un masque de filtrage. </p>
+<p>Définissez ensuite une fonction <code>filter</code> prenant en paramètre une image et un masque et qui retourne une nouvelle image, résultat du filtrage correspondant à l'application de la formule ci-dessus.</p>
+<p>Pour les points situés sur le bord de l'image, la formule précédente utilise des valeurs indéfinies (points hors de l'image).<br />
+Dans ce cas, nous considérons l'image comme périodique : la valeur du pixel suivant le dernier pixel de chaque ligne et colonne est la valeur du premier pixel de la même ligne/colonne (utilisez l'opérateur « modulo »).</p>
+<p>Si l'on applique ce filtre à l'image précédente, on devrait obtenir :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>. . . . . . * * * * * . . . . . .
+</span><span>. . . . . * * * * * * * . . . . .
+</span><span>. . . . * * * * . * * * * . . . .
+</span><span>. . . * * * * . . . * * * * . . .
+</span><span>. . * * * * . . . . . * * * * . .
+</span><span>. . . . . . . . . . . . . . . . .
+</span><span>. . * * * * . . . . . * * * * . .
+</span><span>. . . * * * * . . . * * * * . . .
+</span><span>. . . . * * * * . * * * * . . . .
+</span><span>. . . . . * * * * * * * . . . . .
+</span><span>. . . . . . * * * * * . . . . . .
+</span></code></pre>
+<p>Terminez en complétant le <code>main()</code> pour afficher l'image ci-dessus en appelant la fonction de filtrage sur l'image de départ.</p>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 24&#x2F;02&#x2F;2023</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

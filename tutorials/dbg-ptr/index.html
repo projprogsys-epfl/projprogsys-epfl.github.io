@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Débogage dynamique | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/tutorials/dbg-ptr/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Tutorials",
+            "item": "https://projprogsys-epfl.github.io/tutorials/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Dbg Ptr",
+            "item": "https://projprogsys-epfl.github.io/tutorials/dbg-ptr/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+    
+  
+
+<body class="page single">
+  
+    
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=15187">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+  
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xxl-8">
+        <article>
+          <div class="page-header">
+            <h1>Débogage dynamique</h1>
+          </div>
+          
+          <p>Le but de ce tutoriel est de vous apprendre à utiliser des outils de débogage des aspects mémoire (dynamiques, donc ; « <em>run-time</em> »). Mais avant tout, n'oubliez pas déjà d'utiliser <a href="https://projprogsys-epfl.github.io/tutorials/gdb/">les autres outils présentés pour le débogage</a> : les options du compilateur, l'analyseur statique et <code>gdb</code>.</p>
+<p>Dans ce tutoriel ci, nous allons présenter <a href="https://github.com/google/sanitizers/wiki/AddressSanitizer"><em>Address Sanitizer</em> (alias « <em>ASAN</em> »)</a> et <a href="https://valgrind.org/"><em>Valgrind</em></a>.</p>
+<p>Mais pour cela, nous allons avoir besoin de bugs mémoire. Téléchargez <a href="/source/complexe.c">ici un programme</a> comprenant un florilège d'erreurs sur les pointeurs :</p>
+<ol>
+<li>utilisation de pointeur non initialisé ;</li>
+<li>retour d'adresse de variable locale ;</li>
+<li>utilisation de pointeur désalloué ;</li>
+<li>débordement « de tampon » ;</li>
+<li>désallocation de pointeur sur la pile (alloué statiquement) ;</li>
+<li>fuite de mémoire (pointeur non désalloué).</li>
+</ol>
+<p>Commencez par regarder le programme fourni et comprendre son fonctionnement et ses erreurs (indiquées).</p>
+<h1 id="les-bonnes-vielles-methodes">Les bonnes vielles méthodes</h1>
+<p>Avant d'utiliser de nouveaux outils, essayez de compiler puis d'analyser statiquement le code fourni.</p>
+<p>Avec ces outils (options du compilateur et <code>scan-build</code>), vous devriez facilement trouver les erreurs 1 et 2 ci-dessus.<br />
+Laissez les pour le moment.</p>
+<h1 id="asan">ASAN</h1>
+<p><a href="https://github.com/google/sanitizers/wiki/AddressSanitizer"><em>Address Sanitizer</em> (alias « <em>ASAN</em> »)</a> est un outil d'analyse des défauts d'accès mémoire utilisant le compilateur. Pour l'utiliser, il faut ajouter l'option</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>-fsanitize=address
+</span></code></pre>
+<p>au compilateur.</p>
+<p>Compilez avec cette option (ainsi que <code>-g</code>, en tout cas, et toutes les autres options que vous souhaitez), puis lancez le programme. Vous devriez obtenir quelque chose comme :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>3-2i
+</span><span>0
+</span><span>-5+i
+</span><span>AddressSanitizer:DEADLYSIGNAL
+</span><span>=================================================================
+</span><span>==165699==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000 (pc 0x55bf9afe15e8 bp 0x7ffd6a193c50 sp 0x7ffd6a193c30 T0)
+</span><span>==165699==The signal is caused by a READ memory access.
+</span><span>==165699==Hint: address points to the zero page.
+</span><span>    #0 0x55bf9afe15e7 in affiche complexe.c:76
+</span><span>    #1 0x55bf9afe13ab in main complexe.c:38
+</span><span>    #2 0x7f8874e2cbba in __libc_start_main ../csu/libc-start.c:308
+</span><span>    #3 0x55bf9afe1159 in _start (complexe+0x1159)
+</span><span>
+</span><span>AddressSanitizer can not provide additional info.
+</span><span>SUMMARY: AddressSanitizer: SEGV complexe.c:76 in affiche
+</span><span>==165699==ABORTING
+</span></code></pre>
+<p>Cela vous dit qu'il y a un « <em>Segmentation Fault</em> » (SEGV) dans <code>affiche()</code> à la ligne 76, et que cette fonction a été appelée depuis la ligne 38 du <code>main()</code>.<br />
+Voyez-vous de quoi il s'agit ? </p>
+<p>Nous allons y revenir plus tard, mais voyons d'abord l'autre outil.</p>
+<h1 id="valgrind">Valgrind</h1>
+<p><a href="https://valgrind.org/"><em>Valgrind</em></a> est une suite d'outils d'analyse dynamique de code utilisant une machine virtuelle et la « compilation a la volée » (just-in-time (JIT) compilation).</p>
+<p>Il s'utilise en lançant simplement <code>valgrind</code> devant le nom du programme à exécuter. Pour cela :</p>
+<ol>
+<li>
+<p>supprimer l'exécutable précédemment compilé (car on ne va pas utiliser en même temps valgrind et ASAN !) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> rm complexe
+</span></code></pre>
+</li>
+<li>
+<p>recompilez mais <strong>SANS</strong> l'option <code>-fsanitize=address</code> (par contre gardez au moins l'option <code>-g</code>) ;</p>
+</li>
+<li>
+<p>lancez :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> valgrind ./complexe
+</span></code></pre>
+</li>
+</ol>
+<p>Vous devriez obtenir quelque chose comme :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>==165821== Memcheck, a memory error detector
+</span><span>==165821== Copyright (C) 2002-2017, and GNU GPL&#39;d, by Julian Seward et al.
+</span><span>==165821== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+</span><span>==165821== Command: ./complexe
+</span><span>==165821== 
+</span><span>3-2i
+</span><span>==165821== Use of uninitialised value of size 8
+</span><span>==165821==    at 0x109336: affiche (complexe.c:76)
+</span><span>==165821==    by 0x1091BE: main (complexe.c:38)
+</span><span>==165821== 
+</span><span>==165821== Use of uninitialised value of size 8
+</span><span>==165821==    at 0x109358: affiche (complexe.c:76)
+</span><span>==165821==    by 0x1091BE: main (complexe.c:38)
+</span><span>==165821== 
+</span><span>[... plusieurs répétitions possibles en fonction de votre machine ...]
+</span><span>0  // ou une autre valeur
+</span><span>-5+i
+</span><span>==165821== Invalid read of size 8
+</span><span>==165821==    at 0x109336: affiche (complexe.c:76)
+</span><span>==165821==    by 0x109207: main (complexe.c:44)
+</span><span>==165821==  Address 0x0 is not stack&#39;d, malloc&#39;d or (recently) free&#39;d
+</span><span>==165821== 
+</span><span>==165821== 
+</span><span>==165821== Process terminating with default action of signal 11 (SIGSEGV)
+</span><span>==165821==  Access not within mapped region at address 0x0
+</span><span>==165821==    at 0x109336: affiche (complexe.c:76)
+</span><span>==165821==    by 0x109207: main (complexe.c:44)
+</span><span>==165821==  If you believe this happened as a result of a stack
+</span><span>==165821==  overflow in your program&#39;s main thread (unlikely but
+</span><span>==165821==  possible), you can try to increase the size of the
+</span><span>==165821==  main thread stack using the --main-stacksize= flag.
+</span><span>==165821==  The main thread stack size used in this run was 8388608.
+</span><span>==165821== 
+</span><span>==165821== HEAP SUMMARY:
+</span><span>==165821==     in use at exit: 0 bytes in 0 blocks
+</span><span>==165821==   total heap usage: 1 allocs, 1 frees, 1,024 bytes allocated
+</span><span>==165821== 
+</span><span>==165821== All heap blocks were freed -- no leaks are possible
+</span><span>==165821== 
+</span><span>==165821== Use --track-origins=yes to see where uninitialised values come from
+</span><span>==165821== For lists of detected and suppressed errors, rerun with: -s
+</span><span>==165821== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 0 from 0)
+</span><span>Erreur de segmentation
+</span></code></pre>
+<p>On y voit plus de choses entre l'affichage de <code>a</code> (<code>3-2i</code>) et les deux affichages suivants, et même aussi autre chose avant le crash final. De quoi s'agit-il ?</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>==165821== Use of uninitialised value of size 8
+</span><span>==165821==    at 0x109336: affiche (complexe.c:76)
+</span><span>==165821==    by 0x1091BE: main (complexe.c:38)
+</span></code></pre>
+<p>vous dit que dans l'appel à la fonction <code>affiche()</code> réalisé à la ligne 31 du <code>main()</code>, vous utilisez une valeur non initialisée.<br />
+Il vous le dit même au moins deux fois de suite. Pourquoi ?<br />
+Simplement parce que (1) le pointeur <code>p_b</code> n'est pas initialisé (première erreur) et (2) la valeur pointée (adresse quelconque) ne l'a pas non plus été (seconde erreur). Ensuite, en fonction de cette valeur non initialisée, plusieurs lignes de <code>affiche()</code> sont encore exécutées (ou pas), donnant autant de messages d'erreur.</p>
+<p>Enfin le :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>==165821== Invalid read of size 8
+</span><span>==165821==    at 0x109336: affiche (complexe.c:76)
+</span><span>==165821==    by 0x109207: main (complexe.c:44)
+</span><span>==165821==  Address 0x0 is not stack&#39;d, malloc&#39;d or (recently) free&#39;d
+</span></code></pre>
+<p>juste avant le crash, vous dit justement que vous lisez 8 octets (<code>size 8</code>, soient 64 bits) invalides lors de l'appel <code>affiche()</code> à la ligne 44 du <code>main()</code>. C'est la même chose que ce que nous avions déjà vu avec les options du compilateur, l'analyse statique et aussi ASAN (c'est une erreur tellement grosse que tout le monde la voit ! <code>;-)</code>).</p>
+<p>Il est maintenant temps de corriger ce programme.</p>
+<h1 id="exemple-de-correction">Exemple de correction</h1>
+<p>Je vous conseille de toujours commencer par corriger les erreurs détectées avec les outils les plus simples en premier.</p>
+<h2 id="les-options-du-compilateur">Les options du compilateur</h2>
+<p>Normalement, si vous avez suivi les conseils des semaines précédentes, vous devriez compiler avec assez d'options pour trouver facilement l'erreur de retour d'adresse de variable locale.</p>
+<p>Corrigez la (supprimez sans autre la fonction <code>bad_addition()</code> et son appel), puis recompilez. Normalement, cela devrait compiler sans warning (majeur, ceux qui ont <code>-Wcast-qual</code>, n'utilisez pas cette option ici).</p>
+<h2 id="l-analyseur-statique">L'analyseur statique</h2>
+<p>Utilisez l'analyseur statique (<code>scan-build</code> ; revoir si nécessaire <a href="https://projprogsys-epfl.github.io/tutorials/gdb/">les autres outils présentés pour le débogage</a>) pour trouver une autre erreur. Corrigez la (p.ex. en supprimant la ligne 37).</p>
+<p>Relancez l'analyseur statique. Il en trouve une autre !<br />
+Corrigez la également (p.ex. en déplaçant la ligne du <code>free</code>).</p>
+<p>Relancez à nouveau l'analyseur statique. Il en trouve encore une autre !!<br />
+Corrigez la aussi (suppression de la ligne).</p>
+<p>Relancez encore une fois l'analyseur statique. Il arrive encore à en trouver deux autres !!!!<br />
+Corrigez les aussi (suppression de la ligne 42 et ajout d'un free à la fin).</p>
+<p>Relancez pour la dernière fois l'analyseur statique.  Ca y est, ça passe !</p>
+<p>Bilan à ce stade : 6 erreurs sur 7 trouvées.</p>
+<h2 id="asan-1">ASAN</h2>
+<p>Compilez en ajoutant ASAN et lancez le programme.</p>
+<p>Il trouve le buffer overflow :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>==178554==ERROR: AddressSanitizer: heap-buffer-overflow on address [...]
+</span><span>WRITE of size 16 at [...]
+</span><span>    #0 0x556e52e43592 in main complexe.c:56
+</span><span>[...]
+</span></code></pre>
+<p>Laissez la pour le moment et voyons ce que dit <code>valgrind</code>.</p>
+<h2 id="valgrind-1">valgrind</h2>
+<p>Supprimez l'exécutable et recompilez le sans ASAN ; puis lancez le avec <code>valgrind</code>.
+Il la trouve aussi :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>==178672== Invalid write of size 8
+</span><span>==178672==    at 0x1092D3: main (complexe.c:56)
+</span><span>==178672==  Address 0x4a39540 is 0 bytes after a block of size 32 alloc&#39;d
+</span><span>==178672==    at 0x4838B65: calloc (vg_replace_malloc.c:762)
+</span><span>==178672==    by 0x109290: main (complexe.c:53)
+</span><span>==178672== 
+</span><span>==178672== Invalid write of size 8
+</span><span>==178672==    at 0x1092D6: main (complexe.c:56)
+</span><span>==178672==  Address 0x4a39548 is 8 bytes after a block of size 32 alloc&#39;d
+</span><span>==178672==    at 0x4838B65: calloc (vg_replace_malloc.c:762)
+</span><span>==178672==    by 0x109290: main (complexe.c:53)
+</span></code></pre>
+<p>C'est la même erreur que celle pointée par ASAN, mais valgrind la voit en 2 écritures de 8_octets, alors que ASAN la reportée comme une écriture de taille 16 octets. C'est une question de point de vue (les deux champs du <code>Complexe</code>, ou tout le <code>Complexe</code> lui-même).</p>
+<p>Corrigez l'erreur et retestez avec ASAS et avec valgrind.</p>
+<h2 id="asan-ou-valgrind">ASAN ou valgrind ?</h2>
+<p>C'est une question de goût. A vous de voir à l'usage.</p>
+<p>Y a-t-il des erreurs que l'un voit et pas l'autre ? Personnellement, je n'en sais rien. Et j'utilise les deux pour être sûr <code>;-)</code></p>
+<p>Ces outils peuvent aussi détecter les fuites de mémoire (que l'analyseur statique auraient ratées). Par exemple (supprimez les free que vous aviez ajouté) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>valgrind --leak-check=full ./complexe
+</span></code></pre>
+<p>(ASAN n'a a priori pas besoin d'option supplémentaire. Si ce n'est pas le cas sur votre machine, faites :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>export ASAN_OPTIONS=detect_leaks=1
+</span></code></pre>
+<p>)</p>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 24&#x2F;02&#x2F;2023</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

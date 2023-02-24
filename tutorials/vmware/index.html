@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Creation d'une machine virtuelle VMWare | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/tutorials/vmware/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Tutorials",
+            "item": "https://projprogsys-epfl.github.io/tutorials/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Vmware",
+            "item": "https://projprogsys-epfl.github.io/tutorials/vmware/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+    
+  
+
+<body class="page single">
+  
+    
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=15187">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+  
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xxl-8">
+        <article>
+          <div class="page-header">
+            <h1>Creation d&#x27;une machine virtuelle VMWare</h1>
+          </div>
+          
+          <h2 id="installation-de-vmware">Installation de VMWare</h2>
+<p>L'installation de VMWare (Fusion sur OSX, Worksation Player sur Windows ou Linux) est normalement assez facile. </p>
+<p><strong>Depuis 2021, VMware n'est plus disponible sous license générale pour les étudiants de l'EPFL.  L'utilisation de Virtualbox (gratuit) est recommandée.</strong></p>
+<p>A noter que certaines machines à processeur Intel (genre HP, Lenovo, etc.) peuvent nécessiter la modification du paramètre « <em>Intel Virtualization</em> » (ou mot similaire) dans le BIOS. Commencez par l'installation indiquée et si nécessaire (message de VMWare) redémarrer pour aller modifier le BIOS.</p>
+<h2 id="creation-d-une-machine-virtuelle-pour-le-cours-version-fusion-sur-osx">Création d'une machine virtuelle pour le cours (version Fusion sur OSX)</h2>
+<ul>
+<li>
+<p>Téléchargez une image Ubuntu LTS depuis <a href="https://www.ubuntu.com/download/desktop">leur site de téléchargement</a>.</p>
+</li>
+<li>
+<p>Démarrez VMWare Fusion ;</p>
+</li>
+<li>
+<p><em>File</em> -&gt; <em>New</em> -&gt; <em>Install from disk or image</em> ;</p>
+</li>
+<li>
+<p>Maintenant vous pouvez choisir l'image ISO Ubuntu précédemment téléchargée sur votre disque ;</p>
+</li>
+<li>
+<p>Sélectionnez <em>Easy Install</em>, entrez le mot de passe, et cochez la check-box pour partager les fichiers avec votre  ordinateur « host » ;</p>
+</li>
+<li>
+<p>Sélectionnez « <em>Customize Settings</em> » avec les option suivantes :</p>
+<ul>
+<li><em>Processors and Memory</em> : au moins 2_Go de mémoire, mais pas plus que la moitié de votre mémoire totale (la machine virtuelle peut utiliser tout les processeurs) ;</li>
+<li><em>Hard Disk</em> : sélectionnez au moins 20 Go ;</li>
+<li>Sélectionnez l'endroit sur votre disk pour sauvegarder votre VM</li>
+</ul>
+</li>
+<li>
+<p>Après l'instalation (ça peut prendre un peu de temps), vous pouver définir la plus haute résolution de votre écran dans la VM (<em>System settings</em> -&gt; <em>Display</em>).</p>
+</li>
+<li>
+<p>Assurez vous que le clavier soit correctement configuré (<em>System settings</em> -&gt; <em>Region&amp;Language</em> -&gt; <em>Input Sources</em>)</p>
+</li>
+<li>
+<p>Faites une mise à jour, soit par l'outil de mise à jour (<em>software updater</em>), soit « à la main » dans un terminal :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  sudo apt update
+</span><span>  sudo apt upgrade -y
+</span></code></pre>
+</li>
+<li>
+<p>Assurez vous que les dossier du 'host' soit visible dans le directory '/mnt/hgfs'.  Si ce n'est pas le cas, suivre les instructions <a href="https://askubuntu.com/questions/1239726/windows-host-shared-folder-in-ubuntu-20-04">ici</a>.</p>
+</li>
+<li>
+<p>Pour finir, installez les outils nécessaires pour le cours :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  apt install build-essential clang check wdiff colordiff git openssh-client manpages manpages-dev doxygen curl
+</span><span>  apt install libssl-dev libssl-doc libcurl4-openssl-dev libjson-c-dev
+</span></code></pre>
+</li>
+</ul>
+<h2 id="premiere-compilation">Première compilation</h2>
+<p>Vous pouvez maintenant compiler votre projet sur votre VM, soit en accèdant à un disque local (Périphérique -&gt; Dossiers partagés -&gt; Règlages des dossiers partagés), soit en clonant votre dépôt GitHub.</p>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 24&#x2F;02&#x2F;2023</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

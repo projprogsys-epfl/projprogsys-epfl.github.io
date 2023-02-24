@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Semaine 2 | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/warmup/handout02/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Warmup",
+            "item": "https://projprogsys-epfl.github.io/project/warmup/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "Handout02",
+            "item": "https://projprogsys-epfl.github.io/project/warmup/handout02/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=15187">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>Général</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/bareme/">Évaluation</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Échauffement</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/warmup/handout01/">Semaine 1</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/warmup/handout02/">Semaine 2</a></li>
+                                 
+                              
+                            
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>Semaine 2</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>Cette semaine, nous souhaitons vous faire approfondir la compilation séparée (<code>Makefile</code>) et utiliser une seconde bibliothèque qui sera nécessaire plus tard à notre projet (<code>libfuse</code>). Les objectifs pédagogiques visés par cette semaine sont :</p>
+<ol>
+<li>
+<p>que vous connaissiez les bases des <code>Makefile</code> : savoir lire un <code>Makefile</code> simple et savoir le compléter sur des cas simples ;</p>
+</li>
+<li>
+<p>être prêt(e)s pour l'utilisation de la bibliothèque <code>libfuse</code> lorsque ce sera nécessaire (semaine 8) ; s'assurer que tout l'environnement nécessaire est déjà bien en place.</p>
+</li>
+</ol>
+<p>Nous vous proposons pour cela trois étapes :</p>
+<ol>
+<li>comprendre (lecture) puis compléter un <code>Makefile</code> d'un projet très simple ;</li>
+<li>écrire le <code>Makefile</code> d'un projet plus ambitieux déjà fourni ;</li>
+<li>comprendre un exemple simple fourni utilisant <code>libfuse</code>.</li>
+</ol>
+<p>Vous aurez à rendre le(s) code(s) correspondant(s), avec ceux de la semaine passée et de la semaine suivante, d'ici au <strong>dimanche 19 mars 23:59</strong>.</p>
+<h2 id="materiel-fourni">Matériel fourni</h2>
+<p><strong>Note :</strong>
+Pour tout ce qui concerne <code>git</code> et son fonctionnement, n'hésitez pas à revoir <a href="https://projprogsys-epfl.github.io/tutorials/git-recitation/">cette page complémentaire</a> si nécessaire.<br />
+<strong>[fin de note]</strong></p>
+<p>Pour récupérez les fichiers fournis pour cette semaine, il vous faut mettre à jour votre dépôt. Pour cela :</p>
+<ol>
+<li>
+<p>assurez vous avoir <code>commit</code> et <code>push</code> tout le code que vous avez modifié et que vous souhaitez sauvegarder/publier dans git ; il ne s'agit pas ici d'ajouter tout et n'importe quoi (<strong>pas</strong> d'exécutable, ni de fichier <code>.o</code> !!), mais bien de choisir <strong>quelques</strong> fichiers <em>source</em> (<code>.c</code>, <code>.h</code> ou <code>Makefile</code>) <strong>bien choisis</strong> (<code>git add</code> spécifique) ; demandez de l'aide si nécessaire ;</p>
+</li>
+<li>
+<p>une fois publié vos codes voulus, récupérez le code fourni via :</p>
+</li>
+</ol>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">git</span><span> pull
+</span></code></pre>
+<p>Vous allez alors avoir un nouveau répertoire : <code>provided</code>.
+Ce répertoire contient (et contiendra) le <em>nouveau</em> matériel fourni. <strong>Ce répertoire (<code>provided</code>) ne doit en AUCUN CAS être modifié</strong>. Recopiez plutôt, au fur et à mesure et lorsque nécessaire, les éléments qu'il contient vers votre répertoire <code>done</code> et travaillez uniquement dans votre répertoire <code>done</code>.</p>
+<p>Ce dépôt contient deux répertoires :</p>
+<ul>
+<li>
+<p>le répertoire <code>bigprj</code> qui contient déjà un « gros » projet complet, dont vous n'aurez à écrire que le <code>Makefile</code> (étape II ci-dessous ; mais commencez au préalable par les exemples/exercices, plus simples, du <a href="https://projprogsys-epfl.github.io/tutorials/make/">tutoriel</a>, ce qui correspond à l'étape I ci-dessous) ;</p>
+</li>
+<li>
+<p>le répertoire <code>fuse</code> contenant le fichier <code>hello.c</code> pour tester l'installation de la <code>libfuse</code> (étape III ci-dessous) et son  <code>Makefile</code>.</p>
+</li>
+</ul>
+<h2 id="i-comprendre-puis-ecrire-des-makefile-simples">I. Comprendre puis écrire des <code>Makefile</code> simples</h2>
+<p>Commencez par voir (ou revoir) <a href="https://projprogsys-epfl.github.io/tutorials/make/">la documentation déjà fournie la semaine passée</a>.
+Suivez (et comprenez bien) les exemples 1 et 2, puis les exercices 1 et 2.</p>
+<p>Enfin, faites l'exercice 3. Ce <code>Makefile</code> de <code>done/ex_multiples</code> constitue la première partie de votre rendu de cette semaine.</p>
+<h2 id="ii-savoir-rentrer-dans-un-plus-gros-projet">II. Savoir rentrer dans un plus gros projet</h2>
+<p>Une des compétences qui vous sera aussi utile à l'avenir (hors de ce cours) est de savoir appréhender de gros projets déjà existants. Dans cet esprit, et aussi afin de vous faire pratiquer encore un peu plus les <code>Makefile</code>, nous fournissons (dans <code>provided/bigprj</code>) un projet C déjà existant, dont vous avez à écrire le <code>Makefile</code> (à faire dans <code>done/bigprj</code> -- pour rappel, le répertoire <code>provided</code> <strong>NE</strong> doit <strong>PAS</strong> être modifié).</p>
+<p><strong>REMARQUE IMPORTANTE :</strong> le code fourni ici est soumis à droit d'auteur et ne doit en aucun cas être recopié ailleurs, ni réutilisé en aucune façon.<br />
+(Il est par ailleurs critiquable de plusieurs points de vue et n'est donc <em>pas du tout</em> fourni en tant que source d'inspiration...)<br />
+Il vous est fourni <em>uniquement</em> pour que vous écriviez un <code>Makefile</code> permettant de le compiler.</p>
+<p>Le code fourni utilise des sous-répertoires et une fonction de C99 (<code>roundf()</code>).</p>
+<p>Pour indiquer de rechercher des fichiers d'en-tête dans des sous-répertoires, il faut ajouter une option <code>-I</code> par sous-répertoire voulu. Par exemple, lors de la compilation de <code>machin.c</code>, pour demander au compilateur de rechercher un fichier d'en-tête dans le sous-répertoire <code>truc</code>, il faut faire :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -c -I truc machin.c -o machin.o
+</span></code></pre>
+<p>(Voir aussi la variable <code>CFLAGS</code> dans <a href="https://projprogsys-epfl.github.io/tutorials/make/">la documentation sur <code>make</code> fournie la semaine passée</a>.)</p>
+<p>Pour compiler suivant la norme C99 (ou au dessus), passer l'option <code>-std=c99</code> (ou <code>-std=c17</code> ou <code>-std=c2x</code>) au compilateur (voir la variable <code>CFLAGS</code>).</p>
+<p>Enfin, pour pouvoir utiliser la fonction <code>roundf()</code> de C99, il faut faire l'édition de liens avec la bibliothèque mathématique en ajoutant <code>-lm</code>.
+(Voir aussi la variable <code>LDLIBS</code> dans <a href="https://projprogsys-epfl.github.io/tutorials/make/">la documentation sur <code>make</code> fournie la semaine passée</a>.)</p>
+<p><strong>Notes :</strong> </p>
+<ol>
+<li>
+<p>Le code fourni compile avec moult « <em>warnings</em> ». Nous <strong>ne</strong> vous demandons <strong>pas</strong> de corriger ces erreurs, mais simplement d'écrire un <code>Makefile</code> qui parvient à produire un exécutable <code>main</code>.</p>
+</li>
+<li>
+<p>Il n'est pas nécessaire de lancer le <code>main</code> en question. Si vous l'avez fait, vous pouvez simplement le quitter en tapant <code>Ctrl-C</code>.</p>
+</li>
+<li>
+<p>Pour avoir tous les points, votre <code>Makefile</code> devra non seulement produire un exécutable <code>main</code> lorsque l'on tape <code>make</code>, mais aussi <em>avoir toutes les dépendances correctement spécifiées</em>.</p>
+</li>
+</ol>
+<h2 id="iii-utilisation-d-une-bibliotheque-exterieure-fuse">III. Utilisation d'une bibliothèque extérieure : FUSE</h2>
+<p>La <a href="https://github.com/libfuse/libfuse">bibliothèque FUSE</a> (« <em>système de fichiers dans l'espace utilisateur</em> », « <em>Filesystem in USErspace</em> » en anglais) permet de créer des programmes C qui peuvent simuler un système de fichiers directement intégrable dans le système de fichiers Linux. Cela nous sera utile pour le projet en permettant par exemple de lire directement dans Linux les fichiers présents dans les disques artificiels que vous créerez dans votre projet (au travers d'une interface que vous écrirez en C ; n'est-ce pas magnifique ?).</p>
+<p>Le but de cette partie est simplement, toujours dans le même esprit de ces trois semaines préparatoire, de s'assurer que vous avez le bon environnement et les bons outils pour mener à bien votre projet.</p>
+<h3 id="principes-de-fuse">Principes de FUSE</h3>
+<p>FUSE est séparé en deux parties au niveau de son implémentation :</p>
+<ul>
+<li>le module <code>fuse</code> du noyau (« <em>fuse kernel module</em> ») livré avec le noyau Linux ;</li>
+<li>la librairie <code>libfuse</code> dans l'espace utilisateur, qui vous permet de dialoguer avec ce module et qu'il faudra donc utiliser.</li>
+</ul>
+<h3 id="installation-de-libfuse-pour-les-machines-personnelles-autres-que-les-vm-de-l-ecole">Installation de libfuse pour les machines personnelles (autres que les VM de l'Ecole)</h3>
+<p>Si nécessaire (si vous utilisez votre propre distribution Linux, qui supporte les packages deb), vous pouvez simplement taper :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>sudo apt-get install libfuse2 libfuse-dev pkg-config
+</span></code></pre>
+<p>qui se chargera d'installer ce qui est nécessaire à la bibliothèque FUSE.</p>
+<p><strong>Note:</strong> <code>pkg-config</code> est un outil que nous utiliserons dans le Makefile <strong>[fin de note]</strong></p>
+<p>Si vous n'utilisez pas Linux, il est impératif de télécharger et d'installer une machine virtuelle Linux comme précisé lors de la première semaine.
+FUSE venant en partie avec le noyau Linux, les différentes solutions proposées (pour OSX notamment) sont trop souvent incomplètes et vous feront sûrement perdre plus de temps.
+Il est impératif que votre implémentation fonctionne avec le système d'exploitation officiel du cours tel qu'il vous a été présenté la semaine passée.</p>
+<h3 id="faire-fonctionner-un-exemple">Faire fonctionner un exemple</h3>
+<p>Pour cette étape, nous ne vous fournissons un exemple simple <code>hello.c</code> (dans <code>provided/fuse</code>. Celui-ci provient de la distribution officielle de <code>libfuse</code> en guise d'exemple basique pour utiliser cette bibliothèque.</p>
+<p>Comme nous ne vous demandons aucune modification ici, vous pouvez travailler directement dans <code>provided/fuse</code>. Ouvrez avec un éditeur les fichiers fournis pour regarder globalement ce qu'ils contiennent. Essayez de comprendre la structure et les idées principales sans vous noyer dans les détails (que vous ne connaissez pas encore). Demandez de l'aide/des explications sur tel ou tel aspect de syntaxe de C si ce n'est pas clair (mais pas sur les détails de FUSE, ce n'est pas le but ici).</p>
+<p>Commençons par tester si ce fichier compile. Nous fournissons pour cela un <code>Makefile</code> (dans <code>provided/fuse</code>). Il contient déjà les règles de compilation spécifiques pour compiler <code>hello</code> : allez voir et comprenez ce qui est écrit (et comment ça marche).</p>
+<p>Il vous suffit donc de compiler simplement avec :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make
+</span></code></pre>
+<p>Vous devriez alors avoir un exécutable <code>hello</code> dans votre répertoire courant (<code>done/</code>).</p>
+<p><strong>Note :</strong> si vous avez activé certains warning de compilation, vous pouvez  justement avoir des messages de warning (le code fourni n'est pas 100% propre ; comme quoi...). Ignorez les simplement.
+<strong>[fin de note]</strong></p>
+<p>Ce que fait FUSE, c'est de mounter un système de fichiers à un endroit (répertoire) de votre système de fichiers actuel ; on appelle cela un « <em>point de montage</em> » (ou « <em>mount point</em> »). Pour tester le programme <code>hello</code>, il vous faut alors un point de montage. Je vous propose pour cela de créer le répertoire <code>hello-dir</code> dans <code>/tmp</code>.</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">mkdir</span><span> /tmp/hello-dir
+</span></code></pre>
+<p>et vérifiez (pour mieux comprendre la suite) qu'il ne contient effectivement rien :</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">ls -l</span><span> /tmp/hello-dir
+</span></code></pre>
+<p>Vous pouvez alors le passer comme argument à <code>hello</code> :</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">./hello</span><span> /tmp/hello-dir
+</span></code></pre>
+<p>À première vue, il ne s'est rien passé.  Faites les deux commandes suivantes :</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">ps</span><span> auxw | </span><span style="color:#bf616a;">grep</span><span> hello | </span><span style="color:#bf616a;">grep -v</span><span> grep
+</span><span style="color:#bf616a;">mount </span><span>| </span><span style="color:#bf616a;">grep</span><span> hello
+</span></code></pre>
+<p>Si tout se passe normalement, la commande <code>ps</code> confirmera que le processus <code>hello</code> tourne toujours, et la commande <code>mount</code> que nous avons un système de fichiers de plus, géré par <code>fuse.hello</code>.</p>
+<p>Allez voir ce qui s'y trouve :</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">ls -l</span><span> /tmp/hello-dir
+</span><span style="color:#bf616a;">cat</span><span> /tmp/hello-dir/demo_file.txt
+</span></code></pre>
+<p>(ça ne doit pas être vide).</p>
+<p>Vous pouvez même copier ce fichier <code>demo_file.txt</code>, p.ex. : </p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">cp</span><span> /tmp/hello-dir/demo_file.txt  ../../done/msg.txt
+</span><span style="color:#bf616a;">ls -l 
+</span><span style="color:#bf616a;">cat</span><span> ../../done/msg.txt
+</span></code></pre>
+<p>Le fichier <code>/tmp/hello-dir/demo_file.txt</code> est bien un vrai fichier pour votre OS, sauf qu'il est « offert » par l'exécutable <code>hello</code> que vous venez (de compiler et) de lancer.</p>
+<p>Une fois terminé, unmountez (ou « démontez ») ce système de fichiers à l'aide de la commande :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>fusermount -u /tmp/hello-dir
+</span></code></pre>
+<p>Pour montrer que vous avez bien fait cette partie, ajoutez à votre dépôt <code>git</code> les fichiers (de <code>done</code> !)  <code>msg.txt</code> (qui doit être dans <code>done</code> !!).</p>
+<p>Avant de quitter cette série, assurez vous d'avoir bien compris ce que vous avez fait, ce que fait le programme <code>hello</code> (sans entrer dans les détails de FUSE, ni de concept de C avancés, bien sûr ! Simplement comprendre les principaux concepts) et pourquoi il est si puissant. En semaine 8, vous écrirez un programme équivalent pour pouvoir mounter le système de fichiers créé dans le projet.</p>
+<h2 id="feedback-tests">Feedback tests</h2>
+<p>Nous offrons toujours un feedback via <code>make feedback</code> depuis <code>done/</code>. A noter que celui-ci porte donc sur les deux premières semaines.</p>
+<p>Si vous souhaitez avoir le feedback de la semaine passée uniquement, changez le nom de l'image pour <code>chappeli/pps23-feedback:week01</code>.</p>
+<h2 id="rendu">Rendu</h2>
+<p>Les trois choses de cette semaine que vous aurez à rendre (avec celles de la semaine passée et de la semaine prochaine), au plus tard le <strong>dimanche 19 mars 23:59</strong>, sont :</p>
+<ul>
+<li>le <code>Makefile</code> de <code>ex_multiples/</code> ;</li>
+<li>le <code>Makefile</code> de <code>bigprj/</code> ;</li>
+<li>le fichier <code>msg.txt</code> ;</li>
+</ul>
+<p>ainsi que le fichier <code>time.csv</code> mis à jour, tel que décrit la semaine passée et dans <a href="https://projprogsys-epfl.github.io/project/index/bareme/#time">le barème du cours</a> ; ils sont à mettre dans votre dépôt GitHub dans le répertoire <code>done/</code> (et à <code>commit</code> + <code>push</code>). Nous vous recommandons de faire un <code>make feedback</code> avant de faire votre rendu définitif.</p>
+<p>Faites également attention à rendre du code anonyme : ne mettez ni nom d'auteur(e), ni SCIPER, email, ...</p>
+<p>Le rendu final se fera simplement avec le <code>commit + push</code>. Nous clônerons de notre coté l'état de votre dépôt le lundi matin 20 mars dès la première heure.
+Mais vous pouvez, bien sûr (et nous vous le conseillons) faire plusieurs <code>commit</code> et <code>push</code> avant la date de rendu.</p>
+<p>Par ailleurs, vous pouvez commencer à rechercher un binôme pour la partie travail par groupe de deux qui commencera dès le 15 mars. Nous vous indiquerons le moment venu comment inscrire votre groupe.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 24&#x2F;02&#x2F;2023</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

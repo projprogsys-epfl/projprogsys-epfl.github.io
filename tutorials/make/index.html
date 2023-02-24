@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Make et Makefiles | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/tutorials/make/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Tutorials",
+            "item": "https://projprogsys-epfl.github.io/tutorials/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Make",
+            "item": "https://projprogsys-epfl.github.io/tutorials/make/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+    
+  
+
+<body class="page single">
+  
+    
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=15187">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+  
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xxl-8">
+        <article>
+          <div class="page-header">
+            <h1>Make et Makefiles</h1>
+          </div>
+          
+          <h2 id="resume-en-quatre-points">Résumé en quatre points</h2>
+<p>Voici (en guise d'introduction rapide, ou plus tard de pense-bête)  le strict minimum qu'il faut savoir (mais vous êtes, bien sûr, invité(e)s à lire la suite) :</p>
+<ol>
+<li>
+<p>un <code>Makefile</code> est juste un simple ficher texte (si s'appelle simplement « <code>Makefile</code> » tout seul, sans extension), qui est automatiquement appelé par la commande <code>make</code>, et qui contient simplement la « liste des chose à faire » (on parle de « <em>cible</em> ») ;</p>
+</li>
+<li>
+<p>une ligne du <code>Makefile</code> décrit simplement une cible et ce qu'il est nécessaire d'avoir pour la réaliser (on parle de « <em>dépendances</em> »), au format :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> cible: liste de dépendances
+</span></code></pre>
+<p>par exemple (fictif) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> gateau au cholat: farine oeufs beurre sucre chocolat levure
+</span></code></pre>
+<p>et c'est <strong>tout</strong> ! Aussi simple que ça ! Sauf que pour nous, les cibles sont des fichiers exécutables et les dépendances sont des fichiers <code>.o</code> ; par exemple :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> calculCplx: calculCplx.o complexe.o calculatrice.o
+</span></code></pre>
+</li>
+<li>
+<p>les dépendances de <em>compilation</em> (pour la création d'un fichier <code>.o</code>, donc) sont simplement le fichier <code>.c</code> correspondant, ainsi que la liste des fichiers <code>.h</code> nécessaires ; p.ex. :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> calculatrice.o: calculatrice.c calculatrice.h complexe.h
+</span></code></pre>
+<p>À noter que toutes ces lignes cible-dépendances pour la <em>compilation</em> peuvent s'obtenir simplement en tapant la commande :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> gcc -MM *.c
+</span></code></pre>
+</li>
+<li>
+<p>Souvent, par convention, la première cible s'appelle « <code>all</code> » et désigne tous les exécutables que vous souhaitez réaliser avec ce <code>Makefile</code>.</p>
+</li>
+</ol>
+<p>Au final, voici un exemple simple mais complet de <code>Makefile</code> :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>all: calculCplx
+</span><span>
+</span><span>calculCplx: calculCplx.o complexe.o calculatrice.o
+</span><span>
+</span><span># Ces lignes ont été recopiées de la commande gcc -MM *.c
+</span><span>complexe.o: complexe.c complexe.h
+</span><span>calculatrice.o: calculatrice.c calculatrice.h complexe.h
+</span><span>calculCplx.o: calculCplx.c calcGUI.h
+</span></code></pre>
+<p>Et voilà !</p>
+<h2 id="compilation-des-programmes">Compilation des programmes</h2>
+<p>Le code source d'un programme complet conséquent en C est, par souci de modularisation, souvent distribué dans plusieurs fichiers textes appelés « fichiers sources ». Les fichiers sources sont de deux sortes : les « fichiers d'en-tête » (<em>header files</em>) et les fichiers principaux (souvent nommés « fichiers de définition », ou même simplement « fichiers sources », d'où une certaine confusion terminologique). Les fichiers d'en-tête ont par convention une extension <code>.h</code>, tandis que les fichiers principaux ont l'extension <code>.c</code>. 
+Tout ceci est « mis ensemble » par le compilateur (p.ex. <a href="https://gcc.gnu.org/"><code>gcc</code></a>) pour
+créer un programme exécutable à partir des codes sources.</p>
+<p>Une paire (fichier d'en-tête, fichier principal <code>.c</code>) correspondant à un concept donné est appelé « <em>module</em> ».</p>
+<p>À quoi sert un fichier d'en-tête ?<br />
+À annoncer aux <em>autres</em> modules, les fonctionnalités apportées (API) par le module dont il fait partie.</p>
+<p>Par exemple, un fichier <code>matrice.h</code> contiendra l'API du module concernant les matrices.</p>
+<p>Dans les fichiers d'en-tête, on écrit typiquement :</p>
+<ul>
+<li><code>#pragma once</code> (voir plus loin) ;</li>
+<li>les directives pour inclure les fichiers en-tête nécessaires <em>à</em> <strong>ce</strong> <em>fichier d'en-tête</em> <strong>uniquement</strong> (voir ci-dessous) ;</li>
+<li>(très fréquent) les déclarations de types offerts par le module en question ;</li>
+<li>(très fréquent) les déclarations des fonctions offertes par le module en question (correspondrait à la partie « publique » dans une conception OO) ;</li>
+<li>(fréquent) des « macros » (lignes commençant par le symbole <code>#define</code> ; présentées en semaine 10 du cours du lundi) ;</li>
+<li>(rare) les déclarations des variables (globales, donc) qui doivent être partagées aux autres modules par le module en question.</li>
+</ul>
+<p>Dans le fichier principal (avec l'extension <code>.c</code>), on écrit typiquement :</p>
+<ul>
+<li>les directives pour inclure les fichiers en-tête nécessaires <em>à</em> <strong>ce</strong> <em>fichier source</em> <strong>uniquement</strong> (voir ci-dessous) ;</li>
+<li>les déclarations des variables ou des fonctions utilisées <em>exclusivement</em> dans le module correspondant ;</li>
+<li>les définitions (des variables et) des fonctions partagées (offertes dans le fichier d'en-tête).</li>
+</ul>
+<p>Les fichiers d'en-tête ne sont donc pas compilés directement en du code machine, mais leur contenu est entièrement copié dans tous les autres modules <strong>qui en ont besoin</strong>. Ces autres modules (qui en ont besoin) demandent une copie d'un fichier d'en-tête en indiquant <code>#include</code> suivi par le nom de fichier en tête. Par exemple :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>#include &quot;matrice.h&quot;
+</span></code></pre>
+<p>dans un fichier source qui aurait besoin des matrices.</p>
+<p>Cette copie est effectuée par le compilateur lors de la compilation du module qui demande l'inclusion (plus de détails en semaine 11 du cours du lundi ; pour le moment, ce résumé suffit).</p>
+<p><strong>[ Note :</strong> l'inclusion de fichier « locaux » (propre à notre application) s'écrit avec des double guillemets (p.ex. <code>#include &quot;matrice.h&quot;</code>), alors que l'inclusion de bibliothèques standard s'écrit avec des chevrons (p.ex. <code>#include &lt;stdio.h&gt;</code>)
+<strong>]</strong></p>
+<p>La compilation d'un programme est composée de deux étapes principales (plus de détails en semaine 11 du cours du lundi ; pour le moment, ce résumé suffit) :</p>
+<ul>
+<li>
+<p>l'étape de compilation proprement dite :</p>
+<ul>
+<li>la syntaxe est vérifiée ;</li>
+<li>les variables et appels aux fonctions sont vérifiés pour s'assurer que toutes les déclarations existent ;</li>
+<li>le code machine correspondant est créé dans les fichiers « objets » (avec l'extension <code>.o</code>) ;</li>
+</ul>
+</li>
+<li>
+<p>l'étape « d'édition de liens » (<em>linking</em>) :</p>
+<ul>
+<li>il est vérifié que les appels aux fonctions correspondent à leur définition ;</li>
+<li>il est vérifié qu'une et une seule définition existe pour chacune des fonctions appelées ;</li>
+<li>les fichiers objets sont liés entre eux pour créer le programme exécutable final.</li>
+</ul>
+</li>
+</ul>
+<p>Illustrons par deux exemples.</p>
+<h3 id="exemple-1-un-seul-fichier-comme-dans-vos-exercices-usuels">Exemple 1 : un seul fichier (comme dans vos exercices usuels)</h3>
+<p>Le fichier <code>sum_odd.c</code> fourni dans <code>done/ex_single</code> est un (seul) fichier source contenant le code pour demander un nombre positif <code>n</code> et ensuite calculer la somme de <code>n</code> premiers nombres impairs.</p>
+<p>Le programme commence par une directive <code>#include &lt;stdio.h&gt;</code> qui demande l'inclusion (= la copie) des définitions standard (<code>std</code>)  pour les entrées-sorties (<code>io</code>), comme par exemple <code>printf()</code>.</p>
+<p>Essayez de suivre les étapes illustrés dans l'image ci-dessous :</p>
+<p><img src="/img/tutorials/sum_odd.png" alt="Illustration des dépendances" title="Illustration des dépendances" /></p>
+<p>Les étapes en question sont automatiquement faites (de façons transparente) lorsque vous compilez dans Geany ou dans une IDE.
+Mais faisons-les ici à la main pour comprendre.</p>
+<p>D'abord, nous allons créer « les » fichiers objets (ici, un seul) en utilisant la commande suivante : </p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -c sum_odd.c -o sum_odd.o
+</span></code></pre>
+<p>L'option <code>-c</code> dit au compilateur de ne pas faire l'édition de liens, mais seulement la compilation (d'où le <code>c</code> comme « <em>compile</em> »). 
+Cette option est suivi par le nom du fichier dont on veux créer le fichier objet, puis le nom que l'on veut pour fichier objet en question (l'option <code>-o</code> veut dire « <em>output</em> »).</p>
+<p>Faites cette commande et vérifiez que le fichier objet est bien présent dans le répertoire. Inutile d'essayer de le lire où de l'ouvrir, c'est du code machine !</p>
+<p>Ensuite, il faut lier les fichiers objets. Et là, il y en a déjà plusieurs, sans que vous le sachiez : celui créé à partir de notre fichier source et ceux des bibliothèques standard utilisées, qui sont automatiquement liés par le compilateur sans que nous ayons à les nommer explicitement.</p>
+<p>Pour faire ces liens, nous utilisons simplement la commande suivante :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -o sum_odd sum_odd.o
+</span></code></pre>
+<p>À nouveau, l'option <code>-o</code> suivie par le nom du fichier voulu (dans notre exemple, le fichier s'appelle <code>odd_sum</code>) sert a créer le programme exécutable portant ce nom. À noter que l'on peut mettre cette option <strong>et</strong> son nom de fichier associé où l'on veut dans la commande (ici nous les avons mis en premier, alors que dans l'exemple précédent, la compilation, nous les avions mis en dernier).
+Puis nous devons spécifier les fichiers à lier ensemble pour créer le programme exécutable. Dans notre exemple, il suffit de spécifier notre seul <code>sum_odd.o</code> (car les bibliothèques standard sont liées automatiquement). </p>
+<p>Vérifiez que le programme exécutable a été crée avec succès et lancez-le depuis le terminal en tapant : </p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./sum_odd
+</span></code></pre>
+<h3 id="exemple-2-plusieurs-fichiers">Exemple 2 : plusieurs fichiers</h3>
+<p>Un programme de taille importante est habituellement décomposé en
+plusieurs modules : en plus d'apporter de la clarté à l'organisation
+du programme, cette technique (appelée « conception modulaire ») permet
+de réutiliser des éléments (modules) pour différents programmes (par
+exemple, un module pour les matrices, un autre pour « demander
+un nombre », etc.). Illustrons ici comment de tels programmes sont produits.</p>
+<p>Dans le répertoire <code>done/ex_multiples</code>, vous trouverez cinq fichiers sources et quatre fichiers d'en-tête.
+Regardez le contenu des tous les fichiers et essayez de reconstruire les dépendances illustrés ci-dessous :</p>
+<p><img src="/img/tutorials/selection_sort.png" alt="Illustration des dépendances 2" title="Illustration des dépendances 2" /></p>
+<p>Afin de créer un tel programme, il faut d'abord compiler tous les fichiers <code>.c</code> en des fichiers objets :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -c array_filter.c
+</span><span>gcc -c array_sort.c
+</span><span>gcc -c array_std.c
+</span><span>gcc -c swap.c
+</span><span>gcc -c main.c
+</span></code></pre>
+<p>Et ensuite produire l'exécutable (appelé <code>selection_sort</code> dans notre exemple) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -o selection_sort array_filter.o array_sort.o array_std.o swap.o main.o
+</span></code></pre>
+<p>Créer l'exécutable comme indiqué ci-dessus (c'est fastidieux, n'est pas ? On y revient dans la section suivante), puis
+lancez-le. Son but est de trier, utilisant l'algorithme « <em>selection sort</em> », un tableaux de nombres entiers, dont la taille et la plage des valeurs sont données par l'utilisateur.</p>
+<h3 id="protection-contre-les-inclusions-multiples">Protection contre les inclusions multiples</h3>
+<p>Que se passe-t-il si par erreur ou indirectement un même en-tête de module est inclus plusieurs fois ?
+Par exemple, avez-vous déjà essayé de mettre deux fois un « <code>#include &lt;stdio.h&gt;</code> » dans un de vos programmes ?</p>
+<p>Si les fichiers <code>.h</code> ne sont pas protégés contre cela (inclusions multiples), le compilateur risque de refuser de compiler, par exemple en raison de redéfinition d'un type défini lors de la première inclusion.</p>
+<p>Il est pour cela nécessaire de protéger vos fichiers <code>.h</code> contre les inclusions multiples en les faisant commencer par la ligne :</p>
+<pre data-lang="C" style="background-color:#2b303b;color:#c0c5ce;" class="language-C "><code class="language-C" data-lang="C"><span style="color:#b48ead;">#pragma</span><span> once
+</span></code></pre>
+<p>Cela doit être la toute première ligne de vos fichiers <code>.h</code>.</p>
+<h2 id="automatisation-de-la-compilation-a-l-aide-de-make">Automatisation de la compilation à l'aide de <code>make</code></h2>
+<h3 id="introduction">Introduction</h3>
+<p>Dans le cas de gros programmes (modulaires), compiler et lier le tout peut devenir
+fastidieux (peut être avez vous trouvé que c'était déjà le cas pour seulement 5 modules...) : il faut compiler chaque module (« compilation séparée ») dans son fichier objet,
+puis « lier » tous les fichiers objets produits. 
+Et comme il est très probable que plusieurs modules fassent eux-mêmes
+appels à d'autres modules, la modification de l'un des modules peut
+rendre nécessaire de recompiler non seulement le module modifié, mais
+également ceux qui en dépendent, et cela récursivement, puis
+naturellement l'exécutable final.</p>
+<p>L'outil <code>make</code> permet justement d'automatiser des enchaînement de commandes
+ayant des dépendances entre elles. Il peut être utilisé à bien des
+fins, mais son utilisation première (et celle qui nous intéresse ici)
+est la compilation de programmes (exécutables) à partir de fichiers
+sources. Il permet :</p>
+<ol>
+<li>de ne pas avoir à faire tout cela à la main ;</li>
+<li>et de ne recompiler que ce qui est strictement nécessaire.</li>
+</ol>
+<p>Pour pouvoir utiliser <code>make</code>, il suffit d'écrire,  dans un simple fichier texte nommé <code>Makefile</code> (ou <code>makefile</code>), quelques règles simples décrivant les diverses <em>dépendances</em> du projet.</p>
+<p>Voyons comment cet outil nous est présenté, par son manuel ;</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>man make
+</span></code></pre>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>[ extrait de la manpage de make, trad. et adapt. libres ]
+</span><span>
+</span><span>     make [targets] [options] [macros_def]                                
+</span><span>                                                                          
+</span><span> L&#39;action de l&#39;utilitaire make est de déterminer automatiquement quels    
+</span><span> portions d&#39;un programme doivent être recompilées, et de réaliser les     
+</span><span> commandes pour recompiler ces portions. \[...\] make peut être utilisé   
+</span><span> avec n&#39;importe quel langage pour lequel un compilateur est disponible   
+</span><span> depuis la ligne de commande. En fait, make n&#39;est pas limité aux          
+</span><span> programmes. Vous pouvez l&#39;utiliser pour décrire n&#39;importe quelle tâche   
+</span><span> pour laquelle des fichiers doivent être automatiquement mis à jour à     
+</span><span> partir d&#39;autres fichiers, lorsque ces derniers ont été modifiés.         
+</span><span>                                                                          
+</span><span> Pour utiliser make, vous devez au préalable écrire un fichier, appelé le 
+</span><span> makefile, explicitant les dépendances entre les fichiers de votre        
+</span><span> programme et les commandes permettant la mise à jour de chaque fichier.  
+</span><span> Typiquement, dans un programme, les fichiers exécutables sont mis à     
+</span><span> jour à partir de fichiers objets, ces derniers étant produits par la     
+</span><span> compilation des fichiers sources.                                        
+</span><span>                                                                          
+</span><span> Dès l&#39;instant où un makefile correct existe, chaque fois que vous        
+</span><span> changez l&#39;un des fichiers sources, la simple commande :                  
+</span><span>                                                                          
+</span><span>  make                                                                    
+</span><span>                                                                          
+</span><span> suffira pour réaliser l&#39;ensemble des recompilations strictement          
+</span><span> nécessaires. L&#39;outil make utilisera les règles indiquées dans le         
+</span><span> makefile ainsi que les dates de dernière modification des fichiers pour  
+</span><span> déterminer quels fichiers doivent être mis à jour. Pour chacun d&#39;eux, il 
+</span><span> exécutera les commandes définies dans le makefile.                       
+</span><span>                                                                          
+</span><span> make exécute les commandes définies par le makefile pour mettre à jour   
+</span><span> une ou plusieurs cibles, qui correspondent typiquement à un programme.   
+</span></code></pre>
+<h3 id="structure-du-fichier-makefile">Structure du fichier <code>Makefile</code></h3>
+<p>Un <code>Makefile</code> est essentiellement constitué de <em>règles</em>
+qui définissent, pour une <em>cible</em> donnée, l'ensemble des <em>dépendances</em>
+de la <em>cible</em> (c.-à-d. les éléments dont la cible dépend), ainsi que
+l'ensemble des <em>commandes</em> à effectuer pour actualiser la <em>cible</em>.</p>
+<p>C'est un peu comme une liste de recettes de cuisine :</p>
+<ul>
+<li>« <em>règle</em> » = recette ;</li>
+<li>« <em>cible</em> » = résultat (p.ex. gâteaux au chocolat) ;</li>
+<li>« <em>dépendances</em> » = ingrédients (p.ex. farine, oeufs, chocolat, sucre, beurre) ;</li>
+<li>« <em>commandes</em> » = instruction pour réaliser la recette.</li>
+</ul>
+<p>Mais ici nous ne faisons pas de cuisine. Si l'on illustre ces concepts avec l'exemple précédent (programme <code>selection_sort</code>), on aurait par exemple
+une règle pour l'édition de lien (programme <code>selection_sort</code>), une autre règle pour la compilation de <code>array_sort.c</code> (en <code>array_sort.o</code>), etc.</p>
+<p>Pour la règle d'édition de lien, on aurait :</p>
+<ul>
+<li>
+<p>cible : <code>selection_sort</code></p>
+</li>
+<li>
+<p>dépendances : <code>array_filter.o</code>,  <code>array_sort.o</code>, <code>array_std.o</code>, <code>swap.o</code> et <code>main.o</code></p>
+<p>il faut que tous ces fichiers <code>.o</code> existent pour pouvoir produire l'exécutable <code>selection_sort</code></p>
+</li>
+<li>
+<p>commande : la commande d'édition de lien effectuée précédemment.</p>
+</li>
+</ul>
+<p>Pour la règle de compilation de <code>array_sort.c</code>, on aurait :</p>
+<ul>
+<li>cible : <code>array_sort.o</code></li>
+<li>dépendances : <code>array_sort.c</code>, <code>swap.h</code>, <code>array_filter.h</code> (revoir la figure précédente, qui indique justement les dépendances)</li>
+<li>commande : <code>gcc -c array_sort.c</code></li>
+</ul>
+<h3 id="definition-et-fonctionnement-des-regles">Définition et fonctionnement des règles</h3>
+<p>La syntaxe générale d'une règle est :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cible: dépendances
+</span><span>[tab]commande 1
+</span><span>[tab]commande 2
+</span></code></pre>
+<p>où:</p>
+<ul>
+<li>
+<p><em>cible</em> est le plus souvent le nom d'un fichier qui va être généré
+par les commandes (le programme exécutable, les fichiers objets,
+etc), mais peut aussi représenter un objectif, tel que
+<code>install</code> (<em>installer</em>) ou <code>clean</code> (<em>nettoyer</em>) ;</p>
+</li>
+<li>
+<p>les <em>dépendances</em> sont les pré-requis pour que la cible soit
+réalisable ; ce sont habituellement les fichiers dont la cible dépend
+(par exemple les fichiers de déclarations (headers)), mais il peut
+également s'agir de règles (nom de la <em>cible</em> d'une autre règle) ;</p>
+<p>pour spécifier plusieurs <em>dépendances</em>, il suffit de les séparer par
+une espace ; une règle peut également ne pas avoir de dépendances ;</p>
+<p>si une dépendance est présente plusieurs fois dans une même
+règle, seule la première occurrence est prise en compte par <code>make</code> ;</p>
+</li>
+<li>
+<p>les <em>commandes</em> sont les actions que <code>make</code> doit entreprendre pour
+actualiser la <em>cible</em> ; il s'agit d'une ou plusieurs commandes
+Shell ;</p>
+<p>on place une commande par ligne, et l'on groupe les commandes
+relatives à une <em>cible</em> sous la ligne des dépendances ;<br />
+une particularité de la syntaxe est que <strong>chaque ligne de commande
+doit obligatoirement débuter par le caractère de tabulation</strong> (touche
+« TAB », et <strong>NON PAS</strong> des espaces ; c'est certainement l'aspect le plus
+archaïque et le plus pénible de <code>make</code> !!).</p>
+<p>Il est possible de ne pas spécifier de commande pour une cible ; c'est
+alors soit une règle par défaut qui s'applique, soit rien du tout
+(ce qui est utile pour simplement forcer des dépendances/vérifications).</p>
+<p><code>make</code> possède en effet un certain nombre de règles implicites (typiquement pour la compilation), ce qui nous évite d'avoir à écrire trop de choses comme on le verra ci-dessous.</p>
+</li>
+</ul>
+<p>Autre bonne nouvelle : on peut générer automatiquement la liste de toutes les dépendances en utilisant l’option <code>-MM</code> de <code>gcc</code> : </p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -MM *.c
+</span></code></pre>
+<p>Essayez de le faire ! Vous devriez voir tout de suite le lien entre la liste de toutes les dépendances. C'est très pratique à mettre en fin de votre <code>Makefile</code>.</p>
+<p>Notons que l'ordre des règles n'est pas important, sauf en ce qui concerne la détermination de la cible par défaut (c.-à-d. lorsque l'utilisateur tape <code>make</code> tout seul sans argument : c'est alors la première règle qui est lancée ; sinon on tape simplement <code>make cible</code>).</p>
+<h3 id="exercices-et-exemples">Exercices et exemples</h3>
+<p>L'exemple le plus simple de <code>Makefile</code> est... ...un fichier vide !<br />
+En effet, grâce à ses règles implicites, <code>make</code> sait déjà
+faire(=<em>make</em>) plein de choses dans qu'on ait rien besoin d'écrire.</p>
+<h4 id="exercice-1">Exercice 1</h4>
+<p>(dans <code>done/ex_single</code>) Effacez les fichiers <code>sum_odd.o</code> et <code>sum_odd</code> et lancez <code>make</code> comme ceci :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make sum_odd
+</span></code></pre>
+<p>Tout est fait. Génial !<br />
+<code>make</code> « sait » que pour faire un fichier <code>X</code> à partir d'un fichier source <code>X.c</code> il faut appeler le compilateur C.</p>
+<p>Si l'on avait voulu écrire un <code>Makefile</code> pour faire cela, on aurait pu écrire (essayez !) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>sum_odd: sum_odd.c
+</span></code></pre>
+<p>et c'est tout !</p>
+<p>La cible est ici l'exécutable <code>sum_odd</code> et sa dépendance, unique ici, le fichier source <code>sum_odd.c</code>.</p>
+<p>Ce <code>Makefile</code> ne précise pas de commande à exécuter. Il utilise simplement les commandes par défaut connues de <code>make</code>.</p>
+<p>Si l'on avait voulu (mais pourquoi le faire ?) expliciter la commande, un <code>Makefile</code> plus complet aurait alors été :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>sum_odd: sum_odd.c
+</span><span>	gcc -o sum_odd sum_odd.c
+</span></code></pre>
+<p>où la commande permettant de passer de la dépendance à la cible est explicitée (précédée d'un caractère <code>TAB</code>).</p>
+<h4 id="exercice-2">Exercice 2</h4>
+<p>Essayons d'écrire un <code>Makefile</code> complètement artificiel :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>all: dep1 dep2
+</span><span>    @echo &quot;réalisation de la cible &#39;all&#39;&quot;
+</span><span>
+</span><span>dep1:
+</span><span>    @echo &quot;réalisation de la dépendance 1&quot;
+</span><span>
+</span><span>dep2:
+</span><span>    @echo &quot;dépendance 2 ok...&quot;
+</span><span>
+</span><span>dep3:
+</span><span>    echo &quot;banzai !&quot;
+</span></code></pre>
+<p>(Vous pouvez soit ajouter ces lignes au <code>Makefile</code> écrit pour <code>sum_odd</code> si vous avez essayé l'exercice ci-dessus, soit créer maintenant un fichier <code>Makefile</code> avec les lignes ci-dessus.)</p>
+<p>Si l'on tape simplement la commande</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make
+</span></code></pre>
+<p>on obtient:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>réalisation de la dépendance 1
+</span><span>dépendance 2 ok...
+</span><span>réalisation de la cible &#39;all&#39;
+</span></code></pre>
+<p>Dans cet exemple, <code>make</code> est appelé seul, sans indication de
+réalisation d'une cible particulière. <code>make</code> va donc rechercher dans
+le makefile la première cible <em>acceptable</em>, en l'occurrence ici la cible <code>all</code><br />
+(il existe des cibles particulières qui ne sont pas <em>acceptables</em> en
+tant que cibles par défaut... mais ceci sort du cadre de cette
+introduction).</p>
+<p>La règle de cette cible indique deux dépendances, <code>dep1</code>
+et <code>dep2</code>, qui n'existent pas (elles ne correspondent pas à des
+fichiers existants) ; <code>make</code> va alors tenter de les réaliser,
+successivement.</p>
+<p><code>dep1</code> ne possédant pas de dépendance, <code>make</code> passe immédiatement
+à l'exécution des de commandes accompagnant la cible, à savoir
+l'affichage sur le terminal (au moyen de la commande <code>echo</code>) de la
+chaîne « <code>réalisation de la dépendance 1</code> ».<br />
+Il en va de même pour la seconde dépendance (<code>dep2</code>).</p>
+<p>Une fois toutes les dépendances réalisées, <code>make</code> retourne à
+la réalisation de la cible initiale, <code>all</code>, dont il exécute les commandes.</p>
+<p>Si l'on tape maintenant la commande</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make dep3
+</span></code></pre>
+<p>on obtient alors :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>echo &quot;banzai !&quot;
+</span><span>banzai !
+</span></code></pre>
+<p>Dans cet exemple, la cible <code>dep3</code> est spécifiée comme objectif lors de
+l'invocation de <code>make</code>. Cette cible ne possédant pas de dépendance,
+<code>make</code> exécute sans autre le bloc de commandes relatif à cette cible
+(affichage de la chaîne « <code>banzai !</code> »).</p>
+<p>Remarquons au passage une petite différence de comportement entre nos
+deux exemples : dans le premier cas, on constate que la réalisation
+d'une cible se fait par l'exécution directe des commandes, tandis que
+dans le second cas, <code>make</code> affiche préalablement la commande qu'il va
+exécuter (« <code>echo &quot;banzai !&quot;</code> »).<br />
+La raison de ce comportement tient au caractère <code>@</code> précédant les
+commandes du premier cas, et absent dans le second cas.</p>
+<p>Par défaut, <code>make</code> affiche dans un premier temps les commandes qu'il va
+exécuter pour réaliser une cible. Pour supprimer cet affichage automatique,
+il suffit de préfixer la commande par le caractère <code>@</code>.</p>
+<p><strong>Conseil</strong> : laissez toujours <code>make</code> afficher les commandes qu'il
+doit réaliser (en particulier les compilations), sauf pour les
+commandes d'affichage pur, comme par exemple <code>echo</code>.</p>
+<h2 id="compilation-avec-makefile">Compilation avec <code>Makefile</code></h2>
+<p>Tout cela est bien joli, mais à quoi ça sert « dans la
+vrai vie » puisqu'avec les règles par défaut on a vu qu'on n'avait
+rien besoin d'écrire ?<br />
+Certes, mais dans les projets plus compliqués, les règles par défaut
+ne suffisent plus.</p>
+<p>Admettons que l'on ait écrit un programme implémentant une calculatrice
+pour nombres complexes, séparé en modules de la manière suivante :<br />
+(Tout ce genre de dépendances entre fichiers C sera vu plus tard dans
+le cours ; pour le moment, admettons simplement que ce soit comme ça...)</p>
+<ul>
+<li>en plus de la librairie standard, on dispose d'une librairie
+graphique, <code>LibGraph</code>, sous la forme d'un
+fichier de déclaration, <code>libgraph.h</code>, et d'un fichier
+d'archive binaire <code>libgraph.so</code> (dynamique) ;</li>
+<li>la modélisation des nombres complexes et de leur arithmétique,
+fournie par le fichier de déclaration <code>complexe.h</code> (header)
+et le fichier d'implémentation <code>complexe.c</code> ;</li>
+<li>la modélisation de la calculatrice (fonctions de base, mémoire,
+parenthésage, etc.), fournie par les fichiers
+<code>calculatrice.h</code>, dépendant de <code>complexe.h</code>, et
+<code>calculatrice.c</code> (sans dépendance) ;</li>
+<li>la modélisation de l'interface graphique de la calculatrice, fournie
+par les fichiers <code>calcGUI.h</code>, dépendant de <code>calculatrice.h</code>
+et de <code>libgraph.h</code>, et <code>calcGUI.c</code> ;</li>
+<li>le programme principal (comprenant la fonction <code>main()</code>),
+fournit par le fichier <code>calculCplx.c</code>, dépendant de
+<code>calcGUI.h</code>.</li>
+<li>chaque fichier d'implémentation (<code>.c</code>) dépend de plus du fichier de
+définition (<code>.h</code>) auquel il est associé.</li>
+</ul>
+<p>Voici une petite image pour illustrer cela :</p>
+<p><img src="/img/tutorials/calcCplx.png" alt="Illustration des dépendances précédentes" title="Illustration des dépendances précédentes" /></p>
+<p>Pour écrire un <code>Makefile</code> acceptable, il nous suffit de faire une
+<em>cible</em> pour chaque module, c.-à-d. une cible par fichier objet
+résultant de la compilation du fichier source, et une cible
+supplémentaire pour lier le tout en un programme exécutable.</p>
+<p>Les dépendances de chacune de ces cibles sont déterminés par les
+directives d'inclusion présentes dans les fichiers de déclaration et
+d'implémentation concernés. Mais on ne considère que les dépendances
+vis-à-vis des éléments susceptibles d'être modifiés dans le cadre de
+notre projet. On ignore donc les dépendances vers la librairie
+graphique, par exemple, comme d'ailleurs celles envers les éléments de la librairie
+standard.<br />
+Ces dépendances sont directement donnée par la commande</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>    gcc -MM *.c
+</span></code></pre>
+<p>dont il suffit donc simplement de recopier le contenu dans notre <code>Makefile</code>.</p>
+<p>Les commandes de mise à jour sont naturellement l'instruction de compilation des cibles,
+mais il n'est pas nécessaire de le préciser comme nous l'avons vu plus haut : <code>make</code> possède des commandes par défaut qui suffisent ici.</p>
+<p>La seule qu'il faut spécifier est la commande « d'édition de liens » qui permet de mettre tous les fichiers objets ensembles pour constituer l'exécutable final.</p>
+<p>Un <code>Makefile</code> possible pourrait donc être :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> all: calculCplx
+</span><span>                                                                      
+</span><span> calculCplx: calculCplx.o complexe.o calculatrice.o calcGUI.o
+</span><span>     gcc -o calculCplx calculCplx.o complexe.o calculatrice.o calcGUI.o -lgraph
+</span><span>
+</span><span> # Ces lignes ont été recopiées de la commande gcc -MM *.c
+</span><span> complexe.o: complexe.c complexe.h
+</span><span> calculatrice.o: calculatrice.c calculatrice.h complexe.h
+</span><span> calcGUI.o: calcGUI.c calcGUI.h calculatrice.h
+</span><span> calculCplx.o: calculCplx.c calcGUI.h
+</span></code></pre>
+<p>Avec un tel <code>Makefile</code>, notre projet peut être compilé au moyen de la
+commande <code>make</code> seule car on remarque que la cible <code>all</code> est ici un
+alias pour la cible <code>calculCplx</code>.</p>
+<p>Pour construire cette cible, <code>make</code> doit en premier lieu construire les
+cibles indiquées comme dépendances (l'ensemble des fichiers objets
+nécessaires).</p>
+<p>Remarquons au passage que <code>make</code> ne (re)construira une
+cible que si l'une au moins de ses dépendances est plus récente que la
+cible elle-même. C'est ce mécanisme qui permet à <code>make</code> de ne compiler
+que ce qui est <em>strictement nécessaire</em>. Ainsi, si l'on exécute la
+commande <code>make</code> une seconde fois, après la première
+compilation, le programme signalera :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make: Nothing to be done for `all&#39;.
+</span></code></pre>
+<p>qui veut dire qu'il n'y à rien à faire !</p>
+<p>De la même manière, si l'on venait à modifier uniquement le fichier
+<code>complexe.c</code>, la commande <code>make</code> ne conduirait qu'à la
+recompilation de ce dernier (réalisation de la cible <code>complexe.o</code>, puisque l'une de ses dépendances,
+<code>complexe.c</code> correspond à un fichier dont la date de modification est
+postérieure à celle du fichier attaché à la cible), entraînant elle-même
+la mise à jour de la cible <code>calculCplx</code> (pour la
+même raison que précédemment).</p>
+<p>Si l'on modifie par contre le fichier <code>complexe.h</code>, ce seront
+les cibles <code>complexe.o</code>, <code>calculatrice.o</code> et <code>calculCplx</code> qui seront mise à jour.</p>
+<p>À noter enfin que certaines bibliothèques, en particulier les nôtres, doivent être spécifiées lors de l'édition de lien : c'est par exemple le cas de la bibliothèque (imaginaire) « <code>graph</code> » dans l'exemple ci-dessus. Cela se fait en ajoutant l'option <code>-lgraph</code> à la fin de la commande d'édition de liens.</p>
+<p>Nous vous spécifierons à chaque fois les bibliothèques à rajouter, le cas échéant, à vos éditions de liens.</p>
+<h3 id="exercice-3">Exercice 3</h3>
+<p>Dans le répertoire <code>done/ex_multiples</code>, créez par vous même un fichier <code>Makefile</code> pour compiler le programme <code>selection_sort</code> décrit auparavant.</p>
+<p>Testez-le.</p>
+<p>Attention, il y a une petite subtilité : il n'y a pas de <code>selection_sort.c</code> mais la fonction <code>main()</code> se trouve dans <code>main.c</code>. C'est simplement pour vous faire une fois écrire une règle (au lieu d'utiliser la règle par défaut). Il est évident que « normalement » <code>main.c</code> s'appellerait <code>selection_sort.c</code>. Mais vous n'avez pas le droit de renommer ce fichier (ni de faire de lien symbolique <code>;-)</code>). </p>
+<h2 id="conclusion-et-suites">Conclusion et suites</h2>
+<p>Voilà pour les bases. La suite ci-dessous est plus avancée, pas strictement nécessaire pour vous, mais peut être utile si vous souhaitez aller plus loin que le strict minimum.</p>
+<p>Et si vous préférez une vidéo/une présentation plus « cours » sur le sujet de la compilation séparée et des <code>Makefile</code>, voici <a href="https://mediaspace.epfl.ch/media/11+-+Compilation+s%C3%A9par%C3%A9e+B+linker+loader+B+make/0_dj4460d9/29686">la vidéo du cours du lundi</a> (1h01 ; ce cours sera donné en semaine 11 ; c'est donc, pour celles et ceux qui font le projet, un sujet présenté en avance car nécessaire au projet).</p>
+<p>Si ce qui a été présenté ici vous suffit (vous avez déjà passé assez de temps), vous pouvez simplement continuer <a href="https://projprogsys-epfl.github.io/project/warmup/handout02/">la série de cette semaine (2)</a>.</p>
+<hr />
+<h2 id="elements-avances-mais-tellement-utiles">Éléments avancés (mais tellement utiles !)</h2>
+<p>Ce qui a été présenté jusqu'à maintenant est suffisant pour vous
+permettre d'écrire un <code>Makefile</code> fonctionnel ; cependant, comme
+l'illustre l'exemple précédent, cette rédaction reste relativement
+fastidieuse. Les informations contenue dans cette section vont vous
+permettre d'augmenter considérablement le pouvoir expressif des
+instructions du <code>Makefile</code>, rendant ainsi sa rédaction plus
+aisée.</p>
+<h3 id="definition-et-utilisation-de-variables">Définition et utilisation de variables</h3>
+<p>Pour rendre plus aisée (et concise) l'écriture des <code>Makefiles</code>, il est
+possible de définir et utiliser des <em>variables</em> (en fait, il s'agit
+plutôt de macro-commandes, mais peut importe ?).</p>
+<p>La syntaxe générale de définition d'une variable dans un <code>Makefile</code> est :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>NOM = valeur(s)
+</span></code></pre>
+<p>(ou ses variantes plus avancées <code>+=</code>, <code>:=</code>, <code>::=</code>, <code>?=</code>)</p>
+<p>avec :</p>
+<ul>
+<li>
+<p><code>NOM</code> : le nom de la variable que l'on souhaite définir ; ce nom ne
+doit pas comporter les caractères <code>:</code>, <code>#</code> ou <code>=</code>, ni de lettres
+accentuées ; l'emploi de caractères autres que les lettres, les
+chiffres ou le souligné est fortement déconseillé ; le nom des
+variables est en outre sensible à la casse (MAJ/min) ;</p>
+</li>
+<li>
+<p><code>valeur(s)</code> : une liste de valeurs, séparées par des espaces. </p>
+</li>
+</ul>
+<p>Exemple :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>RUBS = *.o *~ *.bak
+</span></code></pre>
+<p>Notons également que pour le <code>make</code> de GNU (aussi appelé <code>gmake</code>), la
+syntaxe suivante permet d'ajouter un ou plusieurs éléments à la liste
+des valeurs déjà associées à une variable :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>NOM += valeur(s)
+</span></code></pre>
+<p>Pour utiliser une variable (c.-à-d. pour lui substituer la liste de valeurs
+qui lui est associée), il suffit de placer le nom de la variable entre
+parenthèses, et de faire précéder le tout du signe <code>$</code> :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>$(NOM)
+</span></code></pre>
+<p>Exemple :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>-@$(RM) $(RUBS)
+</span></code></pre>
+<p>qui supprime tous les fichiers <code>*.o</code>,  <code>*~</code> et  <code>*.bak</code> ; la variable <code>RM</code> étant une des variables prédéfinie dans <code>make</code> (enlevez le <code>@</code> pour voir la commande effectivement exécutée).</p>
+<p>**NOTE : ** Ces variables peuvent être redéfinies lors de l’appel à <code>make</code> ; p.ex. :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make LDLIBS=-lm  ma_cible
+</span></code></pre>
+<p>redéfinit la variable <code>LDLIBS</code>.</p>
+<h3 id="exemple-d-utilisation-de-variables">Exemple d'utilisation de variables</h3>
+<p>Supposons que nous souhaitions systématiquement préciser un certains
+nombres d'options au compilateur, pour permettre l'utilisation d'un
+dévermineur (<code>-g</code>), forcer une optimisation de niveau 2 du code compilé
+(<code>-O2</code>), et rendre le compilateur plus strict vis à vis d'éventuels non
+respects de la norme C17 (p.ex.) dans notre code (<code>-std=c17 -pedantic</code>).
+Plutôt que d'ajouter chacune de ces options à chaque commande de
+compilation (et devoir à nouveau tout remodifier lorsque l'on désirera
+supprimer les informations additionnels ajoutées pour permettre le
+déverminage), il serait plus judicieux d'utiliser une variable (par
+exemple <code>CFLAGS</code>, qui est le nom utilisé par
+défaut par <code>make</code>) pour mémoriser les options à transmettre au
+compilateur. Notre <code>Makefile</code> deviendrait alors :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> CFLAGS = -std=c17 -pedantic
+</span><span> CFLAGS += -O2
+</span><span> CFLAGS += -g 
+</span><span>     
+</span><span> all: calculCplx
+</span><span>     
+</span><span> calculCplx: calculCplx.o complexe.o calculatrice.o calcGUI.o
+</span><span>     gcc -o calculCplx calculCplx.o complexe.o calculatrice.o calcGUI.o -lgraph
+</span><span>
+</span><span> # Ces lignes ont été recopiées de la commande gcc -MM *.c
+</span><span> complexe.o: complexe.c complexe.h
+</span><span> calculatrice.o: calculatrice.c calculatrice.h complexe.h 
+</span><span> calcGUI.o: calcGUI.c calcGUI.h calculatrice.h 
+</span><span> calculCplx.o: calculCplx.c calcGUI.h
+</span></code></pre>
+<h3 id="commentaires">Commentaires</h3>
+<p>Il est possible d'ajouter des commentaires (orientés lignes, c.-à-d. comme
+les <code>//...</code> de C99 ou de Java) dans un <code>Makefile</code>, en marquant le
+début de commentaire par le symbole <code>#</code>. Remarquons que les
+commentaires dans les lignes de commandes ne sont pas retiré par <code>make</code>
+avant leur exécution par le Shell ; c'est donc ce dernier qui décidera
+ce qu'il convient d'en faire :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span># voici une ligne de commentaire
+</span><span>all: dep1 dep2
+</span><span>    @echo &quot;réalisation de la cible &#39;all&#39;&quot;
+</span><span>dep1:
+</span><span>    @echo &quot;réalisation de la dépendance 1&quot;
+</span><span>dep2:
+</span><span>    @echo &quot;dépendance 2 ok...&quot;
+</span><span>dep3:  # cette cible n&#39;est pas construite par défaut
+</span><span>    echo &quot;banzai !&quot; # commentaire soumis au Shell
+</span></code></pre>
+<p>Exemples d'exécution :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>$&gt; make
+</span><span>réalisation de la dépendance 1
+</span><span>dépendance 2 ok...
+</span><span>réalisation de la cible &#39;all&#39;
+</span><span>
+</span><span>$&gt; make dep3
+</span><span>echo &quot;banzai !&quot; # commentaire soumis au Shell
+</span><span>banzai !
+</span></code></pre>
+<h3 id="variables-automatiques">Variables « automatiques »</h3>
+<p><code>make</code> maintient automatiquement à jour pour nous un certain nombre de
+variables prédéfinies, en les actualisant lors de l'exécution de chaque
+règle, en fonction de la cible concernée et de ses dépendances.
+Parmi ces variables, citons :</p>
+<ul>
+<li><code>$@</code>   nom de la cible (du fichier) de la règle courante ;</li>
+<li><code>$&lt;</code>   listes des dépendances telles que calculées par les règles par défaut de <code>make</code> ;</li>
+<li><code>$?</code>   liste de toutes les dépendances (séparées par une espace) plus récentes que la cible courante (les dépendances impliquant la mise à jour de la cible) ;</li>
+<li><code>$^</code>   [GNU Make] liste de toutes les dépendances (séparée par une espace) de la cible ;  si une dépendance est présente plusieurs fois dans une même liste de dépendances, elle ne sera reportée qu'une seule fois ;</li>
+<li><code>$(CC)</code> le nom du compilateur (C) ;</li>
+<li><code>$(CPPFLAGS)</code> options de précompilation ;</li>
+<li><code>$(CFLAGS)</code> options de compilation ;</li>
+<li><code>$(LDFLAGS)</code> options de l'éditeur de liens (« <em>linker</em> ») ;</li>
+<li><code>$(LDLIBS)</code> bibliothèques à ajouter.</li>
+</ul>
+<p>Au vu de ce qui précède, on pourrait donc réécrire le
+<code>Makefile</code> de la calculatrice comme suit (modification de la dernière ligne) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> CFLAGS = -std=c17 -pedantic
+</span><span> CFLAGS += -O2
+</span><span> CFLAGS += -g 
+</span><span>     
+</span><span> all: calculCplx
+</span><span>     
+</span><span> complexe.o: complexe.c complexe.h  
+</span><span>     
+</span><span> calculatrice.o: calculatrice.c calculatrice.h complexe.h 
+</span><span>     
+</span><span> calcGUI.o: calcGUI.c calcGUI.h calculatrice.h 
+</span><span>     
+</span><span> calculCplx.o: calculCplx.c calcGUI.h          
+</span><span>     
+</span><span> calculCplx: calculCplx.o complexe.o calculatrice.o calcGUI.o         
+</span><span>     gcc -o $@ $^ -lgraph  
+</span></code></pre>
+<h3 id="regles-implicites">Règles implicites</h3>
+<p>Comme dit plus haut, <code>make</code> possède un certain nombre de <em>règles
+implicites</em> (c.-à-d. des règles que l'utilisateur n'a pas besoin
+d'indiquer), qui lui permettent de « bien se comporter » en présence
+d'un fichier source ; il sait ainsi comment produire des fichiers
+objets à partir de sources en langage assembleur, Fortran, Pascal,
+Modula-2, Yacc, Lex, TeX, ..., et naturellement C et C++.</p>
+<p>Par exemple :</p>
+<ul>
+<li>
+<p>la cible <code>file.o</code> sera automatiquement réalisée à partir du fichier
+<code>file.c</code> au moyen d'une commande (implicite) de la forme :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  $(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $&lt;
+</span></code></pre>
+<p>qui peut encore se simplifier en </p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  $(COMPILE.c) -o $@ $&lt;
+</span></code></pre>
+<p>Habituellement, la variable <code>CC</code> se voit associée la commande <code>cc</code>.</p>
+</li>
+<li>
+<p>une cible <code>file</code> pourra être automatiquement réalisée à partir du
+fichier objet <code>file.o</code>, ou d'un ensemble de fichiers objets
+(spécifiés dans la liste des dépendances) dont <code>file.o</code> fait partie,
+comme par exemple <code>x.o file.o z.o</code>, au moyen d'une commande de la
+forme :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  $(CC) $(LDFLAGS) -o $@ $&lt; $(LOADLIBES) $(LDLIBS)
+</span></code></pre>
+</li>
+<li>
+<p>une cible <code>file</code> pourra être automatiquement réalisée à partir du
+fichier source <code>file.c</code>, et éventuellement d'un ensemble de fichiers
+objets (spécifié dans la liste des dépendances), tels <code>y.o z.o</code> au
+moyen d'une commande de la forme :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  $(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $&lt; $(LOADLIBES) $(LDLIBS)
+</span></code></pre>
+<p>qui peut se simplifier en</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  $(LINK.c) -o $@ $&lt; $(LOADLIBES) $(LDLIBS)
+</span></code></pre>
+</li>
+</ul>
+<p>On peut donc transformer notre <code>Makefile</code> précédent pour le rendre
+encore plus concis, de la manière suivante : </p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> CPPFLAGS = -std=c17 -pedantic
+</span><span> CPPFLAGS += -O2
+</span><span> CPPFLAGS += -g 
+</span><span>     
+</span><span> all: calculCplx
+</span><span>     
+</span><span> complexe.o: complexe.c complexe.h  
+</span><span> calculatrice.o: calculatrice.c calculatrice.h complexe.h 
+</span><span> calcGUI.o: calcGUI.c calcGUI.h calculatrice.h 
+</span><span> calculCplx.o: calculCplx.c calcGUI.h          
+</span><span> calculCplx: calculCplx.o complexe.o calculatrice.o calcGUI.o         
+</span><span>     $(LINK.cpp) -o $@ $^ -lgraph
+</span></code></pre>
+<p>voire même:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> CFLAGS = -std=c17 -pedantic
+</span><span> CFLAGS += -O2
+</span><span> CFLAGS += -g 
+</span><span> LDLIBS = -lgraph        
+</span><span>     
+</span><span> all: calculCplx         
+</span><span>     
+</span><span> complexe.o: complexe.c complexe.h  
+</span><span> calculatrice.o: calculatrice.c calculatrice.h complexe.h 
+</span><span> calcGUI.o: calcGUI.c calcGUI.h calculatrice.h 
+</span><span> calculCplx.o: calculCplx.c calcGUI.h          
+</span><span> calculCplx: calculCplx.o complexe.o calculatrice.o calcGUI.o         
+</span></code></pre>
+<p>où l'on a maintenant totalement supprimé la commande associée à la
+dernière cible (production de l'exécutable).</p>
+<h3 id="rupture-de-lignes">Rupture de lignes</h3>
+<p>Lorsqu'un élément (définition de variable, liste de dépendances d'une
+cible, commandes, ... et même pour un commentaire, bien que cela ne soit
+pas recommandé) est trop long pour raisonnablement tenir sur une ligne,
+il est possible de placer une <em>rupture de ligne</em> en indiquant à <code>make</code>
+de considérer la ligne suivante comme une continuation.<br />
+Cela s'obtient en plaçant le caractère <code>\</code> à la fin de la ligne à
+étendre :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span># voici un commentaire \
+</span><span>   peu lisible sur deux lignes
+</span><span>
+</span><span>all: dep1 \
+</span><span>     dep2
+</span><span>    @echo &quot;réalisation de la cible &#39;all&#39;&quot;
+</span><span>dep1:
+</span><span>    @echo &quot;réalisation de la dépendance 1&quot;
+</span><span>dep2:
+</span><span>    @echo &quot;dépendance 2 ok...&quot; \
+</span><span>&quot;si si!&quot;
+</span></code></pre>
+<p>Exemple d'exécution :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>$&gt; make
+</span><span>réalisation de la dépendance 1
+</span><span>dépendance 2 ok... si si!
+</span><span>réalisation de la cible &#39;all&#39;
+</span></code></pre>
+<p>On constate avec cet exemple qu'un usage maladroit de cette possibilité
+peut considérablement nuire à la lisibilité du <code>Makefile</code>.</p>
+<hr />
+<h2 id="pour-en-savoir-plus">Pour en savoir plus</h2>
+<p>En dépit du nom de la section précédente, nous sommes cependant encore
+loin d'avoir fait le tour des possibilités de <code>make</code>.</p>
+<p>Pour ceux qui voudrait en savoir encore plus, n'hésitez donc pas à consulter
+les références (toutes externes) suivantes :</p>
+<ul>
+<li><a href="http://www.gnu.org/software/make/">Le site de l'outil make de GNU</a></li>
+<li><a href="http://www.gnu.org/software/make/manual/make.html">Le manuel de (GNU)make, issu du site
+précédent</a></li>
+</ul>
+<p>Finalement, notez qu'il existe de nombreuses refontes plus modernes
+d'outils de gestion de projets de développement (<a href="http://www.cmake.org">CMake</a>, <a href="http://www.scons.org">SCons</a>, GNU autotools,
+outils intégrés dans des IDE : KDevelop, Anjunta,
+NetBeans, Code::Blocks, ...), mais nous pensons qu'une bonne connaissance de la base
+<code>make</code> est un bonus à votre formation.</p>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 24&#x2F;02&#x2F;2023</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

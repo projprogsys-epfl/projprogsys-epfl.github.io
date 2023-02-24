@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Création d'un environnement de développement sous macOS | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/tutorials/macos/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Tutorials",
+            "item": "https://projprogsys-epfl.github.io/tutorials/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Macos",
+            "item": "https://projprogsys-epfl.github.io/tutorials/macos/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+    
+  
+
+<body class="page single">
+  
+    
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=15187">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+  
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xxl-8">
+        <article>
+          <div class="page-header">
+            <h1>Création d&#x27;un environnement de développement sous macOS</h1>
+          </div>
+          
+          <p>Ainsi vous avez un Mac et voulez développer dessus...<br />
+Cela nécessite d'ajouter deux ou trois choses qui ne sont pas présentes par défaut. Veuillez également noter que  les corrections de ce cours se feront exclusivement sur Linux ; il faudra donc <em>impérativement</em> que votre fonctionne dans un tel environnement. Pour cela nous vous proposons une infrastructure de test basée sur Docker (expliqué plus loin) que nous vous recommandons donc d'utiliser afin d'éviter toute surprise lors de la correction.</p>
+<h2 id="installation-des-outils-de-developpement">Installation des outils de développement</h2>
+<p>La première chose à installer sont les « <em>Command Line Tools (CLT)</em> », qui permettent l'utilisation d'outils de base tels que <code>git</code>.<br />
+Pour les avoir, lancez :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>xcode-select --install
+</span></code></pre>
+<p>et vous devriez voir apparaître un dialogue d'installation. Suivez la procédure et terminez l'installation des CLT avant de passer à la suite.</p>
+<h2 id="installation-de-homebrew">Installation de « Homebrew »</h2>
+<p>La plupart des distribution de Linux contiennent un « <em>Package Manager</em> » permettant d'installer différents logiciels, en particuliers ceux pour le développement de code ou l'administration de la machine. Bien que macOS n'ai pas de tel « <em>Package Manager</em> » par défaut, nous vous recommandons d'installer et d'utiliser celui appelé « Homebrew ».<br />
+Pour l'obtenir, suivez <a href="https://brew.sh">ce lien</a> et les instructions qui s'y trouvent.</p>
+<p>Une fois l'installation terminée, tapez :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>brew update
+</span></code></pre>
+<p>pour la mettre à jour.</p>
+<p>Un bon résumé des commandes <code>brew</code> usuelles se trouve <a href="https://sourabhbajaj.com/mac-setup/Homebrew/Usage.html">sous ce lien</a> ; et il y a aussi, bien sûr, la <a href="https://docs.brew.sh/Manpage">manpage officielle</a>.</p>
+<p>Une fois Homebrew installé et mis à jour, avant de l'utiliser pour installer des bibliothèques (ci-dessous et plus tard), vous devez comprendre un minimum comment il procède :<br />
+quand vous installez quelque chose avec Homebrew, il met les exécutables, les fichiers d'en-tête et les bibliothèques correspondantes (décrite dans la «  <em>Formula</em>_ ») dans <code>/usr/local/lib</code>, de sorte à ne pas corrompre les éventuels logiciels similaires installé par Apple. Cela signifie que vous devez alors entrer des commandes un peu plus complexes lorsque vous souhaitez utiliser des logiciels/bibliothèques installé(e)s par <code>brew</code>, comme vous le verrez plus tard dans le sujet de cette semaine.</p>
+<p>Cette légère complexité supplémentaire résulte du fait que Homebrew n'installe pas les fichiers dans les endroits connus par défaut tels que <code>/lib</code> ou <code>/usr/lib</code>. [optionnel] Si vous voulez en savoir plus sur ce que l'on appelle « <em>rootfs</em> » et où les différents fichiers usuels sont normalement stockés, vous pouvez lire <a href="https://tldp.org/LDP/sag/html/root-fs.html">cette page ci</a> et <a href="https://tldp.org/LDP/sag/html/usr-fs.html">cette page là</a>. Rappelez vous cependant que macOS a une structure légèrement différente.</p>
+<p>Bref, lorsque vous aurez à compiler du code utilisant des bibliothèques installée par <code>brew</code>, il faudra indiquer au compilateur d'aller chercher ces fichiers dans des répertoires <em>différents</em> des répertoires par défaut. Cela se fait au moyen des « flags » <code>-I</code> (pour la compilation) et <code>-L</code> (pour l'édition de liens).<br />
+Pas de panique si tout ceci est encore un peu obscure pour le moment, cela se clarifiera dans les semaines à venir, en particulier à l'aide d'exemples. Nous avons simplement regroupé l'information ici ; vous pourrez y revenir au moment opportun.</p>
+<h2 id="installation-de-paquets-logiciels">Installation de paquets logiciels</h2>
+<p>Apple fournit déjà, via les CLT que vous avez installés, des versions de <code>make</code>, <code>gcc</code> (Clang en fait !) et <code>git</code>.</p>
+<p>Pour cette semaine, nous avons en plus besoin de Doxygen, que vous pouvez installer avec:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>brew install doxygen
+</span></code></pre>
+<p>Si vous préférez utiliser le compilateur GNU CC plutôt que Clang (mais c'est Clang qui sera utilisé pour les corrections), vous pouvez aussi l'installer, avec:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>brew install gcc
+</span></code></pre>
+<p>Ce compilateur sera alors installé dans in <code>/usr/local/bin/gcc-</code><em>x</em> où <em>x</em> correspond au numéro de version installé (au moment où nous écrivons, <em>x</em> vaut 10).</p>
+<h2 id="installation-de-docker">Installation de Docker</h2>
+<p>Comme expliqué plus haut, nous utiliserons Docker pour vous fournir un environnement Linux « propre » pour <em>tester</em> votre code dans les mêmes conditions que notre future correction. Nous vous recommandons donc chaudement de l'installer et apprendre à l'utiliser.</p>
+<p>Pour cela, reportez vous aux instructions données dans <a href="https://projprogsys-epfl.github.io/tutorials/docker/">docker.md</a>.</p>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 24&#x2F;02&#x2F;2023</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

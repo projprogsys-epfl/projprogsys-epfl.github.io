@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Utilisation de Docker | CS-212</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/tutorials/docker/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Tutorials",
+            "item": "https://projprogsys-epfl.github.io/tutorials/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Docker",
+            "item": "https://projprogsys-epfl.github.io/tutorials/docker/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+    
+  
+
+<body class="page single">
+  
+    
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-212</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=15187">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+  
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xxl-8">
+        <article>
+          <div class="page-header">
+            <h1>Utilisation de Docker</h1>
+          </div>
+          
+          <h2 id="concepts-de-base">Concepts de base</h2>
+<p><a href="http://www.docker.com">Docker</a> est une alternative aux machines virtuelles. C'est une architecture logicielle qui permet d'exécuter du code (y compris des logiciels système) en local sur sa machine mais dans un environnement <em>isolé</em> (appelé « container »). Pour en savoir plus : voir la <a href="https://fr.wikipedia.org/wiki/Docker_%28logiciel%29">page Wikipédia</a>.</p>
+<p>Docker utilise deux concepts de base:</p>
+<ul>
+<li>les <em>images</em> qui sont les différentes applications possibles pouvant tourner sur votre machine (par exemple une image « Ubuntu 16.04 », une image pour un server Web (« httpd »), une image pour un simple « hello world », etc.) ;</li>
+<li>les <em>containers</em> qui sont des <em>instances</em> d'images en cours d'exécution ; on peut par exemple avoir plusieurs containers de l'image  « Ubuntu 16.04 ».</li>
+</ul>
+<p>Il est important de bien comprendre la distinction des deux. En particulier, des modifications effectuées dans containers ne vont pas affecter son image (contrairement à ce qui se passe avec une machine virutelle par exemple).</p>
+<p>Pour voir toutes les images disponibles sur votre machine (une fois Docker installé, cf ci-dessous) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>docker images
+</span></code></pre>
+<p>Pour voir tous les containers en cours sur votre machine :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>docker ps -a
+</span></code></pre>
+<h2 id="installation-de-docker">Installation de docker</h2>
+<p>L'installation de Docker sur votre machine est normalement assez facile. Voir <a href="https://www.docker.com/products/overview">leur page d'installation pour plus de détails</a>.</p>
+<p>Vérifiez que Docker fonctionne</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>docker run hello-world
+</span></code></pre>
+<p>En cas de succes, vous verrez un message de confirmation &quot;Hello from Docker&quot;.</p>
+<p>Par contre, certaines installations nécessite des privilèges additionnels pour tourner Docker.</p>
+<p>Si vous avez un message d'erreur, suivez les instructions <a href="https://docs.docker.com/engine/install/linux-postinstall/">ici</a> et changez les permissions du socket si nécessaire.</p>
+<p>Pour Ubuntu comme host, la marche à suivre est:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>sudo groupadd docker
+</span><span>sudo usermod -aG docker ${USER}
+</span><span>sudo chmod 666 /var/run/docker.sock
+</span></code></pre>
+<h2 id="creation-d-une-image-pour-le-cours">Création d'une image pour le cours</h2>
+<p>Si vous souhaitez <em>développer</em> sous Docker (mais ce <strong>n'</strong> est <strong>pas</strong> ce que nous recommandons comme premier choix, en particulier à celles et ceux qui ne codent pas sur la ligne de commande (<code>vim</code>) mais utilisent plutôt une interface graphique), vous pouvez créer votre propre image de travail.<br />
+Si vous n'utiliserez Docker que pour <em>recevoir le feedback</em> du cours, il n'est pas nécessaire de faire une image spécifique (nous fournirons notre image pour les tests).</p>
+<p>Docker propose déjà plusieurs images sur son <a href="https://hub.docker.com/explore/">« hub »</a>. Le plus simple pour créer une image de <em>développement</em> pour le cours, c'est de partir d'une image Ubuntu :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>docker pull ubuntu
+</span></code></pre>
+<p>Puis lancer l'image (= créer un nouveau container ; voir tout en bas de la page pour un rappel des principales commandes) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>docker run -ti ubuntu bash
+</span></code></pre>
+<p>Au cas où l'image ne serait pas à jour (<strong>ces commandes sont à exécuter dans le shell du container Ubuntu</strong>) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>apt update
+</span><span>apt upgrade -y
+</span></code></pre>
+<p>Installation des outils nécessaires pour le cours (<strong>cette commande est à exécuter dans le shell du container Ubuntu</strong>) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>apt install build-essential clang check wdiff colordiff git openssh-client manpages manpages-dev doxygen curl
+</span><span>apt install libssl-dev libssl-doc libcurl4-openssl-dev libjson-c-dev
+</span></code></pre>
+<p>Quittez le container :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>exit
+</span></code></pre>
+<p>Créez une nouvelle image à partir de nouvel état de votre container :</p>
+<ul>
+<li>
+<p>cherchez l'id du container :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker ps -a
+</span></code></pre>
+</li>
+<li>
+<p>créez l'image :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker commit CONTAINER_ID projet-cs212
+</span></code></pre>
+<p>en remplaçant <code>CONTAINER_ID</code> par le bon id; par exemple :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker commit 55959d62b348 projet-cs212
+</span></code></pre>
+</li>
+<li>
+<p>supprimez le container :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker rm CONTAINER_ID
+</span></code></pre>
+</li>
+</ul>
+<h2 id="premiere-compilation">Première compilation</h2>
+<p>Vous pouvez maintenant lancer votre nouvelle image et, par exemple, y compiler votre projet.
+Pour cela, nous vous conseillons de « mounter » le répertoire où se trouvent vos codes sources sur le container avec l'option <code>-v</code> de <code>docker run</code>.</p>
+<p>Par exemple, si vous êtes sur une machine Unix, allez dans le répertoire de vos codes sources et faites :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>docker run -ti --rm -v $(pwd):/localhost projet-cs212
+</span></code></pre>
+<p>Autre exemple :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>docker run -ti --rm -v /home/chezmoi/projet:/localhost projet-cs212
+</span></code></pre>
+<p>Vous aurez alors accès dans le container à vos fichiers via <code>/localhost</code>. Par exemple :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>ls /localhost
+</span></code></pre>
+<p>Vous pouvez alors y compiler votre projet. Par exemple :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cd /localhost
+</span><span>make
+</span></code></pre>
+<p>Quittez le container avec :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>exit
+</span></code></pre>
+<p>(ou simplement CTRL-D).</p>
+<h2 id="quelques-commandes-docker-utiles">Quelques commandes Docker utiles</h2>
+<ul>
+<li>
+<p>obtenir de l'aide :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker help COMMAND
+</span></code></pre>
+<p>par exemple :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker help ps
+</span></code></pre>
+</li>
+<li>
+<p>Liste de tous les containters :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker ps -a
+</span></code></pre>
+</li>
+<li>
+<p>Supprimer un container :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker rm CONTAINER_ID
+</span></code></pre>
+</li>
+<li>
+<p>Supprimer tous les containers :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker rm $(docker ps -aq)
+</span></code></pre>
+</li>
+<li>
+<p>Liste de toutes les images :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker images
+</span></code></pre>
+</li>
+<li>
+<p>Supprimer une image (qui n'a plus de container) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker rmi IMAGE_ID
+</span></code></pre>
+</li>
+<li>
+<p>Créer un container en mode interactif et le supprimer automatiquement en fin :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker run -ti --rm CONTAINER_ID 
+</span><span>  docker run -ti --rm CONTAINER_ID COMMANDE
+</span></code></pre>
+<p>par exemple :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker run -ti --rm ubuntu bash
+</span></code></pre>
+</li>
+<li>
+<p>Créer un container en mode interactif <em>sans</em> le supprimer automatiquement :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker run -ti CONTAINER_ID 
+</span></code></pre>
+</li>
+<li>
+<p>Créer un container en mode interactif en « mountant » le système de fichier local (c.-à-d. en ayant dans le container un accès à un endroit du disque local) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker run -ti --rm -v local_dirname:container_dirname CONTAINER_ID 
+</span></code></pre>
+<p>par exemple :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker run -ti --rm -v /home/machin:/tmp/home_machin_local CONTAINER_ID 
+</span></code></pre>
+<p>Note : les noms de fichiers/répertoires doivent être absolus (pas relatifs).</p>
+</li>
+<li>
+<p>Redémarrer un container en pause :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker start CONTAINER_ID 
+</span></code></pre>
+</li>
+<li>
+<p>Copier des fichiers entre la machine locale et un container :</p>
+<ul>
+<li>
+<p>de la machine locale au container :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>docker cp local_filename CONTAINER_ID:where_to_put
+</span></code></pre>
+</li>
+<li>
+<p>du container à la machine locale :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>docker cp CONTAINER_ID:where_to_get local_filename
+</span></code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Créer une nouvelle image à partir de l'état d'un container :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  docker commit CONTAINER_ID IMAGE_ID
+</span></code></pre>
+</li>
+</ul>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Site web crée avec <a href="https://www.getzola.org/">Zola</a>, par l'équipe CS-212 - mis à jour le 24&#x2F;02&#x2F;2023</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>
