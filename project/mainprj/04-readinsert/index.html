@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>ImgFS: Image-oriented File System --- Finalizing `read` and `insert` | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/04-readinsert/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "04 Readinsert",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/04-readinsert/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-imgfs/">ImgFS: Image-oriented File System --- ImgFS format</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">ImgFS: Image-oriented File System --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-createdelete/">ImgFS: Image-oriented File System --- create, delete and help</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-dedup/">ImgFS: Image-oriented File System --- Lazy resize and deduplication</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/04-readinsert/">ImgFS: Image-oriented File System --- Finalizing `read` and `insert`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-socket/">ImgFS: Image-oriented File System --- Network layers: socket layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-http/">ImgFS: Image-oriented File System --- Network layers: HTTP layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-webservice/">ImgFS: Image-oriented File System --- Webserver services</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>ImgFS: Image-oriented File System --- Finalizing `read` and `insert`</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>This week, you'll implement the commands <code>read</code> (extract an image from the image database) and <code>insert</code> (insert an image into the database). To do this, you'll use features developed last week.</p>
+<p><strong>Warning:</strong>
+if you're working ahead on the submission, don't forget to make a <code>make submit</code> before &quot;polluting&quot; your first rendering with early work for this week (which shall <strong>not</strong> be part of the part submitted for grading).<br />
+If in doubt/difficulty, ask an assistant (or teacher).</p>
+<h2 id="provided-material">Provided material</h2>
+<p>As in the previous weeks, we're providing you with test material for this week.</p>
+<p>Moreover, in order to reduce the workload, we also provide you with four functions to be added in your code. These functions can be found in <code>provided/src/week10_provided_code.txt</code> and consist in:</p>
+<ul>
+<li>
+<p><code>resolution_atoi()</code>, to be added to <code>imgfs_tools.c</code>;</p>
+<p>the purpose of this function is to transform a string specifying an image resolution into one of the enumerations specifying a resolution type, namely:</p>
+<ul>
+<li>return <code>THUMB_RES</code> if the argument is either <code>&quot;thumb&quot;</code> or <code>&quot;thumbnail&quot;</code>;</li>
+<li>return <code>SMALL_RES</code> if the argument is <code>&quot;small&quot;</code>;</li>
+<li>return <code>ORIG_RES</code> if argument is either <code>&quot;orig&quot;</code> or <code>&quot;original&quot;</code>;</li>
+<li>return <code>-1</code> in all other cases, including if the argument is <code>NULL</code>;</li>
+</ul>
+<p>this function is needed to process the command line arguments of the <code>read</code> command;</p>
+</li>
+<li>
+<p><code>get_resolution()</code>, to be added to <code>image_content.c</code>;</p>
+<p>the purpose of this function is to retrieve the resolution of a JPEG image;
+it takes an <code>image_buffer</code> as input, which is a pointer to a memory region containing a JPEG image, and <code>image_size</code> which is the size of this region; and it &quot;outputs&quot; (fills, actually) the two parameters <code>height</code> and <code>width</code>;</p>
+<p>the function returns <code>ERR_NONE</code> if there is no problem, or <code>ERR_IMGLIB</code> if there is a VIPS error;</p>
+<p>this function is needed by the <code>insert</code> command;</p>
+<p><strong>Note for those who look at the provided code and may be puzzled by the cast:</strong> the prototype of <code>vips_jpegload_buffer()</code> is in fact wrong, as its first argument should be <code>const void*</code> (instead of <code>void *</code>; we <em>read</em> from these data!). In fact, if you take a look at <a href="https://github.com/libvips/libvips/blob/727eb2ee395f1aafcdfe4177df7c23d901160784/libvips/foreign/jpegload.c#L535">their code</a>, that function only calls <a href="https://libvips.github.io/libvips/API/current/libvips-type.html#vips-blob-new"><code>vips_blob_new()</code></a> whose second argument is correctly qualified as <code>const void *</code> (well, even if there is <a href="https://github.com/libvips/libvips/blob/9cbb4c2cd10300bac55b2ca26b05adec4e1fb57a/libvips/iofuncs/type.c#L650">that horrible casting</a>). So we can safely pass a <code>const</code> <code>image_buffer</code> to <code>vips_jpegload_buffer()</code> (by casting it, unfortunately... <code>:-(</code>);</p>
+</li>
+<li>
+<p>the two <code>do_read_cmd()</code> and <code>do_insert_cmd()</code>, to be added to <code>imgfscmd_functions.c</code>; they do not compile as such yet since they require three utility functions (to be written, see below).</p>
+</li>
+</ul>
+<h2 id="tasks">Tasks</h2>
+<p>What you have to do this week, is to implement the <code>do_read()</code> and <code>do_insert()</code> functions, as well as three utility functions for 
+<code>do_read_cmd()</code> and <code>do_insert_cmd()</code>.</p>
+<h3 id="do-insert"><code>do_insert()</code></h3>
+<p>The <code>do_insert()</code> function adds an image to the &quot;imgFS&quot;. Create a new <code>imgfs_insert.c</code> file to implement it.</p>
+<p>The implementation logic contains several steps, in an order that must be respected.</p>
+<h4 id="find-a-free-position-in-the-index">Find a free position in the index</h4>
+<p>First of all, check that the current number of images is less than <code>max_files</code>. Return <code>ERR_IMGFS_FULL</code> if this is not the case.</p>
+<p>Next, you have to find an empty entry in the <code>metadata</code> table. When this is the case, you must:</p>
+<ul>
+<li>place the image's SHA256 hash value in the <code>SHA</code> field (if necessary, review what you did in the warmup regarding SHA256 computation);</li>
+<li>copy the <code>img_id</code> string into the corresponding field;</li>
+<li>store the image size (passed as parameter) in the corresponding <code>ORIG_RES</code> field (beware of type change);</li>
+<li>use the <code>get_resolution()</code> function (see above) to determine the image width and height; put these values into the <code>orig_res</code> fields of the <code>metadata</code>.</li>
+</ul>
+<h4 id="image-de-duplication">Image de-duplication</h4>
+<p>Call last week's <code>do_name_and_content_dedup()</code> function using the correct parameters. In the event of an error, <code>do_insert()</code> returns the same error code.</p>
+<h4 id="writing-the-image-to-disk">Writing the image to disk</h4>
+<p>First, check whether the de-duplication step has found (or not) another copy of the same image. To do this, test whether the original resolution offset is zero (if necessary, review the <code>do_name_and_content_dedup()</code> function).</p>
+<p>If the image does not exist, write its contents at the end of the file. Don't forget to finish initializing the metadata.</p>
+<h4 id="updating-image-database-data">Updating image database data</h4>
+<p>Update all the necessary image database header fields. Version shall be inscreased by 1.</p>
+<p>Finally, all that's left to do is write the <code>header</code>, and then the <em>corresponding</em> <code>metadata</code> entry to disk (your code must <strong>not</strong> write all the metadata to disk for each operation!).</p>
+<h3 id="do-read"><code>do_read()</code></h3>
+<p>The second main function of the week is <code>do_read()</code>, to be implemented in a new file, <code>imgfs_read.c</code>.</p>
+<p>This function must first find the entry in the metadata table corresponding to the supplied identifier.</p>
+<p>If successful, determine whether the image already exists in the requested resolution (<code>offset</code> or <code>size</code> null). If not, call the <code>lazily_resize()</code> function from last week to create the image at the required resolution. (Note: this should never be the case for <code>ORIG_RES</code>).</p>
+<p>At this point, the position of the image (in the correct resolution) in the file is known, as is its size; you can then read the contents of the file image into a dynamically allocated memory region.</p>
+<p>If successful, the output parameters <code>image_buffer</code> and <code>image_size</code> should contain the memory address and size of the image.</p>
+<p>Be careful to handle possible error cases:</p>
+<ul>
+<li>return the error code received in the event of an internal function error;</li>
+<li>return <code>ERR_IO</code> in the event of a read error;</li>
+<li>return <code>ERR_OUT_OF_MEMORY</code> in the event of a memory allocation error;</li>
+<li>and return <code>ERR_IMAGE_NOT_FOUND</code> if the requested identifier could not be found.</li>
+</ul>
+<p><strong>Note:</strong> in case any of you are wondering: please note that <code>read</code> on a duplicated image does <strong>not</strong> modify any of its duplicates. Indeed, <code>lazily_resize()</code> has no impact on <em>other</em> images than the one under consideration (and was written before <code>do_name_and_content_dedup()</code>). Such a behavior (which <strong>must</strong> be your program's behavior) isn't a big deal in practice, because:</p>
+<ol>
+<li>searching for all duplicates at each operation would be too costly in general;</li>
+<li>it will be the role of a garbage collector to do this kind of work, once in a while (e.g. every night) and on <em>all</em> the image database;</li>
+<li>and it should often be the case that a duplicated image is, when it arrives, the duplicate of an image already in use, i.e. an image that <em>already</em> has its &quot;small&quot; and &quot;thumb&quot; versions; in this case, the new inserted image (duplicate) will already share its &quot;small&quot; and &quot;thumb&quot; versions with its original, already present in the database.</li>
+</ol>
+<h3 id="integration-into-the-main-program">Integration into the main program</h3>
+<p>We already provided you with the two wrap-up functions <code>do_read_cmd()</code> and <code>do_insert_cmd()</code> (see top of this handout), but they still require three  utility functions (in <code>imgfscmd_functions.c</code>):</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">static void </span><span style="color:#8fa1b3;">create_name</span><span>(</span><span style="color:#b48ead;">const char</span><span>* </span><span style="color:#bf616a;">img_id</span><span>, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">resolution</span><span>, </span><span style="color:#b48ead;">char</span><span>** </span><span style="color:#bf616a;">new_name</span><span>);
+</span><span style="color:#b48ead;">static int </span><span style="color:#8fa1b3;">write_disk_image</span><span>(</span><span style="color:#b48ead;">const char </span><span>*</span><span style="color:#bf616a;">filename</span><span>, </span><span style="color:#b48ead;">const char </span><span>*</span><span style="color:#bf616a;">image_buffer</span><span>, uint32_t </span><span style="color:#bf616a;">image_size</span><span>);
+</span><span style="color:#b48ead;">static int </span><span style="color:#8fa1b3;">read_disk_image</span><span>(</span><span style="color:#b48ead;">const char </span><span>*</span><span style="color:#bf616a;">path</span><span>, </span><span style="color:#b48ead;">char </span><span>**</span><span style="color:#bf616a;">image_buffer</span><span>, uint32_t *</span><span style="color:#bf616a;">image_size</span><span>);
+</span></code></pre>
+<p>The purpose of <code>create_name()</code> is to create, in <code>new_name</code> the name of the file to use to save the read image (<code>do_read_cmd()</code>),
+using the following naming convention:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>image_id + resolution_suffix + &#39;.jpg&#39;
+</span></code></pre>
+<p>where:</p>
+<ul>
+<li><code>image_id</code> is the image identifier;</li>
+<li>and <code>resolution_suffix</code> corresponds to <code>_orig</code>, <code>_small</code> or <code>_thumb</code>;</li>
+</ul>
+<p>for instance, if the image id is <code>&quot;myid&quot;</code> and the resolution is <code>SMALL_RES</code>, then <code>new_name</code> will contain <code>&quot;myid_small.jpg&quot;</code>.<br />
+Also have a look at its call for further details if needed.</p>
+<p><code>write_disk_image()</code> is a very simple tool function (five lines or so) to write the content of the provided <code>image_buffer</code>, the size of which is <code>image_size</code>, to a file, the name of which is provided. Have a look at its call for further details if needed.</p>
+<p>This function returns <code>ERR_IO</code>  on error and <code>ERR_NONE</code> otherwise.</p>
+<p>Finaly, <code>read_disk_image()</code> reads an image from disk, the filename of which is provided in <code>path</code>. It reads the image into <code>image_buffer</code> and sets <code>image_size</code> to its corresponding size.</p>
+<p>This function returns <code>ERR_IO</code> in case of a filesystem error, <code>ERR_OUT_OF_MEMORY</code> in case of a memory allocation error, and <code>ERR_NONE</code> otherwise.</p>
+<h3 id="update-help">Update <code>help</code></h3>
+<p>Finaly, modify the <code>help</code> command to reflect the new commands:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>&gt; ./imgfscmd help
+</span><span>imgfscmd [COMMAND] [ARGUMENTS]
+</span><span>  help: displays this help.
+</span><span>  list &lt;imgFS_filename&gt;: list imgFS content.
+</span><span>  create &lt;imgFS_filename&gt; [options]: create a new imgFS.
+</span><span>      options are:
+</span><span>          -max_files &lt;MAX_FILES&gt;: maximum number of files.
+</span><span>                                  default value is 128
+</span><span>                                  maximum value is 4294967295
+</span><span>          -thumb_res &lt;X_RES&gt; &lt;Y_RES&gt;: resolution for thumbnail images.
+</span><span>                                  default value is 64x64
+</span><span>                                  maximum value is 128x128
+</span><span>          -small_res &lt;X_RES&gt; &lt;Y_RES&gt;: resolution for small images.
+</span><span>                                  default value is 256x256
+</span><span>                                  maximum value is 512x512
+</span><span>  read   &lt;imgFS_filename&gt; &lt;imgID&gt; [original|orig|thumbnail|thumb|small]:
+</span><span>      read an image from the imgFS and save it to a file.
+</span><span>      default resolution is &quot;original&quot;.
+</span><span>  insert &lt;imgFS_filename&gt; &lt;imgID&gt; &lt;filename&gt;: insert a new image in the imgFS.
+</span><span>  delete &lt;imgFS_filename&gt; &lt;imgID&gt;: delete image imgID from imgFS.
+</span></code></pre>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 19&#x2F;05&#x2F;2024</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

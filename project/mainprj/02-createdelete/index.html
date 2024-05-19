@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>ImgFS: Image-oriented File System --- create, delete and help | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/02-createdelete/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "02 Createdelete",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/02-createdelete/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-imgfs/">ImgFS: Image-oriented File System --- ImgFS format</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">ImgFS: Image-oriented File System --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/02-createdelete/">ImgFS: Image-oriented File System --- create, delete and help</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-dedup/">ImgFS: Image-oriented File System --- Lazy resize and deduplication</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-readinsert/">ImgFS: Image-oriented File System --- Finalizing `read` and `insert`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-socket/">ImgFS: Image-oriented File System --- Network layers: socket layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-http/">ImgFS: Image-oriented File System --- Network layers: HTTP layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-webservice/">ImgFS: Image-oriented File System --- Webserver services</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>ImgFS: Image-oriented File System --- create, delete and help</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>This week's objective is to implement three features for our image management system:</p>
+<ul>
+<li>the <code>create</code> command, to create a new (empty) file in <code>imgFS</code> format (= a new image database);</li>
+<li>image deletion (<code>delete</code>);</li>
+<li>complement the <code>help</code> command, a standard and essential element of any command line interface.</li>
+</ul>
+<p>One of the aims of this exercise is to learn how to write data structures to disk using basic I/O operations.</p>
+<p>As in previous weeks, you'll be writing your own code, modifying the elements provided.</p>
+<h2 id="provided-material">Provided material</h2>
+<p>Except new tests, there is no new provided material.
+You will continue to modify the files used last week: <code>imgfscmd.c</code> and <code>imgfscmd_functions.c</code>.</p>
+<h2 id="tasks">Tasks</h2>
+<p>This week's work consists of five modifications, summarized here and detailed below if necessary:</p>
+<ol>
+<li>
+<p>in a new <code>imgfs_create.c</code> file (to be created), implement the <code>do_create()</code> function (prototyped in <code>imgfs.h</code>), the purpose of which is to create a new image database in a (binary) file on disk;</p>
+</li>
+<li>
+<p>complete the <code>do_create_cmd()</code> function in the <code>imgfscmd_functions.c</code> file in order to call <code>do_create()</code> correctly;</p>
+</li>
+<li>
+<p>implement the <code>do_delete()</code> function (prototyped in <code>imgfs.h</code>) in a new <code>imgfs_delete.c</code> file; the <code>do_delete()</code> function must &quot;delete&quot; a specified image (we'll see below what this really means);</p>
+</li>
+<li>
+<p>complete the <code>do_delete_cmd()</code> function in the <code>imgfscmd_functions.c</code> file in order to call <code>do_delete()</code> correctly;</p>
+</li>
+<li>
+<p>define the <code>help()</code> function, which will print instructions for using the <code>imgfscmd</code> command line interface (CLI).</p>
+</li>
+</ol>
+<h3 id="1-define-do-create">1. Define <code>do_create()</code>.</h3>
+<p><code>do_create()</code> must create a <em>new</em> database for the <code>imgfs</code> format. It receives the name of the database file, and a partially filled <code>imgfs_file</code> structure, containing only, in the header, <code>max_files</code> and <code>resized_res</code>.</p>
+<p>This function should finish initializing the received <code>imgfs_file</code> structure before writing it to disk, first the <em>header</em>, then the <em>metadata</em>. It must use standard C input/output functions to create the new image base in a <em>binary</em> file on disk. If the file already exists, it is simply overwritten (without message nor error).</p>
+<p>It is important to initialize all <em>relevant</em> elements explicitly before writing. And, of course, it's essential to write the right-sized array of <code>metadata</code> in the file.<br />
+<strong>Note:</strong> the database name must be set by <code>do_create()</code> from the provided  constant <code>CAT_TXT</code>.</p>
+<p>It is also important to handle all possible errors. In the absence of an error, <code>do_create()</code> should return <code>ERR_NONE</code>; in the event of an error, it returns the corresponding value code as defined in <code>error.h</code>.</p>
+<p>As the <code>create</code> command is only used once (to create a database) and always from the command line utility <code>imgfscmd</code> (it will never be launched from a Web server, for example), we are <strong>exceptionally</strong> going to add a side effect in the form of a display indicating the (<em>true</em>) number of objects saved on disk.<br />
+For example, with one <em>header</em> then ten <em>metadatas</em>, we'll have the following display:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>11 item(s) written
+</span></code></pre>
+<p><code>11</code> because the <em>header</em> and then each of the ten <em>metadatas</em> have been successfully written by <code>fwrite()</code>.</p>
+<h3 id="2-complete-do-create-cmd">2. Complete <code>do_create_cmd()</code>.</h3>
+<p>We have provided you with an incomplete implementation of <code>do_create_cmd()</code>. As part of your solution, you need to create an <code>imgfs_file</code>, initialize the <code>max_files</code> and <code>resized_res</code> fields of its header with the values provided, then call <code>do_create()</code> (which will initialize the other fields).</p>
+<h4 id="parsing-create-command-arguments">Parsing <code>create</code> command arguments</h4>
+<p>The main role of <code>do_create_cmd()</code> is to correctly <em>parse</em> all of its arguments, both mandatory and optional.</p>
+<p>Your solution should have the following structure:</p>
+<ul>
+<li>
+<p>start by retrieving the mandatory argument (<code>&lt;imgFS_filename&gt;</code>)</p>
+</li>
+<li>
+<p>iterate on <code>argv</code>;</p>
+</li>
+<li>
+<p>at each iteration, first determine whether it's an acceptable optional argument (<code>-max_files</code>, <code>-thumb_res</code> or <code>-small_res</code>; see also the <code>help</code> text below);</p>
+</li>
+<li>
+<p>if so, check if there are still enough parameters for the corresponding values (at least one for <code>-max_files</code> and at least 2 for the other two); if not, return <code>ERR_NOT_ENOUGH_ARGUMENTS</code>;</p>
+</li>
+<li>
+<p>then convert the next parameter(s) to the correct type; check that the value is correct (neither zero nor too large); if not, return either <code>ERR_MAX_FILES</code> (for <code>-max_files</code>), or <code>ERR_RESOLUTIONS</code>;
+note that <code>util.c</code>, already supplied in the past, offers two tool functions (<code>atouint16()</code> and <code>atouint32()</code>) for converting a character string containing a number into its <code>uint16</code> or <code>uint32</code> value; we encourage you to use these two functions to convert character strings in command line arguments; they handle the various error cases in the event of converting an invalid number, or a number too large for the specified type (e.g., trying to convert 1000000 to a 16-bit number); they return 0 in these cases; use them to implement your code correctly;</p>
+</li>
+<li>
+<p>if not an optional argument, return error <code>ERR_INVALID_ARGUMENT</code>.</p>
+</li>
+</ul>
+<p>Please note:</p>
+<ul>
+<li>
+<p>optional arguments may be repeated, e.g. <code>-max_files 1000 -max_files 1291</code>; in this case, only the last value is valid;</p>
+</li>
+<li>
+<p>the mandatory argument cannot be repeated.</p>
+</li>
+</ul>
+<h3 id="3-define-do-delete">3. Define <code>do_delete()</code>.</h3>
+<p>We here describe how to implement the functionality for deleting an image. The idea is as follows: we don't actually delete the contents of the image, as this would be too costly (especially in terms of time). In fact, the size of the image base file on disk never decreases, even when you ask to &quot;delete&quot; an image from the base.<br />
+Rather, an image is &quot;deleted&quot; by</p>
+<ol>
+<li>finding the image reference with the same name in the &quot;metadata&quot;;</li>
+<li>invalidating the reference by writing the value <code>EMPTY</code> in <code>is_valid</code>;</li>
+<li>adjusting the &quot;<em>header</em>&quot; information.</li>
+</ol>
+<p>Changes must be made first to the metadata (memory, then disk), then to the header if successful.<br />
+<strong>Note:</strong> for reasons of compatibility between systems, it is preferable to rewrite the entire &quot;<code>struct</code>&quot; to disk, rather than just the modified fields.</p>
+<p>The <code>do_delete()</code> function takes the following arguments:</p>
+<ul>
+<li>an identifier (string, <code>const char *</code>);</li>
+<li>an <code>imgfs_file</code> structure.</li>
+</ul>
+<p>To write the changes to disk, you first need to set the position at the right place in the file, using <code>fseek()</code> (see the course and <code>man fseek</code>) and then <code>fwrite()</code>.</p>
+<p>Of course, if the reference in the image database does not exist (and there is no invalidation), this must be handled correctly.</p>
+<p>Don't forget to update the header if the operation is successful. You also need to increase the version number (<code>imgfs_version</code>) by 1, adjust the number of valid images stored (<code>nb_files</code>) and write the header to disk.</p>
+<h3 id="4-define-do-delete-cmd">4. Define <code>do_delete_cmd()</code></h3>
+<p>Complete the code for <code>do_delete_cmd()</code>. If the received <code>imgID</code> is empty or its length is greater than <code>MAX_IMG_ID</code>, <code>do_delete_cmd()</code> should return the error <code>ERR_INVALID_IMGID</code> (defined in <code>error.h</code>).</p>
+<h3 id="5-define-help">5. Define <code>help()</code>.</h3>
+<p>The <code>help</code> command is intended to be used in two different cases (already covered):</p>
+<ol>
+<li>when the arguments passed to the utility are invalid;</li>
+<li>when the user explicitly requests the list of possibilities by typing <code>imgfscmd help</code>.</li>
+</ol>
+<p>The command output must have <em>exactly</em> the following format:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>imgfscmd [COMMAND] [ARGUMENTS]
+</span><span>  help: displays this help.
+</span><span>  list &lt;imgFS_filename&gt;: list imgFS content.
+</span><span>  create &lt;imgFS_filename&gt; [options]: create a new imgFS.
+</span><span>      options are:
+</span><span>          -max_files &lt;MAX_FILES&gt;: maximum number of files.
+</span><span>                                  default value is 128
+</span><span>                                  maximum value is 4294967295
+</span><span>          -thumb_res &lt;X_RES&gt; &lt;Y_RES&gt;: resolution for thumbnail images.
+</span><span>                                  default value is 64x64
+</span><span>                                  maximum value is 128x128
+</span><span>          -small_res &lt;X_RES&gt; &lt;Y_RES&gt;: resolution for small images.
+</span><span>                                  default value is 256x256
+</span><span>                                  maximum value is 512x512
+</span><span>  delete &lt;imgFS_filename&gt; &lt;imgID&gt;: delete image imgID from imgFS.
+</span></code></pre>
+<p>Write the function in <code>imgfscmd_functions.c</code>.</p>
+<h2 id="testing">Testing</h2>
+<h3 id="testing-by-hand">Testing by hand</h3>
+<p>It's best to start testing your code on a simple case you're familiar with.</p>
+<p>Use <strong>a copy</strong> of the <code>provided/tests/data/test02.imgfs</code> file from previous weeks (we insist: <strong>make a copy!!</strong>) to see its contents, delete one or two image(s). Check each time by looking at the result with <code>list</code>.</p>
+<p>Also test any edge cases you can think of.</p>
+<p>Test your two new commands (use <code>help</code> to find out how to use <code>create</code>;-P ).</p>
+<p>To check that the binary file has been correctly written to disk, use last week's <code>list</code> command.</p>
+<h3 id="provided-tests">Provided tests</h3>
+<p>We provide you with a bunch of unit and end-to-end tests, you can run them as usual.</p>
+<p>If you're on your own VM, please install <code>libvips-dev</code>, e.g.:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>sudo apt install libvips-dev
+</span></code></pre>
+<h3 id="personal-unit-tests">Personal unit tests</h3>
+<p>As we move forward with the project, it is important that you can write your own tests, to complete the provided ones. You can find those in <code>provided/tests/unit/</code>. Before adding new tests, don't forget to copy the <code>test/</code> directory in <code>done/</code>. You will also need to modify the <code>TEST_DIR</code> variable in the <code>Makefile</code>.</p>
+<p>We strongly advise you to edit these files to add your own tests, or even to create new ones as you move forward. This can be done quite simply by adding your own values or lines of code to the tests already provided, or by copying this file and drawing inspiration from it (don't forget to update the tests' <code>Makefile</code> accordingly). You don't need to understand everything in this file, at least not initially, but it is important you start to get familiar with its content.</p>
+<p>That said, for those who want to go further, the main test functions available in the environment we use (<a href="https://libcheck.github.io/check/">Check</a>) are described over there: <a href="https://libcheck.github.io/check/doc/check_html/check_4.html#Convenience-Test-Functions">https://libcheck.github.io/check/doc/check_html/check_4.html#Convenience-Test-Functions</a>. For example, to test whether two <code>int</code> are equal, use the <code>ck_assert_int_eq</code> macro: <code>ck_assert_int_eq(a, b)</code>.</p>
+<p>We have also defined the following &quot;functions&quot; in <code>tests.h</code>:</p>
+<ul>
+<li><code>ck_assert_err(int actual_error, int expected_error)</code> : assert that <code>actual_error</code> is <code>expected_error</code> ;</li>
+<li><code>ck_assert_err_none(int error)</code> : assert that <code>error</code> is <code>ERR_NONE</code> ;</li>
+<li><code>ck_assert_invalid_arg(int error)</code> : assert that <code>error</code> is <code>ERR_INVALID_ARGUMENT</code> (i.e. correspond to the return code of a function which received a invalid argument; see <code>error.h</code>) ;</li>
+<li><code>ck_assert_ptr_nonnull(void* ptr)</code> : assert that <code>ptr</code> is not <code>NULL</code> ;</li>
+<li><code>ck_assert_ptr_null(void* ptr)</code> : assert that <code>ptr</code> is <code>NULL</code>.</li>
+</ul>
+<p>Finally, we'd like to remind you that just because 100% of the tests provided here pass doesn't mean you'll get 100% of the points. Firstly, because these tests may not be exhaustive (it's also part of a programmer's job to think about tests), but also and above all (as indicated on the page explaining the project grading scale, because we attach great importance to the quality of your code, which will therefore be evaluated by a human review (and not blindly by a machine).</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 19&#x2F;05&#x2F;2024</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>ImgFS: Image-oriented File System --- Webserver services | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/07-webservice/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "07 Webservice",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/07-webservice/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-imgfs/">ImgFS: Image-oriented File System --- ImgFS format</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">ImgFS: Image-oriented File System --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-createdelete/">ImgFS: Image-oriented File System --- create, delete and help</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-dedup/">ImgFS: Image-oriented File System --- Lazy resize and deduplication</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-readinsert/">ImgFS: Image-oriented File System --- Finalizing `read` and `insert`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-socket/">ImgFS: Image-oriented File System --- Network layers: socket layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-http/">ImgFS: Image-oriented File System --- Network layers: HTTP layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/07-webservice/">ImgFS: Image-oriented File System --- Webserver services</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>ImgFS: Image-oriented File System --- Webserver services</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>Now that we have the low layers of a quiet generic HTTP server, we can start offering our first real ImgFS services.</p>
+<p>The main goal of this <em>last</em> week is to provide over HTTP, the equivalent of the command-line interface (CLI) commands. When the server will be completed, it will implement the same functionalities as the CLI <code>imgfscmd</code>, with the exception of the <code>create</code> command, which remains available only through the CLI.</p>
+<p>In <code>index.html</code>, we provide an example of a client code, written in Javascript (as many of today's web applications) that your can use in your browser to test your server. You can also use <code>curl</code> on the command line as an alternative client.</p>
+<p>We will also take the opportunity to improve our server so has to handle multiple connections through multi-threading.</p>
+<p>There are thus basically three things to be done this week:</p>
+<ol>
+<li>[ ~ 25% of the work ] allow the <code>list</code> command to provide the content in JSON format, useful for Web clients;</li>
+<li>[ ~ 60% of the work ] implement the ImgFS commands in HTTP (using the work of the last two weeks);</li>
+<li>[ ~ 15% of the work ] make our server multi-threaded.</li>
+</ol>
+<p>As usual, we recommend you split the work over the team members. Moreover, remember <a href="https://projprogsys-epfl.github.io/project/index/foreword/#workload">the early advice</a> and choose what you want to do, or not, in the remaining time.</p>
+<h2 id="provided-material">Provided material</h2>
+<p>This week, we provide you with:</p>
+<ul>
+<li>new unit tests added into the former <code>tests/unit/unit-test-imgfslist.c</code>;</li>
+<li>new end-to-end tests in <code>tests/end-to-end/week13.robot</code>;</li>
+<li>and, in <code>src/week13_provided_code.txt</code>, some code to be added to <code>http_net.c</code>.</li>
+</ul>
+<p>Normally, the client code <code>provided/src/index.html</code> was already provided at the beginning of the project.</p>
+<h2 id="tasks">Tasks</h2>
+<h3 id="1-list-content-in-json-format">1. List content in JSON format</h3>
+<h4 id="1-0-libjson">1.0 <code>libjson</code></h4>
+<h5 id="1-0-a-installation">1.0.a Installation</h5>
+<p>You will need the <code>libjson</code> library, which allows to parse and write data in <a href="https://fr.wikipedia.org/wiki/JavaScript_Object_Notation">JSON format</a>. It is the standard format used for Javascript applications, easy to read both for the computer and a human developer (and much more simple than XML).</p>
+<p>If your on your own machine and haven't already done it, start by installing the <code>libjson</code> library:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>    sudo apt install libjson-c-dev
+</span></code></pre>
+<p>To check if you have the correct version, use <code>apt-cache show libjson-c-dev</code> and check that the <code>Homepage</code> is https://github.com/json-c/json-c/wiki (there may be several variants of this library).</p>
+<h5 id="1-0-b-usage">1.0.b Usage</h5>
+<p>To use the library:</p>
+<ul>
+<li>
+<p>the interface is defined in <code>&lt;json-c/json.h&gt;</code> -- worth looking at; add the <code>include</code> in all source files that needs the library;</p>
+</li>
+<li>
+<p>add the following lines to your <code>Makefile</code>:</p>
+<pre data-lang="Makefile" style="background-color:#2b303b;color:#c0c5ce;" class="language-Makefile "><code class="language-Makefile" data-lang="Makefile"><span style="color:#65737e;"># Add options for the compiler to include the library&#39;s headers
+</span><span style="color:#bf616a;">CFLAGS </span><span>+= </span><span style="color:#a3be8c;">-I/usr/include/json-c
+</span><span>
+</span><span style="color:#65737e;"># Add the library to the linker
+</span><span style="color:#bf616a;">LDLIBS </span><span>+= </span><span style="color:#a3be8c;">-ljson-c
+</span></code></pre>
+</li>
+</ul>
+<p>The API's documentation is located there: https://json-c.github.io/json-c/json-c-current-release/doc/html/</p>
+<p>The functions you will need are:</p>
+<ul>
+<li>
+<p><a href="http://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#a84f7f8c0774c4600d958561d7548d649"><code>json_object_new_array()</code></a>;</p>
+</li>
+<li>
+<p><a href="http://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#a7b7b5302b3903c9347eeb1f4a64d657b"><code>json_object_new_string()</code></a>;</p>
+</li>
+<li>
+<p><a href="http://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#a18cdd9a7455e09f36cdf6e5756b7f586"><code>json_object_array_add()</code></a>;</p>
+</li>
+<li>
+<p><a href="http://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#a68c383f54544fca19b5f2425be397600"><code>json_object_new_object()</code></a>;</p>
+</li>
+<li>
+<p><a href="http://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#a27bd808a022251059a43f1f6370441cd"><code>json_object_object_add()</code></a>;</p>
+</li>
+<li>
+<p><a href="http://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#ab7390c22baa1700d977c2af6b22d43a4"><code>json_object_to_json_string()</code></a>;</p>
+</li>
+<li>
+<p><a href="http://json-c.github.io/json-c/json-c-current-release/doc/html/json__object_8h.html#afabf61f932cd64a4122ca8092452eed5"><code>json_object_put()</code></a>; we can ignore its return value.</p>
+</li>
+</ul>
+<p>If any of the above functions returns an error, you must return <code>ERR_RUNTIME</code>.</p>
+<h4 id="1-1-update-do-list">1.1 Update <code>do_list()</code></h4>
+<p>The first objective is to integrate the JSON format in the application <code>imgfscmd</code>; this part is independent from the web server integration and can be done in parallel, for example by your teammate.</p>
+<p>For this, you have to complement the <code>do_list()</code> function so that if its output mode is <code>JSON</code>, it returns a string (rather than directly printing to <code>stdout</code> as it does when output mode is <code>STDOUT</code>).</p>
+<p>The function must use the <code>libjson</code> library (see above) to build a JSON object with the following structure:</p>
+<pre data-lang="jsonc" style="background-color:#2b303b;color:#c0c5ce;" class="language-jsonc "><code class="language-jsonc" data-lang="jsonc"><span>{
+</span><span>    &quot;Images&quot;: [&quot;pic1&quot;, &quot;pic2&quot;] // an array of the strings of the img_id fields from the metadata
+</span><span>}
+</span></code></pre>
+<p>It is a JSON <em>object</em> containing an <em>array</em> of <em>string</em>, which are the <code>img_id</code> of the images in the filesystem, then converts it to a string to return it.</p>
+<p>Beware of the lifetime/scope of the data you manipulate! Particularly, the string used in a JSON object are owned by the object, and are freed upon calling <code>json_object_put()</code> on it.</p>
+<h4 id="1-2-tests">1.2 Tests</h4>
+<p>You can simply test you implementation by punctually editing <code>do_list_cmd()</code> and changing the call to <code>do_list()</code> so as to have JSON output rather than usual textual output and use <code>imgfscmd list</code> to test. For instance:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>empty.imgfs  -&gt; { &quot;Images&quot;: [ ] }
+</span><span>test02.imgfs -&gt; { &quot;Images&quot;: [ &quot;pic1&quot;, &quot;pic2&quot; ] }
+</span></code></pre>
+<p>You can also (non exclusive) launch the two new unit-tests with:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make test-imgfslist
+</span></code></pre>
+<h3 id="2-develop-the-web-server">2. Develop the web server</h3>
+<h4 id="2-1-handle-http-messages">2.1 Handle HTTP messages</h4>
+<p>The next thing to be done is to update <code>handle_http_message()</code> to serve our needs. For this:</p>
+<ul>
+<li>
+<p>create four functions <code>handle_list_call()</code>, <code>handle_read_call()</code>, <code>handle_delete_call()</code> and <code>handle_insert_call()</code>; these functions are the equivalent for our server of the <code>do_X_cmd()</code> functions for the CLI and are detailed below;</p>
+<p>for the moment make them simply <code>return reply_302_msg(connection);</code></p>
+</li>
+<li>
+<p>adapt <code>handle_http_message()</code> to call the appropriate function in each case (URI match either <code>/list</code>, <code>/read</code>, <code>/delete</code> or <code>/insert</code> (and verb is <code>POST</code> in this later case; as already done last week)</p>
+</li>
+<li>
+<p>add a first condition which is:</p>
+</li>
+</ul>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span>    </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">http_match_verb</span><span>(&amp;msg-&gt;uri, &quot;</span><span style="color:#a3be8c;">/</span><span>&quot;) || </span><span style="color:#bf616a;">http_match_uri</span><span>(msg, &quot;</span><span style="color:#a3be8c;">/index.html</span><span>&quot;)) {
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">http_serve_file</span><span>(connection, BASE_FILE);
+</span><span>    }
+</span></code></pre>
+<h4 id="2-2-handle-list-command">2.2 Handle list command</h4>
+<p>The server must answer with a valid HTTP response, using the JSON format, at the URI <code>/imgfs/list</code>. To achieve this, update the
+<code>handle_list_call()</code> function so as to call <code>do_list()</code> with the proper format; and then replies.</p>
+<p>The HTTP message that the <code>list</code> command must produce is:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>HTTP/1.1 200 OK\r\n
+</span><span>Content-Type: application/json\r\n
+</span><span>Content-Length: XXX\r\n\r\n
+</span><span>YYY
+</span></code></pre>
+<p>This can easily be achieved with the functions that you implemented in the previous weeks (and the JSON update of <code>do_list()</code>).</p>
+<p>Test this first functionality by launching your server and querying it with curl:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>curl -i &#39;http://localhost:8000/imgfs/list&#39;
+</span></code></pre>
+<p>(use <code>curl -v</code> if you want more information to debug).</p>
+<h4 id="2-3-handle-read-command">2.3 Handle read command</h4>
+<p>Next, update the function <code>handle_read_call()</code>, equivalent to <code>handle_list_call()</code> but for the URI <code>/imgfs/read</code>.</p>
+<p>This function must use <code>http_get_var()</code> to get the following arguments:</p>
+<ul>
+<li><code>res</code>: the resolution of the image queried; to be converted with <code>resolution_atoi()</code> (see the <code>read</code> from <code>imgfscmd</code>);</li>
+<li><code>img_id</code>: the identifier of the image (its &quot;name&quot;).</li>
+</ul>
+<p>Those two parameters are required, but the order does not matter. Example of URI:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>http://localhost:8000/imgfs/read?res=orig&amp;img_id=pic2
+</span></code></pre>
+<p>Then call the function <code>do_read()</code> with the correct arguments.</p>
+<p>On success, return the following HTTP response:</p>
+<pre data-lang="HTTP" style="background-color:#2b303b;color:#c0c5ce;" class="language-HTTP "><code class="language-HTTP" data-lang="HTTP"><span>HTTP/1.1 200 OK
+</span><span>Content-Type: image/jpeg
+</span><span>Content-Length: &lt;XXX&gt;
+</span><span>
+</span><span>&lt;YYY&gt;
+</span></code></pre>
+<p>The <code>Content-Length</code> must be the size of the image (in bytes).<br />
+Note: the lines above are, as always, terminated with <code>&quot;\r\n&quot;</code>, which we do not write anymore for readability)</p>
+<p>If an error occurs, call the function <code>reply_error_msg()</code>.</p>
+<p>Test with:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>curl -i &#39;http://localhost:8000/imgfs/read?res=orig&amp;img_id=pic1&#39;
+</span></code></pre>
+<p>Test also error cases (missing argument, wrong resolution, ...).</p>
+<h4 id="2-4-handle-delete-command">2.4 Handle delete command</h4>
+<p>Implement the <code>handle_delete_call()</code> to answer the request at the URI <code>/imgfs/delete</code>. 
+Those requests only need one argument: <code>img_id</code>.</p>
+<p>Once the argument (valid) recovered, call the <code>do_delete()</code>. If successful, return the following HTTP response to make the client reload <code>index.html</code>:</p>
+<pre data-lang="HTTP" style="background-color:#2b303b;color:#c0c5ce;" class="language-HTTP "><code class="language-HTTP" data-lang="HTTP"><span>HTTP/1.1 302 Found
+</span><span>Location: http://&lt;URL&gt;/index.html
+</span></code></pre>
+<p>where <code>&lt;URL&gt;</code> is the HTTP address used by the server.</p>
+<p>If an error occurs, call the function <code>reply_error_msg()</code>, as usual.</p>
+<h4 id="2-5-handle-insert-command">2.5 Handle insert command</h4>
+<p>Implement the function <code>handle_insert_call()</code>, the most complex one, to handle the URI <code>/imgfs/insert</code>.</p>
+<p>The insertion logic is different from that used to return a list (<code>list</code>) or an image (<code>read</code>). Insertion uses the <code>HTTP POST</code> command, while the other two use <code>HTTP GET</code>.  Basically, a <code>GET</code> contains all the arguments in the URI, whereas a <code>POST</code> has additional arguments in addition to the URI. In particular, the <code>/imgfs/insert</code> command uses a <code>POST</code> for the actual content of the image to be inserted.</p>
+<p>To avoid overloading the server's RAM, large files are generally sent piece by piece (&quot;<em>chunk</em>&quot;) in several successive <code>POST</code>. To simplify things in this project, we've set an image size limit in <code>index.html</code> that allows the image to be sent all at once in a single chunk. This avoids having to write the retrieval piece by piece and put it back together in the server!</p>
+<p>The <code>handle_insert_call()</code> function must therefore essentially:</p>
+<ul>
+<li>retrieve the image name (parameter <code>name</code>), which we'll use as an identifier to insert it into the database;</li>
+<li>retrieve (put in the heap) the unique &quot;chunk&quot; corresponding to its (binary) content;</li>
+<li>insert the image into the ImgFS with <code>do_insert()</code>.</li>
+</ul>
+<p>In the event of an error, be sure to return an appropriate error message.
+If successful, proceed as with <code>delete</code> to redisplay the index page.</p>
+<h4 id="finalization">Finalization</h4>
+<p>Finally, since image processing uses the VIPS library (indirectly), don't forget to start it (<code>VIPS_INIT</code>) when you launch the server, and close it (<code>vips_shutdown()</code>) when you stop it.</p>
+<h4 id="testing">Testing</h4>
+<p>To test your web server, simply launch your <code>imgfs_server</code> after having copied the provided <code>index.html</code> to your <code>done/</code>, then open <code>http://localhost:8000/</code> in a web browser. You should get something like this (depending on the ImgFS with which you run your server; here the <code>test02.imgfs</code> -- which we always recommend you <strong>copy</strong> before your tests and test on the copy):</p>
+<p><img src="../webapp.png" alt="Default view of test02.imgfs from the webapp" title="Default view of test02.imgfs from the webapp" /></p>
+<ul>
+<li>Click on a red cross on the right to <code>delete</code>.</li>
+<li>Click on an image to view it in its original size (<code>read</code>).</li>
+<li>Click on the text &quot;<em>Click here to upload</em>&quot; to add a file (<code>insert</code>).</li>
+</ul>
+<p>You can also test URIs directly, e.g. <code>http://localhost:8000/imgfs/read?res=small&amp;img_id=pic1</code> to test the &quot;small&quot; resolution, directly in your browser, or e.g. on the command line (in another terminal):</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>curl -v &#39;http://localhost:8000/imgfs/read?res=small&amp;img_id=pic1&#39; --output myowntest.jpg
+</span></code></pre>
+<p>To test an insert with <code>curl</code> do things like:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>curl -v -X POST &#39;http://localhost:8000/imgfs/insert?name=pic3&#39; --data-binary @../provided/tests/data/brouillard.jpg
+</span></code></pre>
+<p>Finally, there's always <code>make check</code>, and <em>then</em> <code>make feedback</code>, available (tests performed via <code>curl</code>).</p>
+<h3 id="3-multithreading">3. Multithreading</h3>
+<p>The main problem with the current server design is that we open only one single socket for the communication and that this socket is blocking: only one single communication can occur at a time. This is not convenient for a Web server... (try with several tabs to the same server in your browser).</p>
+<p>The most advance way to solve this problem is to use polling non blocking connections (using <code>poll()</code> or even <code>epoll()</code> for larger servers).
+In this project, we choose to implement a simplest way, also illustrating the lectures you soon had: multithreaded blocking connections.
+Each socket will be open in a new thread, thus allowing several parallel communications to the server.</p>
+<p>But then, of course, all access to the ImgFS shall be locked.
+(We here assume that any interaction with the ImgFS may change its internal state; thus any interaction with it must be locked for the other threads and unlocked as soon as the interaction with the ImgFS is over.)</p>
+<p>In <code>http_net.c</code>:</p>
+<p>It's the <code>handle_connection()</code> that will be threaded. So we first have to create a thread in <code>http_receive()</code>. However, in order to avoid race conditions between thread on the active file descriptor used to communicate (the one returned by <code>tcp_accept()</code>), this value has to be stored (on the heap) separately for each call to <code>http_receive()</code>.</p>
+<p>Concretely, in <code>http_receive()</code>:</p>
+<ol>
+<li>make the value returned by <code>tcp_accept()</code> be stored on the heap; and of course <code>free()</code> it whenever needed (don't forget error cases); let's name this value: <code>active_socket</code> (needed below);</li>
+<li>create and initialize to <code>PTHREAD_CREATE_DETACHED</code> some pthread attributes; see <code>pthread_attr_init()</code> and <code>pthread_attr_setdetachstate()</code> man-pages; notice that &quot;detached&quot; threads automatically release their resources on exit (but then there is no way to get their return value; we'll ignore them);</li>
+<li>create a thread (see <code>pthread_create()</code>) that will run <code>handle_connection()</code> with <code>active_socket</code> as a parameter.</li>
+<li>Don't forget to release the <code>pthread_attr_t</code> with <code>pthread_attr_destroy()</code>.</li>
+</ol>
+<p><strong>Note:</strong> this is a practice exercise for programming threads in C. There is thus a part of understanding, reading man-pages, (asking questions,) on your side.</p>
+<p>Now that <code>handle_connection()</code> is multi-threaded, we simply don't want the <code>SIGTERM</code> and <code>SIGINT</code> signals to be intercepted by it (but leave them to the main thread).
+For this, simply add this code at the beginning of <code>handle_connection()</code>:</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span>    sigset_t mask;
+</span><span>    </span><span style="color:#bf616a;">sigemptyset</span><span>(&amp;mask);
+</span><span>    </span><span style="color:#bf616a;">sigaddset</span><span>(&amp;mask, SIGINT );
+</span><span>    </span><span style="color:#bf616a;">sigaddset</span><span>(&amp;mask, SIGTERM);
+</span><span>    </span><span style="color:#bf616a;">pthread_sigmask</span><span>(SIG_BLOCK, &amp;mask, </span><span style="color:#d08770;">NULL</span><span>);
+</span></code></pre>
+<p>Notice also that since <code>handle_connection()</code> is now multi-threaded, we have to close and release its <code>active_socket</code> on exit (which, depending on your design, was maybe previously handled by <code>http_receive()</code>).</p>
+<p>Finally, in <code>imgfs_server_service.c</code>, we have to lock all access to the ImgFS:</p>
+<ol>
+<li>declare a global variable of type <code>pthread_mutex_t</code>;</li>
+<li>initialize it in <code>server_startup()</code> (see <code>pthread_mutex_init()</code> man-page); and release it in <code>server_shutdown()</code> (see <code>pthread_mutex_destroy()</code>);</li>
+<li>add a lock (<code>pthread_mutex_lock()</code>) and unlock around all your <code>do_X()</code> calls (all the calls that interact with the ImgFS data).</li>
+</ol>
+<p>Test the multithreaded approach by launching several client at the same time: multiple tabs in your browser and multiple <code>curl</code> calls.</p>
+<h2 id="final-submission">Final submission</h2>
+<p>So this is the end! Next week will indeed be &quot;free&quot;, no new content, only to finalize your project before the deadline which is:<br />
+<strong>SUNDAY JUNE 02, 11:59pm</strong></p>
+<p>For this deadline, there is nothing special to be done, except to commit and push, and to provide a (<strong>short</strong>) <code>README.md</code> file which must contain:</p>
+<ul>
+<li>what you did and what you did not in the project (= up to where you went);</li>
+<li>any particular remark about your project (specific aspect, changes in the conception, ...);</li>
+<li>anything else you want us to know (about the project).</li>
+</ul>
+<p>Don't forget to push everything before the above deadline. The content of your project will be the state of your <code>main</code> branch at the deadline (in case this is relevant for you: thus don't forget to merge your branch(es) into the <code>main</code> branch).</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 19&#x2F;05&#x2F;2024</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

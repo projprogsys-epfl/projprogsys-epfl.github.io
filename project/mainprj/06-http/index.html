@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>ImgFS: Image-oriented File System --- Network layers: HTTP layer | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/06-http/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "06 Http",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/06-http/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-imgfs/">ImgFS: Image-oriented File System --- ImgFS format</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">ImgFS: Image-oriented File System --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-createdelete/">ImgFS: Image-oriented File System --- create, delete and help</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-dedup/">ImgFS: Image-oriented File System --- Lazy resize and deduplication</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-readinsert/">ImgFS: Image-oriented File System --- Finalizing `read` and `insert`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-socket/">ImgFS: Image-oriented File System --- Network layers: socket layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/06-http/">ImgFS: Image-oriented File System --- Network layers: HTTP layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-webservice/">ImgFS: Image-oriented File System --- Webserver services</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>ImgFS: Image-oriented File System --- Network layers: HTTP layer</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>This week we continue our client-server application by adding a (simplified) HTTP server layer.
+Last week, our HTTP layer was only able to detect some specific string in the header. We now want to be able to read and write full HTTP requests (only the ones needed for our purposes; not <a href="https://www.rfc-editor.org/rfc/rfc9112">the full RFCs (9110-9112)</a> <code>;-)</code>). Mainly, your work this week will consist in writing <code>http_prot.c</code> and use it.</p>
+<p>To recap the design of our ImgFS client-server architecture: it has been layered as, from lower to upper level:</p>
+<ul>
+<li><code>socket_layer</code>: TCP client and server;</li>
+<li><code>http_net</code>: minimal HTTP network services (no parsing of the content);</li>
+<li><code>http_prot</code>: (simple) HTTP content parsing;</li>
+<li><code>imgfs_server_service</code>: tools to build an ImgFS server over HTTP (the client will be either <code>curl</code> or your browser; you won't write any HTTP client);</li>
+<li><code>imgfs_server</code>: the ImgFS server (over HTTP) itself.</li>
+</ul>
+<p>Regarding the communication design, the three steps that could be considered are:</p>
+<ol>
+<li>single blocking connection, waiting for incoming message and replying to them, forever (until some termination signal);</li>
+<li>multithreaded blocking connections; this allows several parallel communications to the server;</li>
+<li>polling non blocking connections.</li>
+</ol>
+<p>This week we will implement version 1 and next week move to version 2. Polling won't be addressed in this project (but those who'd like to, can do it).</p>
+<p>We thus have three things to be done this week:</p>
+<ol>
+<li>
+<p>tools to parse and create HTTP messages (<code>http_prot.c</code>);</p>
+</li>
+<li>
+<p>create a more appropriate (but still generic) <code>handle_connection()</code> (in <code>http_net.c</code>);</p>
+</li>
+<li>
+<p>develop ad-hoc services for our ImgFS server (<code>imgfs_server_service.c</code>).</p>
+</li>
+</ol>
+<p><strong>IMPORTANT NOTICE:</strong> it's really important you proceed step by step and test each progress separately to be sure you're building upon safe grounds. We will propose you several testing steps but feel free to develop/use your own whenever needed!</p>
+<p>Also, help yourself by displaying <em>informed</em> error message whenever possible. For instance, instead of writing:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>fprintf(stderr, &quot;error with URL parameter\n&quot;);
+</span></code></pre>
+<p>it may be more effective to do something like:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>fprintf(stderr, &quot;http_get_var(): URL parameter \&quot;%s\&quot; not found in \&quot;%s\&quot;\n&quot;, name, url-&gt;val);
+</span></code></pre>
+<p>You can also use <code>debug_printf()</code> whenever needed.</p>
+<h2 id="provided-material">Provided material</h2>
+<p>This week, we provide you with unit tests in <code>tests/unit/unit-test-http.c</code> and, in <code>src/week12_provided_code.txt</code>, some code to be added to <code>imgfs_server_service.c</code>.</p>
+<h2 id="to-do">To do</h2>
+<h3 id="parsing-of-http-messages">Parsing of HTTP messages</h3>
+<h4 id="strings">strings</h4>
+<p>The first thing to pay <strong>really</strong> attention about is the difference between strings used by HTTP, which are <strong>not</strong> null-terminated, and the C &quot;strings&quot; (null-terminated <code>char*</code>). When using a C &quot;string&quot;, always ensure it is indeed null-terminated (to go the other way round is not a problem as the size will always be send over HTTP: simply use C &quot;string&quot; size minus one).</p>
+<p>To properly handle HTTP string, we propose you the <code>struct http_string</code> type (in <code>http_prot.h</code>; have a look!).
+Similarly, to make your life easier, we also propose a few other data structures. Feel free to use them when needed!</p>
+<p>Printing those HTTP strings is a bit tricky; using the usual <code>&quot;%s&quot;</code> will not work, since the string is not null-terminated. You can instead use the <code>&quot;%.*s&quot;</code> specifier, and pass the length of the string <em>before</em> its value :</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">struct</span><span> http_string s = {.</span><span style="color:#bf616a;">val </span><span>= &quot;</span><span style="color:#a3be8c;">Hello world!&lt;this is outside the http string&gt;</span><span>&quot;, .</span><span style="color:#bf616a;">len </span><span>= </span><span style="color:#d08770;">12</span><span>};
+</span><span style="color:#bf616a;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">C string: </span><span style="color:#d08770;">%s</span><span style="color:#96b5b4;">\n</span><span>&quot;, s.</span><span style="color:#bf616a;">val</span><span>);
+</span><span style="color:#65737e;">// C string: Hello world!&lt;this is outside the http string&gt;
+</span><span style="color:#bf616a;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">HTTP string: </span><span style="color:#d08770;">%.*s</span><span style="color:#96b5b4;">\n</span><span>&quot;, s.</span><span style="color:#bf616a;">len</span><span>, s.</span><span style="color:#bf616a;">val</span><span>);
+</span><span style="color:#65737e;">// HTTP string: Hello world!
+</span></code></pre>
+<h4 id="http-match-uri-and-http-match-verb"><code>http_match_uri()</code> and <code>http_match_verb()</code></h4>
+<p>Let's start with the <em>simple</em> <code>http_match_uri()</code> and <code>http_match_verb()</code> functions: see their description in <code>http_prot.h</code> and implement them. Notice the difference between URI, where only the <em>prefix</em> matter (e.g. HTTP string &quot;<code>https://localhost:8000/imgfs/read?res=orig&amp;img_id=mure.jpg</code>&quot; matches any of the C strings <code>&quot;https://&quot;</code>, <code>&quot;https://localhost:8000/&quot;</code>, <code>&quot;https://localhost:8000/imgfs&quot;</code>, etc.; this is very simple indeed) and &quot;verbs&quot; where the <em>whole</em> string matters (e.g. HTTP string &quot;<code>POST</code>&quot; does <em>not</em> match C string <code>&quot;POS&quot;</code>, nor <code>&quot;POST /localhost:8000/imgfs&quot;</code>).</p>
+<p>As usual, pay attention to receive valid arguments.</p>
+<p>You can test your function with the above examples, as well as those:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>&quot;/universal/resource/identifier&quot; match uri &quot;/universal/resource/&quot;
+</span><span>&quot;/universal/resource/identifier&quot; match uri &quot;/universal&quot;
+</span><span>
+</span><span>{val = &quot;POST / HTTP/1.1&quot;, len = 4} match verb &quot;POST&quot;
+</span><span>{val = &quot;GET / HTTP/1.1&quot; , len = 3} match verb &quot;GET&quot;
+</span><span>{val = &quot;GET / HTTP/1.1&quot; , len = 3} does not match verb &quot;GET /&quot;
+</span><span>{val = &quot;GET / HTTP/1.1&quot; , len = 3} does not match verb &quot;G&quot;
+</span></code></pre>
+<h4 id="http-get-var"><code>http_get_var()</code></h4>
+<p>The purpose of <code>http_get_var()</code> function is to extract values of parameters from URL. For instance, get <code>&quot;orig&quot;</code> for parameter <code>&quot;res&quot;</code> in <code>http://localhost:8000/imgfs/read?res=orig&amp;img_id=mure.jpg</code>. Or extract <code>&quot;mure.jpg&quot;</code> for parameter <code>&quot;img_id&quot;</code> in the same URL.</p>
+<p>For this we recommend:</p>
+<ol>
+<li>copy the <code>name</code> parameter into a new string and append <code>=</code> to it;</li>
+<li>look for that string into URL;</li>
+<li>look if there is any <code>'&amp;'</code> somewhere after that string; if yes consider the position of this <code>'&amp;'</code> as the end of the value, otherwise consider the end of the URL as the end of the value;</li>
+<li>copy the value into <code>out</code> (shall be a valid C string).</li>
+</ol>
+<p><strong>Note:</strong> this method is not complete, we should also check that the parameter is located after the first <code>&quot;?&quot;</code> in the url, and right after the <code>&quot;?&quot;</code> or a <code>&quot;&amp;&quot;</code>, and decode the argument. This is left as a bonus exercise for those interested.</p>
+<p>Regarding the return values:</p>
+<ul>
+<li>if the arguments are not valid, return <code>ERR_INVALID_ARGUMENT</code>;</li>
+<li>if the parameter is not found, return 0;</li>
+<li>if the parameter is present but the value cannot be extracted (or is too long for <code>out_len</code>), return <code>ERR_RUNTIME</code>;</li>
+<li>return length of the value in case of correct extraction.</li>
+</ul>
+<p>We <strong>strongly</strong> recommend you to write at least a few unit tests for this function. Here are some test values:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>&quot;http://localhost:8000/imgfs/read?res=orig&amp;img_id=mure.jpg&quot;, &quot;res&quot;       -&gt; &quot;orig&quot;
+</span><span>&quot;http://localhost:8000/imgfs/read?res=orig&amp;img_id=mure.jpg&quot;, &quot;img_id&quot;    -&gt; &quot;mure.jpg&quot;
+</span><span>&quot;http://localhost:8000/imgfs/read?res=orig&amp;img_id=mure.jpg&quot;, &quot;max_files&quot; -&gt; &lt;not found&gt;
+</span></code></pre>
+<p>Writing tests of your own is something really important in real-life projects.</p>
+<h4 id="http-parse-message"><code>http_parse_message()</code></h4>
+<p>The most complex function of this module is definitely <code>http_parse_message()</code>, the aim of which is to parse a HTTP message (only the ones needed for our purposes; not the full <a href="https://www.rfc-editor.org/rfc/rfc9110.html">RFCs (9110-9112)</a>).</p>
+<p>Such a message is made of:</p>
+<ul>
+<li>a start-line ended by a delimiter (<code>HTTP_LINE_DELIM</code>); this first line either describes the requests to be implemented, or its status (successf/failure);</li>
+<li>zero or more header field lines (collectively referred to as &quot;the header&quot;);</li>
+<li>an empty line (see <code>HTTP_HDR_END_DELIM</code>) indicating the end of the header;</li>
+<li>an optional message body.</li>
+</ul>
+<p>For simplicity, we will consider the start-line to be part of the header (we will call &quot;the header&quot;, the start line an all the non empty header lines).</p>
+<p>For instance, the message:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>GET /imgfs/read?res=orig&amp;img_id=mure.jpg HTTP/1.1
+</span><span>Host: localhost:8000
+</span><span>User-Agent: curl/8.5.0
+</span><span>Accept: */*
+</span></code></pre>
+<p>consists only of a header (no body).</p>
+<p>This example:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>POST /imgfs/insert?&amp;name=papillon.jpg HTTP/1.1
+</span><span>Host: localhost:8000
+</span><span>User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0
+</span><span>Accept: */*
+</span><span>Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+</span><span>Accept-Encoding: gzip, deflate, br
+</span><span>Referer: http://localhost:8000/index.html
+</span><span>Content-Length: 72876
+</span><span>Origin: http://localhost:8000
+</span><span>DNT: 1
+</span><span>Connection: keep-alive
+</span><span>Sec-Fetch-Dest: empty
+</span><span>Sec-Fetch-Mode: cors
+</span><span>Sec-Fetch-Site: same-origin
+</span><span>
+</span><span>&lt;some binary data&gt;
+</span></code></pre>
+<p>has a 14 lines long header, a blank line (<code>HTTP_HDR_END_DELIM</code> actually), and then a body of 72876 bytes (a JPG image in this case). The body length is indicated by the <code>Content-Length:</code> header line.</p>
+<p>For such a complex task, we recommend, as usual, to split it into relevant pieces; for instance (please read below, next 3 subsections! But also feel free to follow your own way):</p>
+<ul>
+<li>extract the next token between the current position and some delimiter; for instance extract <code>&quot;Host&quot;</code> from <code>&quot;Host: localhost:8000&quot;</code> with delimiter <code>HTTP_HDR_KV_DELIM</code>;</li>
+<li>parse header lines by getting all key-value pairs;</li>
+<li>then get the body.</li>
+</ul>
+<p>Of course, feel free to develop more tool functions if appropriate.</p>
+<h5 id="get-next-token"><code>get_next_token()</code></h5>
+<p>To ease the treatment of a message, we propose you to write a tool function that extract the first substring (= prefix) of a the string before some delimiter:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>static const char* get_next_token(const char* message, const char* delimiter, struct http_string* output)
+</span></code></pre>
+<p>For instance <code>get_next_token(&quot;abcdefg&quot;, &quot;de&quot;, &amp;token)</code> will put <code>&quot;abc&quot;</code> (as an HTTP string, not a C string) into <code>token</code>, and return a pointer to <code>&quot;fg&quot;</code>.
+If <code>output</code> is a <code>NULL</code> pointer, which can be accepted, simply don't store the value. This may be useful to simply skip tokens without storing them.</p>
+<p><strong>Note:</strong> this function must not perform <em>any</em> copies of the string, instead the <code>output</code> must contain a reference inside the <code>message</code> string.</p>
+<p>As for <code>http_get_var()</code>, you will need to write unit tests for your function. This is a bit trickier, since it's a static function -- i.e. it cannot be used from another <code>.c</code> file. You can use the following workaround: </p>
+<ul>
+<li>in your unit test file, add the prototype of <code>get_next_token()</code> (without <code>static</code>) and add <code>#define IN_CS202_UNIT_TEST</code>;</li>
+<li>in <code>http_prot.c</code> instead of <code>static</code>, use the <code>static_unless_test</code> defined as follows:</li>
+</ul>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">#ifdef</span><span> IN_CS202_UNIT_TEST
+</span><span style="color:#b48ead;">#define </span><span>static_unless_test
+</span><span style="color:#b48ead;">#else
+</span><span style="color:#b48ead;">#define </span><span>static_unless_test </span><span style="color:#b48ead;">static
+</span><span style="color:#b48ead;">#endif
+</span></code></pre>
+<p>You can thus call <code>get_next_token()</code> from your unit-text <code>.c</code> code.</p>
+<p>Here are some suggestions of test data:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>message,                            delim   -&gt;  output,             return value
+</span><span>
+</span><span>&quot;abcdefg&quot;,                          &quot;de&quot;    -&gt;  &quot;abc&quot;,              &quot;fg&quot;
+</span><span>&quot;Content-Length: 0\r\nAccept: */*&quot;, &quot;: &quot;    -&gt;  &quot;Content-Length&quot;,   &quot;0\r\nAccept: */*&quot;
+</span><span>&quot;0\r\nAccept: */*&quot;,                 &quot;\r\n&quot;  -&gt;  &quot;0&quot;,                &quot;Accept: */*&quot;
+</span></code></pre>
+<p>(for the second example, use <code>HTTP_HDR_KV_DELIM</code>)</p>
+<h4 id="http-parse-headers"><code>http_parse_headers()</code></h4>
+<p>Another tool function that may be worth creating is</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>static const char* http_parse_headers(const char* header_start, struct http_message* output)
+</span></code></pre>
+<p>to fill all <code>headers</code> key-value pairs of <code>output</code> (have a look at <code>struct http_message</code> in <code>http_prot.h</code>).</p>
+<p>For this: until you find an empty line (in the HTML sense: use <code>HTTP_LINE_DELIM</code>), do</p>
+<ul>
+<li>extract the next token delimited by <code>HTTP_HDR_KV_DELIM</code> and store it as a new key (in the <code>headers</code> of <code>output</code>);</li>
+<li>step after that <code>HTTP_HDR_KV_DELIM</code> delimiter;</li>
+<li>then extract the next token delimited by <code>HTTP_LINE_DELIM</code> and store it as the value associated to the preceding key.</li>
+</ul>
+<p>We found it useful to return the position right after the last header line, i.e. where the body starts; but feel free to choose your own: remember this is a <em>tool</em> function, for <strong>you</strong>.</p>
+<p>Notice that the above algorithms assumes that HTTP headers end with an empty line, that is that <code>HTTP_HDR_END_DELIM</code> is simply twice <code>HTTP_LINE_DELIM</code>, which is indeed the case.
+For those who want to be really strict, you can statically assert this assumption, e.g. by:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>    _Static_assert(strcmp(HTTP_HDR_END_DELIM, HTTP_LINE_DELIM HTTP_LINE_DELIM) == 0, &quot;HTTP_HDR_END_DELIM is not twice HTTP_LINE_DELIM&quot;);
+</span></code></pre>
+<p>To test this function, you will need the same trick as for <code>get_next_token()</code> regarding the <code>static</code> qualifier. 
+As a test example, the following string:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>&quot;Host: localhost:8000\r\nUser-Agent: curl/8.5.0\r\nAccept: */*\r\n\r\n&quot;
+</span></code></pre>
+<p>should yield the key-value pairs:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>&quot;Host&quot; -&gt; &quot;localhost:8000&quot;
+</span><span>&quot;User-Agent&quot; -&gt; &quot;curl/8.5.0&quot;
+</span><span>&quot;Accept&quot; -&gt; &quot;*/*&quot;
+</span></code></pre>
+<h4 id="back-to-http-parse-message">Back to <code>http_parse_message()</code></h4>
+<p>Once you have all your desired tools (create more on-the-fly when needed), you can write the parsing of a whole HTTP message.</p>
+<ul>
+<li>check the headers have been completely received (<code>HTTP_HDR_END_DELIM</code> shall be present, otherwise simply return 0, indicating message is incomplete);</li>
+<li>parse the first line (which looks like <code>GET /imgfs/read?res=orig&amp;img_id=mure.jpg HTTP/1.1</code>) by:
+<ul>
+<li>extracting the first token, delimited by a whitespace, and putting it into <code>method</code> field of <code>out</code> argument;</li>
+<li>extracting the second token, delimited by a whitespace, and putting it into <code>uri</code> field of <code>out</code> argument;</li>
+<li>checking but skipping the third token, delimited by <code>HTTP_LINE_DELIM</code> (it should match <code>&quot;HTTP/1.1&quot;</code>);</li>
+</ul>
+</li>
+<li>then parse all the key-value pairs of the header;</li>
+<li>get the <code>&quot;Content-Length&quot;</code> value from the parsed header lines;</li>
+<li>if it's present and not 0, store the body; it might be usefull to write a tool function here as well; you can also delegate this task to next week;</li>
+<li>return:
+<ul>
+<li>1 if there is no body (no <code>Content-Length</code> header, or is value is <code>0</code>) or you were able to read the full body;</li>
+<li>0 if the message could not be fully parsed ; i.e. either you have not received all the headers or the full body.</li>
+</ul>
+</li>
+</ul>
+<p>Test it with:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>&quot;GET / HTTP/1.1\r\nHost: localhost:8000\r\nAc&quot; -&gt; incomplete headers
+</span><span>&quot;GET / HTTP/1.1\r\nHost: localhost:8000\r\nAccept: */*\r\n\r\n\r\n&quot; -&gt; OK
+</span><span>&quot;GET / HTTP/1.1\r\nHost: localhost:8000\r\nContent-Length: 10\r\n\r\n\01234&quot; -&gt; incomplete body (content_len: 10)
+</span><span>&quot;GET / HTTP/1.1\r\nHost: localhost:8000\r\nContent-Length: 10\r\n\r\n\0123456789&quot; -&gt; OK
+</span></code></pre>
+<h3 id="revisit-handle-connection">Revisit <code>handle_connection()</code></h3>
+<p>It's now time to have a more appropriate version of <code>handle_connection()</code> (in <code>http_net.c</code>), which is able to properly handle HTTP messages, in a generic manner through a global variable of type <code>EventCallback</code>: <code>handle_connection()</code> will do all the generic job and then call <code>EventCallback</code> for the specific parts to be done.</p>
+<p>Rather than simply checking if we have a header containing <code>&quot;test: ok&quot;</code> (as done last week), we now have a bit more work to do:</p>
+<ol>
+<li>parse the message contained in <code>rcvbuf</code> (using our newly created <code>http_parse_message()</code>);</li>
+<li>if we get an error (negative return value), properly exit returning this error code;</li>
+<li>if we get a 0 return value, and we didn't extend the message yet (we will extend only once), and we have a partial body (i.e. the content length is strictly positive and the size treated so far is strictly smaller than that content length), <strong>then</strong>:
+<ul>
+<li>extend the message (<code>rcvbuf</code>) to <code>MAX_HEADER_SIZE</code> plus the content length (this is the reason why we extend only once);</li>
+<li>position the reading pointer (of the next <code>tcp_read()</code>) to the right position, (which is <code>rcvbuf</code> plus the number of already read bytes);</li>
+</ul>
+</li>
+<li>if we get a (strictly) positive return value (notice that this &quot;if&quot; is not an &quot;else&quot; of the former, since the former has many more <em>other</em> conditions!), <strong>then</strong>:
+<ul>
+<li>proceed by calling the <code>EventCallback</code> (global variable), it takes as parameters the <code>http_message</code> and the socket file descriptor;</li>
+<li>reset variables (position, content length, etc.) for a new round of <code>tcp_read()</code>.</li>
+</ul>
+</li>
+</ol>
+<p>And of course, everywhere all errors shall be properly handled, simply (deallocating/closing all what should be and) returning the corresponding error code.</p>
+<h3 id="event-callback-handle-http-message">Event callback: <code>handle_http_message()</code></h3>
+<p>To finalize the work, we still have to write the parts specific to our ImgFS server, the <code>EventCallback</code>. This is the job of the <code>handle_http_message()</code> (of <code>imgfs_server_service.c</code>).</p>
+<p>In order to reduce the workload, we provided you the required code in the file <code>week12_provided_code.txt</code>.
+Include this code in your <code>imgfs_server_service.c</code>.</p>
+<h3 id="plug-it-in">Plug it in</h3>
+<p>The very last step is to have <code>handle_http_message()</code> as our event handler. This is as easy as passing it to <code>http_init()</code> rather than <code>NULL</code> in <code>server_startup()</code>.</p>
+<p>Try it out with the following curl commands:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">curl -i</span><span> http://localhost:8000/imgfs                 </span><span style="color:#65737e;"># Should fail
+</span><span style="color:#bf616a;">curl -i</span><span> http://localhost:8000/imgfs/read            </span><span style="color:#65737e;"># Should succeed
+</span><span style="color:#bf616a;">curl -i</span><span> http://localhost:8000/imgfs/insert          </span><span style="color:#65737e;"># Should fail
+</span><span style="color:#bf616a;">curl -X</span><span> POST</span><span style="color:#bf616a;"> -i</span><span> http://localhost:8000/imgfs/insert  </span><span style="color:#65737e;"># Should succeed
+</span></code></pre>
+<p>(of course, launch you server first)</p>
+<p>Don't hesitate to look at <code>curl(1)</code> manpage to create other commands to test your program. This will be especially useful next week when we will build the final HTTP API for our server, which will use more complex requests.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 19&#x2F;05&#x2F;2024</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

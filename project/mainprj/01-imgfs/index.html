@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>ImgFS: Image-oriented File System --- ImgFS format | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/01-imgfs/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "01 Imgfs",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/01-imgfs/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/01-imgfs/">ImgFS: Image-oriented File System --- ImgFS format</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">ImgFS: Image-oriented File System --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-createdelete/">ImgFS: Image-oriented File System --- create, delete and help</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-dedup/">ImgFS: Image-oriented File System --- Lazy resize and deduplication</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-readinsert/">ImgFS: Image-oriented File System --- Finalizing `read` and `insert`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-socket/">ImgFS: Image-oriented File System --- Network layers: socket layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-http/">ImgFS: Image-oriented File System --- Network layers: HTTP layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-webservice/">ImgFS: Image-oriented File System --- Webserver services</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>ImgFS: Image-oriented File System --- ImgFS format</h1>
+          
+          <p>The aim of this week is to:</p>
+<ol>
+<li>become fully acquainted with the framework and concepts of the project;</li>
+<li>implement the opening and closing of ImgFS files;</li>
+<li>then implement the simplest functionality, which lists the contents of the metadata.</li>
+</ol>
+<p>So start by reading <a href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">the main project description file</a> to understand the general framework of the project. Once you've done that, you can continue below.</p>
+<h2 id="provided-material">Provided material</h2>
+<p>In your group's GitHub repository, you will find the following files in <code>provided/src/</code>:</p>
+<ul>
+<li><code>imgfs.h</code>: function prototypes for the operations described <a href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">here</a>;</li>
+<li><code>imgfscmd.c</code>: the core of your &quot;<em>Filesystem Manager</em>&quot;, the command line interface (CLI) to handle <code>imgFS</code>; it reads a command and calls the corresponding functions to manipulate the database;</li>
+<li><code>imgfs_tools.c</code>: the tool functions for <code>imgFS</code>; for example to display the data structure;</li>
+<li><code>imgfscmd_functions.h</code> and <code>imgfs_cmd.c</code>: prototypes and definitions of the functions used by the CLI;</li>
+<li><code>util.h</code> and <code>util.c</code>: macros and miscellaneous functions; you do not need to use them (have a look to see if some may be useful);</li>
+<li><code>error.h</code> and <code>error.c</code>: error code and messages;</li>
+<li>a <code>Makefile</code> containing useful rules and targets;</li>
+<li>some unit and end-to-end tests in <code>provided/tests/{unit,end-to-end}/</code>;</li>
+<li>data for your tests in <code>provided/tests/data</code>.</li>
+</ul>
+<p>To avoid any trouble, <strong>the contents of the <code>provided/</code> directory must never be modified!</strong></p>
+<p>Start by copying the files you need from <code>provided/src/</code> into the <code>done/</code> directory at the root of the project and registering it in git (<code>git add</code>); for instance:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">cp</span><span> provided/src/*.h provided/src/Makefile provided/src/imgfs*.c provided/src/util.c provided/src/error.c done
+</span><span style="color:#bf616a;">git</span><span> add done
+</span></code></pre>
+<p>You'll proceed similarly in the next weeks, whenever you'll need new files from <code>provided/src</code>.</p>
+<h2 id="tasks">Tasks</h2>
+<p>The provided code does not compile; some work is still required, in the following steps (which are further detailed below):</p>
+<ol>
+<li>define the data structures required for <code>imgFS</code>;</li>
+<li>parsing the command line arguments;</li>
+<li>define the functions <code>do_open()</code> and <code>do_close()</code>;</li>
+<li>define the function <code>do_list()</code>;</li>
+<li>define the function <code>do_list_cmd()</code>.</li>
+</ol>
+<p>After reaching that point, the code should compile without errors. You will then have to test it.</p>
+<p>An example  usage of the CLI (the name of which is <code>imgfscmd</code>) is:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">./imgfscmd</span><span> list empty.imgfs
+</span></code></pre>
+<p>where <code>list</code> is a command provided to the CLI and <code>empty.imgfs</code> is an argument for that command, here simply an ImgFS file (thus a file containing a whole filesystem).</p>
+<h3 id="0-style">0. STYLE!</h3>
+<p><strong>Important Note:</strong> writing clean code, readable by everyone is very important. From experience, it seems that not everyone does this spontaneously at first <code>;-)</code>. There are tools that can help. For example, <code>astyle</code> is a program designed to reformat source code to follow a standard (<code>man astyle</code> for more details).</p>
+<p>We provide you with a shortcuts (which uses <code>astyle</code>): see the target <code>style</code> in the provided Makefile (<code>make style</code> to use it). We recommend you do a <code>make style</code> before any (Git) commit.</p>
+<h3 id="1-define-data-structures">1. Define data structures</h3>
+<p>The exact format of the <code>header</code> and <code>metadata</code> is given in the <a href="/projet/handouts/01.main.md">global project description</a>. The types</p>
+<ul>
+<li><code>struct imgfs_header</code>;</li>
+<li><code>struct img_metadata</code>;</li>
+<li>and <code>struct imgfs_file</code>;</li>
+</ul>
+<p>are to be defined in replacement of the &quot;<code>TODO WEEK 07: DEFINE YOUR STRUCTS HERE.</code>&quot;&quot; in <code>imgfs.h</code>.</p>
+<h3 id="2-parsing-of-the-command-line-arguments">2. Parsing of the command line arguments</h3>
+<p>The second objective of this week is to process the arguments received from the command line. For modularization purposes, we will use function pointers.</p>
+<p>To achieve this, the signatures of the functions <code>do_COMMAND_cmd()</code> (and <code>help()</code>) are uniform:</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">do_COMMAND_cmd</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>* </span><span style="color:#bf616a;">argv</span><span>[])
+</span></code></pre>
+<p>Those functions will handle the parsing of their respective additional arguments, while the <code>main()</code> dispatches through them using the first CLI argument.</p>
+<h4 id="using-arrays-for-simplicity">Using arrays for simplicity</h4>
+<p>To process all the different commands, we would like to avoid an &quot;if-then-else&quot; approach. Indeed, this would make adding new commands (which will arrive in the following weeks) more difficult, since it would require to add new cases for each of them. It would also make the code much less readable.</p>
+<p>To avoid that, we put the various <code>do_COMMAND_cmd()</code> (and <code>help()</code>) functions in an array. We will take advantage of this to associate the names of the commands with their respective functions (e.g. the string <code>&quot;list&quot;</code> with the <code>do_list_cmd()</code> function), and then simply add a loop to the <code>main()</code> function, to search for the received command among the list of possible commands -- for the moment, <code>&quot;list&quot;</code>, <code>&quot;create&quot;</code>, <code>&quot;help&quot;</code> and <code>&quot;delete&quot;</code> -- and call the corresponding function.</p>
+<p>In <code>imgfscmd.c</code>:</p>
+<ol>
+<li>define a <code>command</code> type, a pointer to functions such as those unified above;</li>
+<li>define a <code>struct command_mapping</code> type containing a string (constant) and a <code>command</code>.</li>
+</ol>
+<p>Then use these definitions to create an array named <code>commands</code> associating the commands
+&quot;<em>list</em>&quot;, &quot;<em>create</em>&quot;, &quot;<em>help</em>&quot;, and &quot;<em>delete</em>&quot; to the corresponding functions.<br />
+<strong>Note:</strong> The <code>&quot;create&quot;</code>, <code>&quot;help&quot;</code> and <code>&quot;delete&quot;</code> commands are not yet implemented, but you can already add them to the array.</p>
+<p>Finally, complete the <code>main()</code> using this array inside a loop. When the right command is found, simply call the function pointed to in the corresponding array entry, passing all the command line arguments.</p>
+<p>For example, if you call the program</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">./imgfscmd</span><span> list imgfs_file
+</span></code></pre>
+<p>then your code must call <code>do_list_cmd()</code> with the following parameters: <code>argc = 1</code> and <code>argv = { &quot;imgfs_file&quot;, NULL }</code>.</p>
+<p>Your code must correctly handle the case where the command is not defined: in this case, simply call <code>help()</code> and return <code>ERR_INVALID_COMMAND</code>.</p>
+<p>Your code can perfectly well assume that all commands in the <code>commands</code> array are distinct.</p>
+<h3 id="3-do-open-and-do-close">3. <code>do_open()</code> and <code>do_close()</code></h3>
+<p>Now, we will implement the functions to open and close <em>existing</em> <code>imgfs</code> files.</p>
+<p>You need to write the definitions of <code>do_open()</code> and <code>do_close()</code> in the file <code>imgfs_tools.c</code>.</p>
+<p>The <code>do_open()</code> function takes as arguments:</p>
+<ul>
+<li>the image base file name (<code>const char *</code>);</li>
+<li>the file opening mode (<code>const char *</code>, e.g. <code>&quot;rb&quot;</code>, <code>&quot;rb+&quot;</code>);</li>
+<li>the <code>imgfs_file</code> structure in which to store read data.</li>
+</ul>
+<p>The function must</p>
+<ol>
+<li>open the file;</li>
+<li>read the contents of the header;</li>
+<li>allocate the metadata array;</li>
+<li>read the contents of the metadata.</li>
+</ol>
+<p>The function should return the value <code>ERR_NONE</code> if all went well, and otherwise an appropriate error code in case of problems. You need to handle all possible error cases in this function, using the definitions in <code>error.h</code> (see unit tests below). <br />
+<strong>Note:</strong> to check the validity of a pointer given as parameter, you can use the macro <code>M_REQUIRE_NON_NULL(ptr)</code>, which will make the function return <code>ERR_INVALID_ARGUMENT</code> if <code>ptr == NULL</code> (see <code>util.h</code>).</p>
+<p>The <code>do_close()</code> function takes a single argument of structure type <code>imgfs_file</code> and must close the file and free the metadata array. It returns no value. Here too, remember to handle the possible error case: if the file (<code>FILE*</code>) is <code>NULL</code>. This should be a reflex when you're writing code, especially when you're using a pointer. We won't mention it again.</p>
+<h3 id="4-define-do-list">4. Define <code>do_list()</code></h3>
+<p>Then create a <em>new</em> file <code>imgfs_list.c</code> to implement the <code>do_list()</code> function. If <code>output_mode</code> is <code>STDOUT</code>, the purpose of <code>do_list()</code> is first to print the contents of the &quot;<em>header</em>&quot; using the supplied <code>print_header()</code> tool function, and then to print (examples below)</p>
+<ul>
+<li>
+<p>either</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>&lt;&lt; empty imgFS &gt;&gt;
+</span></code></pre>
+<p>if the database does not contain any images;</p>
+</li>
+<li>
+<p>or the metadata of all valid images (see <code>print_metadata()</code>, provided in <code>imgfs.h</code>).</p>
+</li>
+</ul>
+<p>The case <code>output_mode == JSON</code> will be implemented later in the project; you may just call <code>TO_BE_IMPLEMENTED()</code> in this case (see <code>util.h</code>).</p>
+<p><strong>Warning:</strong> there may be &quot;holes&quot; in the metadata array: one or more invalid images may exists between two valid ones.</p>
+<h3 id="5-complete-do-list-cmd">5. Complete <code>do_list_cmd()</code></h3>
+<p>In order to be able to use the <code>do_list()</code> function from the command line, implement the <code>do_list_cmd()</code> function in <code>imgfscmd_functions.c</code>, which receives the command line arguments as parameters (as explained before).</p>
+<p>The first element of the array is the name of the file containing the database. After checking that the parameters are correct, open the database and display its contents, using the above functions.</p>
+<h1 id="examples-and-tests">Examples and tests</h1>
+<p>To make it easier to understand the various functions described above, a few examples are given here. These examples are
+in the provided tests (see below).</p>
+<h2 id="black-box-end-to-end-testing">Black-box (end to end) testing</h2>
+<p>It's best to start testing your code on simple cases that you're familiar with.</p>
+<p>You can test your code with the supplied <code>.imgfs</code> files: the command</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./imgfscmd list ../provided/tests/data/empty.imgfs
+</span></code></pre>
+<p>should display (<a href="/provided/tests/data/list_out/empty.txt">exact file here</a>):</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>*****************************************
+</span><span>********** IMGFS HEADER START ***********
+</span><span>TYPE: EPFL ImgFS 2024
+</span><span>VERSION: 0
+</span><span>IMAGE COUNT: 0          MAX IMAGES: 10
+</span><span>THUMBNAIL: 64 x 64      SMALL: 256 x 256
+</span><span>*********** IMGFS HEADER END ************
+</span><span>*****************************************
+</span><span>&lt;&lt; empty imgFS &gt;&gt;
+</span></code></pre>
+<p>while</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./imgfscmd list ../provided/tests/data/test02.imgfs
+</span></code></pre>
+<p>should display (<a href="/provided/tests/data/list_out/test02.txt">exact file here</a>) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>*****************************************
+</span><span>********** IMGFS HEADER START ***********
+</span><span>TYPE: EPFL ImgFS 2024
+</span><span>VERSION: 2
+</span><span>IMAGE COUNT: 2          MAX IMAGES: 100
+</span><span>THUMBNAIL: 64 x 64      SMALL: 256 x 256
+</span><span>*********** IMGFS HEADER END ************
+</span><span>*****************************************
+</span><span>IMAGE ID: pic1
+</span><span>SHA: 66ac648b32a8268ed0b350b184cfa04c00c6236af3a2aa4411c01518f6061af8
+</span><span>VALID: 1
+</span><span>UNUSED: 0
+</span><span>OFFSET ORIG.: 21664            SIZE ORIG.: 72876
+</span><span>OFFSET THUMB.: 0                SIZE THUMB.: 0
+</span><span>OFFSET SMALL: 0                SIZE SMALL: 0
+</span><span>ORIGINAL: 1200 x 800
+</span><span>*****************************************
+</span><span>IMAGE ID: pic2
+</span><span>SHA: 95962b09e0fc9716ee4c2a1cf173f9147758235360d7ac0a73dfa378858b8a10
+</span><span>VALID: 1
+</span><span>UNUSED: 0
+</span><span>OFFSET ORIG.: 94540            SIZE ORIG.: 98119
+</span><span>OFFSET THUMB.: 0                SIZE THUMB.: 0
+</span><span>OFFSET SMALL: 0                SIZE SMALL: 0
+</span><span>ORIGINAL: 1200 x 800
+</span><span>*****************************************
+</span></code></pre>
+<p><strong>Note:</strong> you may compare your results by using:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">./imgfscmd</span><span> list ../provided/tests/data/test02.imgfs &gt; mon_res_02.txt
+</span><span style="color:#bf616a;">diff -w</span><span> ../provided/tests/data/list_out/test02.txt mon_res_02.txt
+</span></code></pre>
+<p>More details: <code>man diff</code>.</p>
+<h3 id="provided-tests">Provided tests</h3>
+<h4 id="setup">setup</h4>
+<p>The provided test suites require several dependencies: <a href="https://libcheck.github.io/check/index.html">Check</a> and <a href="https://robotframework.org/?tab=1#getting-started">Robot Framework</a> (and its own dependency, <a href="https://pypi.org/project/parse/">parse</a>). On (your own) Ubuntu, you can install them with:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">sudo</span><span> apt install check pip pkg-config
+</span></code></pre>
+<p>then, depending on how you're used to work in Python, either as root or in your Python virtual environment (maybe to be created):</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">pip</span><span> install parse robotframework
+</span></code></pre>
+<p>(Of course you'll have to run the tests in that Python venv, if that's your usual way to work with Python.)</p>
+<hr />
+<p><strong>ON EPFL VMs</strong>, you have to setup a personnal Python virtual environment. </p>
+<p>If you already have one, activate it and install the two above mentioned packages (<code>parse</code> and <code>robotframework</code>).</p>
+<p>It you don't, we recommand you create your personnal Python virtual environment in <code>myfiles</code>:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#96b5b4;">cd </span><span style="color:#bf616a;">~</span><span>/Desktop/myfile
+</span><span style="color:#bf616a;">python -m</span><span> venv mypyvenv
+</span><span style="color:#96b5b4;">cd</span><span> mypyvenv
+</span><span style="color:#bf616a;">cp -r</span><span> lib lib64 </span><span style="color:#65737e;">## this fixes the first warning
+</span><span style="color:#96b5b4;">cd</span><span> ..
+</span><span style="color:#bf616a;">python -m</span><span> venv mypyvenv
+</span></code></pre>
+<p>Ignore the (second) warnings.</p>
+<p>Then activate it:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#96b5b4;">source</span><span> mypyvenv/bin/activate
+</span></code></pre>
+<p>and then install the required packages:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">pip</span><span> install parse robotframework
+</span></code></pre>
+<p>And you're done.</p>
+<p>The only thing you'll have to do next time you login <em>and</em> you want to run the &quot;end to end&quot; tests, is to activate your Python virtual environment:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#96b5b4;">source </span><span style="color:#bf616a;">~</span><span>/Desktop/myfiles/mypyvenv/bin/activate
+</span></code></pre>
+<p>Of course, you can also add that to your <code>~/.bashrc</code>!</p>
+<hr />
+<h4 id="provided-tests-1">provided tests</h4>
+<p>We provide you with <strong>a few</strong> tests to run against your code by using <code>make check</code>, both unit tests (testing functions one by one) and end-to-end tests (testing the whole executable at once).</p>
+<p>We strongly advise you to complete them by adding you own tests for edge cases; the <code>imgFS</code> files are in <code>provided/test/data</code>. You can check the unit tests in <code>provided/test/unit</code> and the end-to-end ones in <code>provided/test/end-to-end</code> to understand how to write your own. <br />
+<strong>Note:</strong> Don't forget to never push modifications in the <code>provided/</code> directory; instead move the <code>test/</code> directory to <code>done/</code> and update the <code>TEST_DIR</code> variable in the <code>Makefile</code> accordingly.</p>
+<p>We also provide a <code>make feedback</code> (<code>make feedback-VM-CO</code> if you're working on EPFL VMs) which gives <em>partial</em> feedback on your work. This is normally used for a <em>minimal</em> <strong>final</strong> check of your work, before handing it in. It's <strong>better</strong> to run <strong>local</strong> tests directly on your machine beforehand (including more tests you've added yourself, if necessary).</p>
+<p>The Docker image used by <code>make feedback</code> will be tagged <code>latest</code> every week, but if you want to run feedback for a specific week, change (in the <code>Makefile</code> at the line that defines <code>IMAGE</code>) this <code>latest</code> tag to <code>weekNN</code> where <code>NN</code> is the desired week number, e.g.:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>IMAGE=chappeli/cs202-feedback:week07
+</span></code></pre>
+<h1 id="work-organization">Work organization</h1>
+<p>It's up to you to organize the group work as best you can, according to your objectives and constraints; but remember to divide the task properly between the two members of the group.
+If you haven't already read it in full, we recommend you read the end of <a href="https://projprogsys-epfl.github.io/project/index/foreword/">the foreword page</a>.</p>
+<h1 id="submission">Submission</h1>
+<p>You don't have to formally deliver your work for this first week of the project, as the first deliverable will only be due at the end of the week 10 (deadline: Sunday May 5th, 23:59), together with weeks 8 and 9 work.<br />
+Having said that, we strongly advise you to mark with a commit when you think you've completed some part of the work and especially once you reached the end of this week (you can do other commits beforehand, of course!):</p>
+<ol>
+<li>
+<p>add the new <code>imgfs_list.c</code> file to the <code>done/</code> directory (of your <strong>group</strong> GitHub repository; i.e. corresponding to the project), along with your own tests if required:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">git</span><span> add imgfs_list.c
+</span></code></pre>
+</li>
+<li>
+<p>also add the modified files (but <strong>NOT</strong> the <code>.o</code>, nor the executables!): <code>imgfs_tools.c</code>, <code>imgfs.h</code> and maybe <code>Makefile</code>:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">git</span><span> add</span><span style="color:#bf616a;"> -u
+</span></code></pre>
+</li>
+<li>
+<p>check that everything is ok:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">git</span><span> status
+</span></code></pre>
+<p>or</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">git</span><span> status</span><span style="color:#bf616a;"> -uno
+</span></code></pre>
+<p>to hide unwanted files, but be careful to not hide any required file!</p>
+</li>
+<li>
+<p>create the commit:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">git</span><span> commit</span><span style="color:#bf616a;"> -m </span><span>&quot;</span><span style="color:#a3be8c;">final version week07</span><span>&quot;
+</span></code></pre>
+</li>
+</ol>
+<p>In fact, we strongly advise you to systematically make these regular commits, at least weekly, when your work is up and running. This will help you save your work and measure your progress.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 19&#x2F;05&#x2F;2024</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

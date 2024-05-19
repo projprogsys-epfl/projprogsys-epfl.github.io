@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>ImgFS: Image-oriented File System --- general description | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "01 Main",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/01-main/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-imgfs/">ImgFS: Image-oriented File System --- ImgFS format</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">ImgFS: Image-oriented File System --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-createdelete/">ImgFS: Image-oriented File System --- create, delete and help</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-dedup/">ImgFS: Image-oriented File System --- Lazy resize and deduplication</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-readinsert/">ImgFS: Image-oriented File System --- Finalizing `read` and `insert`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-socket/">ImgFS: Image-oriented File System --- Network layers: socket layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-http/">ImgFS: Image-oriented File System --- Network layers: HTTP layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-webservice/">ImgFS: Image-oriented File System --- Webserver services</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>ImgFS: Image-oriented File System --- general description</h1>
+          
+          <h2 id="outline-of-this-document">Outline of this document</h2>
+<ol>
+<li>Project background</li>
+<li>Project goals</li>
+<li>General description</li>
+</ol>
+<h2 id="context">Context</h2>
+<p>The aim of this project is to have you develop a large program in C on a &quot;system&quot; theme. The framework chosen this year is the construction of a command-line utility to manage images in a specific format file system, inspired by the one used by Facebook. For your information, Facebook's system is called &quot;Haystack&quot; and is described in the following paper: https://www.usenix.org/event/osdi10/tech/full_papers/Beaver.pdf.) You are not required to read this paper as part of the course (it's just for information) because, obviously, we'll be implementing a simplified version of this system. All the basic concepts required for this project are introduced here in a simple way, assuming only standard &quot;user&quot; knowledge of a computer system.</p>
+<p>Social networks have to manage hundreds of millions of images. The usual file systems (such as the one used on your hard disk, for example) have efficiency problems with such large numbers of files. Furthermore, they aren't designed to handle the fact that we want to have each of these images in several resolutions, e.g. very small (icon), medium for a quick preview and normal size (original resolution).</p>
+<p>In the &quot;Haystack&quot; approach, several images are contained in a single file. What's more, different resolutions of the same image are stored automatically. This single file contains both data (the images) and metadata (information about each image). The key idea is that the image server has a copy of this metadata in memory, to enable very rapid access to a specific photo in the right resolution.</p>
+<p>This approach has a number of advantages: firstly, it reduces the number of files managed by the operating system; secondly, it elegantly implements two important aspects of image database management:</p>
+<ol>
+<li>Automatic management of multiple resolutions;</li>
+<li>The ability to not duplicate identical images submitted under different names (for example from two different users). This optimization is incredibly useful for any social network.</li>
+</ol>
+<p>This deduplication is done using a &quot;hash&quot; function, which summarize a binary content (an image in our case) into a signature much smaller. Here, we will use the &quot;SHA-256&quot; function, which produces a 256 bits signature, and has the useful property that it is collision resistant: it is almost impossible for two different contents to have the same signature. In this project, we will use the assumption that two images with the same signature are identical. Although it may seem surprising, many systems are based on this principle.</p>
+<h2 id="goals">Goals</h2>
+<p>You will build an image server, in a version inspired and simplified of Haystack. During the first weeks, it will consist of implementing the basic functions of the system, which are:</p>
+<ul>
+<li>list data (metadata, image list);</li>
+<li>add a new image;</li>
+<li>delete an image;</li>
+<li>extract an image, in a chosen specific version: &quot;original&quot;, &quot;small&quot; or &quot;thumbnail&quot;.</li>
+</ul>
+<p>During this first part, those functions will be exposed through a command line interface (CLI). Further on, you will build a true webserver to distribute the image over the network using the HTTP protocol.</p>
+<h2 id="global-description">Global description</h2>
+<p>Here, we will describe the main concepts and structures you will need for this project. Their implementation details will be specified later in the weekly handouts.</p>
+<p>You will use a specific format -- let's call it &quot;<code>imgfs</code>&quot; -- to represent an &quot;image file system&quot;. A file of type <code>imgfs</code> contains three distinct parts:</p>
+<ul>
+<li>A header, of fixed size, which gathers the elements of configuration of the system; its content is created during the <code>imgfs</code> creation;</li>
+<li>A metadata array; it is an array whose sized is specified by the <code>max_files</code> field of the <code>header</code>; each of its entry describe the metadata of a single image, especially their position in the file;</li>
+<li>the images themselves; each image is stored in a contiguous part of the file, one after the other.</li>
+</ul>
+<p>This file format will be used by the two tools that you will develop:</p>
+<ol>
+<li>a command line interface allowing to manipulate those file by listing, reading, adding and removing images;</li>
+<li>a webserver with the same capabilities, but usable over the network.</li>
+</ol>
+<h2 id="data-format">Data format</h2>
+<p>The three parts explained above consists of the following data structures:</p>
+<ol>
+<li>
+<p><code>struct imgfs_header</code>: the header with the configuration data:</p>
+<ul>
+<li><code>name</code>: a string of at most <code>MAX_IMGFS_NAME</code> characters, the name of the database;</li>
+<li><code>version</code>: a 32-bits <code>unsigned int</code>; the version of the database, it is incremented after each insertion/deletion;</li>
+<li><code>nb_files</code>: a 32-bits <code>unsigned int</code>; the current number of images in the system;</li>
+<li><code>max_files</code>: a 32-bits <code>unsigned int</code>; the maximum number of images that the system can contain; this field is specified during the creation and must not be modified afterwards;</li>
+<li><code>resized_res</code>: an array of 2 times (<code>NB_RES</code> - 1) elements, each of which is a 16-bits <code>unsigned int</code>; the resolutions of the &quot;thumbnail&quot; and &quot;small&quot; images (in order: &quot;thumbnail width&quot;, &quot;thumbnail height&quot;, &quot;small width&quot;, &quot;small height&quot;); this field is specified during the creation and must not be modified afterwards; the handling of the original resolution is explained below;</li>
+<li><code>unused_32</code> and <code>unused_64</code>: two <code>unsigned int</code> (of 32 and 64 bits); unused (but intended for future evolutions or temporary information - it is often useful to include fields of this type in large-scale projects; this allows old data structures to be used directly in newer versions of the software);</li>
+</ul>
+</li>
+<li>
+<p><code>struct img_metadata</code>: image metadata:</p>
+<ul>
+<li>
+<p><code>img_id</code>: a string of at most <code>MAX_IMG_ID</code> characters, containing a unique identifier (name) for the image;</p>
+</li>
+<li>
+<p><code>SHA</code>: an array of <code>SHA256_DIGEST_LENGTH</code> <code>unsigned char</code>; the image hash code, as explained above;</p>
+</li>
+<li>
+<p><code>orig_res</code>: an array of two 32-bit unsigned int; the resolution of the original image;</p>
+</li>
+<li>
+<p><code>size</code>: an array of 32-bit <code>NB_RES</code> <code>unsigned int</code>; memory sizes (in bytes) of images at different resolutions (&quot;thumbnail&quot;, &quot;small&quot; and &quot;original&quot;; in this order, given by <code>X_RES</code> indices defined in <code>imgfs.h</code>);</p>
+</li>
+<li>
+<p><code>offset</code>: an array of 64-bit <code>NB_RES</code> <code>unsigned int</code>; the positions in the &quot;image database&quot; file of images at the various possible resolutions (in the same order as for size; also use the <code>X_RES</code> indices defined in <code>imgfs.h</code> to access the elements of this array);</p>
+</li>
+<li>
+<p><code>is_valid</code>: a 16-bit <code>unsigned int</code>; indicates whether the image is in use (value <code>NON_EMPTY</code>) or not (value <code>EMPTY</code>);</p>
+</li>
+<li>
+<p><code>unused_16</code>: a 16-bit <code>unsigned int</code>; not used (but intended for future evolutions).</p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>struct imgfs_file</code>:</p>
+<ul>
+<li>
+<p><code>file</code>: a <code>FILE*</code> indicating the file containing everything (on disk);</p>
+</li>
+<li>
+<p><code>header</code>: a <code>struct imgfs_header</code>; the general information (&quot;header&quot;) of the image database;</p>
+</li>
+<li>
+<p><code>metadata</code>: a dynamic array of <code>struct img_metadata</code>; the &quot;metadata&quot; of the images in the database.</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="notes">Notes:</h3>
+<ol>
+<li>the size of the metadata array never changes; it is specified in the <code>header</code> and dynamically allocated to <code>max_files</code>;</li>
+<li>to delete an image, all you have to do is change <code>is_valid</code>; there may therefore be &quot;holes&quot; in the metadata array, and unused parts in the file (since the images themselves are not deleted); the basic idea behind all this is to be prepared to lose a little space to save time;
+At a more complex level, we can imagine a &quot;garbage collector&quot; (or a &quot;defrag&quot;) which, in parallel, when &quot;there's time&quot;, effectively deletes images that are no longer in use, reorganizes metadata to reduce gaps, and so on.
+We won't go into such considerations in this project, but you may implement it as an extension.</li>
+</ol>
+<p>(To check, whatever the architecture, <code>sizeof(struct img_metadata)</code> must give 216.)</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 19&#x2F;05&#x2F;2024</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

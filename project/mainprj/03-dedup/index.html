@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>ImgFS: Image-oriented File System --- Lazy resize and deduplication | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/03-dedup/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "03 Dedup",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/03-dedup/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-imgfs/">ImgFS: Image-oriented File System --- ImgFS format</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">ImgFS: Image-oriented File System --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-createdelete/">ImgFS: Image-oriented File System --- create, delete and help</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/03-dedup/">ImgFS: Image-oriented File System --- Lazy resize and deduplication</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-readinsert/">ImgFS: Image-oriented File System --- Finalizing `read` and `insert`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-socket/">ImgFS: Image-oriented File System --- Network layers: socket layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-http/">ImgFS: Image-oriented File System --- Network layers: HTTP layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-webservice/">ImgFS: Image-oriented File System --- Webserver services</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>ImgFS: Image-oriented File System --- Lazy resize and deduplication</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>This week consists of two distinct objectives (remember to divide up the work):</p>
+<ul>
+<li>prepare for the implementation of the image manipulation functions (<code>read</code> and <code>insert</code>) which will be finalized next week;</li>
+<li>incorporate the elements that will enable the &quot;de-duplication&quot; of saved images (to avoid duplicates of identical images).</li>
+</ul>
+<p>Notice also that the work up to this week (included, i.e. weeks 7, 8 and 9) is the first of the two deliverables that will be evaluated for this project. More details in <a href="https://projprogsys-epfl.github.io/project/index/foreword/">the foreword</a>.<br />
+So <strong>don't forget to submit it before the deadline</strong>. Submission procedure is indicated at the end of this handout.</p>
+<h2 id="materials-provided">Materials provided</h2>
+<p>This week we provide you new tests as usual, as well as the script used to submit your first version of the project.</p>
+<h2 id="tasks">Tasks</h2>
+<h3 id="1-vips-library-and-makefile-modifications">1. VIPS library and Makefile modifications</h3>
+<p>One of the aims of this project course is to learn how to incorporate complex external libraries into your own work. In our case, we will make use of the <a href="https://libvips.github.io/libvips/API/current/">VIPS library</a>, for compressing images.</p>
+<p>First, you need to update your <code>Makefile</code> to include the library in the compilation, by adding the following lines:</p>
+<pre data-lang="Makefile" style="background-color:#2b303b;color:#c0c5ce;" class="language-Makefile "><code class="language-Makefile" data-lang="Makefile"><span style="color:#65737e;"># Add options for the compiler to include the library&#39;s headers
+</span><span style="color:#bf616a;">CFLAGS </span><span>+= </span><span style="color:#b48ead;">$(</span><span style="color:#96b5b4;">shell </span><span style="color:#bf616a;">pkg-config</span><span style="color:#a3be8c;"> vips</span><span style="color:#bf616a;"> --cflags</span><span style="color:#b48ead;">)
+</span><span>
+</span><span style="color:#65737e;"># Add the library to the linker
+</span><span style="color:#bf616a;">LDLIBS </span><span>+= </span><span style="color:#b48ead;">$(</span><span style="color:#96b5b4;">shell </span><span style="color:#bf616a;">pkg-config</span><span style="color:#a3be8c;"> vips</span><span style="color:#bf616a;"> --libs</span><span style="color:#b48ead;">)
+</span></code></pre>
+<p>Then, you need to </p>
+<ul>
+<li>initialize the library by calling <a href="https://www.libvips.org/API/current/libvips-vips.html#VIPS-INIT:CAPS"><code>VIPS_INIT()</code></a> at the <em>start</em> of your <code>main()</code> function, and give it <code>argv[0]</code> as parameter;</li>
+<li>call <a href="https://www.libvips.org/API/current/libvips-vips.html#vips-shutdown"><code>vips_shutdown()</code></a> at the <em>end</em> of the execution.</li>
+</ul>
+<p>To help you, please take a look at <a href="https://libvips.github.io/libvips/API/current/api-index-full.html">the online documentation of this library</a>. You will need to use the following functions:</p>
+<ul>
+<li><a href="https://libvips.github.io/libvips/API/current/VipsForeignSave.html#vips-jpegload-buffer"><code>vips_jpegload_buffer()</code></a></li>
+<li><a href="https://libvips.github.io/libvips/API/current/VipsForeignSave.html#vips-jpegsave-buffer"><code>vips_jpegsave_buffer()</code></a></li>
+<li><a href="https://www.libvips.org/API/current/libvips-resample.html#vips-thumbnail-image"><code>vips_thumbnail_image()</code></a></li>
+<li><code>g_object_unref()</code>: equivalent of <code>free()</code> for all <code>VipsObject*</code>. To convert a <code>VipsSOMETHING*</code> to a <code>VipsObject*</code>, use the <code>VIPS_OBJECT()</code> functional macro.</li>
+</ul>
+<p>Be aware that the first three functions take a variable number of parameters, thus you <em>must</em> terminate the parameter list by passing a <code>NULL</code> pointer.</p>
+<p>We stress that it's a <em>significant</em> part of <strong>your</strong> work this week to understand how to use this library.</p>
+<p><strong>Note:</strong> You must be very careful when managing allocated memory and using VIPS at the same time. VIPS executes some operations lazily, i.e. they are deferred to the last moment. This means that, even if it does seem that you won't need an object anymore, it may actually still be needed to complete operations later on.</p>
+<h3 id="2-creating-and-managing-derivative-images">2. Creating and managing derivative images</h3>
+<p>One of the main functions of <code>imgFS</code> is to transparently and efficiently manage the different resolutions of the same image (as a reminder: in this project, we'll have the original resolution and the &quot;<em>small</em>&quot; and &quot;<em>thumbnail</em>&quot; resolutions).</p>
+<p>As a first step this week, you'll need to implement a function called <code>lazily_resize()</code>. Its name suggests its usage: in computing, &quot;<em>lazy</em>&quot; corresponds to a commonly used strategy of <em>deferring</em> the work until the last moment, avoiding unnecessary work.<br />
+(<strong>Teacher's note:</strong> don't confuse &quot;computer science&quot; with &quot;studies in computer science&quot; <code>;-)</code>).</p>
+<p>This function has three arguments:</p>
+<ul>
+<li>an integer corresponding to an internal code for one of the resolutions derived from the image: <code>THUMB_RES</code> or <code>SMALL_RES</code> (see <code>imgfs.h</code>);<br />
+(note: if <code>ORIG_RES</code> is passed, the function simply does nothing and returns no error (<code>ERR_NONE</code>));</li>
+<li>an <code>imgfs_file</code> structure (the one we're working with);</li>
+<li>and an index, of type <code>size_t</code>, position/index of the image to be processed.</li>
+</ul>
+<p>It must implement the following logic:</p>
+<ul>
+<li>check the legitimacy of the arguments, and if necessary return an appropriate error value (see <code>error.h</code> and <code>error.c</code>);</li>
+<li>if the requested image already exists in the corresponding resolution, do nothing;</li>
+<li>in all other cases, first create a new variant of the specified image, in the specified resolution; the image must <strong>not</strong> be cropped (keep aspect ratio) but should fit in the dimensions specified in the header (see <code>resized_res</code> field) for the requested resolution; this is already the case when using <a href="https://www.libvips.org/API/current/libvips-resample.html#vips-thumbnail-image"><code>vips_thumbnail_image()</code></a> with the simplest (= almost none) options;</li>
+<li>then copy the contents of this new image to the end of the <code>imgFS</code> file;</li>
+<li>finally, update the contents of the <code>metadata</code> in memory and on disk.</li>
+</ul>
+<p>To create the new image variant, you'll use the <code>VIPS</code> library introduced below.</p>
+<p>Your solution should consist of:</p>
+<ul>
+<li>a new <code>image_content.c</code> file implementing the <code>lazily_resize()</code> function;</li>
+<li>the necessary changes to your <code>Makefile</code> (see above).</li>
+</ul>
+<h3 id="3-image-de-duplication">3. Image de-duplication</h3>
+<p>The second component of the week concerns the de-duplication of images, to avoid the same image (same content) being present several times in the database. For a social network, this type of optimization saves <strong>a lot</strong> of space (and time).<br />
+To do this, you need to write a <code>do_name_and_content_dedup()</code> function, to be defined in a new <code>image_dedup.c</code> file (and prototyped in <code>image_dedup.h</code>).</p>
+<p>This function returns an error code (<code>int</code>) and takes two arguments (in this order):</p>
+<ul>
+<li>
+<p>a previously opened <code>imgFS</code> file;</p>
+</li>
+<li>
+<p>an index (type <code>uint32_t</code> here) which specifies the position of a given image in the <code>metadata</code> array.</p>
+</li>
+</ul>
+<p>In the <code>image_dedup.c</code> file, implement this function as follows.</p>
+<p>For all valid images in the <code>imgfs_file</code> (other than the one at position <code>index</code> and in ascending positions):</p>
+<ul>
+<li>
+<p>if the name (<code>img_id</code>) of the image is identical to that of the image at position <code>index</code>, return <code>ERR_DUPLICATE_ID</code>; this is to ensure that the image database does not contain two images with the same internal identifier;</p>
+</li>
+<li>
+<p>(then, ) if the SHA value of the image is identical to that of the image at position <code>index</code>, we can avoid duplicating the image at position <code>index</code> (for all its resolutions).</p>
+</li>
+</ul>
+<p>To de-duplicate, you need to modify the metadata at the <code>index</code> position, to reference the attributes of the copy found (its three offsets and sizes; note that the original size is necessarily the same).</p>
+<p><strong>Note:</strong> don't modify the name (<code>img_id</code>) of the image at the <code>index</code> position: it's only the contents that are de-duplicated; you'll have two images with different names, but pointing to the same contents.<br />
+This is, by the way, a good illustration of how indirection tables are used in file-systems.</p>
+<p>If the image at position <code>index</code> has no duplicate content, set its <code>ORIG_RES</code> offset to 0.<br />
+If the image at position <code>index</code> has no duplicate name (<code>img_id</code>), return <code>ERR_NONE</code>.</p>
+<h2 id="tests">Tests</h2>
+<p>As always, we provide you with a few tests, to run with <code>make check</code>. We strongly advise you to write your own tests to complete those. Once you have <strong>finished</strong> your testing, you can also use the <code>make feedback</code>.</p>
+<h2 id="submission">Submission</h2>
+<p>As mentioned in the introduction, this week's work, together with the work of weeks 7 to 8, constitutes the <strong>first submission</strong> of the project.</p>
+<p>The deadline for this assignment is <strong>Sunday May 05, 23:59</strong>; make sure you don't fall behind schedule and properly divide up the work between you.</p>
+<p>The easiest way to submit is to do</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make submit1
+</span></code></pre>
+<p>from your <code>done/</code> directory. This simply adds a <code>project01_1</code> tag to your commit (in the <code>main</code> branch).</p>
+<p>Although you can do as many <code>make submit1</code> as you want, we really recommend you to do it only when you are <strong>sure</strong> you want to deliver your work.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 19&#x2F;05&#x2F;2024</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>ImgFS: Image-oriented File System --- Network layers: socket layer | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/05-socket/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "05 Socket",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/05-socket/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-imgfs/">ImgFS: Image-oriented File System --- ImgFS format</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">ImgFS: Image-oriented File System --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-createdelete/">ImgFS: Image-oriented File System --- create, delete and help</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-dedup/">ImgFS: Image-oriented File System --- Lazy resize and deduplication</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-readinsert/">ImgFS: Image-oriented File System --- Finalizing `read` and `insert`</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/05-socket/">ImgFS: Image-oriented File System --- Network layers: socket layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-http/">ImgFS: Image-oriented File System --- Network layers: HTTP layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-webservice/">ImgFS: Image-oriented File System --- Webserver services</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>ImgFS: Image-oriented File System --- Network layers: socket layer</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>This week we start a new aspect of the project: adding HTTP access (server and client) to our Image Database. Basically, we want to convert our <code>imgfscmd</code> application to a client-server application that uses HTTP (over TCP as its transport-layer protocol).
+This work be structured as follows over the next three weeks:</p>
+<ul>
+<li>
+<p>this week: create a socket layer for network communications; and use that layer to create a simple HTTP server (to be made more complex next week);</p>
+</li>
+<li>
+<p>next week: create a (simplified) HTTP layer over the socket layer that contains all the functionalities needed for this project (mainly: parse HTTP requests designed for this project), but in a blocking way (handles only one connection at a time);</p>
+</li>
+<li>
+<p>and in the last week, create a server that can serve (!) our image database commands (read, insert, ...) through HTTP access; and use it via an HTTP client; and in a non blocking way (multiple connections via a multi-threaded program).</p>
+</li>
+</ul>
+<p>We thus have three logical layers, each of which shall be tested on its own:</p>
+<ul>
+<li>
+<p>the socket layer, to be tested with <code>tcp-test-client.c</code> and <code>tcp-test-server.c</code> (to be done);</p>
+</li>
+<li>
+<p>the &quot;generic&quot; (but incomplete) HTTP layer, to be tested with <code>http-test-server.c</code> (provided) and <code>curl</code>;</p>
+</li>
+<li>
+<p>the ImgFS-over-HTTP layer, to be tested with <code>imgfs_server</code> and either <code>curl</code> (early tests) or a browser, using <code>index.html</code> (already provided).</p>
+</li>
+</ul>
+<p>For this week, we focus on the transport layer (TCP), simply using standard Unix sockets in C to provide the four following functions (see <code>socket_layer.h</code>):</p>
+<ul>
+<li>
+<p><code>tcp_server_init()</code>, to initialize a network communication over TCP;</p>
+</li>
+<li>
+<p><code>tcp_accept()</code>, to create a blocking call that accepts a new TCP connection;</p>
+</li>
+<li>
+<p><code>tcp_read()</code>, to create a blocking call that reads the active socket once and stores the output in <code>buf</code>;</p>
+</li>
+<li>
+<p><code>tcp_send()</code> to send a response message.</p>
+</li>
+</ul>
+<p>Most of these functions are simply interfaces to <code>sys/socket.h</code> C functions <code>socket(2)</code>, <code>bind(2)</code>, <code>listen(2)</code>, <code>accept(2)</code>, <code>recv(2)</code> and <code>send(2)</code>. We <strong>strongly</strong> recommend you have a look at the corresponding man-pages.</p>
+<p>We then use that layer to create a simple HTTP-server API.
+There, you'll have to implement two functions:</p>
+<ul>
+<li>
+<p><code>http_receive()</code>, to create a call and read from it;</p>
+</li>
+<li>
+<p><code>http_reply()</code> to send a response message.</p>
+</li>
+</ul>
+<p><code>http_init()</code>, to initialize an HTTP communication, and <code>http_close()</code>, to close it, are provided.
+The fifth function that appears in <code>http_net.h</code>, <code>http_serve_file()</code>, will be implemented later.</p>
+<h2 id="provided-material">Provided material</h2>
+<p>In the <code>provided/src</code> directory, you can find the following files (<em>some</em> of which have certainly already been copied to your <code>done/</code>):</p>
+<ul>
+<li><code>socket_layer.h</code>: prototypes of the <code>tcp_*()</code> functions, which interact with UNIX socket and serve as basis for our HTTP web server;</li>
+<li><code>http_net.h</code>: prototypes of the HTTP layer, responsible for receiving incoming requests, and generating HTTP responses;</li>
+<li><code>http_prot.h</code>: parse HTTP requests;</li>
+<li><code>imgfs_server_service.h</code>: core functions of the <code>imgfs</code> HTTP server: sets up and shutdown server, dispatch requests;</li>
+<li><code>http_net.c</code>: implementation of the HTTP layer,</li>
+<li><code>imgfs_server.c</code>: the main code of our server,</li>
+<li><code>imgfs_server_service.c</code>: the implementation of the core functions to offer HTTP services to our ImgFS database;</li>
+<li><code>http-test-server.c</code>: a simple test of the HTTP layer.</li>
+</ul>
+<h2 id="tasks">Tasks</h2>
+<h3 id="socket-layer">Socket layer</h3>
+<h4 id="tcp-server-init"><code>tcp_server_init()</code></h4>
+<p>In a file <code>socket_layer.c</code> (to be created), define the <code>tcp_server_init()</code> function (see its prototype in <code>socket_layer.h</code>) which:</p>
+<ul>
+<li>creates a TCP socket (see <code>socket(2)</code> man-page; use <code>AF_INET</code> and <code>SOCK_STREAM</code>);</li>
+<li>creates the proper server address (<code>struct sockaddr_in</code> type); notice that for portability, the port number received as argument shall be converted using <code>htons()</code> (see <code>htons(3)</code> man-page);</li>
+<li>binds the socket to the address (see <code>bind(2)</code>); note: there is no problem passing a pointer to a <code>struct sockaddr_in</code> as a pointer to a <code>struct sockaddr</code>;</li>
+<li>and starts listening for incoming connections (see <code>listen(2)</code>);</li>
+</ul>
+<p>The function returns the socket id.</p>
+<p>Whenever an error is encountered, this function prints an informative message on stderr (see <code>perror(3)</code>), closes what should be, and returns <code>ERR_IO</code>. Sockets must be closed using <code>close(3)</code>.</p>
+<h4 id="tcp-accept"><code>tcp_accept()</code></h4>
+<p>The <code>tcp_accept()</code> function (to be defined also in <code>socket_layer.c</code>) is simply a (one line of code) frontend to the <code>accept(2)</code> function.
+We don't make any use of the <code>addr</code> and <code>addr_len</code> arguments of <code>accept()</code> (use <code>NULL</code>).</p>
+<p>This function returns the return value of <code>accept()</code>.</p>
+<h4 id="tcp-read-and-tcp-send"><code>tcp_read()</code> and <code>tcp_send()</code></h4>
+<p>Similarly, <code>tcp_read()</code> and <code>tcp_send()</code> are also frontends to <code>recv(2)</code> and <code>send(2)</code> functions, respectively. They return either <code>ERR_INVALID_ARGUMENT</code> if they received an improper argument, or the return value of the system function called.</p>
+<h3 id="first-simple-test">First simple test</h3>
+<h4 id="test-framework">Test framework</h4>
+<p>To test your implementation by creating two simple programs (see usage examples below):</p>
+<ul>
+<li>
+<p>a client (<code>tcp-test-client.c</code>) that takes two arguments from the command line: a port (number) and a (short) file;</p>
+</li>
+<li>
+<p>a server (<code>tcp-test-server.c</code>) that takes one argument from the command line: a port (number).</p>
+</li>
+</ul>
+<p>The client test if the file exists and has a size less than 2048. If it's the case, it:</p>
+<ul>
+<li>sends the length to the server;</li>
+<li>waits for positive acknowledgment;</li>
+<li>then it sends file to the server;</li>
+<li>waits for acknowledgment</li>
+<li>and then stops.</li>
+</ul>
+<p>The server waits for connections and when it receives a file (length first):</p>
+<ul>
+<li>sends acknowledgment message telling whether the size is smaller than 1024 (or not);</li>
+<li>if not it returns to start;</li>
+<li>if yes it waits for a file (of that size) and prints it's content,</li>
+<li>then send acknowledgment,</li>
+<li>and starts the whole loop again.</li>
+</ul>
+<p>The server never terminates, as it may have to serve several clients/requests.</p>
+<h4 id="important-point">Important point</h4>
+<p>You need to make sure that the two ends of the communication will
+never get stuck waiting for each other at the same point in
+time (this would lead in a &quot;deadlock&quot;).</p>
+<p>However, when sending several messages using TCP, the boundaries of
+these messages get lost. For instance, if you use a TCP socket to
+transmit &quot;Hello&quot; and &quot;Goodbye&quot; as two separate messages, the receiver may
+interpret this as one single message: &quot;HelloGoodbye&quot;. This is because
+all data transmitted using TCP get &quot;serialized&quot; into a single
+byte-stream.</p>
+<p>We thus need to construct our messages in a way such that we can
+deserialize the byte-stream back to the original messages. We can for
+instance make use of a delimiting character of string. For instance,
+if we know that the character &quot;|&quot; can never be part our message, we
+can transmit &quot;Hello&quot;, then &quot;|&quot;, then &quot;Goodbye&quot; to make the remote end
+(who may thus receive &quot;Hello|Goodbye&quot; altogether) understand that
+those are two different messages. In this case, the role of &quot;|&quot; is
+that of a delimiter.</p>
+<p>If there is no character that can act as a delimiter for our protocol,
+you may add headers containing meta-data about the following message.
+These headers can be then used by the other end to deserialize the
+messages.</p>
+<p>To keep this test simple, we simply designed it in a two messages
+passing: first the size, then the content. But an issue may happen if
+the file sent starts with some digits. We thus propose you to add a
+simple delimiter character at the end of the size message.</p>
+<p>Similarly we should have a way to delimit the end of the file (otherwise the next size may still be considered to be part of a former file). We propose you to add a simple delimiter string, e.g. <code>&quot;&lt;EOF&gt;&quot;</code>.</p>
+<h4 id="example">Example</h4>
+<p>Server (in one terminal):</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">./tcp-test-server</span><span> 6789
+</span><span>
+</span><span style="color:#bf616a;">Server</span><span> started on port 6789
+</span><span style="color:#bf616a;">Waiting</span><span> for a size...
+</span><span style="color:#bf616a;">Received</span><span> a size: 32 --&gt; accepted
+</span><span style="color:#bf616a;">About</span><span> to receive file of 32 bytes
+</span><span style="color:#bf616a;">Received</span><span> a file:
+</span><span style="color:#bf616a;">Hello</span><span> there!
+</span><span style="color:#bf616a;">How</span><span> are you doing?
+</span><span>
+</span><span style="color:#bf616a;">Waiting</span><span> for a size...
+</span><span style="color:#bf616a;">...
+</span></code></pre>
+<p>Client (in <em>another</em> terminal):</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">./tcp-test-client</span><span> 6789 ../provided/tests/data/hello_there.txt
+</span><span>
+</span><span style="color:#bf616a;">Talking</span><span> to 6789
+</span><span style="color:#bf616a;">Sending</span><span> size 32:
+</span><span style="color:#bf616a;">Server</span><span> responded: &quot;</span><span style="color:#a3be8c;">Small file</span><span>&quot;
+</span><span style="color:#bf616a;">Sending</span><span> ../provided/tests/data/hello_there.txt:
+</span><span style="color:#bf616a;">Accepted
+</span><span style="color:#bf616a;">Done
+</span></code></pre>
+<p>You can launch the client several times, with different files
+(for instance <code>../provided/tests/data/aiw.txt</code>).</p>
+<p>(Terminate the server with Ctrl-C.)</p>
+<h4 id="use-wireshark-to-debug">Use Wireshark to debug</h4>
+<p>Use Wireshark to debug your code.</p>
+<p>Try many clients at the same time:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#b48ead;">for</span><span> i </span><span style="color:#b48ead;">in </span><span>$(</span><span style="color:#bf616a;">seq</span><span> 5); </span><span style="color:#b48ead;">do </span><span style="color:#bf616a;">./tcp-test-client</span><span> 6789 ../provided/tests/data/2047.txt &gt; log-$</span><span style="color:#bf616a;">i </span><span style="color:#d08770;">2</span><span>&gt;&amp;</span><span style="color:#d08770;">1 </span><span>&amp; </span><span style="color:#b48ead;">done
+</span></code></pre>
+<p>What happens? (maybe nothing particular, actually)</p>
+<p><code>--&gt;</code> concurrent access will not be addressed at this layer but in the last week in the HTTP layer.</p>
+<h3 id="simple-http-layer">Simple HTTP layer</h3>
+<h4 id="http-messages-handler">HTTP messages handler</h4>
+<p>In order to be generic (and be able to use our HTTP layer for other services than the one used in this project), we separate the handling of the content of the HTTP requests/services from the handling of the HTTP protocol itself.</p>
+<p>This separation is done by passing a function, responsible for the handling of the content of the HTTP requests/services, to the initialization of the HTTP connection. Such a function is called a &quot;<em>HTTP messages handler</em>&quot;.</p>
+<p>To be able to pass it to the initialization function, we need a specific type: <code>EventCallback</code>, <strong>to be defined</strong> in <code>http_net.h</code> as a pointer to a function taking a pointer to <code>struct http_message</code> and an <code>int</code> as parameters, and returning an <code>int</code>.</p>
+<h5 id="http-receive"><code>http_receive()</code></h5>
+<p>In a file <code>http_net.c</code> (copy if from <code>provided</code>; this file offers the API to a (simplified) generic HTTP server), the <code>http_receive()</code> function is the main function to handle HTTP connections. But in order to prepare for multi-threaded version (last week), we recommend you to split it into two parts:</p>
+<ul>
+<li>
+<p>connects the socket with <code>tcp_accept()</code> (returns <code>ERR_IO</code> in case of error);</p>
+</li>
+<li>
+<p>(if no error,) handles the connection through a tool function (we propose to name it <code>handle_connection()</code>).</p>
+</li>
+</ul>
+<p>Of course, most of the work now remains to be done in <code>handle_connection()</code>. </p>
+<p>For future compatibility, its signature has to be:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>static void* handle_connection(void* arg)
+</span></code></pre>
+<p>In our case, it receives a pointer to an <code>int</code> containing the socket file descriptor.
+And it returns a pointer to an <code>int</code> containing some error code (<code>ERR_NONE</code> if none). This may seem far-fetched (why not receive and return an <code>int</code> ?), but this will be required when adding multi-threading. We provided two examples of how to handle that.</p>
+<p>The <code>handle_connection()</code> function:</p>
+<ul>
+<li>
+<p>reads the HTTP header from the socket into some buffer (max size of HTTP headers is provided in <code>MAX_HEADER_SIZE</code> from <code>http_net.h</code>); notice that this may require several call to <code>tcp_read()</code>: read as long as the headers do not contain <code>HTTP_HDR_END_DELIM</code> (and you didn't read more than <code>MAX_HEADER_SIZE</code>); you can use <code>strstr(3)</code> to find <code>HTTP_HDR_END_DELIM</code> in the buffer;</p>
+</li>
+<li>
+<p>handles error cases;</p>
+</li>
+<li>
+<p>sends the reply using <code>http_reply()</code>: if the headers contains <code>&quot;test: ok&quot;</code> (use <code>strstr(3)</code> once again), use the <code>HTTP_OK</code> status, otherwise <code>HTTP_BAD_REQUEST</code>; the other parameters can be empty; if <code>http_reply()</code> fails, <code>handle_connection()</code> returns <code>&amp;our_ERR_IO</code>.</p>
+</li>
+</ul>
+<h5 id="http-reply"><code>http_reply()</code></h5>
+<p>The <code>http_reply()</code> function is a tool function to send a general reply a bit more complex than the above two, with some content.</p>
+<ul>
+<li>
+<p>allocates a buffer at the proper size (to be computed, read further);</p>
+</li>
+<li>
+<p>starts filling this buffer with the header in the format:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  HTTP_PROTOCOL_ID &lt;status&gt; HTTP_LINE_DELIM &lt;headers&gt; Content-Length: &lt;body_len&gt; HTTP_HDR_END_DELIM
+</span></code></pre>
+<p>where <code>&lt;status&gt;</code>, <code>&lt;headers&gt;</code> and <code>&lt;body_len&gt;</code> have to be replaced by the corresponding parameter values;</p>
+<p>for instance, the call</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  http_reply(1234, HTTP_OK, &quot;Content-Type: text/html; charset=utf-8&quot; HTTP_LINE_DELIM, buffer, 6789);
+</span></code></pre>
+<p>will create the header</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  &quot;HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: 6789\r\n\r\n&quot;
+</span></code></pre>
+</li>
+<li>
+<p>then adds (copies) the body to the end of the buffer;</p>
+</li>
+<li>
+<p>and send everything to the socket.</p>
+</li>
+</ul>
+<p>The <code>body</code> parameter may be <code>NULL</code> (as long as <code>body_len</code> is 0). It is useful for responses with an empty body.</p>
+<h4 id="tests-with-a-very-simple-http-server">Tests with a very simple HTTP server</h4>
+<p>Use the provided <code>http-test-server.c</code> to make some tests. Simply launch this server; and, as a client, use <code>curl</code>:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">curl -v</span><span> localhost:8000
+</span><span style="color:#bf616a;">curl -H </span><span>&#39;</span><span style="color:#a3be8c;">test: ok</span><span>&#39;</span><span style="color:#bf616a;">   -v</span><span> localhost:8000
+</span><span style="color:#bf616a;">curl -H </span><span>&#39;</span><span style="color:#a3be8c;">test: fail</span><span>&#39;</span><span style="color:#bf616a;"> -v</span><span> localhost:8000
+</span></code></pre>
+<h3 id="simple-imgfs-server">Simple ImgFS server</h3>
+<h4 id="main">Main</h4>
+<p>The final step for this week is to create a simple version of our future HTTP server for ImgFS services.
+This is separated over two files (copy them from <code>provided</code>):</p>
+<ul>
+<li><code>imgfs_server_service.c</code>, which implements the main functionalities needed by our server;</li>
+<li><code>imgfs_server.c</code>, which runs the server.</li>
+</ul>
+<p>In <code>imgfs_server_service.c</code>:</p>
+<ol>
+<li>
+<p>declared two <code>static</code> global variables, one to store the ImgFS file and another to store the port number (<code>uint16_t</code>);</p>
+</li>
+<li>
+<p>define the function <code>server_startup()</code>, which receives <code>argc</code> and <code>argv</code>, and:</p>
+<ul>
+<li>checks to have at least one argument (which is the ImgFS file name);</li>
+<li>opens the ImgFS file (and handles errors, if any);</li>
+<li>prints the header of the (properly opened) ImgFS file;</li>
+<li>handles the optional second argument: if it's a valid port number, use it; otherwise use <code>DEFAULT_LISTENING_PORT</code>;</li>
+<li>initializes the HTTP connection</li>
+<li>prints &quot;ImgFS server started on http://localhost:&quot; plus port number, if everything was ok.</li>
+</ul>
+</li>
+</ol>
+<p>In <code>imgfs_server.c</code>:</p>
+<ol>
+<li>call <code>server_startup()</code>;</li>
+<li>loop on <code>http_receive()</code> as long as there are no error (see <code>http-test-server.c</code> for an example);</li>
+</ol>
+<h4 id="signal-handling-for-proper-shutdown">Signal handling for proper shutdown</h4>
+<p>Finally, we'd like to properly close the server. For this we will add a signal handler that will close the HTTP connection and the ImgFS file on server termination.</p>
+<p>First of all, add a call to <code>http_close()</code> into <code>server_shutdown()</code>.</p>
+<p>Then,  to <code>imgfs_server.c</code>:</p>
+<ul>
+<li>
+<p>add the function<br />
+<code>static void signal_handler(int sig _unused)</code><br />
+which simply calls <code>server_shutdown()</code>, then stops the program using <code>exit(0)</code>;</p>
+</li>
+<li>
+<p>and call <code>set_signal_handler()</code> from the <code>main()</code>.</p>
+</li>
+</ul>
+<p>Try it by sending a Ctrl-C to a running server.</p>
+<h4 id="tests">Tests</h4>
+<p>You can test your new server with the same <code>curl</code> commands as above. Test different port numbers.</p>
+<p>There is no other &quot;end-to-end&quot; test for this week (except the self-made, mentioned in this handout) since we did not finish the implementation of a &quot;final product&quot;.</p>
+<p>Similarly, there is no unit-test, since we don't really have independent tool functions this week.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 19&#x2F;05&#x2F;2024</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>
