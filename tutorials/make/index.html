@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Make and Makefiles | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/tutorials/make/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Tutorials",
+            "item": "https://projprogsys-epfl.github.io/tutorials/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Make",
+            "item": "https://projprogsys-epfl.github.io/tutorials/make/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+    
+  
+
+<body class="page single">
+  
+    
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+  
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xxl-8">
+        <article>
+          <div class="page-header">
+            <h1>Make and Makefiles</h1>
+          </div>
+          
+          <h2 id="summary-in-four-points">Summary in four points</h2>
+<p>Here (as a quick introduction, or later as a reminder) is the bare minimum you need to know (but you are, of course, welcome to read on):</p>
+<ol>
+<li>
+<p>a <code>Makefile</code> is just a simple text file (if it's simply called "<code>Makefile</code>" on its own, with no extension), which is automatically called by the <code>make</code> command, and which simply contains a "to-do list" (known as "<em>targets</em>");</p>
+</li>
+<li>
+<p>one line of the <code>Makefile</code> simply describes one target and what is needed to make it (known as "<em>dependencies</em>"), in the format:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> target: list of dependencies
+</span></code></pre>
+<p>for example (fictitious):</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> cake: flour eggs butter sugar chocolate yeast
+</span></code></pre>
+<p>and that's it! Simple as that! Except that for us, targets are executables and dependencies are <code>.o</code> files; for example:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> calculCplx: calculCplx.o complex.o calculator.o
+</span></code></pre>
+</li>
+<li>
+<p><em>compilation</em> dependencies (for the creation of a <code>.o</code> file, then) are simply the corresponding <code>.c</code> file, together with the list of required <code>.h</code> files; e.g.:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> calculator.o: calculator.c calculator.h complex.h
+</span></code></pre>
+<p>Note that all these target-dependency lines for <em>compilation</em> can be obtained simply by typing the command:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> gcc -MM *.c
+</span></code></pre>
+</li>
+<li>
+<p>Often, by convention, the first target is called "<code>all</code>" and designates all the executables you wish to build with this <code>Makefile</code>.</p>
+</li>
+</ol>
+<p>To sum up, here's a simple but complete example of a <code>Makefile</code>:</p>
+<pre data-lang="make" style="background-color:#2b303b;color:#c0c5ce;" class="language-make "><code class="language-make" data-lang="make"><span style="color:#8fa1b3;">all</span><span>: </span><span style="color:#a3be8c;">calculCplx
+</span><span>
+</span><span style="color:#8fa1b3;">calculCplx</span><span>: </span><span style="color:#a3be8c;">calculCplx.o complex.o calculator.o
+</span><span>
+</span><span style="color:#65737e;"># These lines were copied from the gcc -MM *.c command
+</span><span>
+</span><span style="color:#8fa1b3;">complex.o</span><span>: </span><span style="color:#a3be8c;">complex.c complex.h
+</span><span>
+</span><span style="color:#8fa1b3;">calculator.o</span><span>: </span><span style="color:#a3be8c;">calculator.c calculator.h complex.h
+</span><span>
+</span><span style="color:#8fa1b3;">calculCplx.o</span><span>: </span><span style="color:#a3be8c;">calculCplx.c calcGUI.h
+</span></code></pre>
+<p>And that's it! As simple as this!</p>
+<h2 id="compiling-programs">Compiling programs</h2>
+<p><strong>Note:</strong> this is a written tutorial. You might prefer <a href="https://mediaspace.epfl.ch/playlist/dedicated/60933/0_ndru1c5s/0_z0po74w3">the video lectures</a>; choose your favorite learning way (or maybe benefit from both).</p>
+<p>For the sake of modularization, the source code of a complete program written in C is often distributed over several text files called "source files". Source files are of two kinds: <em>header</em> files and main files (often called "<em>definition</em> files", or even simply "source files", hence some terminological confusion). By convention, header files have the <code>.h</code> extension, while definition files have the <code>.c</code> extension.</p>
+<p>These are "glued together" by the compiler to create an executable program from the source code.</p>
+<p>A pair (header file, definition file) corresponding to a given concept is called a "<em>module</em>".</p>
+<p>What's the purpose of a header file, then?</p>
+<p>A header file is ther to announce to the <em>other</em> modules the functionality (API) provided by the module it is part of.</p>
+<p>For example, a <code>matrix.h</code> file will contain the module's API for matrices.</p>
+<p>In header files, we typically write:</p>
+<ul>
+<li>
+<p><code>#pragma once</code> (see below);</p>
+</li>
+<li>
+<p>directives to include the other header files necessary <em>for</em> <strong>this</strong> <em>header file</em> <strong>only</strong> (see below);</p>
+</li>
+<li>
+<p>(very frequent) declarations of types offered by the module;</p>
+</li>
+<li>
+<p>(very frequent) declarations of the functions offered by the module (corresponding to the "public" part in an OO design);</p>
+</li>
+<li>
+<p>(frequent) some "macros" (lines beginning with the <code>#define</code> symbol);</p>
+</li>
+<li>
+<p>(rare) declarations of (global) variables to be shared with other modules by the current module.</p>
+</li>
+</ul>
+<p>In the definition file (with extension <code>.c</code>), we typically write:</p>
+<ul>
+<li>
+<p>directives to include the header files necessary <em>for</em> <strong>this</strong> <em>source file</em> <strong>only</strong> (see below);</p>
+</li>
+<li>
+<p>declarations of variables or functions used <em>exclusively</em> in the current module;</p>
+</li>
+<li>
+<p>definitions of (variables and) shared functions (offered by the header file).</p>
+</li>
+</ul>
+<p>Header files are not compiled directly into machine code, but their content is copied as a whole into all other modules that include them. These other modules (which need them) request a copy of a header file by indicating <code>#include</code> followed by the header file name. For example:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>#include &quot;matrix.h
+</span></code></pre>
+<p>in a source file that requires matrices.</p>
+<p>This copy is made by the compiler when compiling the module requesting the inclusion.</p>
+<p><strong>[ Note:</strong> the inclusion of "local" files (specific to our application) is written with double quotation marks (e.g. <code>#include "matrice.h"</code>), whereas the inclusion of standard libraries is written with "angle brackets" (e.g. <code>#include &lt;stdio.h&gt;</code>)<br />
+<strong>]</strong></p>
+<p>Compiling a program consists of two main stages:</p>
+<ul>
+<li>
+<p>the actual compilation stage:</p>
+<ul>
+<li>syntax is checked;</li>
+<li>variables and function calls are checked to ensure that all declarations exist;</li>
+<li>the corresponding machine code is created in "object" files (with the extension <code>.o</code>);</li>
+</ul>
+</li>
+<li>
+<p>the "linking" stage:</p>
+<ul>
+<li>check that function calls correspond to their definition;</li>
+<li>and that only one definition exists for each function called;</li>
+<li>object files are linked together to create the final executable program.</li>
+</ul>
+</li>
+</ul>
+<p>Let's take a look at two examples.</p>
+<h3 id="example-1-a-single-file-as-in-your-usual-exercises">Example 1: a single file (as in your usual exercises)</h3>
+<p>The <code>sum_odd.c</code> file provided in <code>done/ex_single</code> is a (single) source file containing the code to request a positive number <code>n</code> and then calculate the sum of <code>n</code> first odd numbers.</p>
+<p>The program starts with a <code>#include &lt;stdio.h&gt;</code> directive which requests the inclusion (= copying) of standard definitions (<code>std</code>) for input-output (<code>io</code>), such as <code>printf()</code>.</p>
+<p>Try following the steps illustrated in the image below:</p>
+<p><img src="/img/tutorials/sum_odd.png" alt="Illustration of dependencies" title="Illustration of dependencies" /></p>
+<p>These steps are automatically performed (transparently) when you compile an IDE.
+But, in order to understand well, let's do them step by step.</p>
+<p>First, we'll create the object "files" (here, only one) using the following command:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -c sum_odd.c -o sum_odd.o
+</span></code></pre>
+<p>The <code>-c</code> option tells the compiler not to perform linking, but only compilation (hence the <code>c</code> as "<em>compile</em>").</p>
+<p>This option is followed by the name of the file from which you want to create the object file, then the name you want for the object file in question (the <code>-o</code> option means "<em>output</em>").</p>
+<p>Run this command and check that the object file is actually present in the directory. Don't try to read or open it - it's machine code!</p>
+<p>Next, you need to link the object files. And here, there are already several of them, unbeknownst to you: the one created from our source file and those of the standard libraries used, which are automatically linked by the compiler without our having to name them explicitly.</p>
+<p>To make these links, we simply use the following command:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -o sum_odd sum_odd.o
+</span></code></pre>
+<p>Once again, the <code>-o</code> option followed by the name of the desired file (in our example, the file is called <code>odd_sum</code>) is used to create the executable program with that name. Note that you can put this option <strong>and</strong> its associated file name wherever you like in the command (here we've put them first, whereas in the previous example, compiling, we put them last).</p>
+<p>Then we need to specify the files to be linked together to create the executable program. In our example, all we need to do is specify our only <code>sum_odd.o</code> (as standard libraries are linked automatically).</p>
+<p>Check that the executable program has been successfully created and run it from the terminal by typing:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./sum_odd
+</span></code></pre>
+<h3 id="example-2-several-files">Example 2: several files</h3>
+<p>A large program is usually broken down into several modules. In addition to bringing clarity to the program organization, this technique (known as "modular design") enables
+the reuse of elements (modules) for different programs (for example, one module for matrices, another for "ask for a number", etc.).</p>
+<p>Let's take a look at how such programs are produced.</p>
+<p>In the <code>done/ex_multiples</code> directory, you'll find five source files and four header files.</p>
+<p>Look at the contents of all the files and try to reconstruct the dependencies illustrated below:</p>
+<p><img src="/img/tutorials/selection_sort.png" alt="Illustration of dependencies 2" title="Illustration of dependencies 2" /></p>
+<p>To create such a program, you must first compile all <code>.c</code> files into object files:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -c array_filter.c
+</span><span>gcc -c array_sort.c
+</span><span>gcc -c array_std.c
+</span><span>gcc -c swap.c
+</span><span>gcc -c main.c
+</span></code></pre>
+<p>And then produce the executable (called <code>selection_sort</code> in our example):</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -o selection_sort array_filter.o array_sort.o array_std.o swap.o main.o
+</span></code></pre>
+<p>Create the executable as described above (tedious, isn't it? We'll come back to that in the next section), then run it. Its purpose is to sort, using the "<em>selection sort</em>" algorithm, an array of integers, whose size and range of values are given by the user.</p>
+<h3 id="protection-against-multiple-inclusions">Protection against multiple inclusions</h3>
+<p>What happens if, by mistake or indirectly, the same module header is included several times?
+For example, have you ever tried to include a "<code>#include &lt;stdio.h&gt;</code>" twice in one of your programs?</p>
+<p>If <code>.h</code> files are not protected against multiple inclusions, the compiler may refuse to compile, for example because of redefinition of a type already defined in the first inclusion.</p>
+<p>It is therefore necessary to protect your <code>.h</code> files against multiple inclusions by starting them with the line:</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">#pragma</span><span> once
+</span><span>
+</span></code></pre>
+<p>This must be the <em>very first</em> line of your <code>.h</code> files.</p>
+<h2 id="automating-compilation-with-make">Automating compilation with <code>make</code></h2>
+<h3 id="introduction">Introduction</h3>
+<p>In the case of large (modular) programs, compiling and linking can become
+tedious (perhaps you've already found it to be the case for just 5 modules...): you have to compile each module ("separate compilation") in its own object file,
+then "link" all the object files produced.</p>
+<p>And since it's highly likely that several modules will themselves make
+call upon other modules, a modification to one of the modules may require
+to recompile not only the modified module, but also those that depend on it, recursively, and of course the final executable.</p>
+<p>The <code>make</code> tool enables you to automate the sequence of commands
+that are dependent on each other. It can be used for many purposes, but its primary use (and the one we're interested in here)
+is the compilation of (executable) programs from
+source files. Benefits:</p>
+<ol>
+<li>
+<p>you don't have to do it by hand;</p>
+</li>
+<li>
+<p>it recompiles only what is strictly necessary.</p>
+</li>
+</ol>
+<p>To use <code>make</code>, all you have to do is write a few simple rules describing the project's various <em>dependencies</em> in a simple text file named <code>Makefile</code> (or <code>makefile</code>).</p>
+<p>Let's see how this tool is presented to us, in its manual:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>man make
+</span></code></pre>
+<p>(Don't read everthing! Just an overview to get an idea what it is about.)</p>
+<h3 id="makefile-structure">Makefile structure</h3>
+<p>A <code>Makefile</code> is essentially made up of <em>rules</em>, which define, for a given <em>target</em>,</p>
+<ul>
+<li>
+<p>all the <em>dependencies</em> of the <em>target</em> (i.e. the elements on which the target depends),</p>
+</li>
+<li>
+<p>as well as the set of <em>commands</em> to be performed to update the <em>target</em> (from its dependencies).</p>
+</li>
+</ul>
+<p>It's a bit like a list of recipes:</p>
+<ul>
+<li>
+<p>"<em>rule</em>" = recipe;</p>
+</li>
+<li>
+<p>"<em>target</em>" = result (e.g. chocolate cake);</p>
+</li>
+<li>
+<p>"<em>dependencies</em>" = ingredients (e.g. flour, eggs, chocolate, sugar, butter);</p>
+</li>
+<li>
+<p>"<em>commands</em>" = instructions for making the recipe.</p>
+</li>
+</ul>
+<p>But we're not cooking here. If we illustrate these concepts with the previous example (program <code>selection_sort</code>), we'd have, for example a rule for linking (program <code>selection_sort</code>), another rule for compiling <code>array_sort.c</code> (into <code>array_sort.o</code>), and so on.</p>
+<p>For the linking rule, we'd have:</p>
+<ul>
+<li>
+<p>target: <code>selection_sort</code>;</p>
+</li>
+<li>
+<p>dependencies: <code>array_filter.o</code>, <code>array_sort.o</code>, <code>array_std.o</code>, <code>swap.o</code> and <code>main.o</code>.</p>
+<p>all these <code>.o</code> files must exist to produce the <code>selection_sort</code> executable;</p>
+</li>
+<li>
+<p>command: the linking command used above.</p>
+</li>
+</ul>
+<p>For the <code>array_sort.c</code> compilation rule, we would have:</p>
+<ul>
+<li>
+<p>target: <code>array_sort.o</code>;</p>
+</li>
+<li>
+<p>dependencies: <code>array_sort.c</code>, <code>swap.h</code>, <code>array_filter.h</code> (see previous figure, which shows the dependencies);</p>
+</li>
+<li>
+<p>command: <code>gcc -c array_sort.c</code>.</p>
+</li>
+</ul>
+<h3 id="definition-and-operation-of-rules">Definition and operation of rules</h3>
+<p>The general syntax of a rule is:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>target: dependencies
+</span><span>[tab]command 1
+</span><span>[tab]command 2
+</span></code></pre>
+<p>where:</p>
+<ul>
+<li>
+<p><em>target</em> is most often the name of a file that will be generated
+by the commands (the executable program, object files,
+etc.), but it can also represent a "fileless" target, such as
+<code>install</code> or <code>clean</code>;</p>
+</li>
+<li>
+<p><em>dependencies</em> are the prerequisites for the target to be achievable,
+usually the files on which the target depends (e.g. declaration files
+like header files), but they can also be rules (e.g.
+name of the <em>target</em> of another rule);</p>
+<p>to specify several <em>dependencies</em>, simply separate them with a space; a rule may also have no dependencies;</p>
+<p>if a dependency occurs several times in the same rule, only the first occurrence is taken into account by <code>make</code>;</p>
+</li>
+<li>
+<p>the <em>commands</em> are the actions that <code>make</code> must undertake to
+update the <em>target</em>; they are one or several shell commands;</p>
+<p>we have one command per line, and group the commands
+related to a <em>target</em> below the dependency line;</p>
+<p>a special syntax feature is that <strong>each command line must begin with the tabulation character</strong> ("TAB" key), and <strong>NOT</strong> spaces; this is certainly the most archaic and enoying aspect of <code>make</code>!</p>
+<p>It is possible to omit commands for a target;
+then either a default rule applies, or nothing at all
+(which might be useful simply for forcing dependencies/checks).</p>
+<p>In fact, <code>make</code> has a number of implicit rules (typically for compilation), so we don't have to write too many things, as we'll see below.</p>
+</li>
+</ul>
+<p>Another good news is that you can automatically generate a list of all dependencies using the <code>-MM</code> option in <code>gcc</code>:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -MM *.c
+</span></code></pre>
+<p>Try it out! You should immediately see the link between the list of all dependencies. It's very handy to put them at the end of your <code>Makefile</code>.</p>
+<p>Note that the order of the rules is not important, except when determining the default target (i.e. when the user types <code>make</code> on its own, without any arguments: the first rule is then launched; otherwise, simply type <code>make target</code> on the command line).</p>
+<h3 id="exercises-and-examples">Exercises and examples</h3>
+<p>The simplest example of <code>Makefile</code> is... ...an empty file!</p>
+<p>Thanks to its implicit rules, <code>make</code> already knows how to
+do(=<em>make</em>) lots of things without you having to write anything.</p>
+<h4 id="exercise-1">Exercise 1</h4>
+<p>(in <code>done/ex_single</code>) Delete the files <code>sum_odd.o</code> and <code>sum_odd</code> and run <code>make</code> like this:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make sum_odd
+</span></code></pre>
+<p>All done. Great!</p>
+<p><code>make</code> "knows" that to make an <code>X</code> file from a <code>X.c</code> source file, you need to call the C compiler.</p>
+<p>If you wanted to write a <code>Makefile</code> to do this, you could have written (try it!):</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>sum_odd: sum_odd.c
+</span></code></pre>
+<p>and that's it!</p>
+<p>The target here is the <code>sum_odd</code> executable and its dependency, unique here, the <code>sum_odd.c</code> source file.</p>
+<p>This <code>Makefile</code> does not specify any commands to be executed. It simply uses the default commands known to <code>make</code>.</p>
+<p>Would we want to make the command more explicit (but why?), a more complete <code>Makefile</code> would have been:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>sum_odd: sum_odd.c
+</span><span>	gcc -o sum_odd sum_odd.c
+</span></code></pre>
+<p>where the command to switch from the dependency to the target is made explicit (preceded by an <code>TAB</code> character).</p>
+<h4 id="exercise-2">Exercise 2</h4>
+<p>Let's try to write a completely artificial <code>Makefile</code>:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>all: dep1 dep2
+</span><span>    @echo &quot;target &#39;all&#39; completed.&quot;
+</span><span>
+</span><span>dep1:
+</span><span>    @echo &quot;dependency 1 completed.&quot;
+</span><span>
+</span><span>dep2:
+</span><span>    @echo &quot;dependency 2 ok...&quot;
+</span><span>
+</span><span>dep3:
+</span><span>    echo &quot;banzai!&quot;
+</span></code></pre>
+<p>(You can either add these lines to the <code>Makefile</code> written for <code>sum_odd</code> if you tried the exercise above, or now create a <code>Makefile</code> file with the above lines).</p>
+<p>If you simply type the command</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make
+</span></code></pre>
+<p>you get:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>dependency 1 completed.
+</span><span>dependency 2 ok...
+</span><span>target &#39;all&#39; completed.
+</span></code></pre>
+<p>In this example, <code>make</code> is called on its own, with no indication of a particular target.
+<code>make</code> will thus search the <code>Makefile</code> for the first <em>acceptable</em> target, in this case <code>all</code>.<br />
+(There are particular targets that are not <em>acceptable</em> as default targets, but this is beyond the scope of this
+introduction.)</p>
+<p>The rule for this target specifies two dependencies, <code>dep1</code> and <code>dep2</code>, which don't exist (they don't correspond to any existing files); <code>make</code> will thus attempt to create them successively.</p>
+<p>Since <code>dep1</code> has no dependencies, <code>make</code> immediately proceeds
+to executing the commands accompanying the target, i.e.
+display a message on the terminal (using the <code>echo</code> command).</p>
+<p>The same applies to the second dependency (<code>dep2</code>).</p>
+<p>Once all dependencies have been realized, <code>make</code> returns to the
+the initial target, <code>all</code>, the build commands of which gets executed.</p>
+<p>If we now type the command</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make dep3
+</span></code></pre>
+<p>you get:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>echo &quot;banzai!&quot;
+</span><span>banzai!
+</span></code></pre>
+<p>In this example, the target <code>dep3</code> is specified as the goal when
+invocating <code>make</code>. This target has no dependencies;
+<code>make</code> thus directly executes the build commands for this target
+(displaying the string "<code>banzai!</code>").</p>
+<p>Let's note a slight difference in behavior between our two examples: in the first case, the target is created by executing the commands directly, whereas in the second case, <code>make</code> first displays the command it will execute ("<code>echo "banzai!"</code>").</p>
+<p>The reason for this behavior lies in the <code>@</code> character preceding the command in the first case, and absent in the second.
+By default, <code>make</code> first displays the commands it will execute before actually calling it.
+To suppress this automatic display simply prefix the command with the <code>@</code> character.</p>
+<p><strong>Tip</strong>: always let <code>make</code> display the commands it is supposed to do
+(especially compilations), except for pure display commands, such as <code>echo</code>.</p>
+<h2 id="compiling-with-makefile">Compiling with <code>Makefile</code></h2>
+<p>That's all interesting, but what use is it "in real life", since we've seen that with the default implicit rules we don't need to write anything?<br />
+Sure! But in more complex projects, the default rules are no longer sufficient.</p>
+<p>Let's say we've a program to implement a calculator for complex numbers, splited into modules as follows:</p>
+<ul>
+<li>
+<p>in addition to the standard library, we have a graphics library, <code>LibGraph</code>, with its header file, <code>libgraph.h</code>, and a library file <code>libgraph.so</code>;</p>
+</li>
+<li>
+<p>modeling of complex numbers and their arithmetic, with its header file <code>complex.h</code>
+and its implementation file <code>complexe.c</code>;</p>
+</li>
+<li>
+<p>calculator modeling (basic functions, memory, parenthesis, etc.), with its header file
+<code>calculator.h</code>, which depends on <code>complexe.h</code>, and source file <code>calculator.c</code> (no dependency);</p>
+</li>
+<li>
+<p>modeling of the calculator's graphical interface, with <code>calcGUI.h</code>, dependent on <code>calculator.h</code> and <code>libgraph.h</code>, and <code>calcGUI.c</code>;</p>
+</li>
+<li>
+<p>the main program (containing the <code>main()</code> function), provided as <code>calculCplx.c</code> file, which depends on <code>calcGUI.h</code>;</p>
+</li>
+<li>
+<p>each source code (<code>.c</code>) also depends on its header file (<code>.h</code>).</p>
+</li>
+</ul>
+<p>Here's an illustration:</p>
+<p><img src="/img/tutorials/calcCplx.png" alt="Illustration of previous dependencies" title="Illustration of previous dependencies" /></p>
+<p>To write the corresponding <code>Makefile</code>, all we have to do is to add</p>
+<ul>
+<li>
+<p>a <em>target</em> for each module, i.e. one target for each object file resulting from compilation of the source file;</p>
+</li>
+<li>
+<p>and another one to link the whole into an executable program.</p>
+</li>
+</ul>
+<p>The dependencies of each of these targets are all the files it depends on (!).
+But we only consider dependencies that can be modified as part of <em>our</em> project.
+We can therefore ignore dependencies on the graphics library, for example, just as we ignore dependencies on any other standard library.</p>
+<p>These dependencies can be automatically generated using the command</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>    gcc -MM *.c
+</span></code></pre>
+<p>All we have to do is to copy its result into our <code>Makefile</code>.</p>
+<p>The build commands are, of course, the compilation instruction;
+but we don't need to explicitely write it, as we have seen above: <code>make</code> has default commands which are perfectly fine in this case.</p>
+<p>The only build command that needs to be specified is the "linking" command, which puts all the object files together to form the final executable. This is because the default linking rule will not make use of the required <code>libgraph</code> library.</p>
+<p>A possible <code>Makefile</code> could therefore be:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> all: calculCplx
+</span><span>
+</span><span> calculCplx: calculCplx.o complex.o calculator.o calcGUI.o
+</span><span>     gcc -o calculCplx calculCplx.o complexe.o calculatrice.o calcGUI.o -lgraph
+</span><span>
+</span><span> # These lines have been copied from gcc -MM *.c
+</span><span> complex.o: complex.c complex.h
+</span><span> calculatrice.o: calculatrice.c calculatrice.h complex.h
+</span><span> calcGUI.o: calcGUI.c calcGUI.h calculator.h
+</span><span> calculCplx.o: calculCplx.c calcGUI.h
+</span></code></pre>
+<p>With such a <code>Makefile</code>, our project can be compiled using the <code>make</code>
+command alone, as the first target, the <code>all</code> target, here is an alias for the <code>calculCplx</code> target.</p>
+<p>To build this target, <code>make</code> must first build the targets indicated as dependencies (the set of object files
+files).</p>
+<p>Note that <code>make</code> will only (re)construct a target
+if at least one of its dependencies is more recent than the target itself.
+It is this mechanism that enables <code>make</code> to compile
+only what is <em>strictly necessary</em>. So, if you run the
+the <code>make</code> command a second time, after the first compile
+compilation, the program will report:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make: Nothing to be done for `all&#39;.
+</span></code></pre>
+<p>which means there's nothing <em>new</em> to be done! Everything is up to date.</p>
+<p>Similarly, if you were to modify only the file <code>complex.c</code> file, the <code>make</code> command would only lead to the
+recompilation of the latter (creation of the target <code>complexe.o</code>, since it's one of its dependencies),
+an the linker command, which in turn updates the target <code>calculCplx</code> (for the same reason as above).</p>
+<p>If, on the other hand, the <code>complexe.h</code> file is modified, the targets <code>complex.o</code>, <code>calculator.o</code> and <code>calculCplx</code> will be updated.</p>
+<p>Finally, it should be noted that some libraries, particularly our own, must be specified when linking: this is the case, for example, the <code>graph</code> library. This is done by adding the <code>-lgraph</code> option to the end of the linker command; thus the reason for having to write the build command explicitely.</p>
+<h3 id="exercise-3">Exercise 3</h3>
+<p>In the <code>done/ex_multiples</code> directory, create a <code>Makefile</code> to compile the <code>selection_sort</code> program described above.</p>
+<p>Test it.</p>
+<p>There's a slight subtlety here: there's no <code>selection_sort.c</code>, but the <code>main()</code> function is in <code>main.c</code>. This is simply to make you write a rule once (instead of using the default rule). Obviously, <code>main.c</code> would "normally" be called <code>selection_sort.c</code>. But you're not allowed to rename this file (or make a symbolic link;-)`).</p>
+<h2 id="conclusion-and-next-steps">Conclusion and next steps</h2>
+<p>That's pretty much about the basics. The rest of this document described more advanced stuff, not strictly necessary for you, but can be useful if you want to go further than the bare minimum.</p>
+<p>And if you'd prefer a more "classroom" video/presentation on the subject of separate compilation and <code>Makefile</code>, here's <a href="https://mediaspace.epfl.ch/media/11+-+Compilation+s%C3%A9by%C3%A9e+B+linker+loader+B+make/0_dj4460d9/29686">a few lecture videos</a> (52 min.).</p>
+<p>If what has been presented here is enough for you (you've already spent enough time), you can simply continue <a href="https://projprogsys-epfl.github.io/project/index/warmup/">this week's series</a> where you left it.</p>
+<hr />
+<h2 id="advanced-elements-but-so-useful">Advanced elements (but so useful!)</h2>
+<p>What has been presented so far is sufficient to enable you
+to write a functional <code>Makefile</code>; however, as the previous
+example show, writing a functional <code>Makefile</code> may relatively
+tedious. The information in this section will enable you to
+considerably increase the expressive power of the <code>Makefile</code> instructions, making them
+easier to write.</p>
+<h3 id="defining-and-using-variables">Defining and using variables</h3>
+<p>To make writing <code>Makefiles</code> easier (and more concise), you can define and use
+<em>variables</em> (actually, they're more like macro-commands, but who cares?)</p>
+<p>The general syntax for defining a variable in a <code>Makefile</code> is:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>NAME = value(s)
+</span></code></pre>
+<p>(or its more advanced variants <code>+=</code>, <code>:=</code>, <code>::=</code>, <code>?=</code>)<br />
+where:</p>
+<ul>
+<li>
+<p><code>NAME</code>: the name of the variable you wish to define; this name must not contain the following
+characters <code>:</code>, <code>#</code> or <code>=</code>, nor accented letters; the use of characters other than letters, numbers or
+numbers or underscores is strongly discouraged;</p>
+<p>variable names are case-sensitive;</p>
+</li>
+<li>
+<p><code>value(s)</code>: a list of strings, separated by spaces.</p>
+</li>
+</ul>
+<p>Example:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>RUBS = *.o *~ *.bak
+</span></code></pre>
+<p>Note also that for GNU <code>make</code> (also called <code>gmake</code>), the following syntax
+can be used to add one or more elements to the list
+of values already associated with a variable:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>NAME += value(s)
+</span></code></pre>
+<p>To use a variable (i.e. to substitute it for the list of values
+associated with it), simply enclose the variable name in parentheses, preceded by the <code>$</code> sign:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>$(NAME)
+</span></code></pre>
+<p>Example:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>-@$(RM) $(RUBS)
+</span></code></pre>
+<p>which, with the above definition of <code>RUBS</code>, deletes all <code>*.o</code>, <code>*~</code> and <code>*.bak</code> files; the <code>RM</code> variable is one of the predefined variables in <code>make</code> (remove the <code>@</code> to see the command actually executed).</p>
+<p><strong>Note:</strong> These variables can be redefined when calling <code>make</code>; e.g.:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make LDLIBS=-lm ma_target
+</span></code></pre>
+<p>redefines the <code>LDLIBS</code> variable.</p>
+<h3 id="example-of-using-variables">Example of using variables</h3>
+<p>Suppose we want to systematically specify a certain number of options to the compiler; e.g.
+to enable the use of a debugger (<code>-g</code>), to force a level 2 optimization of the compiled code
+(<code>-O2</code>), and to make the compiler stricly comply the C17 standard (<code>-std=c17 -pedantic</code>).</p>
+<p>Rather than adding each of these options to every compile command (and having to re-modify everything when we want to change those options), it would be wiser to use a variable (for example <code>CFLAGS</code>, which is the default name used by
+<code>make</code>) to store the options to be passed on to the compiler. Our <code>Makefile</code> would then become:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> CFLAGS = -std=c17 -pedantic
+</span><span> CFLAGS += -O2
+</span><span> CFLAGS += -g 
+</span><span>
+</span><span> all: calculCplx
+</span><span>
+</span><span> calculCplx: calculCplx.o complexe.o calculatrice.o calcGUI.o
+</span><span>     gcc -o calculCplx calculCplx.o complexe.o calculatrice.o calcGUI.o -lgraph
+</span><span>
+</span><span> # These lines have been copied from gcc -MM *.c
+</span><span> complex.o: complex.c complex.h
+</span><span> calculatrice.o: calculatrice.c calculatrice.h complex.h 
+</span><span> calcGUI.o: calcGUI.c calcGUI.h calculator.h 
+</span><span> calculCplx.o: calculCplx.c calcGUI.h
+</span></code></pre>
+<h3 id="comments">Comments</h3>
+<p>It's possible to add comments in a <code>Makefile</code> (line-oriented, i.e. like the the <code>//...</code> of C99 or Java), by marking the beginning of the comment with the <code>#</code> symbol. Note that
+comments in command lines are not removed by <code>make</code> before its execution by the Shell. For example:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span># Here&#39;s a comment line
+</span><span>
+</span><span>all: dep1 dep2
+</span><span>    @echo &quot;target &#39;all&#39; completed.&quot;
+</span><span>
+</span><span>dep1:
+</span><span>    @echo &quot;dependency 1 completed.&quot;
+</span><span>
+</span><span>dep2:
+</span><span>    @echo &quot;dependency 2 ok...&quot;
+</span><span>
+</span><span>dep3: # this target is not built by default
+</span><span>    echo &quot;banzai!&quot; # comment submitted to Shell
+</span></code></pre>
+<p>Examples of execution:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>$&gt; make
+</span><span>
+</span><span>dependency 1 completed.
+</span><span>dependency 2 ok...
+</span><span>target &#39;all&#39; completed.
+</span><span>
+</span><span>$&gt; make dep3
+</span><span>
+</span><span>echo &quot;banzai!&quot; # comment submitted to Shell
+</span><span>
+</span><span>banzai!
+</span></code></pre>
+<p>Notice that the <code># comment submitted to Shell</code> is indeed passed to the Shell, but since <code>#</code> is also the comment-character for the Shell, it is considered as a comment <strong>by the Shell</strong>.</p>
+<h3 id="automatic-variables">"Automatic" variables</h3>
+<p><code>make</code> automatically maintains a number of predefined variables, updating them as each rule gets executed,
+depending on the target and its dependencies.</p>
+<p>These variables include:</p>
+<ul>
+<li>
+<p><code>$@</code> name of the target (file) of the current rule;</p>
+</li>
+<li>
+<p><code>$&lt;</code> list of dependencies as calculated by default <code>make</code> rules;</p>
+</li>
+<li>
+<p><code>$?</code> list of all dependencies (separated by a space) more recent than the current target (dependencies involving target updates);</p>
+</li>
+<li>
+<p><code>$^</code> [GNU Make] list of all dependencies (separated by a space) on the target; if a dependency occurs several times in the same dependency list, it will only be reported once;</p>
+</li>
+<li>
+<p><code>$(CC)</code> compiler name (C);</p>
+</li>
+<li>
+<p><code>$(CPPFLAGS)</code> precompilation options;</p>
+</li>
+<li>
+<p><code>$(CFLAGS)</code> compiler options;</p>
+</li>
+<li>
+<p><code>$(LDFLAGS)</code> linker* options;</p>
+</li>
+<li>
+<p><code>$(LDLIBS)</code> libraries to be added.</p>
+</li>
+</ul>
+<p>For instance, the calculator's <code>Makefile</code> could be rewritten as follows (modification of the linker command):</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> CFLAGS = -std=c17 -pedantic
+</span><span> CFLAGS += -O2
+</span><span> CFLAGS += -g 
+</span><span>
+</span><span> all: calculCplx
+</span><span>
+</span><span> calculCplx: calculCplx.o complex.o calculator.o calcGUI.o
+</span><span>     gcc -o $@ $^ -lgraph
+</span><span>
+</span><span> complex.o: complex.c complex.h
+</span><span> calculator.o: calculator.c calculator.h complex.h 
+</span><span> calcGUI.o: calcGUI.c calcGUI.h calculator.h 
+</span><span> calculCplx.o: calculCplx.c calcGUI.h
+</span></code></pre>
+<h3 id="implicit-rules">Implicit rules</h3>
+<p>As mentioned above, <code>make</code> has a number of <em>implicit rules</em> (i.e. rules that the user doesn't need to specify), which enable it to "behave" in the presence of a source file without any further instructions.
+For instance, it "knows" how to produce object files from sources in assembly, Fortran, Pascal,
+Modula-2, Yacc, Lex, TeX, ..., and of course C and C++.</p>
+<p>For example:</p>
+<ul>
+<li>
+<p>the target <code>file.o</code> will be automatically created from the file <code>file.c</code> by means of an (implicit) command of the form:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  $(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $&lt;
+</span></code></pre>
+<p>which can also be simplified to</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  $(COMPILE.c) -o $@ $&lt;
+</span></code></pre>
+<p>Usually, the <code>CC</code> variable is associated to the <code>cc</code> command.</p>
+</li>
+<li>
+<p>a target <code>file</code> can be automatically created from the <code>file.o</code> object file, or from a set of object files (specified in the list of dependencies) of which <code>file.o</code> is a part, such as <code>x.o file.o z.o</code>, using a command of the form:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  $(CC) $(LDFLAGS) -o $@ $&lt; $(LOADLIBES) $(LDLIBS)
+</span></code></pre>
+</li>
+<li>
+<p>a target <code>file</code> can be automatically created from the <code>file.c</code> source file, and possibly a set of object files (specified in the list of dependencies), such as <code>y.o z.o</code>, using a command of the form:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  $(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $&lt; $(LOADLIBES) $(LDLIBS)
+</span></code></pre>
+<p>which can be simplified to</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  $(LINK.c) -o $@ $&lt; $(LOADLIBES) $(LDLIBS)
+</span></code></pre>
+</li>
+</ul>
+<p>Therefore, we can transform our previous <code>Makefile</code> to make it even more concise, as follows:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> CPPFLAGS = -std=c17 -pedantic
+</span><span> CPPFLAGS += -O2
+</span><span> CPPFLAGS += -g 
+</span><span>
+</span><span> all: calculCplx
+</span><span>
+</span><span> complex.o: complex.c complex.h
+</span><span> calculator.o: calculator.c calculator.h complex.h 
+</span><span> calcGUI.o: calcGUI.c calcGUI.h calculator.h 
+</span><span> calculCplx.o: calculCplx.c calcGUI.h
+</span><span>
+</span><span> calculCplx: calculCplx.o complex.o calculator.o calcGUI.o
+</span><span>     $(LINK.cpp) -o $@ $^ -lgraph
+</span></code></pre>
+<p>or even:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> CFLAGS = -std=c17 -pedantic
+</span><span> CFLAGS += -O2
+</span><span> CFLAGS += -g 
+</span><span> LDLIBS = -lgraph
+</span><span>
+</span><span> all: calculCplx
+</span><span>
+</span><span> complex.o: complex.c complex.h
+</span><span> calculator.o: calculator.c calculator.h complex.h 
+</span><span> calcGUI.o: calcGUI.c calcGUI.h calculator.h 
+</span><span> calculCplx.o: calculCplx.c calcGUI.h
+</span><span>
+</span><span> calculCplx: calculCplx.o complex.o calculator.o calcGUI.o
+</span></code></pre>
+<p>where we have now completely removed the command associated with the last target (executable production).</p>
+<h3 id="line-breaks">Line breaks</h3>
+<p>When an element (variable definition, list of target dependencies, commands, ... and even a comment, although this is not recommended) is too long to reasonably fit on one line,
+it is possible to place a <em>line break</em> by telling <code>make</code> to consider the next line as a continuation of the previous one.</p>
+<p>This is achieved by placing the <code>\</code> character at the end of the line to be extend:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span># here&#39;s a comment \
+</span><span>    on two lines
+</span><span>
+</span><span>all: dep1 \
+</span><span>     dep2
+</span><span>    @echo &quot;target &#39;all&#39; done&quot;
+</span><span>
+</span><span>dep1:
+</span><span>    @echo &quot;dependency 1 completed&quot;
+</span><span>
+</span><span>dep2:
+</span><span>    @echo &quot;dependency 2 ok...&quot; \
+</span><span>&quot;indeed!&quot;
+</span></code></pre>
+<p>Example of execution:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>$&gt; make
+</span><span>
+</span><span>dependency 1 completed
+</span><span>dependency 2 ok... indeed!
+</span><span>
+</span><span>target &#39;all&#39; done
+</span></code></pre>
+<p>This example shows that clumsy use of this option
+can considerably impair the readability of the <code>Makefile</code>.</p>
+<hr />
+<h2 id="to-find-out-more">To find out more</h2>
+<p>Despite the name of the previous section, we're still a long way off the possibilities of <code>make</code>.</p>
+<p>For those who would like to know even more, don't hesitate to consult
+the following references (all external):</p>
+<ul>
+<li>
+<p>GNU make website](http://www.gnu.org/software/make/)</p>
+</li>
+<li>
+<p>The (GNU)make manual, taken from the previous site](http://www.gnu.org/software/make/manual/make.html)</p>
+</li>
+</ul>
+<p>Finally, please note that there are many more modern redesigns of
+development project management tools (<a href="http://www.cmake.org">CMake</a>, <a href="http://www.scons.org">SCons</a>, GNU autotools,tools integrated into IDEs: KDevelop, Anjunta,
+NetBeans, Code::Blocks, ...), but we feel that a good knowledge of the
+<code>make</code> is a real bonus to your programmer CV.</p>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 21&#x2F;05&#x2F;2025</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

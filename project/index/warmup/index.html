@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Warmup | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/index/warmup/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Index",
+            "item": "https://projprogsys-epfl.github.io/project/index/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "Warmup",
+            "item": "https://projprogsys-epfl.github.io/project/index/warmup/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-hashtable/">DKVS: Distributed Key-Value Store --- Hashtables</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">DKVS: Distributed Key-Value Store --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-local-server/">DKVS: Distributed Key-Value Store --- local server (S=N=R=W=1)</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-value-process/">DKVS: Distributed Key-Value Store --- values processing</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-multiple-servers/">DKVS: Distributed Key-Value Store --- The ring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-network/">DKVS: Distributed Key-Value Store --- Network layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-quorum/">DKVS: Distributed Key-Value Store --- Quorum</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-monitoring/">DKVS: Distributed Key-Value Store --- Monitoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/08-parallel/">DKVS: Distributed Key-Value Store --- Parallelism</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>Warmup</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>Welcome in the project part of the CS202 course!<br />
+This project is organized as follows:</p>
+<ol>
+<li>a warm-up, spread over the C bootcamp weeks, to setup all the needed tools, and make you ready for the core content; this warmup has to be done alone;</li>
+<li>the core content of the project spreads over 8 weeks (from week 5 to 13, but week 7), with two major parts: an "OS"-like part (weeks 5 to 9) and a networking part; the core project has to be done in pairs; each group of two students will have their <em>own</em> github repository (explained later), where to put their code.</li>
+</ol>
+<p><strong>The objectives</strong> of the project are:</p>
+<ol>
+<li>
+<p>to concretely illustrate several aspects of the lectures;</p>
+</li>
+<li>
+<p>to let you develop a real system application in C (with files, pointers, sockets, threads, external library calls, ...);</p>
+</li>
+<li>
+<p>to let you practice usual development tools, among which: control version systems (<a href="https://git-scm.com"><code>git</code></a>), manpages, <code>make</code>, debugger (<code>gdb</code>);</p>
+</li>
+<li>
+<p>to teach you how to use system (or external) libraries;</p>
+</li>
+<li>
+<p>to practice (a bit of) refactoring.</p>
+</li>
+</ol>
+<h2 id="warmup-phase">Warmup phase</h2>
+<h3 id="objectives">Objectives</h3>
+<p>In the warmup phase, we will setup and learn several tools that will be useful for the project:</p>
+<ol>
+<li>setup GitHub;</li>
+<li>review (learn?) (a bit of) Git;</li>
+<li>compile a project made of several C code files;</li>
+<li>use a debugger.</li>
+</ol>
+<p>The aim of this warmup phase is to guarantee that you are ready to start with the project; that you have the proper working environment to do so. It is <strong>really important</strong> that this objective is fulfilled before the actual start of the core project (week 5 of the semester). Do not hesitate to come to us for help.</p>
+<p>Concretely, what we expect you to do is to:</p>
+<ul>
+<li>setup Git and get exercise material;</li>
+<li>compile a C program using an external library (OpenSSL) [1 exercise];</li>
+<li>understand and practice compilation of C software made of several files (and use <code>make</code>);</li>
+<li>practice the debugger.</li>
+</ul>
+<h3 id="environment">Environment</h3>
+<p>For this project, you <strong>have to</strong> work on Linux. For this you can either:</p>
+<ul>
+<li>use one of the IC-CO-IN-INJ-2025-Spring* virtual machines (with or without MA suffix), either remotely from your own computer through <a href="https://vdi.epfl.ch">vdi.epfl.ch</a>, or directly on the Dell terminals provided in rooms CO-020 to CO-023 or INF3;</li>
+<li>install a virtual machine of your own on your own computer (see <a href="https://projprogsys-epfl.github.io/tutorials/vmware/">this page for VMWare</a> or <a href="https://projprogsys-epfl.github.io/tutorials/vmvb/">that page for VirtualBox</a>);</li>
+<li>use a <a href="https://doc.ubuntu-fr.org/live_usb">Live USB</a> on your own computer;</li>
+<li>use your own computer directly if it's already a Linux box.</li>
+</ul>
+<p><strong>No other OS</strong> will be supported (nor accepted) for this project.</p>
+<p>In addition to the standard C development framework (editor, compiler, debugger), you'll nee the following tools (<code>sudo apt install &lt;package&gt;</code> if you are on your own Debian/Ubuntu-like computer):</p>
+<ul>
+<li><code>git</code> (this is the package name to be installed);</li>
+<li>some SSH client, e.g. <code>openssh-client</code>;</li>
+<li>documentation (<em>manpages</em>) : <code>manpages</code> and <code>manpages-dev</code>;</li>
+<li>[optional] <code>doxygen</code> if you want to automatically produce the documentation out of your source code;</li>
+<li>[optional] <code>graphviz</code> to see the graphs generated by Doxygen;</li>
+<li><code>libssl-dev</code>: some cryptographic function we will use to compute "hash"-code of images;</li>
+<li><code>libvips-dev</code> to process images from C code;</li>
+<li><code>libjson-c-dev</code> to process JSON content from C code.</li>
+</ul>
+<h3 id="github">GitHub</h3>
+<p>You certainly already know Git and GitHub (not to be confused!), maybe from some former classes. This is just a quick recap, or a gentle introduction if you don't know them yet.</p>
+<p>GitHub is one of the public servers to offer Git services. Each student will first receive a personal repository on GitHub for this warmup phase; then each group (pair of two students) will also then get <em>another</em> repository for their core project (this will be explained later in the semester).</p>
+<p>The first thing to do is to have a GitHub account. If you don't have one yet, create it by <a href="https://github.com/join">registering here</a>. A free account is more than enough for this course.<br />
+(if you already have a GitHub account, please use it for this class).</p>
+<p><strong>Then</strong>, once you have a GitHub account, join <a href="https://classroom.github.com/a/dMvmAQki">the warmup assignment, here: https://classroom.github.com/a/dMvmAQki</a>.</p>
+<p>GitHub Classroom may ask you the right to access your repositories:</p>
+<p><img src="/img/warmup/classroom_permission.png" alt="Authorization to GitHub Classrooms" /></p>
+<p>then to join this first assignment (click on <strong>YOUR SCIPER NUMBER</strong>; <em>please</em> <strong>don't</strong> use someone else SCIPER!):</p>
+<p><img src="/img/warmup/week01_assignmt_join.png" alt="Join the first assignment using your SCIPER" /></p>
+<p>and then to create a GitHub repository for that first assignment:</p>
+<p><img src="/img/warmup/perso_assignmt_repository.png" alt="Create first repo" /></p>
+<p>Once all this done, you should receive a message from GitHub that you joined the "Warm-up" assignment and that you have a new repository <code>cs202-warmup-YOUR_GITHUB_ID</code>, the URI of which looks like:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git@github.com:projprogsys-epfl/cs202-warmup-GITHUBID.git
+</span></code></pre>
+<p>To be able to clone this repository, you have to add your SSH public key (the one of the computer you are using) <a href="https://github.com/settings/ssh">to GitHub</a>.</p>
+<p>If you don't have any SSH key yet (on the computer you are using), you can generate one with:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>ssh-keygen
+</span></code></pre>
+<p>Copy then the content of the file <code>~/.ssh/id_rsa.pub</code> into <a href="https://github.com/settings/ssh">GitHub SSH public keys</a> inside "Authentication keys" (click "New SSH Key").</p>
+<p><strong>NOTE:</strong> you can also use <code>https</code> URI rather than SSH:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>https://github.com/projprogsys-epfl/cs202-warmup-YOURID.git
+</span></code></pre>
+<p>but then you'll have to authenticate each time (each command).</p>
+<h3 id="git">Git</h3>
+<p>It's not the purpose of this class to <em>teach</em> you Git, nor to present all its details. The purpose of this section is to provided you a short description on the necessary commands:</p>
+<ul>
+<li><code>git clone [REPO_URI]</code></li>
+<li><code>git pull</code></li>
+<li><code>git add [FILE]</code></li>
+<li><code>git commit -m "Commit message"</code></li>
+<li><code>git push</code></li>
+<li><code>git status</code></li>
+<li><code>git tag</code></li>
+</ul>
+<p>For each command, you can get help from <code>git</code> by doing:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git help &lt;COMMAND&gt;
+</span></code></pre>
+<p>In case you need a recap on git, either go to your former material (e.g. CS-214 if you took it), or see <a href="https://projprogsys-epfl.github.io/tutorials/git-recitation/">this complementary recitation page</a> (in French).</p>
+<h3 id="ready-to-go">Ready to go</h3>
+<p>(If you have received the confirmation email from GitHub)
+Now go and get the content of this warm-up assignment:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git clone REPO_URI
+</span></code></pre>
+<p>This will create a local directory on your computer, named like <code>cs202-warmup-YOURID</code> (with <em>your</em>  GitHub ID at the end).</p>
+<p>Go into that directory:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cd cs202-warmup-YOURID
+</span></code></pre>
+<p>You should find two sub-directories: <code>done</code> and <code>provided</code>. This is how we will proceed for the project:</p>
+<ul>
+<li>
+<p>all what we will provide you (incrementally) will be put in the <code>provided</code> sub-directories; <strong>THIS SUB-DIRECTORY (<code>provided</code>) SHALL NOT BE MODIFIED</strong> (by you);</p>
+</li>
+<li>
+<p>all your work has to be done in the <code>done</code> directory; (incrementally) copy the necessary files from <code>provided</code> to <code>done</code> and then proceed.</p>
+</li>
+</ul>
+<h3 id="manpages">manpages</h3>
+<p>Before moving on, let us recap that the manpages are <strong>THE</strong> reference documentation in Unix world.
+You can read them with the <code>man</code> command (they can also be read <a href="http://man7.org/linux/man-pages/">on line</a>).</p>
+<p>The first manpage to read (maybe not in whole <code>;-)</code>, but at least have a look at it) is the manpage of the <code>man</code> command itself:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>man man
+</span></code></pre>
+<p>Use the space bar to move forward, 'b' to go backward and 'q' to quit. Type 'h' to get more help.</p>
+<p><code>man</code> actually uses another command, a "page viewer". In most of the modern Unix systems, this page viewer is  <code>less</code> (replacing former <code>more</code> command!). Thus maybe the second manpage to read is the one of <code>less</code>:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>man less
+</span></code></pre>
+<p>On of the first function you have dealt with in C was  <code>printf()</code>. Let's try to see its manpage:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>man printf
+</span></code></pre>
+<p>Hmm?... This does not seem to be the right <code>printf</code>...
+If you have a "<code>PRINTF(1)</code>" on the very top of the page, this is indeed not the expected C <code>printf()</code> function.</p>
+<p>There can indeed be several manpages with the same "title". To mark the difference, the manpages are organized in "Sections". Go and read the manpage of <code>man</code> again if you missed that information:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>man man
+</span></code></pre>
+<p>To go to the desired <code>printf</code> manpage, we have to look for the one in "section 3". Try to do it by yourself (maybe read the manpage of <code>man</code> once again).</p>
+<p>And don't forget to use <code>man</code> in the future, whenever needed!</p>
+<h2 id="compilation-of-code-with-library">Compilation of code with library</h2>
+<p>The aim of this first exercise is to continue setting up your environment to be able to properly code the project.<br />
+In the coming project, we will make use of several libraries (as explained in the introduction). Let's try here to use the first one:</p>
+<ul>
+<li><code>libssl</code>; this library offers cryptographic functionalities (see <code>man ssl</code>); we will use it to calculate the hash  ("SHA code") of some images.</li>
+</ul>
+<h3 id="installation">Installation</h3>
+<p>If you work on your own Linux (<strong>not on EPFL VMs</strong>), and you didn't install it yet, please install <code>libssl-dev</code>:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>sudo apt install libssl-dev libssl-doc
+</span></code></pre>
+<p>In the <code>provided</code> sub-directory you find a file <code>sha.c</code>. First copy it to your <code>done</code> and work there:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#96b5b4;">cd</span><span> done
+</span><span style="color:#bf616a;">cp</span><span> ../provided/sha.c .
+</span></code></pre>
+<p>To compile it, you need to add the <code>ssl</code> can <code>crypto</code> libraries. This is done by adding the <code>-lssl</code> and <code>-lcrypto</code> flags; e.g.:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -std=c99 -o sha sha.c -lssl -lcrypto
+</span></code></pre>
+<p>If everything is properly installed, the above compilation should succeed and you should have a  <code>./sha</code> program in your <code>done</code> sub-directory. This exec does not much for the moment as its main part is still missing. This is what you have to add now.</p>
+<h3 id="sha-codes">SHA codes</h3>
+<p>A "SHA code", or "SHA" (which stands for <a href="https://fr.wikipedia.org/wiki/Secure_Hash_Algorithm">"<em>Secure Hash Algorithm</em>"</a>), is a compact representation, almost certainly unique, and hardly invertible (reciprocal), of any data. More concretely:</p>
+<ul>
+<li>
+<p><em>compact</em>: whatever data, whatever their length, will be represented by the same amount of bits; it this project, we will use 256 bits ("SHA256");</p>
+<p>for example, the SHA256 of "hello" (<strong>without</strong> newline, nor quotes) is<br />
+<code>2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824</code>;</p>
+</li>
+<li>
+<p><em>almost certainly unique</em>: different data will most probably have two different SHA; this is not guaranteed (there are "only" 10<sup>77</sup> different SHA256), but highly probable: with 10<sup>35</sup> different data, the probability to get the same SHA is 10<sup>-6</sup>;
+when two different data have the same SHA, this is called a "<em>collision</em>";</p>
+</li>
+<li>
+<p><em>hardly invertible</em> : from a SHA code, it's extremely difficult (= impossible in practice) to guess its corresponding data; one consequence of that is that a small variation in the data leads to a completely different SHA; for instant, the SHA256 for "hello!" (without newline, nor quotes) is<br />
+<code>ce06092fb948d9ffac7d1a376e404b26b7575bcc11ee05a4615fef4fec3a308b</code><br />
+(to be compared to the one of "hello" above) and the one of "hello\n" (i.e. with a newline) is<br />
+<code>5891b5b522d5df086d0ff0b110fbd9d21bb4fc7163af34d08286a2e846f6be03</code>.</p>
+</li>
+</ul>
+<h3 id="complete-the-provided-code">Complete the provided code</h3>
+<p>The provided code (<code>sha.c</code>) compiles but does nothing really interesting. Actually there is no computation of the SHA256 of the input; no call to the <code>SHA256()</code> function from the <code>libssl</code>.</p>
+<p>Have a look at how to use this function:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>man SHA256
+</span></code></pre>
+<p>(if you have the manpages for this library installed on your computer; otherwise, read it  <a href="https://manpages.debian.org/testing/libssl-doc/SHA256.3ssl.en.html">online</a>.</p>
+<p>Add, where indicated by "<code>TODO</code>", a call to compute the SHA256 of the input string.</p>
+<p><strong>Example:</strong></p>
+<p>If everything is properly done, you should get:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>Type a sentence: Hello world!
+</span><span>The SHA256 code of
+</span><span>&quot;Hello world!
+</span><span>&quot;
+</span><span>is:
+</span><span>0ba904eae8773b70c75333db4de2f3ac45a8ad4ddba1b242f0b3cfc199391dd8
+</span></code></pre>
+<p>You can also debug with the "hello" string given above (with the newline!).</p>
+<h2 id="compilation-of-multiple-files-make-and-makefiles">Compilation of multiple files, Make and Makefiles</h2>
+<h3 id="background-knowledge">Background knowledge</h3>
+<p>The source code of real-life applications written in C is often distributed over several text files called "source files", which are "glued together" by the compiler to create an executable program from the source code. This way of proceeding is called "modularization" and is detailed</p>
+<ul>
+<li>
+<p>in <a href="https://projprogsys-epfl.github.io/tutorials/make/">this tutorial</a></p>
+</li>
+<li>
+<p>in those video lectures:</p>
+<ul>
+<li><a href="https://mediaspace.epfl.ch/media/separate+compilation/0_z0po74w3/60933">Separate compilation</a>;</li>
+<li>(not fundamental) <a href="https://mediaspace.epfl.ch/media/more+on+header+files/0_cyuxmx17/60933">More on header files</a>;</li>
+<li><a href="https://mediaspace.epfl.ch/media/Makefiles/0_o5g4f3fd/60933">Makefiles</a>;</li>
+<li>(optional) <a href="https://mediaspace.epfl.ch/media/%5Bopt%5D+linker+%26+loader+explained/0_gqcjn2vi/60933">Linker and loader explained</a>;</li>
+</ul>
+<p>the slides of which are on Moodle.</p>
+</li>
+</ul>
+<p>Choose your favorite learning way (maybe benefit from both).</p>
+<p>We strongly recommend you go through this material before moving on.</p>
+<h3 id="practice">Practice</h3>
+<p>The objectives of this section is that</p>
+<ol>
+<li>you know the basics of <code>Makefile</code>s;</li>
+<li>you can read a simple <code>Makefile</code>;</li>
+<li>you can update existing simple <code>Makefile</code>s.</li>
+</ol>
+<p>We don't expect you to write your own <code>Makefile</code>s from scratch, neither to master all the arcane details (while reading).</p>
+<h4 id="read-then-update-simple-makefiles">Read, then update, simple <code>Makefile</code>s</h4>
+<p>Go ahead with <a href="https://projprogsys-epfl.github.io/tutorials/make/">the above mentioned tutorial</a>.
+Follow (and understand) examples 1 and 2, then exercises 1 and 2, and then 3.</p>
+<h4 id="understand-bigger-projects">Understand bigger projects</h4>
+<p>The sub-directory <code>bigprj</code> (in <code>provided</code> directory) contains a "big" project for which we propose you to write its <code>Makefile</code>.</p>
+<p><strong>IMPORTANT REMARK :</strong> the code provided in <code>bigprj</code> is under copyrights and shall not be copied nor reused  anywhere else, neither in total nor any piece of it.<br />
+(It's furthermore quite bad code and is thus <em>not at all</em> a good example of good practice.)
+It's there <strong>only</strong> for you to learn <code>Makefile</code>s by trying to write one to compile this project.</p>
+<p>That code uses sub-directories and one C99 function (<code>roundf()</code>).</p>
+<p>To tell the compiler to search for header files in some sub-directories, add an <code>-I</code> option per sub-directory. For example, when compiling <code>machin.c</code>, to tell the compiler to search for a header file in the <code>stuff</code> sub-directory, you would do :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -c -I stuff machin.c -o machin.o
+</span></code></pre>
+<p>(See also the <code>CFLAGS</code> variable in <a href="https://projprogsys-epfl.github.io/tutorials/make/">the <code>make</code> tutorial</a>.</p>
+<p>To compile to the C99 standard (or higher), pass the <code>-std=c99</code> (or <code>-std=c17</code> or <code>-std=c2x</code>) option to the compiler (see the <code>CFLAGS</code> variable).</p>
+<p>Finally, to be able to use C99's <code>roundf()</code> function, you need to link to the math library by adding <code>-lm</code>.</p>
+<p>(See also the <code>LDLIBS</code> variable in <a href="https://projprogsys-epfl.github.io/tutorials/make/">the <code>make</code> tutorial</a>.)</p>
+<p><strong>Notes:</strong></p>
+<ol>
+<li>
+<p>The provided code compiles with many "<em>warnings</em>". We <strong>do not</strong> ask you to fix these errors, but simply to write a <code>Makefile</code> that produces a <code>hand</code> executable.</p>
+</li>
+<li>
+<p>You don't need to run it. If you have, you can simply quit it by typing <code>Ctrl-C</code>.</p>
+</li>
+</ol>
+<h2 id="debugging">Debugging</h2>
+<p>In this last part, we'd like you to practice debugging of C code. This is <strong>very important</strong> to master debugging <em>before</em> going deeper into the project. Otherwise, without a good practice of debugging, you'll really loose lots of times.</p>
+<p>For those who took the CS-214 Software Construction class, also remember/review all the methodologies, good practices, your learned there about debugging. Maybe have a refresh of that material first.</p>
+<h3 id="tools">Tools</h3>
+<p>To help you find faults in code (especially in your own code later on in the project; think about it!), there are several tools available:</p>
+<ul>
+<li>
+<p>compiler options</p>
+</li>
+<li>
+<p>static code analysis</p>
+</li>
+<li>
+<p>dynamic memory analysis;</p>
+</li>
+<li>
+<p>and, of course, debuggers.</p>
+</li>
+</ul>
+<h4 id="useful-compiler-options">Useful compiler options</h4>
+<p>The compiler is a great help when you know how to use it and interpret its messages.</p>
+<p>Its behavior, more or less verbose, can be modified using compiler options, the most useful of which are detailed here.</p>
+<p>In the same spirit (using the compiler to find errors), it can also be useful to use different compilers (with the options below) on the same code, as they don't necessarily detect the same things. On VMs, you have <code>gcc</code> and <code>clang</code>.</p>
+<p>The first thing to do is to specify the standard used (as there are many non-standard "dialects"). This is done with the <code>-std=</code> option. We recommend <code>-std=c99</code> or <code>-std=c17</code>. To stick strictly to the specified standard (and reject the associated "GNU dialect") add the <code>-pedantic</code> option.</p>
+<p>Then, it can be useful to let the compiler warn us with lots of the usual <em>warning</em>. This is done with the <code>-Wall</code> option (like "<em>all warnings</em>", even if they're actually <strong>not</strong> all there ;-)`).</p>
+<p>For even more warnings, add <code>-Wextra</code>.</p>
+<p>And here are a few more that we think are worth adding (you're free not to if you find them too fussy):</p>
+<ul>
+<li>
+<p><code>-Wuninitialized</code>: warns of uninitialized variables;</p>
+</li>
+<li>
+<p><code>-Wfloat-equal</code>: warns of equality tests on floating-point numbers;</p>
+</li>
+<li>
+<p><code>-Wshadow</code>: warns if one name masks another (risk of scope problems);</p>
+</li>
+<li>
+<p><code>-Wbad-function-cast</code>: warns of incorrect function return type conversion;</p>
+</li>
+<li>
+<p><code>-Wcast-qual</code>: warns of pointed type conversion that removes a qualifier (typically <code>const</code>);</p>
+</li>
+<li>
+<p><code>-Wcast-align</code>: warns of pointed type conversions that do not respect memory word alignment;</p>
+</li>
+<li>
+<p><code>-Wwrite-strings</code>: warns of (risk of) confusion between <code>const char *</code> and <code>char *</code>;</p>
+</li>
+<li>
+<p><code>-Wconversion</code>: warns of <em>implicit</em> type conversion;</p>
+</li>
+<li>
+<p><code>-Wunreachable-code</code>: warns of useless (unreachable) code;</p>
+</li>
+<li>
+<p><code>-Wformat=2</code>: increases the level of format warnings (such as <code>printf</code> and <code>scan</code>) compared to <code>-Wall</code>;</p>
+</li>
+<li>
+<p><code>-Winit-self</code>: warns of recursive initialization (such as <code>int i = 3 * i;</code>);</p>
+</li>
+<li>
+<p><code>-Wstrict-prototypes</code>: warns of function declarations without arguments;</p>
+</li>
+<li>
+<p><code>-Wmissing-declarations</code>: warns of functions defined but not prototyped; this can be useful for detecting the omission of a prototype in a <code>.h</code> (or the omission of a <code>#include</code>).</p>
+</li>
+</ul>
+<p>Finally, you can of course add other options if you feel they are useful. As usual, check out the "<em>man pages</em>" for more details.</p>
+<h4 id="static-code-analysis">Static code analysis</h4>
+<p>The static code analyzer is a tool that tries to find errors in code by "imagining" all possible execution paths. The <code>scan-build</code> (and <code>scan-view</code>) analyzer is available on VMs. It is used by simply adding <code>scan-build</code> in front of the build command, e.g. :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>scan-build make
+</span><span>scan-build make cecicela
+</span><span>scan-build gcc -o monexo monexo.c
+</span></code></pre>
+<p>The easiest way is to try :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>scan-build gcc stats.c -lm
+</span></code></pre>
+<p>This command tells you (at the very end) to look at its analysis using <code>scan-view</code>, e.g. :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>scan-view /tmp/scan-build-2025-02-17-175346-107146-1
+</span></code></pre>
+<p>(but this file name changes every time).</p>
+<p>We'll let you have a look at what it found...</p>
+<h4 id="using-a-debugger">Using a debugger</h4>
+<p>See <a href="https://projprogsys-epfl.github.io/tutorials/gdb/">this tutorial</a> for instructions on using the <code>gdb</code> debugger.</p>
+<p>This tutorial takes as its example the first program you'll have to hand in (<code>stats.c</code>), but we encourage you to try your hand at the other codes too (<code>ex1.c</code> and <code>ex2.c</code>) and to <strong>go back and forth</strong> between this topic and the tutorial in question (rather than reading it linearly and then continuing with this topic).</p>
+<h3 id="methodology-for-debugging">Methodology for debugging</h3>
+<p>To find an error efficiently, we suggest the following <em>general</em> tips (other more job-specific tips are also provided below):</p>
+<ol>
+<li>
+<p>try to correct only one bug at a time;</p>
+</li>
+<li>
+<p>always start with the first error;</p>
+</li>
+<li>
+<p>isolate/identify the bug in a reproducible way: always retest with <em>exactly</em> the same values each time;</p>
+</li>
+<li>
+<p>apply the following methodology (it may seem trivial, but all too often we've seen students waste their time looking for bugs in the wrong place because one of the following 2 "dots" was not placed on the right side; often due to over-strong assumptions (wrong guesses) or wrong/too-fast deductions):</p>
+<ul>
+<li>
+<p>always have 2 clear places (2 "dots") in your code:</p>
+<ul>
+<li>
+<p>one place where you are <strong>absolutely sure</strong> that the bug has not yet occurred (e.g. the very beginning of the program);</p>
+</li>
+<li>
+<p>and another where you are <strong>absolutely sure</strong> that the bug has occurred (e.g. the point where the program crashes, or simply the end/beginning of the program);</p>
+</li>
+</ul>
+</li>
+<li>
+<p>move (advance/reassemble) the most promising of these two points, being sure not to "cross over" to the other side of the bug; check this aspect ("not cross over") with certainty;</p>
+</li>
+<li>
+<p>at the end of this process (of dichotomous searching in fact), the two "points" will be exactly on the spot of the bug.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>if you're searching for bugs using display messages (<code>printf()</code>) :</p>
+<ul>
+<li>
+<p>always put a <code>\n</code> at the end of each message;</p>
+</li>
+<li>
+<p>mark the beginning of <strong>each</strong> of your debugging messages with a clear identifier reserved only for this purpose (e.g. "<code>#### </code>"); this allows you :</p>
+<ol>
+<li>
+<p>to easily see these messages in the program output;</p>
+</li>
+<li>
+<p>find them easily in your code to edit/delete later;</p>
+</li>
+</ol>
+</li>
+<li>
+<p>have a unique part in <strong>each</strong> message (e.g. "debug(1):", "debug(2):", "debug(3):", etc., or "here i=", "here j=", "here k=", etc.; you can of course combine);</p>
+</li>
+</ul>
+<p>having this discipline with debugging messages may seem like a waste of time (especially when you're looking for the bug), but, believe me, it actually <em>saves</em> <em>a lot</em> of time in the end!</p>
+</li>
+</ol>
+<h3 id="debugger-training-exercises">Debugger training exercises</h3>
+<p>Here are two exercises to help you get to grips with <code>gdb</code>.</p>
+<h4 id="exercise-1">Exercise 1</h4>
+<p>Look at the <code>ex1.c</code> code to get an initial idea.</p>
+<p>Then compile it for the debugger (either by hand or by making a small <code>Makefile</code>).</p>
+<p>Run it in the terminal to see what it produces.</p>
+<p>Then <strong>use the debugger</strong> to determine the values of d0, d1 and d17 :</p>
+<ul>
+<li>
+<p>set one or more well-placed breakpoints</p>
+</li>
+<li>
+<p>try the commands :</p>
+<ul>
+<li>
+<p><code>step</code> and <code>next</code>;</p>
+</li>
+<li>
+<p><code>continue</code> (abbreviated <code>cont</code>), followed, or not, by a number;</p>
+</li>
+<li>
+<p><code>print</code> and/or <code>display</code>.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>You can also try <code>advance</code> and <code>finish</code>.</p>
+<p><strong>NOTES:</strong></p>
+<ol>
+<li>
+<p>you can see the syntax and explanation of a command in <code>gdb</code> by using <code>help</code> followed by the command; e.g. :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> help adv
+</span></code></pre>
+</li>
+<li>
+<p>you can list all your breakpoints via :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> info break
+</span></code></pre>
+</li>
+</ol>
+<h4 id="exercise-2">Exercise 2:</h4>
+<p>Take a look at the <code>ex2.c</code> code to get an initial idea. The aim of this code is to calculate the entropy of a given distribution by its frequencies (= integer counts).</p>
+<p>Some examples (useful for debugging):</p>
+<ul>
+<li>
+<p>the entropy without any count is 0, no matter how you enter it:</p>
+<p>0<br />
+0 0 0<br />
+0 0 0 0 0 0<br />
+etc;</p>
+</li>
+<li>
+<p>the entropy of any 1-value distribution is 0, however you enter it:</p>
+<p>0<br />
+0 1 0<br />
+0 12 0<br />
+0 0 12<br />
+0 0 0 33 0 0 0<br />
+etc;</p>
+</li>
+<li>
+<p>the entropy of any distribution with 2 equiprobable values is 1 bit, regardless of how it is entered:</p>
+<p>1 1<br />
+0 1 1 0<br />
+0 12 0 12<br />
+etc;</p>
+</li>
+<li>
+<p>the entropy of any distribution with 3 equiprobable values is 1.58496 bit, however you enter it;</p>
+</li>
+<li>
+<p>the entropy of the distribution :</p>
+<p>1 2 3 4 5</p>
+<p>is 2.14926 bit.</p>
+</li>
+</ul>
+<p>The code provided contains several errors. Try to find them using the debugger: breakpoints, next, cont, display, etc.</p>
+<p>You can even start by running the code directly in <code>gdb</code>, typing <code>run</code>.
+then enter :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>1 0
+</span></code></pre>
+<p>and see what happens.</p>
+<p>To locate the error in the call stack, do :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>where
+</span></code></pre>
+<p>To see the code :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>layout src
+</span></code></pre>
+<p>To navigate the call stack :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>up
+</span><span>down
+</span></code></pre>
+<p>Give it a try...</p>
+<p><strong>Note:</strong> there are four things to be corrected.</p>
+<h4 id="exercise-3-a-simple-case-on-your-own">Exercise 3: a simple case on your own</h4>
+<p>All the above tools (compiler options, static code analysis, dynamic memory analysis (when you have pointers) and debugger) will help you to be more efficient in your project. We therefore ask you to start using them to correct the <code>stats.c</code> code provided.</p>
+<p>Try to fix <em>entirely</em> the <code>stats.c</code> file provided, whose purpose is to calculate the mean and standard deviation (unbiased) of the age of a set of 1 to 1024 people (beware! it contains <em>several</em> errors, of different kinds; there are, however, <em>no</em> errors of a mathematical nature: the <em>formulas</em> are mathematically correct; but note however that the standard deviation of a population reduced to a single individual must be zero).</p>
+<p>The first thing to do might be to complete your <code>Makefile</code> so that it can produce <code>stats</code> with information useful to the debugger (option <code>-g</code>). You could also take the opportunity to turn on the compiler's <em>warnings</em> and look in detail at what it's telling you and, above all, understand <em>why</em> it's telling you.</p>
+<p>Once the program has compiled, if possible without <em>warning</em>, here are 3 ways to go further in correcting the program:</p>
+<ol>
+<li>
+<p>test values that are <em>outside</em> the expected limits, and see if the program reacts as you'd expect. For example: what happens if you enter a negative number of people? a negative age?</p>
+</li>
+<li>
+<p>calculate by hand the mean and standard deviation (following the <em>provided</em> formula!) of a small sample and compare them with the output of your program. If there are differences, use the debugger to find out where they come from;</p>
+</li>
+<li>
+<p>remember to test <em>all</em> the limiting cases of these formulas.</p>
+</li>
+</ol>
+<h2 id="optional-documentation-with-doxygen">[optional] Documentation with Doxygen</h2>
+<p>When editing the <code>sha.c</code> file, you may have noticed that it is commented (<em>always</em> comment your programs!), in a rather peculiar format ("what's with the <code>@</code>?").</p>
+<p>It's not just for show; it's also useful!</p>
+<p>Type :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>doxygen -g
+</span><span>doxygen Doxyfile
+</span></code></pre>
+<p>then view the file <code>html/index.html</code> in your favorite browser.<br />
+Click on "Files", then on "sha.c".<br />
+Cool, isn't it?</p>
+<p>Clean it up with the command</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>rm -r latex html
+</span></code></pre>
+<p>In future, remember to document your code with Doxygen-compatible comments.</p>
+<p>Examples will be provided, but if you want to know more, have a look at <a href="http://www.doxygen.nl/">the Doxygen website</a>.</p>
+<p><strong>IMPORTANT REMARK:</strong> For the project, make your code anonymous: don't put any author's name, SCIPER, email, etc.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 21&#x2F;05&#x2F;2025</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

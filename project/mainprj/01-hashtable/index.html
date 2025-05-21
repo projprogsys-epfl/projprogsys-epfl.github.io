@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>DKVS: Distributed Key-Value Store --- Hashtables | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/01-hashtable/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "01 Hashtable",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/01-hashtable/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/01-hashtable/">DKVS: Distributed Key-Value Store --- Hashtables</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">DKVS: Distributed Key-Value Store --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-local-server/">DKVS: Distributed Key-Value Store --- local server (S=N=R=W=1)</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-value-process/">DKVS: Distributed Key-Value Store --- values processing</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-multiple-servers/">DKVS: Distributed Key-Value Store --- The ring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-network/">DKVS: Distributed Key-Value Store --- Network layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-quorum/">DKVS: Distributed Key-Value Store --- Quorum</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-monitoring/">DKVS: Distributed Key-Value Store --- Monitoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/08-parallel/">DKVS: Distributed Key-Value Store --- Parallelism</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>DKVS: Distributed Key-Value Store --- Hashtables</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>The aim of this week's work is:</p>
+<ol>
+<li>become fully acquainted with the project framework and concepts: start by reading <a href="../01-main/">the main description file</a>;</li>
+<li>and create data structures and functions for local hash tables.</li>
+</ol>
+<h2 id="provided-material">Provided material</h2>
+<p>In your group's GitHub repository, you will find the following files in <code>provided/</code>:</p>
+<ul>
+<li><code>hashtable.h</code>: header file for hash tables (to be developed this week);</li>
+<li><code>util.h</code> and <code>util.c</code>: macros and miscellaneous functions; you do not <em>have to</em> use them, but <em>might</em> if appropriate (have a look to see if some may be useful);</li>
+<li><code>error.h</code> and <code>error.c</code>: error code and messages;</li>
+<li>a <code>Makefile</code> containing useful rules and targets;</li>
+<li>some material to use ours and develop your own unit tests in <code>tests/unit/</code>.</li>
+</ul>
+<h2 id="implementing-the-hashtable">Implementing the hashtable</h2>
+<h3 id="data-structure">Data structure</h3>
+<p>As a reminder, a hashtable is a data structure that allows (quasi-)constant-time access (O(1)) to a value using the "<em>hash value</em>" of an access key:</p>
+<p><img src="/img/project/hashtable.png" alt="A hashtable binds a key to a value using a hashing function" /><br />
+<strong>Figure:</strong> <em>a hashtable binds a key to a value using a hashing function.</em> (CC) <a href="https://commons.wikimedia.org/wiki/User:Jorge_Stolfi">Jorge Stolfi@WikiMedia</a></p>
+<p>The concrete representation of the hashtable that we propose to implement in this project will look like this:</p>
+<p><img src="/img/project/hashtable_with_overflow.png" alt="Representation of a hashtable with collision management by chaining" /><br />
+<strong>Figure:</strong> <em>representation of a hashtable with collision management by chaining lists.</em> (CC) <a href="https://commons.wikimedia.org/wiki/User:Jorge_Stolfi">Jorge Stolfi@WikiMedia</a></p>
+<p>In <code>hashtable.h</code>, define the types for keys (<code>dkvs_key_t</code> and <code>dkvs_const_key_t</code>) and for values (<code>dkvs_value_t</code> and <code>dkvs_const_value_t</code>) as <code>char*</code> and <code>const char*</code> respectively.</p>
+<p><strong>NOTE about the ownership of table contents:</strong> since the type of stored values (<code>dkvs_value_t</code>) is a pointer, the question arises as to the ownership of hashtable contents (i.e. do the elements contained in the table have to be "hidden" or can they be shared externally?)</p>
+<p>The point of view chosen in this project is that the hashtable is the sole owner of its contents. Added values (pointed values) must therefore be <strong>copied</strong> (instead of simply copying the pointer).<br />
+<strong>[end of note]</strong></p>
+<p>Then "define" the type <code>bucket_t</code>, which corresponds to one entry in the hashtable. We here quoted the word "define" as strictly speaking all we need here is a <strong>pre</strong>declaration (<code>typedef</code>) to a <code>struct</code> to be defined later. You can freely choose the <code>struct</code> name here (all you will need to do will be to be coherent with that name in the future). More details in the <a href="https://projprogsys-epfl.github.io/project/mainprj/01-hashtable/#collision-management">Collision management</a> section below.</p>
+<p>Finally define the type <code>Htable_t</code> which corresponds to a <strong>dynamically allocated</strong> hashtable containing <code>size</code> "cells".</p>
+<p><code>size</code> is a characteristic of the hashtable (indicating its size in terms of the number of possible positions; note that the actual number of entries contained in the table may be different: some positions are empty (e.g. 002 above), some keys may share the same position (e.g. "John Smith" and "Sandra Dee" above; this is referred to as "<em>collision</em>").</p>
+<p>Then define the following functions to perform a set of standard operations on hashtables (prototypes in <code>hashtable.h</code>, implementations in <code>hashtable.c</code>):</p>
+<ul>
+<li>
+<p><code>Htable_t* Htable_construct(size_t)</code> which takes a number of <em>buckets</em> as a parameter and returns a newly-created hashtable (of the corresponding size);</p>
+</li>
+<li>
+<p><code>void Htable_free_content(Htable_t*)</code> which frees the memory of all the contents stored in the hashtable passed in parameter.</p>
+</li>
+<li>
+<p><code>void Htable_free(Htable_t**)</code> which frees the contents memory stored with the hashtable pointed by the parameter, <strong>as well as the pointed <code>Htable_t</code> itself</strong>.</p>
+</li>
+<li>
+<p><code>int Htable_add_value(Htable_t*, dkvs_const_key_t, dkvs_const_value_t)</code> which takes a hashtable as argument as well as a key and a value and stores the value associated with the key in the hashtable;
+if the table is <code>NULL</code>, it should return <code>ERR_INVALID_ARGUMENT</code>, if everything is working normally, it should return <code>ERR_NONE</code> (the various errors and tool functions can be found in <code>error.h</code>);
+although this would be perfectly feasible, we've decided for this project not to accept <code>NULL</code> values, i.e. if the <code>dkvs_const_value_t</code> passed is <code>NULL</code>, this function also returns <code>ERR_INVALID_ARGUMENT</code>; moreover, don't forget that the content of the value must be copied (and not just a copy of the pointer); see also the <a href="https://projprogsys-epfl.github.io/project/mainprj/01-hashtable/#collision-management">Collision management</a> section below;</p>
+</li>
+</ul>
+<h3 id="hashing-function">Hashing function</h3>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>To calculate the hash value of a given key (`key` below) for a hashtable with `size` &quot;cells&quot;, we ask you to use the following function:
+</span></code></pre>
+<pre data-lang="C" style="background-color:#2b303b;color:#c0c5ce;" class="language-C "><code class="language-C" data-lang="C"><span style="color:#65737e;">/** ----------------------------------------------------------------------
+</span><span style="color:#65737e;"> ** Hash a string for a given hashtable size.
+</span><span style="color:#65737e;"> ** See http://en.wikipedia.org/wiki/Jenkins_hash_function
+</span><span style="color:#65737e;"> **/
+</span><span>size_t </span><span style="color:#8fa1b3;">hash_function</span><span>(dkvs_const_key_t </span><span style="color:#bf616a;">key</span><span>, size_t </span><span style="color:#bf616a;">size</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">if </span><span>((key == </span><span style="color:#d08770;">NULL</span><span>) || (size == </span><span style="color:#d08770;">0</span><span>))
+</span><span>        </span><span style="color:#b48ead;">return</span><span> SIZE_MAX;
+</span><span>
+</span><span>    size_t hash = </span><span style="color:#d08770;">0</span><span>;
+</span><span>    </span><span style="color:#b48ead;">const </span><span>size_t key_len = </span><span style="color:#96b5b4;">strlen</span><span>(key);
+</span><span>    </span><span style="color:#b48ead;">for </span><span>(size_t i = </span><span style="color:#d08770;">0</span><span>; i &lt; key_len; ++i) {
+</span><span>        hash += (</span><span style="color:#b48ead;">unsigned char</span><span>) key[i];
+</span><span>        hash += (hash &lt;&lt; </span><span style="color:#d08770;">10</span><span>);
+</span><span>        hash ^= (hash &gt;&gt; </span><span style="color:#d08770;">6</span><span>);
+</span><span>    }
+</span><span>    hash += (hash &lt;&lt; </span><span style="color:#d08770;">3</span><span>);
+</span><span>    hash ^= (hash &gt;&gt; </span><span style="color:#d08770;">11</span><span>);
+</span><span>    hash += (hash &lt;&lt; </span><span style="color:#d08770;">15</span><span>);
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">return</span><span> hash % size;
+</span><span>}
+</span></code></pre>
+<ul>
+<li><code>dkvs_value_t Htable_get_value(const Htable_t*, dkvs_const_key_t)</code> which takes a hashtable as argument as well as a key and returns the associated value if it exists or <code>NULL</code> if it doesn't; it also returns <code>NULL</code> in the event of an incorrect parameter.</li>
+</ul>
+<p>Don't hesitate to create other utility functions if necessary!</p>
+<p>And don't forget to properly and incrementally test the functionality of your hashtable for several combinations of sizes, keys and values <strong>before</strong> going on to the next step (see tests below). This will save you a lot of trouble...</p>
+<h3 id="collision-management">Collision management</h3>
+<p>For adding the value (function <code>Htable_add_value()</code>): as always, if the key already exists in the hashtable, the new value received must overwrite the old one already stored; on the other hand, if it's a <em>new</em> key whose hash function gives a collision (same hash value) with a key already stored, then the new key must be added to the chained list of key-value pairs in the corresponding "cell".</p>
+<p>Similarly, when searching for a value for a key (<code>Htable_get_value()</code>), you'll now have to browse the chained list of key-value pairs in the target "cell".</p>
+<p>As usual, don't hesitate to modularize your code and create other utility functions if necessary! In this spirit, you could _for example:</p>
+<ol>
+<li>define a <code>kv_pair_t</code> type that represents a pair (key, value), i.e. a key and a value; although not strictly necessary (we can do without it; it's not as good, but we <em>can</em>), this type could be useful when you need to manipulate keys and their associated values as a whole; if you do so, of course, define the <code>kv_pair_free()</code> function as well;</li>
+<li>define in <code>hashtable.c</code> (yes, yes, <code>.c</code>) the <code>struct</code> type associated to (aliased by) the former <code>typedef</code>ed <code>bucket_t</code>; we indeed recommend you to define it in <code>hashtable.c</code> and not in <code>.h</code> as this type is <em>strictly internal</em>, there's no reason to export it via the <code>.h</code> file; only its <em>pre-declaration</em> has to be in the <code>.h</code> (as you already did); this is an interesting pattern to (1) increase independence (here between hashtable internals, in the <code>.c</code> and external usage); and (2) hide implementation details (for whatever reason).</li>
+</ol>
+<p>You can also, if necessary, create associated tool functions.</p>
+<h2 id="example-and-tests">Example and tests</h2>
+<h3 id="testing-by-hand">Testing by hand</h3>
+<p>We provide you with a <code>unit-test-hashtable.c</code> file which we strongly advise you to <strong>copy</strong> into your <code>done</code> directory so as to edit it and add your own tests: replace the line</p>
+<pre data-lang="C" style="background-color:#2b303b;color:#c0c5ce;" class="language-C "><code class="language-C" data-lang="C"><span style="color:#bf616a;">puts</span><span>(&quot;</span><span style="color:#a3be8c;">Write your tests here and DELETE this puts</span><span>&quot;);
+</span></code></pre>
+<p>with whatever you feel is necessary.</p>
+<p><strong>Note:</strong> don't edit the <code>unit-test-hashtable.c</code> file in the <code>provided</code>, as it will be modified (and overwritten) by us for our own purposes.
+<strong>[end of note]</strong></p>
+<p>For example, you could test that adding a value to a key results in the correct value when it is requested again:</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span>Htable_t* table = </span><span style="color:#bf616a;">Htable_construct</span><span>(</span><span style="color:#d08770;">100</span><span>);
+</span><span>
+</span><span>dkvs_const_key_t key = &quot;</span><span style="color:#a3be8c;">foo</span><span>&quot;;
+</span><span>dkvs_const_value_t set_value = &quot;</span><span style="color:#a3be8c;">bar</span><span>&quot;;
+</span><span style="color:#bf616a;">Htable_add_value</span><span>(table, key, set_value);
+</span><span>
+</span><span>dkvs_value_t read_value = </span><span style="color:#bf616a;">Htable_get_value</span><span>(table, key);
+</span><span>
+</span><span style="color:#bf616a;">ck_assert_str_eq</span><span>(set_value, read_value);
+</span></code></pre>
+<p><strong>Note:</strong> this example isn't necessarily perfect, or even complete; feel free to adapt it as you want.<br />
+<strong>[end of note]</strong></p>
+<p>For testing purposes, we use the <a href="https://libcheck.github.io/check/">Check library</a>. To test whether two strings are equal, use the <code>ck_assert_str_eq</code> "function" (see also <code>test.h</code>).</p>
+<p>To perform link editing with the Check library, you need to add the <code>-lcheck -lm -lrt -pthread</code> options; for example:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cc unit-test-hashtable.o hashtable.o error.o -lcheck -lm -lrt -pthread -o unit-test-hashtable
+</span></code></pre>
+<p>On some architectures, you also need to add the <code>-lsubunit</code> library.</p>
+<h3 id="provided-tests">Provided tests</h3>
+<p>We provide you with <strong>a very few</strong> tests to run against your code by using <code>make check</code>, both unit tests (testing functions one by one) and end-to-end tests (testing the whole executable at once).</p>
+<p><strong>We strongly advise you to complete them by adding you own tests for edge cases</strong> (see next subsection).</p>
+<h3 id="personal-unit-tests">Personal unit tests</h3>
+<p>As we move forward with the project, <strong>it is important that you can write your own tests</strong>, to complete the provided ones. You can find those in <code>provided/tests/unit/</code>. Before adding new tests, don't forget to copy the <code>provided/test/</code> directory in <code>done/test/</code>. You will also need to modify the <code>TEST_DIR</code> variable in the <code>Makefile</code>.<br />
+<strong>Note:</strong> don't forget to <em>never</em> push modifications in the <code>provided/</code> directory.</p>
+<p>We strongly advise you to edit these files (in <code>done/test/</code>) to add your own tests, or even to create new ones as you move forward. This can be done quite simply by adding your own values or lines of code to the tests already provided, or by copying this file and drawing inspiration from it (don't forget to update the tests' <code>Makefile</code> accordingly). You don't need to understand everything in this file, at least not initially, but it is important you start to get familiar with its content.</p>
+<p>For those who want to go further, the main test functions available in the environment we use (<a href="https://libcheck.github.io/check/">Check</a>) are described over there: <a href="https://libcheck.github.io/check/doc/check_html/check_4.html#Convenience-Test-Functions">https://libcheck.github.io/check/doc/check_html/check_4.html#Convenience-Test-Functions</a>. For example, to test whether two <code>int</code> are equal, use the <code>ck_assert_int_eq</code> macro: <code>ck_assert_int_eq(a, b)</code>.</p>
+<p>We have also defined the following "functions" in <code>test.h</code>:</p>
+<ul>
+<li><code>ck_assert_err(int actual_error, int expected_error)</code>: assert that <code>actual_error</code> is <code>expected_error</code>;</li>
+<li><code>ck_assert_err_none(int error)</code>: assert that <code>error</code> is <code>ERR_NONE</code>;</li>
+<li><code>ck_assert_invalid_arg(int error)</code>: assert that <code>error</code> is <code>ERR_INVALID_ARGUMENT</code> (i.e. correspond to the return code of a function which received a invalid argument; see <code>error.h</code>);</li>
+<li><code>ck_assert_ptr_nonnull(void* ptr)</code>: assert that <code>ptr</code> is not <code>NULL</code>;</li>
+<li><code>ck_assert_ptr_null(void* ptr)</code>: assert that <code>ptr</code> is <code>NULL</code>.</li>
+</ul>
+<p>Finally, we'd like to remind you that just because 100% of the tests provided here pass doesn't mean you'll get 100% of the points. Firstly, because these tests may not be exhaustive (it's also part of a programmer's job to think about tests), but also and above all (as indicated on the page explaining the project grading scale), because we attach great importance to the quality of your code, which will therefore be evaluated by a human review (and not blindly by a machine).</p>
+<h2 id="final-word">Final word</h2>
+<p>It's up to you to organize the group work as best you can, according to your objectives and constraints; but remember to divide the task properly between the two members of the group.
+If you haven't already read it in full, we recommend you read the end of <a href="https://projprogsys-epfl.github.io/project/index/foreword/">the foreword page</a>.</p>
+<p>And also, do not forget to fill (and add+push) your <code>time.csv</code> file (see end of <a href="https://projprogsys-epfl.github.io/project/index/foreword/">the foreword page</a>).</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 21&#x2F;05&#x2F;2025</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

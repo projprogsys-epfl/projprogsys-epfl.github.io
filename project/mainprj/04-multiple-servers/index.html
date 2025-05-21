@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>DKVS: Distributed Key-Value Store --- The ring | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/04-multiple-servers/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "04 Multiple Servers",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/04-multiple-servers/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-hashtable/">DKVS: Distributed Key-Value Store --- Hashtables</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">DKVS: Distributed Key-Value Store --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-local-server/">DKVS: Distributed Key-Value Store --- local server (S=N=R=W=1)</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-value-process/">DKVS: Distributed Key-Value Store --- values processing</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/04-multiple-servers/">DKVS: Distributed Key-Value Store --- The ring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-network/">DKVS: Distributed Key-Value Store --- Network layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-quorum/">DKVS: Distributed Key-Value Store --- Quorum</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-monitoring/">DKVS: Distributed Key-Value Store --- Monitoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/08-parallel/">DKVS: Distributed Key-Value Store --- Parallelism</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>DKVS: Distributed Key-Value Store --- The ring</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>Waiting for the <em>real</em> network functionalities which will come up next week, we continue developing a few more abstractions, namely the ring.
+This week, you'll be implementing the functionalities required to manage <em>multiple</em> servers, but in a still simple usage scenario in which all servers store all data (<em>W</em>=<em>N</em>&gt;1, <em>R</em>=1).</p>
+<p>Since there are several servers, we can no longer do with a single (hard-coded) IP address. The addresses of the various servers will from now be read from a local file named <code>servers.txt</code> (use <code>DKVS_SERVERS_LIST_FILENAME</code> from <code>config.h</code>). This file contains the address and the port of each server, as well as the number of nodes this server offers, one line per server (UNIX line termination); address, port and node count separated by a space:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>&lt;IP&gt; &lt;Port&gt; &lt;# of Nodes&gt;\n
+</span></code></pre>
+<p>(where <code>\n</code> does not have to be written explicitly, but symbolizes a line break).</p>
+<p>For example:</p>
+<pre data-lang="{.numberLines}" style="background-color:#2b303b;color:#c0c5ce;" class="language-{.numberLines} "><code class="language-{.numberLines}" data-lang="{.numberLines}"><span>127.0.0.1 1234 1
+</span><span>127.0.0.1 1235 1
+</span><span>127.0.0.1 1236 1
+</span></code></pre>
+<h2 id="i-revise-get-nodes">I. Revise <code>get_nodes()</code></h2>
+<p>(Although short, this description may lead to several dozens lines of code.)</p>
+<p>The first thing to do is to revise <code>get_nodes()</code> (in <code>node_list.c</code>) so as now to create (and add to the node list received as argument) as many nodes as described in the <code>DKVS_SERVERS_LIST_FILENAME</code> file. For this you have to read and parse that file, in the format described above. An IP address is a string of up to 15 characters (e.g. <code>"123.122.121.229"</code>), a port is a <em>strictly</em> positive <code>uint16_t</code> and the number of nodes is a <em>strictly</em> positive <code>size_t</code>. Have a look at the <code>atouint{16,64}()</code> functions defined in <code>util.[ch]</code>.</p>
+<p>Each node will simply be added in order while parsing the <code>DKVS_SERVERS_LIST_FILENAME</code> file. Its ID is simply its count starting from 1 for the first node added for a given line. For example, if the <code>DKVS_SERVERS_LIST_FILENAME</code> file contains:</p>
+<pre data-lang="{.numberLines}" style="background-color:#2b303b;color:#c0c5ce;" class="language-{.numberLines} "><code class="language-{.numberLines}" data-lang="{.numberLines}"><span>127.0.0.1 1234 2
+</span><span>127.0.0.1 1235 1
+</span><span>127.0.0.1 1236 3
+</span></code></pre>
+<p>the node list will be added the following nodes in order:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>IP address  port  node ID
+</span><span>127.0.0.1   1234    1
+</span><span>127.0.0.1   1234    2
+</span><span>127.0.0.1   1235    1
+</span><span>127.0.0.1   1236    1
+</span><span>127.0.0.1   1236    2
+</span><span>127.0.0.1   1236    3
+</span></code></pre>
+<p>You, of course, have to deal with possible error cases. Use <code>ERR_IO</code> whenever you encounter input/output error, <code>ERR_INVALID_CONFIG</code> if you get parsing errors (wrong or missing value), and of course report any other error code if you get some from internal calls.
+Also remember that, as stated last week, <code>atouint{16,64}()</code> functions accept negative writtings (and silently convert them to positive values). It's your responsability to detect negative writtings (starting with <code>'-'</code>).</p>
+<h2 id="ii-ring-implementation">II. Ring implementation</h2>
+<p>As explained in <a href="../01-main/">the main description file</a>, all clients must determine the positions of servers (= nodes) not from their line in the <code>servers.txt</code> file, but by calculating a SHA-1 value. Similarly, the positioning of a key will be done by calculating its SHA-1. The two SHA-1 values obtained will be directly interpreted as positions (integers) and directly compared.</p>
+<p>To calculate the SHA-1 of a server node, compute the SHA-1 of the string <code>"&lt;IP&gt; &lt;Port&gt; &lt;Node-ID&gt;"</code>
+(with <em>exactly one</em> space between each value), where <code>&lt;Node-ID&gt;</code> ranges from 1 to the number of nodes indicated in the <code>servers.txt</code> file for the corresponding server.</p>
+<p>To implement this behavior, you'll need to add several modifications:</p>
+<ul>
+<li>a port and a SHA field to the nodes (<code>node_t</code>);</li>
+<li>a way to compare (and then order) nodes according to their SHA;</li>
+<li>the proper search function for a node in the ring (according to its SHA).</li>
+</ul>
+<h3 id="ii-1-nodes-have-a-port-and-a-sha-field">II.1 Nodes have a port and a SHA field</h3>
+<p>Since the port now becomes relevant (server "127.0.0.1 1234" is not the same as server "127.0.0.1 1235"), you should add a port field (<code>uint16_t</code>) to the <code>struct node</code> (in <code>node.h</code>) and assign it in <code>node_init()</code>.</p>
+<p>Then, add a field named <code>sha</code> to <code>struct node</code> so as to store the node SHA-value, as it was done <a href="https://projprogsys-epfl.github.io/project/index/warmup/#compilation-of-code-with-library">in the warmup</a>, except that here we make use of <code>SHA_DIGEST_LENGTH</code> (140 bits) rather than <code>SHA256_DIGEST_LENGTH</code> (256 bits).</p>
+<p>Then, set this field in <code>node_init()</code> to the <code>SHA1()</code> of <code>"&lt;IP&gt; &lt;Port&gt; &lt;Node-ID&gt;"</code> as presented above (<code>man SHA1</code> if necessary; or revisit <a href="https://projprogsys-epfl.github.io/project/index/warmup/#compilation-of-code-with-library">the warmup</a>; notice we here make use of the <code>SHA1()</code> function and not the <code>SHA256()</code> as it was the case in the warmup).</p>
+<p>As seen in the warmup, to calculate SHA-1, you need to compile with the <code>-lcrypto</code> library. This option is already present in the provided <code>Makefile</code>.</p>
+<h3 id="ii-2-nodes-are-ordered-according-to-their-sha-field">II.2 Nodes are ordered according to their SHA field</h3>
+<p>(This <em>whole</em> subsection II.2 is really only <em>a few</em> lines of code.)</p>
+<p>To be able to compare two nodes according to their SHA1, implement the <code>node_cmp_sha()</code> function (in <code>node.c</code>). This is really simple (<code>man memcmp</code> might help here).</p>
+<p>Then to be able to order node lists, implement the <code>node_list_sort()</code> function in <code>node_list.c</code>. This is also really simple (<code>man qsort</code> might help  here).</p>
+<p>Finally, <code>ring_init()</code> has now, of course, to properly order the list of node (once read from <code>servers.txt</code>). For this,  use <code>node_list_sort()</code> with <code>node_cmp_sha()</code> to put them in the right order for their use.</p>
+<h3 id="ii-3-searching-for-nodes">II.3 Searching for nodes</h3>
+<p>The heart of this work is the <code>ring_get_nodes_for_key()</code> function, the purpose of which is to return the list of <em>N</em> nodes (<em>N</em> passed as a parameter) matching a given key (refer to the <a href="../01-main/#partial-distribution-1-key-ring">main description document</a>). But pay attention: all these nodes must be from <em>different</em> servers: skip nodes from already visited servers (same IP <strong>and</strong> same port; a different <em>port</em> on the same IP is considered as a different server).</p>
+<h1 id="iii-testing-and-debugging">III. Testing and debugging</h1>
+<p>As usual, we provide you with a few tests, and advise you to write your own.</p>
+<h2 id="print-a-node-list-t">Print a <code>node_list_t</code></h2>
+<p>To ease debugging, we here provide you the code of the <code>node_list_print()</code> tool function, which outputs a node list as such:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>aa66f3e5a8d9cdc5c0bd49708bc59847e6915634 (127.0.0.1 1234)
+</span><span>ce5da604e4ef60dbe45042bfcb1c445c7db4ec81 (192.168.1.10 1235)
+</span><span>5b0d0f036d577a486c101c150238165f585fcafd (8.8.8.8 1236)
+</span></code></pre>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">node_list_print</span><span>(</span><span style="color:#b48ead;">const</span><span> node_list_t *</span><span style="color:#bf616a;">list</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(list == </span><span style="color:#d08770;">NULL</span><span>) </span><span style="color:#b48ead;">return</span><span>;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">for </span><span>(size_t i = </span><span style="color:#d08770;">0</span><span>; i &lt; list-&gt;size; ++i) {
+</span><span>        </span><span style="color:#b48ead;">const</span><span> node_t * </span><span style="color:#b48ead;">const</span><span> node = list-&gt;nodes + i;
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">for </span><span>(size_t j = </span><span style="color:#d08770;">0</span><span>; j &lt; SHA_DIGEST_LENGTH; ++j) {
+</span><span>            </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#d08770;">%02x</span><span>&quot;, node-&gt;sha[j]);
+</span><span>        }
+</span><span>
+</span><span>        </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;"> (</span><span style="color:#d08770;">%s %d</span><span style="color:#a3be8c;">)</span><span style="color:#96b5b4;">\n</span><span>&quot;, node-&gt;addr, node-&gt;port);
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>Feel free to adapt it to your own implementation.</p>
+<p>You can either insert calls to this function in the tests or, much more practical, directly call it from <code>gdb</code> with <code>call node_list_print(&amp;ring)</code>, assuming you want to print <code>ring</code>.</p>
+<h2 id="get-nodes"><code>get_nodes()</code></h2>
+<p>Since the <code>get_nodes()</code> function uses a file in the working directory of the program, we use <code>Add_Test_With_Fixture()</code> to create a test with two special functions, <code>setup</code> and <code>teardown</code>, which are <em>always</em> called before and after running the test. We supply the <code>nope()</code> (do nothing) and <code>restore_path()</code> which changes the working directory to the initial one. This allows the tests to change the directory to one in the <code>tests/data/</code>, each of which contain a different <code>servers.txt</code>. For example, the file <code>data/servers-valid/servers.txt</code> contains:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>127.0.0.1 1234 1
+</span><span>192.168.1.10 1235 2
+</span><span>8.8.8.8 1236 3
+</span></code></pre>
+<p>which is a valid config and should yield 6 nodes:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>aa66f3e5a8d9cdc5c0bd49708bc59847e6915634 (127.0.0.1 1234)
+</span><span>ce5da604e4ef60dbe45042bfcb1c445c7db4ec81 (192.168.1.10 1235)
+</span><span>f53e1ad3c8539aff77cecbdce77829ff1e40170d (192.168.1.10 1235)
+</span><span>5b0d0f036d577a486c101c150238165f585fcafd (8.8.8.8 1236)
+</span><span>b273a74003065f0112a1c30a87416ba3e1a5027b (8.8.8.8 1236)
+</span><span>11c3f81514637c68aef649a1b93577ba8662c699 (8.8.8.8 1236)
+</span></code></pre>
+<h2 id="ring-get-nodes-for-key"><code>ring_get_nodes_for_key()</code></h2>
+<p>Here is an example run for the <code>ring_get_nodes_for_key()</code> function with the <code>servers.txt</code></p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>127.0.0.1 1234 3
+</span><span>127.0.0.1 1235 3
+</span><span>127.0.0.1 1236 3
+</span></code></pre>
+<p>Searching for the key <code>"coucou"</code> (SHA-1 <code>5ed25af7b1ed23fb00122e13d7f74c4d8262acd8</code>) should yield the following <code>node_list_t</code> (or a subset, depending on the value of <em>N</em> you used):</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>127.0.0.1 1236 (5f26268754fcf2a51fcfacaaa2aaf4f0d83f6d67)
+</span><span>127.0.0.1 1235 (914f6ade5b49a3a9be257f8a56bbde9a83fa46aa)
+</span><span>127.0.0.1 1234 (a902e3a5aa4f73150f459436b0580cb7ad72b566)
+</span></code></pre>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 21&#x2F;05&#x2F;2025</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

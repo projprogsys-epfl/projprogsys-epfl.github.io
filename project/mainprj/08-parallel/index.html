@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>DKVS: Distributed Key-Value Store --- Parallelism | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/08-parallel/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "08 Parallel",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/08-parallel/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-hashtable/">DKVS: Distributed Key-Value Store --- Hashtables</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">DKVS: Distributed Key-Value Store --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-local-server/">DKVS: Distributed Key-Value Store --- local server (S=N=R=W=1)</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-value-process/">DKVS: Distributed Key-Value Store --- values processing</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-multiple-servers/">DKVS: Distributed Key-Value Store --- The ring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-network/">DKVS: Distributed Key-Value Store --- Network layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-quorum/">DKVS: Distributed Key-Value Store --- Quorum</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-monitoring/">DKVS: Distributed Key-Value Store --- Monitoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/08-parallel/">DKVS: Distributed Key-Value Store --- Parallelism</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>DKVS: Distributed Key-Value Store --- Parallelism</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>The aim of this week's work is to add a bit parallelism, although different, in both our clients and servers.</p>
+<p>Up to now, clients sent their messages and wait for their responses serially, one after the other. This simplifies the code but prevents the servers from working concurrently, which limits the overall performance. In this last week, we're going to change that and allow clients to first send all their messages, and then retrieve and process replies as they arrive so that the servers can now work concurrently.</p>
+<p>Similarly, each server also responds serially to all the possible clients that might contact it. This is not much of an issue in our current project since server replies are very quick, but let's also take the opportunity to parallelize this part via threads.</p>
+<p>Notice however that, in order to lower the workload, we do <strong>not</strong> ask you to multithread the client.</p>
+<h2 id="client-allowing-concurrent-servers">Client allowing concurrent servers</h2>
+<p>Regarding the client, we now would like the "put" operation to first send its <em>N</em> messages, without worrying about responses, and <strong>then</strong> declare (afterwards) a success as soon as <em>W</em> positive replies have been received (within the allotted time linked to the opening of the corresponding socket; otherwise, as before, it's a failure; this point doesn't change).</p>
+<p>Similarly, the "get" operation will also first send its <em>N</em> messages, without worrying about replies, and <strong>then</strong> declare a success as soon as <em>R</em> identical replies have been received (under the same delay conditions as above).</p>
+<p>However, it's quite possible that a (typically slow) server will continue to respond to a request that has already been completed, perhaps interfering with <em>another</em> request from the same client. To avoid such a collision, you now have to open a <em>new</em> UDP socket for each "put" or "get" operation performed (but <strong>not</strong> for each server contacted for the same operation!). This will prevent UDP messages from an old operation being received by a new one.</p>
+<p>In concrete terms, you will need to revise <code>network.c</code>, since it's now up to <code>network_get()</code> and <code>network_put()</code> to open a new socket each time they're called, then change the communication policy as explained above.</p>
+<p>We also take the opportunity now to check that we actually got a reply from one of our known servers:
+check (using the last argument of <code>udp_read()</code>) that a received reply indeed belongs to our ring.</p>
+<p><strong>Notes:</strong></p>
+<ol>
+<li><code>client.[ch]</code>: the client no longer needs a single socket associated with it since sockets will now be associated to operations ("get" or "put"); however, for backward compatibility, we will still keep it in the <code>client_t</code> structure, and could still have that useless socket open by the client (<code>client_init()</code>);</li>
+<li>we don't ask you to change <code>dkvs-dump-ring</code>;</li>
+<li>we don't ask you to do any multi-threading in the client.</li>
+</ol>
+<h2 id="multithreaded-server">Multithreaded server</h2>
+<p>The main problem with the current server design is that we open only one single socket for the communication and that this socket is blocking: only one single communication can occur at a time. Although not really harmful in our project since server operations are very quick, this is not convenient in general. Actually you could give it a first try by arbitrarily slowing down the server by adding a
+<code> usleep(500000);</code> (or more) before any server reply...</p>
+<p>The most advance way to solve this kind of problems is to use polling non blocking connections (using <code>poll()</code> or even <code>epoll()</code> for larger servers).
+In this project, we choose to implement a simplest way, also illustrating the lectures you soon had: multithreaded blocking connections.
+Each client reply will be open in a new thread, thus allowing several parallel communications to the server.</p>
+<p>But then, of course, all access to the hash-table shall be locked: any interaction with it must be locked for the other threads and unlocked as soon as the interaction with the hash-table is over.</p>
+<h3 id="lock-hash-table-access">Lock hash-table access</h3>
+<p>In <code>dkvs-server.c</code>, lock all access to the hash-table:</p>
+<ol>
+<li>declare a global variable of type <code>pthread_mutex_t</code>;</li>
+<li>initialize it in the <code>main()</code> (see <code>pthread_mutex_init()</code> man-page); and release it at the end (see <code>pthread_mutex_destroy()</code>);</li>
+<li>add a lock (<code>pthread_mutex_lock()</code>) and unlock around all the access to the hash-table (<em>a priori</em> three in your code).</li>
+</ol>
+<h3 id="multi-threaded-reply-to-clients">Multi-threaded reply to clients</h3>
+<p>It's the reply to the client which will be threaded, i.e. the part of your code that  handles a client's request and replies to it. So first, if you haven't already, you have to make this part a function. Since the generic prototype of a threaded function is</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>void* to_do(void* arguments);
+</span></code></pre>
+<p>you first have to create a data structure (e.g. <code>struct client_data_t</code>) to store all the required data as the new thread's argument. These are:</p>
+<ul>
+<li>the client address (type <code>struct sockaddr_in</code>);</li>
+<li>the socket used (type <code>int</code>);</li>
+<li>the read/write buffer (an array of <code>MAX_MSG_SIZE + 1</code> characters);</li>
+<li>the size of its (used) content (type <code>ssize_t</code>); this will correspond to the former return value of <code>udp_read()</code>;</li>
+<li>the hash-table used (type <code>Htable_t*</code>).</li>
+</ul>
+<p>Then, if you don't have one already, define the <code>void* handle_client(void* arguments);</code> function which regroups all your former code about replying to the client (calls to <code>server_dump()</code>, <code>server_get()</code> or <code>server_put()</code> depending on the content of buffer read from the client).</p>
+<p>Of course you have to cast the received <code>void* arguments</code> to a <code>struct client_data_t</code> to properly get all the required information from it.</p>
+<p>Maybe, before making that function a new thread, give it a first try to check that you didn't break anything so far.<br />
+Once this checked, you can proceed to making it multithreaded.</p>
+<p>So we first have to create a thread in the "<code>udp_receive()</code>" part (depending on how you coded it, either the infinite loop in your <code>main()</code> or the part just after the <code>udp_read()</code> from the client):</p>
+<ol>
+<li>have the content of your <code>client_data_t</code> (the ones to be passed to the <code>handle_client()</code> function) to be stored on the heap; and, of course, release them  whenever needed (in <code>handle_client()</code>; don't forget error cases);</li>
+<li>create and initialize to <code>PTHREAD_CREATE_DETACHED</code> some pthread attributes; see <code>pthread_attr_init()</code> and <code>pthread_attr_setdetachstate()</code> man-pages; notice that "detached" threads automatically release their resources on exit (but then there is no way to get their return value; we'll ignore them; you can thus simply return <code>NULL</code>);</li>
+<li>create a thread (see <code>pthread_create()</code>) that will run <code>handle_client()</code> with the proper <code>client_data_t</code> as a parameter;</li>
+<li>don't forget to release the <code>pthread_attr_t</code> with <code>pthread_attr_destroy()</code>.</li>
+</ol>
+<p><strong>Note:</strong> this is a practice exercise for programming threads in C. There is thus a part of understanding on your side here: reviewing your lecture slides, reading man-pages(, asking questions).</p>
+<p>We also recommend, for the sake of tracing/debugging to had a <code>debug_printf()</code> appropriate message at the beginning
+and a the end of <code>handle_client()</code>, typically indicating the thread id with <code>pthread_self()</code>. You could also maybe print the corresponding error message <code>ERR_MSG(error)</code> if you got some error.</p>
+<h3 id="signal-handling">Signal handling</h3>
+<p>Now that <code>handle_client()</code> is multi-threaded, we don't want the <code>SIGTERM</code> and <code>SIGINT</code> signals to be intercepted by it (but leave them to the main thread).
+For this, simply add this code at the beginning of <code>handle_client()</code>:</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span>    sigset_t mask;
+</span><span>    </span><span style="color:#bf616a;">sigemptyset</span><span>(&amp;mask);
+</span><span>    </span><span style="color:#bf616a;">sigaddset</span><span>(&amp;mask, SIGINT );
+</span><span>    </span><span style="color:#bf616a;">sigaddset</span><span>(&amp;mask, SIGTERM);
+</span><span>    </span><span style="color:#bf616a;">pthread_sigmask</span><span>(SIG_BLOCK, &amp;mask, </span><span style="color:#d08770;">NULL</span><span>);
+</span></code></pre>
+<h2 id="testing-with-many-servers-and-many-client-requests-at-the-same-time">Testing with many servers and many client requests at the same time</h2>
+<p>Test the multithreaded approach by launching several client requests at the same time. You can do this for instance by:</p>
+<ol>
+<li>Launching all the servers, maybe with some artificial reply delay (<code>usleep()</code>) as pointed out in the beginning:</li>
+</ol>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">killall</span><span> dkvs-server
+</span><span style="color:#bf616a;">cut -d</span><span>&#39; &#39;</span><span style="color:#bf616a;"> -f</span><span> 1-2 servers.txt | </span><span style="color:#bf616a;">sort -u </span><span>| </span><span style="color:#b48ead;">while </span><span style="color:#96b5b4;">read</span><span> line; </span><span style="color:#b48ead;">do </span><span style="color:#bf616a;">i</span><span>=$</span><span style="color:#a3be8c;">((</span><span>$</span><span style="color:#bf616a;">i </span><span>+ </span><span style="color:#d08770;">1</span><span style="color:#a3be8c;">))</span><span>; </span><span style="color:#bf616a;">./dkvs-server </span><span>$</span><span style="color:#bf616a;">line </span><span>&gt;LOG$</span><span style="color:#bf616a;">i</span><span>.txt </span><span style="color:#d08770;">2</span><span>&gt;&amp;</span><span style="color:#d08770;">1 </span><span>&amp; </span><span style="color:#b48ead;">done
+</span></code></pre>
+<ol start="2">
+<li>
+<p>then have a few (2-5) terminals ready; in one launch a thousand of "put" requests:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> for i in $(seq 100); do ./dkvs-client put -- key$i value$i; done
+</span></code></pre>
+<p>while in each of the others you can launch a thousand of "get" requests:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> for i in $(seq 100); do ./dkvs-client get -- key$i; done
+</span></code></pre>
+</li>
+</ol>
+<p>See how this behaves differently with or without multithreading (without multithreading some of these requests are slowed by the others; the more terminals in parallel the better you'll see that).</p>
+<p>Also have a look at the number of threads a server has launched (in the multithreaded version). For instance:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>grep thread_start LOG1.txt | sort -n | uniq -c
+</span></code></pre>
+<p>if you used the word <code>"thread_start"</code> somewhere in your debugging message at the beginning of <code>handle_client()</code> (This can, of course, be whatever unique text; what is more important is that those lines contain the thread id.)</p>
+<h2 id="final-submission">Final submission</h2>
+<p>So this is the end! Next week will indeed be "free", no new content, only to finalize your project before the deadline which is:<br />
+<strong>SUNDAY JUNE 01, 11:59pm</strong></p>
+<p>For this deadline, there is nothing special to be done, except to commit and push, and to provide a (<strong>short</strong>) <code>README.md</code> file which must contain:</p>
+<ul>
+<li>what you did and what you did not in the project (= up to where you went);</li>
+<li>any particular remark about your project (specific aspect, changes in the conception, ...);</li>
+<li>anything else you want us to know (about the project).</li>
+</ul>
+<p>Don't forget to push everything before the above deadline. The content of your project will be the state of your <code>main</code> branch at the deadline (in case this is relevant for you: thus don't forget to merge your branch(es) into the <code>main</code> branch).</p>
+<p><strong>IMPORTANT NOTE:</strong> don't push your <code>dkvs-server</code> <em>slow</em> version: don't leave any <code>usleep()</code> (not <code>sleep()</code>) in you final version!</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 21&#x2F;05&#x2F;2025</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

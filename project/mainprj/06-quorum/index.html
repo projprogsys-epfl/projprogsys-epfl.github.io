@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>DKVS: Distributed Key-Value Store --- Quorum | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/06-quorum/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "06 Quorum",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/06-quorum/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-hashtable/">DKVS: Distributed Key-Value Store --- Hashtables</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">DKVS: Distributed Key-Value Store --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-local-server/">DKVS: Distributed Key-Value Store --- local server (S=N=R=W=1)</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-value-process/">DKVS: Distributed Key-Value Store --- values processing</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-multiple-servers/">DKVS: Distributed Key-Value Store --- The ring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-network/">DKVS: Distributed Key-Value Store --- Network layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/06-quorum/">DKVS: Distributed Key-Value Store --- Quorum</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-monitoring/">DKVS: Distributed Key-Value Store --- Monitoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/08-parallel/">DKVS: Distributed Key-Value Store --- Parallelism</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>DKVS: Distributed Key-Value Store --- Quorum</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>This week we reach the heart of the system with the full ring protocol (as described in <a href="../01-main/">the main description file</a>):</p>
+<ol>
+<li>implementation of the server responses;</li>
+<li>implementation of the quorum system ("vote" in case of different values when <em>R</em>&gt;1), for any <em>R</em> and <em>W</em> (less than <em>N</em>), and <em>N</em> different from (but less than or equal to) <em>S</em>.</li>
+</ol>
+<p>For the moment, we had <em>R</em>=1 implicitly "hard-coded" by the behavior of the "get" algorithm, and <em>W</em>=<em>N</em>=<em>S</em> simply determined by the number (<em>S</em>) of lines in the <code>servers.txt</code> file.</p>
+<h2 id="i-server-response">I. Server response</h2>
+<h3 id="i-a-get-reply-from-server">I.a "Get" reply from server</h3>
+<p>Implement <code>server_get()</code> in <code>dkvs-server.c</code>: simply fetch the corresponding value in the server hash table and send it back if there is one or the empty string (with message size of 1, not 0!) if there is none.</p>
+<p>We recommend you to add relevant debugging messages with <code>debug_printf()</code>.</p>
+<h3 id="i-b-put-reply-from-server">I.b "Put" reply from server</h3>
+<p>Implement <code>server_put()</code> in <code>dkvs-server.c</code>: simply add the key--value pair in the server hash table and send:</p>
+<ul>
+<li>either a null message (message size 0) in case of error;</li>
+<li>or the empty string (with message size of 1, not 0!) in case of success.</li>
+</ul>
+<p>We once again recommend you to add relevant debugging messages with <code>debug_printf()</code>.</p>
+<h3 id="i-c-handle-server-reply-in-client-code">I.c Handle server reply in client code</h3>
+<p>It's now time for the client to handle the server's reply. This is done in <code>server_get_recv()</code> in <code>network.c</code>.
+First read the server's message (of the appropriate size; remember <code>MAX_MSG_ELEM_SIZE</code> and <code>MAX_MSG_SIZE</code> from last week).</p>
+<p>If the received message is the empty string (of message-length 1), that means the server replied it did not store that key. Return <code>ERR_NOT_FOUND</code> in such a case.<br />
+If the received message contains any <code>'\0'</code>, the reply is ill-formed; return <code>ERR_NETWORK</code>.<br />
+Otherwise assign the receive message to the value. Pay attention to make it a proper C string!</p>
+<p>And, as usual, properly handle any other error case; and
+we still keep on recommending you to add relevant debugging messages with <code>debug_printf()</code>.</p>
+<h2 id="ii-quorum">II. Quorum</h2>
+<p>The system will now become truly "<em>distributed</em>" in the sense that key requests will take care of the fact that the key is distributed across multiple servers, some possibly disagreeing or not replying (down), according to the SHA-order of the nodes specified in the <code>servers.txt</code> file. This means that we will now make use of <em>N</em>, <em>W</em> and <em>R</em>. Up to now, we didn't really had the full notion of a ring (if necessary, review <a href="../01-main/">the main description file</a>), in the sense that key distribution was for the moment always done according to the <em>N</em> different consecutive nodes, but not taking care of dropping failures nor counting how many positive answers (for maybe different values).</p>
+<p>As the same key is distributed across different servers, for which the value updates may have been different (and therefore they don't give the same value for the same key), a decision system needs to be put in place. It's up to the <em>client</em> to keep track of the answers received and decide what the final answer as to be in the end. Since the code is properly modularized, the only changes to be made are to the <code>network_get()</code>  function (and <code>network_put()</code>, to a lesser extend).</p>
+<h3 id="ii-a-get-side">II.a. get side</h3>
+<p>Modifications to be done to <code>network_get()</code> are fairly simple in principle:</p>
+<ol>
+<li>add something to count the number of times each value has been received;</li>
+<li>each time a value is received, if it's the _R_th time it is received, stop (and that's the value to be returned).
+Also, if once  <em>N</em> servers have been contacted (not <em>S</em>; up to now <em>N</em>=<em>S</em>, but now we want to distinguish between them), no value received has reached the quorum of <em>R</em> replies, then the "get" is a failure; depending on how you coded it last week, this should be an easy fix, if any.</li>
+</ol>
+<p>For example, if for the key for which we're currently running <code>network_get()</code>, we receive <code>"A"</code> from the first server, <code>"B"</code> from the second and <code>"A"</code> again from the third (let's assume <em>N</em> is greater than or equal to 3 here) and if <em>R</em>=2 then the "response" from <code>network_get()</code> will be the value "A" as soon as we receive the message from the third server.</p>
+<p>To keep track of the count of each received value, you're free to use any data structure you like, but why not use a local hashtable in which the keys are the received values and the values are the associated counts.</p>
+<p>But then you might be wondering: how do you store an account as a C-string?<br />
+We'll assume (quite acceptably here) that <em>R</em> is smaller than 255, so the number of counts of a given value will necessarily be smaller than 255 and can therefore "fit" on a single <code>char</code>: you can then represent this count by the string <code>{ (char) count, '\0' }</code>:
+initialize the first count with the string <code>"\x01"</code> (which corresponds to <code>{ '\1', '\0' }</code>) and then simply <code>++string[0]</code>.<br />
+But in short, it's up to you...</p>
+<p>As usual, we recommand you to modularize your code (e.g. add a <code>increment_quorum()</code> function, or something of the kind).</p>
+<p>To recap, here is the summary of the get algorithm:</p>
+<ul>
+<li><code>network_get()</code> first collects all the nodes that store the provided key;</li>
+<li>it then initalize whatever used to count different values receptions;</li>
+<li>it then contact at most <em>N</em> servers one after the other, in the proper SHA-order;
+<ul>
+<li>keeping count of any received value;</li>
+<li>stoping as soon as a value as reach the quorum of <em>R</em>.</li>
+</ul>
+</li>
+</ul>
+<p>Pay attention of the proper handling of memory (avoid memory leaks or dandling pointers).</p>
+<p>Finally, to ensure the above assumption (<em>R</em> is smaller than 255), add one test line to <code>parse_opt_args()</code>  in <code>args.c</code> to return <code>ERR_INVALID_COMMAND</code> if this is not the case.</p>
+<h3 id="ii-a-put-side">II.a. put side</h3>
+<p>Similarly to <code>network_get()</code>, a quorum of  <em>W</em> servers has to be reached for a successful "put". But is is much simpler here; it should normally be sufficient to simply add 2 lines in <code>network_put()</code>.</p>
+<p>Likewise, if you haven't already introduced the distinction: now make sure that the server path loops are set to <em>N</em> and not <em>S</em>. As for <code>network_get()</code>, this should be an easy fix, if any.</p>
+<h2 id="iii-remaining-args-of-server-hash-table-init">III. Remaining args of server (Hash table init)</h2>
+<p>The last remaining thing to be done, is to cope with the extra arguments of <code>dkvs-server</code>: list of key--value pairs. Remember from last week that we could pass pairs of optional initial key-value associations; for instance:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-server 127.0.0.1 1236 key1 value1 key2 value 2
+</span></code></pre>
+<p>Add this functionnality to the <code>main()</code> function in <code>dkvs-server.c</code>.</p>
+<h2 id="iv-tests">IV. Tests</h2>
+<h3 id="simple-scenarii">Simple scenarii</h3>
+<p>We recommand to run these tests in debug mode (<code>make DEBUG=1</code>) to keep track of exchanged messages.</p>
+<p>With <code>servers.txt</code> containing:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>127.0.0.1 1234 1
+</span><span>127.0.0.1 1235 1
+</span><span>127.0.0.1 1236 1
+</span></code></pre>
+<h4 id="no-reply-at-all">No reply at all</h4>
+<p>First try a hopeless get without any server started:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client get -- key42
+</span></code></pre>
+<p>Its debuging messages should be something like:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1235
+</span><span>server_get_recv(): read &quot;&quot; (size: -1)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1236
+</span><span>server_get_recv(): read &quot;&quot; (size: -1)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1234
+</span><span>server_get_recv(): read &quot;&quot; (size: -1)
+</span><span>FAIL
+</span></code></pre>
+<p>We choose <code>"key42"</code> to start "in the middle" of the ring (the above ring SHA-order is</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>127.0.0.1 1236 1 : 93149f866bf3acc9710375cb46706bf09960a6ab
+</span><span>127.0.0.1 1234 1 : aa66f3e5a8d9cdc5c0bd49708bc59847e6915634
+</span><span>127.0.0.1 1235 1 : c484ea9b3b14d139b1456032a49990367b857fe6
+</span></code></pre>
+<p>; you can make use of <code>node_list_print(ring);</code> in <code>ring_init()</code> to check that -- to be removed in the final release).</p>
+<h4 id="no-value-stored">No value stored</h4>
+<p>Then launch the 3 servers in background (recording their output into logfiles):</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">killall</span><span> dkvs-server
+</span><span style="color:#b48ead;">for</span><span> i </span><span style="color:#b48ead;">in </span><span>$(</span><span style="color:#bf616a;">seq</span><span> 3); </span><span style="color:#b48ead;">do </span><span style="color:#bf616a;">./dkvs-server</span><span> 127.0.0.1 $((</span><span style="color:#d08770;">1233 </span><span>+ i)) &gt;LOG$</span><span style="color:#bf616a;">i</span><span>.txt </span><span style="color:#d08770;">2</span><span>&gt;&amp;</span><span style="color:#d08770;">1 </span><span>&amp; </span><span style="color:#b48ead;">done
+</span><span style="color:#96b5b4;">jobs
+</span></code></pre>
+<p>You can also launch each server in a separate terminal (and the client in a forth) to lively see their messages.</p>
+<p>Now try a second, still hopeless, get:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client get -- key42
+</span></code></pre>
+<p>the debug-messages of which should be (notice now that all servers respond, the empy message):</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1235
+</span><span>server_get_recv(): read &quot;&quot; (size: 1)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1236
+</span><span>server_get_recv(): read &quot;&quot; (size: 1)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1234
+</span><span>server_get_recv(): read &quot;&quot; (size: 1)
+</span><span>FAIL
+</span></code></pre>
+<h4 id="value-stored-twice">Value stored twice</h4>
+<p>Let's try a put:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client put -- key42 value1
+</span></code></pre>
+<p>Messages:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_put_send(): sending &quot;key42&quot; --&gt; &quot;value1&quot; to 127.0.0.1:1235
+</span><span>network_put(): got reply: 1
+</span><span>server_put_send(): sending &quot;key42&quot; --&gt; &quot;value1&quot; to 127.0.0.1:1236
+</span><span>network_put(): got reply: 1
+</span><span>OK
+</span></code></pre>
+<p>And get again:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client get -- key42
+</span></code></pre>
+<p>Messages:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1235
+</span><span>server_get_recv(): read &quot;value1&quot; (size: 6)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1236
+</span><span>server_get_recv(): read &quot;value1&quot; (size: 6)
+</span><span>OK value1
+</span></code></pre>
+<p>You can try to get with different <em>R</em> and <em>N</em> values:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client get -r 1 -- key42
+</span></code></pre>
+<p>Messages:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1235
+</span><span>server_get_recv(): read &quot;value1&quot; (size: 6)
+</span><span>OK value1
+</span></code></pre>
+<p>Same reply with</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client get -n 1 -- key42
+</span></code></pre>
+<p>And works also with</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client get -n 2 -- key42
+</span><span>./dkvs-client get -n 3 -- key42
+</span></code></pre>
+<p>(but then <em>R</em>=2).</p>
+<p>Let's ask for bigger <em>R</em> (failure):</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client get -r 3 -- key42
+</span></code></pre>
+<p>Messages:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1235
+</span><span>server_get_recv(): read &quot;value1&quot; (size: 6)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1236
+</span><span>server_get_recv(): read &quot;value1&quot; (size: 6)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1234
+</span><span>server_get_recv(): read &quot;&quot; (size: 1)
+</span><span>FAIL
+</span></code></pre>
+<h4 id="votes">Votes</h4>
+<p>Let's now try votes. First no agreement:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client put -w 1 -- key42 valueB
+</span></code></pre>
+<p>Messages:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_put_send(): sending &quot;key42&quot; --&gt; &quot;valueB&quot; to 127.0.0.1:1235
+</span><span>network_put(): got reply: 1
+</span><span>OK
+</span></code></pre>
+<p>Try to get something:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client get -- key42
+</span></code></pre>
+<p>Messages:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1235
+</span><span>server_get_recv(): read &quot;valueB&quot; (size: 6)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1236
+</span><span>server_get_recv(): read &quot;value1&quot; (size: 6)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1234
+</span><span>server_get_recv(): read &quot;&quot; (size: 1)
+</span><span>FAIL
+</span></code></pre>
+<p>Let's have a quorum of 2:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client put -w 3 -- key42 NewValue
+</span><span>./dkvs-client put -w 1 -- key42 value3
+</span></code></pre>
+<p>Messages:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_put_send(): sending &quot;key42&quot; --&gt; &quot;NewValue&quot; to 127.0.0.1:1235
+</span><span>network_put(): got reply: 1
+</span><span>server_put_send(): sending &quot;key42&quot; --&gt; &quot;NewValue&quot; to 127.0.0.1:1236
+</span><span>network_put(): got reply: 1
+</span><span>server_put_send(): sending &quot;key42&quot; --&gt; &quot;NewValue&quot; to 127.0.0.1:1234
+</span><span>network_put(): got reply: 1
+</span><span>OK
+</span><span>
+</span><span>server_put_send(): sending &quot;key42&quot; --&gt; &quot;value3&quot; to 127.0.0.1:1235
+</span><span>network_put(): got reply: 1
+</span><span>OK
+</span></code></pre>
+<p>Get:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client get -- key42
+</span></code></pre>
+<p>Messages:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1235
+</span><span>server_get_recv(): read &quot;value3&quot; (size: 6)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1236
+</span><span>server_get_recv(): read &quot;NewValue&quot; (size: 8)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1234
+</span><span>server_get_recv(): read &quot;NewValue&quot; (size: 8)
+</span><span>OK NewValue
+</span></code></pre>
+<p>What if a server falls?</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>kill %3 ## This kills 127.0.0.1:1236
+</span><span>
+</span><span>./dkvs-client get -- key42
+</span></code></pre>
+<p>Messages:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1235
+</span><span>server_get_recv(): read &quot;value3&quot; (size: 6)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1236
+</span><span>server_get_recv(): read &quot;&quot; (size: -1)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1234
+</span><span>server_get_recv(): read &quot;NewValue&quot; (size: 8)
+</span><span>FAIL
+</span></code></pre>
+<p>Let's shutdown the second one:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>kill %2 ## This kills 127.0.0.1:1235
+</span><span>
+</span><span>./dkvs-client get -- key42
+</span></code></pre>
+<p>Messages:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1235
+</span><span>server_get_recv(): read &quot;&quot; (size: -1)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1236
+</span><span>server_get_recv(): read &quot;&quot; (size: -1)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1234
+</span><span>server_get_recv(): read &quot;NewValue&quot; (size: 8)
+</span><span>FAIL
+</span></code></pre>
+<p>But if we ask for a quorum of only 1:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client get -r 1 -- key42
+</span></code></pre>
+<p>Messages:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1235
+</span><span>server_get_recv(): read &quot;&quot; (size: -1)
+</span><span>FAIL
+</span></code></pre>
+<p>This is because we imposed (recall <a href="../02-local-server/#ii-1-arguments-args-ch">the description of <code>parse_opt_args()</code></a>) <em>N</em> to be 1 in this case. Let's change that:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client get -r 1 -n 3 -- key42
+</span></code></pre>
+<p>Messages:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1235
+</span><span>server_get_recv(): read &quot;&quot; (size: -1)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1236
+</span><span>server_get_recv(): read &quot;&quot; (size: -1)
+</span><span>server_get_send(): asking for key &quot;key42&quot; to 127.0.0.1:1234
+</span><span>server_get_recv(): read &quot;NewValue&quot; (size: 8)
+</span><span>OK NewValue
+</span></code></pre>
+<p>That's where we stop providing you with examples. Play with your own, in many different situations. Also try with more than one node per server, for instance:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>127.0.0.1 1234 1
+</span><span>127.0.0.1 1235 2
+</span><span>127.0.0.1 1236 3
+</span></code></pre>
+<p>and with more servers, for instance:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>127.0.0.1 1234 1
+</span><span>127.0.0.1 1235 2
+</span><span>127.0.0.1 1236 3
+</span><span>127.0.0.1 1237 2
+</span><span>127.0.0.1 1238 1
+</span></code></pre>
+<p>etc. etc.</p>
+<p>Give also a try to setting initial key-value assignement in a server:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-server 127.0.0.1 1235 key42 InitValue abc myABCvalue yet_another_key YAV
+</span></code></pre>
+<p>Don't forget each time (and at the end) to kill all your servers:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>killall dkvs-server
+</span></code></pre>
+<p>Then you can make similar tests using different VMs (or your own computers if you have several), having different servers on different computers and running client from different computers as well.</p>
+<p>You could even ask other groups to have some of their servers running somewhere and testing your client with them, or vice-versa.</p>
+<p>Enjoy the ring!</p>
+<h3 id="other-provided-tests">Other provided tests</h3>
+<p>And as usual we provide a few end-to-end tests (and one more unit test for the ring).</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 21&#x2F;05&#x2F;2025</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

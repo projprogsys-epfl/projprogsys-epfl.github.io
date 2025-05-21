@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>DKVS: Distributed Key-Value Store --- Network layer | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/05-network/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "05 Network",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/05-network/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-hashtable/">DKVS: Distributed Key-Value Store --- Hashtables</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">DKVS: Distributed Key-Value Store --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-local-server/">DKVS: Distributed Key-Value Store --- local server (S=N=R=W=1)</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-value-process/">DKVS: Distributed Key-Value Store --- values processing</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-multiple-servers/">DKVS: Distributed Key-Value Store --- The ring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/05-network/">DKVS: Distributed Key-Value Store --- Network layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-quorum/">DKVS: Distributed Key-Value Store --- Quorum</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-monitoring/">DKVS: Distributed Key-Value Store --- Monitoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/08-parallel/">DKVS: Distributed Key-Value Store --- Parallelism</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>DKVS: Distributed Key-Value Store --- Network layer</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>The purpose of this week is to add real network functionalities (not fake anymore) to our project. For this, you will:</p>
+<ul>
+<li>create a socket layer for network communications: <code>socket_layer.h</code> and <code>socket_layer.c</code>;</li>
+<li>use that layer to create a dummy UDP client-server, just to see/create a <em>very simple</em> example: <code>udp-test-client.c</code> and <code>udp-test-server.c</code> (to be created);</li>
+<li>use that layer to have an actual client-server DKVS in your project.</li>
+</ul>
+<p>For the later step, this week we only setup the basic client-server functionalities, not the whole ring protocol. That part will be achieved next week.</p>
+<h2 id="first-project-deliverable-graded-step">First project deliverable (graded step)</h2>
+<p>But before all of the above, the work done so far (weeks 5 to 9) had to be delivered for grading.
+So <strong>don't forget to submit it before the deadline: this Sunday, May 04th, 23:59</strong>.</p>
+<p>The easiest way to submit is to do</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>make submit
+</span></code></pre>
+<p>from your <code>done/</code> directory. This simply adds a <code>project01_1</code> tag to your commit (in the <code>main</code> branch).</p>
+<p>Although you can do as many <code>make submit</code> as you want, we really recommend you to do it only when you are <strong>sure</strong> you want to deliver your work.</p>
+<h2 id="tasks">Tasks</h2>
+<h3 id="i-socket-layer">I. Socket layer</h3>
+<p>We here focus on the transport layer (UDP), simply using standard Unix sockets in C to provide the basic functions required for network communication in this project. There are provided in <code>socket.[ch]</code>:</p>
+<ul>
+<li><code>get_socket()</code> to obtain a network socket (internal program representation) for communication, specifying its waiting time ("timeout", in seconds);</li>
+<li><code>get_server_addr()</code> to obtain the address, in the "internal object" sense (<code>struct sockaddr_in</code>), of a given IP address and port;</li>
+<li><code>bind_server()</code> to associate a network communication (external representation: IP address, port) with a network socket (internal representation).</li>
+<li><code>udp_server_init()</code>, to initialize a network communication over UDP;</li>
+<li><code>udp_read()</code>, to create a call that reads the active socket once and stores the output in <code>buf</code>;</li>
+<li><code>udp_send()</code> to send a response message.</li>
+</ul>
+<p>Most of these functions are simply interfaces to <code>sys/socket.h</code> C functions <code>socket(2)</code>, <code>socket(7)</code>, <code>setsockopt(2)</code>, <code>bind(2)</code>, <code>recv(2)</code>, <code>recvfrom(2)</code> and <code>sendto(2)</code>. We <strong>strongly</strong> recommend you have a look at the corresponding man-pages. You will also need to look at <code>inet_pton(3)</code>, <code>htons(3)</code> and <code>close(2)</code>.</p>
+<p>Note that with the network protocol we use (UDP), there is no guarantee that messages will be delivered. If the server response has not arrived within the allotted time (which is set using the <code>get_socket()</code> function from <code>socket_layer</code>), consider the request to have failed (and return <code>ERR_NETWORK</code>).</p>
+<p>To send requests to the server, use the <code>sendto()</code> function (<code>man sendto</code>). To read requests received back from the server, use the <code>recvfrom()</code> function (<code>man recvfrom</code>).</p>
+<p>A few tips:</p>
+<ul>
+<li>read the documentation of the functions (in <code>socket_layer.h</code>) before implementing them;</li>
+<li>the port number needs to be converted using <code>htons()</code> for portability;</li>
+<li>you can safely cast a <code>struct sockaddr_in*</code> to a <code>struct sockaddr*</code>, and vice versa.</li>
+</ul>
+<h3 id="ii-first-simple-test">II. First simple test</h3>
+<h4 id="test-framework">Test framework</h4>
+<p><strong>NOTE:</strong> this is <em>both</em> an exercise for the network lectures (L12 mainly) <em>and</em> a simple test (and debug) case before adding network functionalities to the main project.<br />
+We <strong>strongly recommend</strong> that both members of the group work on this part (so as to both practice the lectures concepts and be well aware of what is available/how to use it before applying it to the main project).</p>
+<p>Test your <code>socket_layer</code> implementation by creating two simple programs (see detailed usage examples below):</p>
+<ul>
+<li>
+<p>a client (<code>udp-test-client.c</code>) that:</p>
+<ul>
+<li>asks for a <code>unsigned int</code> (on <code>stdin</code>, see example below);</li>
+<li>sends it (over UDP) to <code>CS202_DEFAULT_IP</code>, port <code>CS202_DEFAULT_PORT</code>;</li>
+<li>waits for positive acknowledgment;</li>
+<li>and properly terminates.</li>
+</ul>
+</li>
+<li>
+<p>a server (<code>udp-test-server.c</code>) that:</p>
+<ul>
+<li>waits for connections on <code>CS202_DEFAULT_IP</code>, port <code>CS202_DEFAULT_PORT</code>;</li>
+<li>convert received content to an <code>unsigned int</code>;</li>
+<li>send a response back to the sender;</li>
+<li>should exit properly in case of read error.</li>
+</ul>
+</li>
+</ul>
+<p>Unless errors, the server never terminates, as it may have to serve several clients/requests.</p>
+<h4 id="example">Example</h4>
+<p>This is just an example. <strong>You are completely free to code the client and the server the most appropriate way for you</strong> (to understand and to debug) <strong>provided that they fulfill the two 4-items bullet lists above</strong>. In particular, you're free to choose the messages you'd like to be displayed on the terminal.</p>
+<p>Server (in one terminal):</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">./udp-test-server
+</span><span>
+</span><span style="color:#bf616a;">Server</span><span> listening on 127.0.0.1:1234
+</span><span>
+</span><span style="color:#65737e;">### [AFTER THE CLIENT INTERACTION BELOW]
+</span><span style="color:#bf616a;">Received</span><span> message from 127.0.0.1:47601: 213
+</span><span style="color:#bf616a;">Sending</span><span> message to 127.0.0.1:47601: 214
+</span><span style="color:#bf616a;">...
+</span></code></pre>
+<p>Client (in <em>another</em> terminal):</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">./udp-test-client
+</span><span style="color:#bf616a;">What</span><span> int value do you want to send? 213
+</span><span style="color:#bf616a;">Sending</span><span> message to 127.0.0.1:1234: 213
+</span><span style="color:#bf616a;">Received</span><span> response: 214
+</span></code></pre>
+<p>You can launch the client several times, with different values.<br />
+Terminate the server with Ctrl-C once done.</p>
+<h4 id="use-wireshark-to-debug">Use Wireshark to debug</h4>
+<p>Use Wireshark to debug your code.</p>
+<p>Try many clients at the same time:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#b48ead;">for</span><span> i </span><span style="color:#b48ead;">in </span><span>$(</span><span style="color:#bf616a;">seq</span><span> 15); </span><span style="color:#b48ead;">do </span><span style="color:#96b5b4;">echo </span><span>$</span><span style="color:#bf616a;">i </span><span>| </span><span style="color:#bf616a;">./udp-test-client </span><span>&gt; log-$</span><span style="color:#bf616a;">i </span><span style="color:#d08770;">2</span><span>&gt;&amp;</span><span style="color:#d08770;">1 </span><span>&amp; </span><span style="color:#b48ead;">done
+</span></code></pre>
+<p>What happens? (maybe nothing particular, actually)</p>
+<h3 id="iii-modifying-existing-client-code">III. Modifying existing client code</h3>
+<ul>
+<li>
+<p>in <code>client.h</code>, add a socket to the <code>struct client</code>;</p>
+</li>
+<li>
+<p>in <code>client.c</code>, update <code>client_init()</code> to open the client socket (see <code>socket_layer.h</code>; return <code>ERR_NETWORK</code> in case of error); and, of course, update <code>client_end()</code> accordingly;</p>
+</li>
+<li>
+<p>in <code>node.h</code>, add a <code>struct sockaddr_in</code> named <code>addr_s</code> to <code>struct node</code> for the actual network protocols; for the sake of simplicity and backward compatibility, keep the former IP address and port fields, although they are now useless; there is no need to check for the integrity between these former fake fields and the new <code>struct sockaddr_in</code>;</p>
+</li>
+<li>
+<p>in <code>node.c</code>, initialize that new field appropriately using <code>get_server_addr()</code>;</p>
+</li>
+<li>
+<p>in <code>ring.c</code>, adapt the node comparison in <code>ring_get_nodes_for_key()</code> with:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  memcmp(&amp;list-&gt;nodes[j].addr_s, &amp;ring-&gt;nodes[i].addr_s, sizeof(struct sockaddr_in))
+</span></code></pre>
+</li>
+</ul>
+<p>Also, in the provided tool function <code>node_list_print()</code> (in <code>node_list.c</code>), change</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>node-&gt;addr, node-&gt;port
+</span></code></pre>
+<p>for</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>inet_ntoa(node-&gt;addr_s.sin_addr), ntohs(node-&gt;addr_s.sin_port)
+</span></code></pre>
+<h3 id="iv-dkvs-client-server">IV. DKVS client-server</h3>
+<h4 id="dkvs-client-server-protocol">DKVS client-server protocol</h4>
+<p><code>dkvs-server</code> launches a server on the address specified as its first argument and a port specified as its second argument; for example:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-server 127.0.0.1 1236
+</span></code></pre>
+<p>Although we will not make use of this possibility this week, we could also pass pairs of optional initial key-value associations; for instance:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-server 127.0.0.1 1236 key1 value1 key2 value 2
+</span></code></pre>
+<p>meaning that this server will already store the two key-value pairs: (<code>"key1"</code>, <code>"value1"</code>) and (<code>"key2"</code>, <code>"value2"</code>), exactly as if the corresponding two <code>put</code> commands had been done.</p>
+<p><code>dkvs-server</code> receives no input from <code>stdin</code> and produces no output to <code>stdout</code> nor <code>stderr</code>(unless in debug mode, using <code>debug_printf()</code> when needed; see <code>error.h</code>; to make it active, compile with <code>make DEBUG=1</code>  or <code>make DEBUG=1 &lt;some target[s]&gt;</code>).</p>
+<p>On the other side, the client (<code>dkvs-client.c</code>) is already written. All we have to do (which is a big piece of work) is "simply" to write the network layer (<code>network.c</code>) to replace the former fake networks.</p>
+<p>DKVS client and server message exchange is made up of strings of potentially different lengths; even two <em>concatenated</em> strings in the case of <code>put</code>, with the null character <code>\0</code> serving as a separator (the concatenation we're here talking about is thus a <em>byte</em> concatenation at the network protocol level, <strong>not</strong> a C-string concatenation, which wouldn't make any sense here).</p>
+<ul>
+<li>Put-requests will therefore have the following format: "<code>&lt;key&gt;\0&lt;value&gt;</code>";</li>
+<li>get-requests the format: "<code>&lt;key&gt;</code>"</li>
+<li>and responses to get-requests the format "<code>&lt;value&gt;</code>";</li>
+</ul>
+<p>where <code>&lt;key&gt;</code> and <code>&lt;value&gt;</code> represent the character string (in the common sense) of, respectively, the key and the value, <strong>without any</strong> final null character (that's what we mean by "common sense character strings", as opposed to C-strings).</p>
+<p>For example, a request to write (= put) the value "<code>xy</code>" for the key "<code>abc</code>" will send the six-bytes sequence "<code>abc\0xy</code>" to the network, <strong>without</strong> any final <code>\0</code> (which would otherwise be a seven-bytes sequence).<br />
+The response to a read (= get) request for this same key (once written) will send "<code>xy</code>" (2 bytes) and <strong>not</strong> "<code>xy\0</code>" (3 bytes; as a reminder, the total number of bytes exchanged at network level is known, for example as the return value of <code>recvfrom(2)</code>).<br />
+So be very careful when converting these keys/values into C strings not to forget the terminal null characters, when needed.</p>
+<p>As these keys and values can in principle contain anything, they could become very long. In order to limit the impact on network communications (and possible failures at lower protocol levels), we have decided to limit the length of each of these elements (keys and values) to <code>MAX_MSG_ELEM_SIZE</code> (defined in <code>config.h</code>). Thus, if <code>network_get()</code> or <code>network_put()</code> receive arguments that are too long, they must exit with the <code>ERR_INVALID_ARGUMENT</code> error.</p>
+<p><strong>NOTES:</strong></p>
+<ol>
+<li>If useful, we have also defined the constant <code>MAX_MSG_SIZE</code> (in <code>config.h</code>) to represent the maximum size of a network message, during a <code>put</code> command (" <code>&lt;key&gt;\0&lt;value&gt;</code> "): <code>2 * MAX_MSG_ELEM_SIZE + 1</code>.</li>
+<li>To search for a particular character, including the null character, in any sequence of characters, use the <code>memchr()</code> function (<code>man memchr</code>, similar to <code>strchr()</code>, but which doesn't stop at the first <code>\0</code> encountered).</li>
+</ol>
+<p><strong>[end of notes]</strong></p>
+<p>Another aspect to pay attention to concerns non-existent keys. This case is managed explicitly by responding with a null character (<code>'\0'</code>) when a request is made to read a non-existing key. Since it's possible to associate empty values (empty string) with keys, it's important to understand the difference between replying an empty value (empty string) associated with an existing key and replying to a non-existing key:</p>
+<ul>
+<li>the network message sent in response to a get-request for a known key which has an empty value will simply be empty (no characters, 0 byte; this is consistent with the usual value replies: the byte-size of the network reply message is exactly the length of the value);</li>
+<li>while the message sent in response to a read request for an unknown key will be the empty string in the sense of C, i.e. the sequence of characters reduced to the single null character (<code>\0</code>, and therefore of length 1 byte).</li>
+</ul>
+<p>This is the same conceptual difference as between <code>{ "", 1 }</code> and <code>{ NULL, 0 }</code> for a <code>struct foo { const char* ptr; size_t total_size; };</code>.</p>
+<h4 id="dkvs-client-ring-protocol">DKVS client-ring protocol</h4>
+<p>Regarding the ring behavior, for this week the client will simply request to all the servers one after the other.
+Since this week no server will reply (this will be implemented next week), this loop will simply be used in debug mode to test the message exchange and see which server receives (and sends) what.
+The more advanced ring protocol (as described in <a href="../01-main/">the main description file</a>) will only be implemented next week.</p>
+<h4 id="network-c"><code>network.c</code></h4>
+<p>Now it's time to create the communication protocols in <code>network_get()</code> and <code>network_put()</code> in the <code>network.c</code> file. First have a look at this provided file and see how we already decomposed the tasks.</p>
+<p>Let's start with the get command (<code>network_get()</code>):</p>
+<ul>
+<li>
+<p>this command has first to collect all the nodes that store the provided key (recall what you did in week 09); of course, if it fails it should return immediately;</p>
+</li>
+<li>
+<p>then, it must contact the servers one after the other (in the order given by their SHA; recall what was done in week 09), but stops as soon as the <em>first</em> read success is achieved (which won't be the case this week since the servers won't reply);<br />
+to "contact" a server, it must first do the key request using <code>server_get_send()</code> tool function, and then, in case of success, it must get the server reply using <code>server_get_recv()</code>.</p>
+</li>
+</ul>
+<p>To finalize the get command, you thus need to:</p>
+<ul>
+<li>complete <code>server_get_send()</code>: this simply send the key to the server; it returns <code>ERR_NONE</code> if the sent length equals the key length and <code>ERR_NETWORK</code> otherwise;</li>
+<li>complete <code>server_get_recv()</code>: this will be done next week; for the moment the function does nothing more than what is provided.</li>
+</ul>
+<p>Regarding the put command (<code>network_put()</code>):</p>
+<ul>
+<li>
+<p>it should first collect all the nodes that store the provided key;</p>
+</li>
+<li>
+<p>then, it must contact each server (<code>server_put_send()</code> see the description below) one after the other, then waiting for a (write) acknowledgement or timeout before moving on to the next; if any of the servers fails to write, it must fail <strong>BUT</strong> it must nevertheless try to write to each of the servers, i.e. continue to (try to) write to the other servers before finally displaying its failure.</p>
+</li>
+</ul>
+<p>To finalize the get command, you thus need to complete <code>server_put_send()</code>: this should create the client sending message as explained above (the null-separated byte-concatenation of key and value) and send it; it returns <code>ERR_NONE</code> if the sent length is the appropraite length, <code>ERR_NETWORK</code> otherwise.</p>
+<h4 id="dkvs-server-c"><code>dkvs-server.c</code></h4>
+<p>The last thing to be done is to complete <code>dkvs-server</code>. As usual, first have a look at the provided file. There you'll have to:</p>
+<ul>
+<li>assign the port from <code>argv</code> (second argument); as usual, properly handle the error cases (this will not be repeated);</li>
+<li>launch the UDP server;</li>
+<li>in the server loop:
+<ul>
+<li>read the request message;</li>
+<li>optionnaly print debuging messages in debug mode;</li>
+<li>if the request does not contain any <code>'\0'</code>, do a <code>server_get()</code>; <code>memchr()</code> might help here;</li>
+<li>otherwise, if the request is the empty string, return <code>ERR_NOT_FOUND</code>for this week (we might change that next week);</li>
+<li>otherwise do a <code>server_put()</code> with the appropriate parameters;</li>
+</ul>
+</li>
+<li>and, of course, do all the appropriate closing/garbage collecting that must be made anywhere appropriate.</li>
+</ul>
+<h1 id="iv-tests">IV. Tests</h1>
+<p>It will of course be important to test your code thoroughly, step by step, in terms of the new network protocols.
+We recommend you to use Wireshark to debug your code. You can also make use of <code>debug_printf()</code> (see <code>error.h</code>).
+To make it active, compile with <code>make DEBUG=1</code> (or <code>make DEBUG=1 &lt;some target[s]&gt;</code>).</p>
+<h3 id="one-server">One server</h3>
+<p>Have only 1 server in <code>servers.txt</code>, for instance:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>127.0.0.1 1236 1
+</span></code></pre>
+<p>and launch that server in one terminal:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-server 127.0.0.1 1236
+</span></code></pre>
+<p>Then, in another terminal, first try to get the value for some key, e.g.:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client get -- somekey
+</span></code></pre>
+<p>You should receive:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_get_send(): asking for key &quot;somekey&quot; to 127.0.0.1:1236
+</span><span>server_get_recv(): read &quot;&quot; (size: -1)
+</span><span>FAIL
+</span><span>ERROR: Network error
+</span><span>[...]
+</span></code></pre>
+<p>And on the server side, you should see:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>Server listening on 127.0.0.1:1236
+</span><span>Received: &quot;somekey&quot; (size: 7)
+</span><span>server get for key &quot;somekey&quot;
+</span></code></pre>
+<p>Then you can try to add a new (key, value) pair, for instance:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client put -- somekey somevalue
+</span></code></pre>
+<p>You should receive:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>server_put_send(): sending &quot;somekey&quot; --&gt; &quot;somevalue&quot; to 127.0.0.1:1236
+</span><span>network_put(): got reply: -1
+</span><span>FAIL
+</span><span>ERROR: Network error
+</span><span>[...]
+</span></code></pre>
+<p>And on the server side, you should see:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>Received: &quot;somekey&quot;, &quot;somevalue&quot; (size: 17)
+</span><span>server put for &quot;somekey&quot; --&gt; &quot;somevalue&quot;:
+</span></code></pre>
+<h3 id="several-servers">Several servers</h3>
+<p>Now try with a few more servers, for instance with <code>servers.txt</code> containing:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>127.0.0.1 1234 1
+</span><span>127.0.0.1 1235 1
+</span><span>127.0.0.1 1236 1
+</span></code></pre>
+<p>which should lead to the same output as above.
+<strong>NOTICE HOWEVER</strong> that the situation is a bit different here: the ring now has 3 servers, the first of which is <strong>NOT</strong> the one which will reply (<code>1234</code> as opposed to <code>1236</code>). This is because of the SHA positionning in the ring: the first servers to actually be contacted is indeed on port <code>1236</code> and not <code>1234</code>.</p>
+<p>You can also try:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client put -- somekey4 somevalue2
+</span></code></pre>
+<p>which should send to <code>127.0.0.1:1235</code> (rather than to <code>127.0.0.1:1236</code>), and</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client put -- somekey12 somevalue3
+</span></code></pre>
+<p>which should send to <code>127.0.0.1:1234</code>.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 21&#x2F;05&#x2F;2025</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>DKVS: Distributed Key-Value Store --- local server (S=N=R=W=1) | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/02-local-server/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "02 Local Server",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/02-local-server/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-hashtable/">DKVS: Distributed Key-Value Store --- Hashtables</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">DKVS: Distributed Key-Value Store --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/02-local-server/">DKVS: Distributed Key-Value Store --- local server (S=N=R=W=1)</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-value-process/">DKVS: Distributed Key-Value Store --- values processing</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-multiple-servers/">DKVS: Distributed Key-Value Store --- The ring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-network/">DKVS: Distributed Key-Value Store --- Network layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-quorum/">DKVS: Distributed Key-Value Store --- Quorum</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-monitoring/">DKVS: Distributed Key-Value Store --- Monitoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/08-parallel/">DKVS: Distributed Key-Value Store --- Parallelism</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>DKVS: Distributed Key-Value Store --- local server (S=N=R=W=1)</h1>
+          
+          <h2 id="get-updates">Get updates</h2>
+<p>To get the new material on your project repository, you have to:</p>
+<ul>
+<li>
+<p>check that you don't already have the upstream reference repository:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  git remote -v
+</span></code></pre>
+<p>if you see only two lines or if you don't see <code>projprogsys-epfl/cs202-25-project.git</code> in any line, you don't have it and must add it (next step);</p>
+</li>
+<li>
+<p><strong>only once</strong>: add the upstream reference repository (I though this was automatically donc by Github Classroom, but it seems not):</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  git remote add upstream git@github.com:projprogsys-epfl/cs202-25-project.git
+</span></code></pre>
+<p>check it was properly added by doing again</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>  git remote -v
+</span></code></pre>
+</li>
+</ul>
+<p>From now on, every time you want to fetch updates from us, first be up-to-date with your own code (i.e. you pushed all your commits) and then do (only one of you has to do that, the other will simply <code>git pull</code> as usual):</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git fetch upstream
+</span><span>git merge upstream/main
+</span><span>git push
+</span></code></pre>
+<h2 id="introduction">Introduction</h2>
+<p>The aim of this week is to setup the client-side command-line tool ("program", in other words) to interact with the DKVS infrastructure (review the <a href="../01-main/">general presentation document</a> if necessary).
+Even though this week infrastructure is quite simple (a single server, <em>N</em>=<em>W</em>=<em>R</em>=1), it's important for your efficiency to organize yourself well, module by module with the broad view in perspective and to <em>systematically</em> test your implementations.</p>
+<p>So this week's goal is to achieve a <em>local</em> infrastructure only, on a single server, without redundancy, using the <a href="../01-hashtable/">hash tables implemented last week</a>.
+Since networking will not be implemented before week 10 (so that you have seen the proper concepts in class), we will, for now, fake the network interactions. Instead of actually sending network requests to the nodes, the operations will use a local hashtable to <em>simulate</em> network interactions.</p>
+<p>We here start by describing the higher-level tools before going on to describe the lower-level implementation modules. As this week's work is quite substantial, it's important to divide it up between the two of you; for example, one of you can deal with the argument parsing (<code>args.[ch]</code>, <code>parse_opt_args()</code> and <code>client.c</code>), while the other deals with "network" (fake) modeling and interactions (<code>node</code>, <code>node-list</code>, <code>ring</code> and <code>dkvs-client get</code> and <code>dkvs-client put</code>). But this is only <em>one</em> possible example of organization among others.</p>
+<h2 id="i-general-description-of-the-command-line-tools">I. General description of the command line tools</h2>
+<p>The command-line tool we start implementing this week is named <code>dkvs-client</code>. The general syntax of <code>dkvs-client</code> is:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">dkvs-client </span><span>&lt;command&gt; </span><span style="color:#b48ead;">[</span><span>-r R</span><span style="color:#b48ead;">] [</span><span>-w W</span><span style="color:#b48ead;">] [</span><span>-n N</span><span style="color:#b48ead;">]</span><span> -- ...
+</span></code></pre>
+<p>There is only one mandatory argument, <code>&lt;command&gt;</code>. We will for now focus only on two commands: <code>put</code> and <code>get</code>, detailed below. The three optional flags <code>-r</code>, <code>-w</code> and <code>-n</code> take a strictly positive integer as parameter (more explainations later). Then a list of specific arguments can be provided, to be placed after <code>--</code>. Some simple examples are provided below.</p>
+<p>The <code>put</code> command inserts a key-value pair in the store. For example, to add the following two key-value associations</p>
+<pre data-lang="text" style="background-color:#2b303b;color:#c0c5ce;" class="language-text "><code class="language-text" data-lang="text"><span>a -&gt; &quot;hi a&quot;
+</span><span>b -&gt; &quot;hello b&quot;
+</span></code></pre>
+<p>we will do:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span>&gt; ./dkvs-client </span><span style="color:#bf616a;">put</span><span> -- &quot;</span><span style="color:#a3be8c;">a</span><span>&quot; &quot;</span><span style="color:#a3be8c;">hi a</span><span>&quot;
+</span><span style="color:#bf616a;">OK
+</span><span>&gt; ./dkvs-client </span><span style="color:#bf616a;">put</span><span> -- &quot;</span><span style="color:#a3be8c;">b</span><span>&quot; &quot;</span><span style="color:#a3be8c;">hello b</span><span>&quot;
+</span><span style="color:#bf616a;">OK
+</span></code></pre>
+<p>If some key already existed in the table, the <code>put</code> command simply overwrites new value. For example, if the above table was containing</p>
+<pre data-lang="text" style="background-color:#2b303b;color:#c0c5ce;" class="language-text "><code class="language-text" data-lang="text"><span>a -&gt; &quot;hello a&quot;
+</span><span>c -&gt; &quot;hi c&quot;
+</span></code></pre>
+<p>before the above two <code>put</code> commands, then it contains:
+<code>a -&gt; "hi a" b -&gt; "hello b" c -&gt; "hi c"</code>
+after the above two <code>put</code> commands.</p>
+<p>The <code>get</code> command fetches key value in the store. For instance, with the former table:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span>&gt; ./dkvs-client </span><span style="color:#bf616a;">get</span><span> -- &quot;</span><span style="color:#a3be8c;">a</span><span>&quot;
+</span><span style="color:#bf616a;">OK</span><span> hi a
+</span><span>&gt; ./dkvs-client </span><span style="color:#bf616a;">get</span><span> -- &quot;</span><span style="color:#a3be8c;">b</span><span>&quot;
+</span><span style="color:#bf616a;">OK</span><span> hello b
+</span><span>&gt; ./dkvs-client </span><span style="color:#bf616a;">get</span><span> -- &quot;</span><span style="color:#a3be8c;">d</span><span>&quot;
+</span><span style="color:#bf616a;">FAIL
+</span><span>&gt; ./dkvs-client </span><span style="color:#bf616a;">get</span><span> -- &quot;</span><span style="color:#a3be8c;">some key</span><span>&quot;
+</span><span style="color:#bf616a;">FAIL
+</span></code></pre>
+<h2 id="ii-low-level-modules">II. Low-level modules</h2>
+<p>We have modularized the infrastructure for this project as follows (review the <a href="../01-main/">general presentation document</a> if necessary):</p>
+<ul>
+<li><code>args.[ch]</code>: managing command line arguments;</li>
+<li><code>client.[ch]</code>: providing initialization and termination functions for a client;</li>
+<li>networking:
+<ul>
+<li><code>network.h</code>: interface for client-server communication;</li>
+<li><code>fake-network.c</code> (provided): a fake implementation of client-server communication functions for <code>put</code> (write key-value) and <code>get</code> (read value) requests; you can adapt it for your own tests, see the dedicated section below (II.6 Fake network);</li>
+</ul>
+</li>
+<li>DKVS:
+<ul>
+<li><code>ring.[ch]</code>: the key ring abstraction; in this project, it'll be implemented as a <strong>dynamic array</strong> of nodes;</li>
+<li><code>node_list.[ch]</code>: a dynamic array of nodes;</li>
+<li><code>node.[ch]</code>: a key ring node, i.e. one storage place for key-values pairs.</li>
+</ul>
+</li>
+</ul>
+<h3 id="ii-1-arguments-args-ch">II.1. Arguments (<code>args.[ch]</code>)</h3>
+<p>This module handles the parsing and storage of command line arguments. It exposes a <code>struct args</code>, and its typedef <code>args_t</code>, as well as the function <code>parse_opt_args()</code>. See <code>args.h</code>.</p>
+<p>If you didn't yet, we recommand you have a look at the two complement lectures (in French):</p>
+<ul>
+<li><a href="https://mediaspace.epfl.ch/media/argc%20%26%20argv/0_tcgu82nh?">argc and argv</a>;</li>
+<li><a href="https://mediaspace.epfl.ch/media/argc%20%26%20argv%3A%20example/0_yhuduq8v">argc and argv: example</a>.</li>
+</ul>
+<p>In a file <code>args.c</code> (to be created), you have to implement the function <code>parse_opt_args()</code> (see prototype in <code>args.h</code>), which initializes the <code>args_t</code> according to <strong>optional</strong> arguments, removes them and the <code>"--"</code> from the argument list and leaves all the other following arguments (in the argument list). Of course, <code>argc</code> shall be updated consistently.</p>
+<p><code>supported_args</code> is an information value to indicate what type of argument we want to have. It's making use of <code>arg_kind</code> bit flags. For instance, if we want to have N and W for a specific command, we would call</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>parse_opt_args(&amp;args, TOTAL_SERVERS | PUT_NEEDED, &amp;argc, &amp;argv);
+</span></code></pre>
+<p><strong>Note:</strong> even though the <code>-r</code>, <code>-w</code> and <code>-n</code> flags are optional, they must be initialized using default values if not present (corresponding default values are provided in <code>args.h</code>).</p>
+<p>The following constraints must be enforced:</p>
+<ul>
+<li>arguments not present in the <code>supported_args</code> must be ignored</li>
+<li>if no value is given for <code>N</code>, then it should take the maximum value between the arguments given for <code>W</code> and <code>R</code>, or the <code>DKVS_DEFAULT_N</code> if no argument is given</li>
+<li>if not given as arguments, <code>W</code> and <code>R</code> should be set to the minimum of <code>N</code> and their respective default value</li>
+<li><code>R &lt;= N</code> and <code>W &lt;= N</code>.</li>
+</ul>
+<p>An error code shall be returned to indicate whether an error occurred, either:</p>
+<ul>
+<li><code>ERR_NONE</code>: no errors;</li>
+<li><code>ERR_INVALID_ARGUMENT</code>: if one of the pointer given to <code>parse_opt_args()</code> is <code>NULL</code>; this check should be present in all your function and we will not repeat it afterwards;</li>
+<li><code>ERR_INVALID_COMMAND</code>: if the command line arguments do not match the above syntax.</li>
+</ul>
+<h3 id="ii-2-node-node-ch">II.2. Node  (<code>node.[ch]</code>)</h3>
+<p>The <code>node</code> layer is quite simple and only serve to better structure the code in layers. It represent the ring node abstraction which, for the moment and up to week 11, will simply be one server.</p>
+<p>For this week, simply define the <code>struct node</code> to contain one adress (an immutable string).</p>
+<p>In <code>node_init()</code> simply assign the address. <code>port</code> and <code>node_id</code> are unused for the moment.</p>
+<p><code>node_end()</code> contains what should be done when a node comes to an end. Certainly nothing for the moment.</p>
+<p>There is no need to do the two other functions (<code>node_cmp_...</code>) for the moment.</p>
+<h3 id="ii-3-node-list-node-list-ch">II.3. Node list  (<code>node_list.[ch]</code>)</h3>
+<p>A node list will be usefull to represent the ring.</p>
+<p>Define the type <code>struct node_list</code> as a <strong>dynamic</strong>  array of nodes.</p>
+<p>Then define <code>node_list_add()</code> and <code>node_list_free()</code> (usual functions for dynamic arrays).</p>
+<p>The only unusual function w.r.t. dynamic arrays is the initialization: here the initialization function is named <code>get_nodes()</code> and will be a bit more complex once we have the real network (getting all the nodes from the ring). For the moment, simply create a <code>node</code>, with <code>DKVS_DEFAULT_IP</code> (its address), <code>DKVS_DEFAULT_PORT</code> (unused) and 0 id (unused); and add it to the list.</p>
+<p>No need to define <code>node_list_sort()</code> for the moment.</p>
+<h3 id="ii-4-ring-ring-ch">II.4. Ring  (<code>ring.[ch]</code>)</h3>
+<p>In this project, a ring is simplified to be simply reduced to the list of nodes (i.e. a dynamic array of nodes, <code>node_list</code>).</p>
+<p>Simply define <code>ring_init()</code> and <code>ring_free()</code> appropriately.</p>
+<h3 id="ii-5-client-client-ch">II.5. Client  (<code>client.[ch]</code>)</h3>
+<p>The "client" module is not very developed. It contains only two functions: initialization and end-of-use of a client.</p>
+<p>You must first define the <code>client_t</code> type in <code>client.h</code>, which for the moment only contains the arguments parsed from the command line (<code>args_t</code>) and a ring.</p>
+<p>Regarding <code>client.c</code>:</p>
+<ul>
+<li>for initialization, it needs to parse the command line arguments received as parameter and initialize its ring;</li>
+<li>for the end of a client, you only need to free the resources used by the client (for the moment: its ring).</li>
+</ul>
+<p>Those functions also return error codes indicating whether they succeeded. If they call a function which returns an error, this error should be returned.<br />
+<strong>Note</strong>: This behavior should be present in all your code and will not be repeated.</p>
+<h3 id="ii-6-fake-network">II.6. Fake network</h3>
+<p>The network layer is the highest tool layer, modeling client-server communication. It offers two functions for managing these communications: <code>network_put()</code> for request exchange during key-value writing, and <code>network_get()</code> for value reading. See <code>network.h</code> for the interface (which will remain the same for real network interactions).</p>
+<p>For now, we provide you with a fake implementation of this layer in <code>fake_network.c</code>, <code>fake1.h</code> and <code>fake2.h</code>. It uses a local hashtable, therefore changes are not persisted across multiple calls.</p>
+<p>Each <code>fake%.h</code> file contains a macro definition for <code>MAKE_FAKE_NETWORK</code>, which is used to initialize the key-value store before running the command. When compiling the project, for all <code>fake%.h</code>; it will generate a corresponding <code>fake-dkvs-client-%</code>, which runs the command on its key-value store.</p>
+<p>Notice that to make the fake-network easily testable, you have to implement the <code>Htable_print()</code> function in <code>hashtable.c</code>. It prints all the content of a table, using the following format (the order does <strong>not</strong> matter):</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>key1: value 1
+</span><span>key2: value 2
+</span><span>...
+</span></code></pre>
+<p>for instance:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>a: hello a
+</span><span>bb: hello bb
+</span><span>ab: hello ab
+</span><span>bbb: hello bbb
+</span></code></pre>
+<p>where "<code>a</code>", "<code>bb</code>", "<code>ab</code>" and "<code>bbb</code>" are keys, and "<code>hello xxx</code>" their corresponding values (see <code>fake2.h</code>).</p>
+<p>Its pseudo code is:</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Htable_print</span><span>(</span><span style="color:#b48ead;">const</span><span> Htable_t* </span><span style="color:#bf616a;">table</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(table == </span><span style="color:#d08770;">NULL</span><span>) </span><span style="color:#b48ead;">return</span><span>;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(table size == </span><span style="color:#d08770;">0</span><span>) { </span><span style="color:#65737e;">// adapt to your table size
+</span><span>        </span><span style="color:#96b5b4;">puts</span><span>(&quot;</span><span style="color:#a3be8c;">&lt;Empty HashTable&gt;</span><span>&quot;);
+</span><span>        </span><span style="color:#b48ead;">return</span><span>;
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">for </span><span>(all bucket in table) {
+</span><span>        bucket_t* bucket = ... </span><span style="color:#65737e;">//adapt to your code
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">for </span><span>(all key value pairs in bucket) { </span><span style="color:#65737e;">//adapt to your code
+</span><span>            </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;">: </span><span style="color:#d08770;">%s</span><span style="color:#96b5b4;">\n</span><span>&quot;, key, value);
+</span><span>        }
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<h2 id="iii-implementing-command-line-tools">III. Implementing command-line tools</h2>
+<h3 id="iii-1-dkvs-client-commands">III.1. <code>dkvs-client</code> commands</h3>
+<p><code>cli_client_get()</code> needs to be implemented in <code>dkvs-client-get.c</code>, and <code>cli_client_put()</code> in <code>dkvs-client-put.c</code>. Their prototype and documentation are available in <code>dkvs-client-cmds.h</code>. They receive as parameter a <code>client_t</code>, and their arguments via <code>argc</code> and <code>argv</code>:
+remember (from <code>argcs.c</code> and <code>parse_opt_args()</code> descriptions above) that the argument(s) they need (provided on the command line after <code>--</code>) remain in <code>argv</code>.</p>
+<p>Use the appropriate functions from <code>network.h</code> to communicate with the DKVS ring.</p>
+<p>In case of invalid arguments, these functions shall return, as usual, the <code>ERR_INVALID_ARGUMENT</code> error code.
+Neither a key nor a value shall not be longer than <code>MAX_MSG_ELEM_SIZE</code> characters.</p>
+<p><code>cli_client_get()</code> will print "<code>OK &lt;value&gt;</code>" if it got a value from the network and "<code>FAIL</code>" if not (see examples above). It will return the error code it code from the network call.</p>
+<p><code>cli_client_put()</code> behave the same way, except it simply prints "<code>OK</code>" (no value) in case of successful put.</p>
+<h3 id="iii-2-main">III.2. <code>main()</code></h3>
+<p>The role of the <code>main()</code> function, to be put in <code>dkvs-client.c</code>, is simply to receive the command line arguments and call the corresponding function from <code>dkvs-client-cmds.h</code> (<code>cli_client_get()</code> if the argument is <code>"get"</code> and <code>cli_client_put()</code> if it's <code>"put"</code>). Of course, everything needed shall be properly initialized (use <code>TOTAL_SERVERS | GET_NEEDED</code> flags for <code>get</code> and <code>TOTAL_SERVERS | PUT_NEEDED</code> flags for <code>put</code>; and remember that <code>get</code> requires one argument (the key) whereas <code>put</code> requires two).</p>
+<p>Have a look a the provided code and complete the <code>commands</code> array with the appropriate values so as to have the <code>get</code> and <code>put</code> command properly handled.</p>
+<h3 id="iii-3-fake-dkvs-client-executable">III.3. <code>fake-dkvs-client</code> executable</h3>
+<p>To make use of the provided <code>fake_network</code> (or any other of your own), <code>dkvs-client</code> has to be linked with it.
+If you didn't update your <code>Makefile</code> already, please do by importing it from <code>provided</code>. As said above (II.6 Fake network), you will have a separate <code>fake-dkvs-client-%</code> for each <code>fake%.h</code>. Since we provide you with <code>fake1.h</code> and <code>fake2.h</code>, you should have two fake executables. If you take a look at <code>fake1.h</code>, you'll see that it contains an empty key-value store; while <code>fake2.h</code> has a few entries.</p>
+<p>You can test this with:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-1 get -- a
+</span><span style="color:#bf616a;">...
+</span><span>=</span><span style="color:#a3be8c;">=== </span><span style="color:#bf616a;">end</span><span> of fake network init =================
+</span><span style="color:#bf616a;">FAIL
+</span><span style="color:#bf616a;">ERROR:</span><span> Not found
+</span><span style="color:#bf616a;">...
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 get -- a
+</span><span style="color:#bf616a;">...
+</span><span>=</span><span style="color:#a3be8c;">=== </span><span style="color:#bf616a;">end</span><span> of fake network init =================
+</span><span style="color:#bf616a;">OK</span><span> hello a
+</span></code></pre>
+<p>Feel free to add as many <code>fake%.h</code> as you want for your own tests; the <code>Makefile</code> will automatically detect them and build the corresponding executables.</p>
+<h2 id="iv-testing-and-debugging">IV. Testing and debugging</h2>
+<h3 id="unit-tests">Unit tests</h3>
+<p>Similarly to last week, we provide you with a few unit tests in <code>provided/tests/unit</code>. We strongly recommend you to add your own tests <strong>after copying them into your <code>done/</code> directory</strong>.</p>
+<p>As a reminder, you can run those tests by using <code>make</code> from the <code>done/</code> directory:</p>
+<ul>
+<li><code>make unit-tests</code>: run all the unit tests, stopping on the first error</li>
+<li><code>make all-unit-tests</code>: run all the unit tests, ignoring failures</li>
+<li><code>make test-%</code>: run the unit tests <code>%</code>, contained in the file <code>(provided|done)/tests/unit/unit-test-%.c</code></li>
+</ul>
+<p>If a unit test fails, it will print a <code>make dbg ...</code> command which, when ran from the <code>done/</code> directory, will start <code>gdb</code> in the failing test.</p>
+<h3 id="end-to-end-tests">End-to-end tests</h3>
+<p>Since you now have fully working executables, we'll start using end-to-end tests; i.e. tests that check the functionality from a user perspective. You can find them in <code>provided/tests/end-to-end</code>.</p>
+<p>Their workflow is rather simple: they start the executable with some parameters and check that its output is correct. The tests are written in Python using the native <code>unittests</code> library; we also provide a class <code>DKVSTests</code> with a few utilies to run a (potentially fake) executable and check its prints and return code.</p>
+<p>Again, from the <code>done/</code> directory, you can use the following <code>make</code> commands:</p>
+<ul>
+<li><code>make end2end-tests</code>: run all the end-to-end tests, stopping on the first error</li>
+<li><code>make all-end2end-tests</code>: run all the end-to-end tests, ignoring failures</li>
+</ul>
+<p>Upon failure, the test will print you a list of commands that you can use to reproduce the issue.</p>
+<h3 id="all-together">All together</h3>
+<p>On top of the <code>make</code> targets detailed above, you can use these to test everything at once:</p>
+<ul>
+<li><code>make check</code>: run all the tests, stopping on the first error</li>
+<li><code>make all-tests</code>: run all the tests, ignoring failures</li>
+</ul>
+<p>Once everything is working, we also provide a <code>make feedback</code> (<code>make feedback-VM-CO</code> if you're working on EPFL VMs) which gives <em>partial</em> feedback on your work. This is normally used for a <em>minimal</em> <strong>final</strong> check of your work. It's <strong>much better</strong> to run <strong>local</strong> tests directly on your machine beforehand (including more tests you've added yourself, if necessary) as described above.</p>
+<p>The Docker image used by <code>make feedback</code> will be tagged <code>latest</code> every week. If you want to run feedback for a specific week, change (in the <code>Makefile</code> at the line that defines <code>IMAGE</code>) this <code>latest</code> tag to <code>weekNN</code> where <code>NN</code> is the desired week number, e.g.:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>IMAGE=chappeli/cs202-feedback:week06
+</span></code></pre>
+<h2 id="v-advice">V. Advice</h2>
+<p><strong>WARNING:</strong> there are <em>many</em> possible sources of error in all these functions. You must systematically check all arguments, as well as the return values of tool functions used in a higher-level function. It's worth imagining that each function can be tested separately with "<em>bizarre</em>" inputs (which we'll do). If you have any questions, don't hesitate to ask during the exercise sessions.</p>
+<p>We strongly advise you to work regularly and systematically to make weekly tags (if your corresponding work is operational) in order to benefit from our test reports.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 21&#x2F;05&#x2F;2025</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

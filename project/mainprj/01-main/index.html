@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>DKVS: Distributed Key-Value Store --- general description | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "01 Main",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/01-main/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-hashtable/">DKVS: Distributed Key-Value Store --- Hashtables</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">DKVS: Distributed Key-Value Store --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-local-server/">DKVS: Distributed Key-Value Store --- local server (S=N=R=W=1)</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-value-process/">DKVS: Distributed Key-Value Store --- values processing</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-multiple-servers/">DKVS: Distributed Key-Value Store --- The ring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-network/">DKVS: Distributed Key-Value Store --- Network layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-quorum/">DKVS: Distributed Key-Value Store --- Quorum</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-monitoring/">DKVS: Distributed Key-Value Store --- Monitoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/08-parallel/">DKVS: Distributed Key-Value Store --- Parallelism</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>DKVS: Distributed Key-Value Store --- general description</h1>
+          
+          <h2 id="outline-of-this-document">Outline of this document</h2>
+<ol>
+<li>Project background</li>
+<li>General description</li>
+<li>Project goals</li>
+</ol>
+<h2 id="context">Context</h2>
+<p>The aim of this project is to develop a large program in C on a "system" theme. This year framework concerns "peer-to-peer" networks. More precisely, you'll have to implement a key-value associations system (hashing system) distributed over a network: a "<em>(distributed) key-value store</em>" (DKVS) or "<em>distributed hash table</em> (DHT)".
+You'll have to develop, following a step-by-step specification, a simplified version of such a system, inspired from <a href="http://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf">Amazon's Dynamo</a> (you don't have to read that paper; it's just for reference, if you're interested).<br />
+All the basic concepts required for this project are introduced here in a simple way, assuming only standard "user" knowledge of a computer system.
+If you have any doubts about terminology, the <a href="https://projprogsys-epfl.github.io/project/mainprj/01-main/#Glossary">glossary at the end of the document</a> may come in handy.</p>
+<h2 id="global-description">Global description</h2>
+<h3 id="minimal-api">Minimal API</h3>
+<p>A DKVS or DHT can be seen as a version of <a href="https://docs.oracle.com/en/java/javase/22/docs/api/java.base/java/util/Map.html">Java's Map</a> that would be made robust by its redundant distribution across multiple computers (instead of remaining locally in the memory of a single one). Such a system offers, of course, a simple user interface, very similar to an associative table (like <code>Map</code> in Java), but behind distributes the actual data storage over several servers. On the one hand, this increases data availability, since several machines have copies of the data (in case one or other machine is unavailable), and on the other, it increases total storage capacity (by adding up the capacities of all the machines involved).</p>
+<p>The minimum user interface (API) can be summarized as follows:</p>
+<pre data-lang="{.numberLines}" style="background-color:#2b303b;color:#c0c5ce;" class="language-{.numberLines} "><code class="language-{.numberLines}" data-lang="{.numberLines}"><span>put(key, value, N, W);
+</span><span>value = get(key, N, R);
+</span></code></pre>
+<p>The <code>put()</code> operation adds (or updates) data to the system by associating the value <code>value</code> with the key <code>key</code>. Such a key can then be used to retrieve the associated value by means of a <code>get()</code> operation. These operations are executed by a "client" machine, which sends the corresponding requests to "server" machines and coordinates their responses (details below). Additional parameters (<em>N</em>, <em>W</em>, and <em>R</em>, explained in more detail below) allow to configure the desired level of redundancy and balance it against the expected level of performance (robustness, access time):</p>
+<ul>
+<li><em>N</em> indicates how many servers should, in principle, store the value (i.e. the <em>maximum</em> number of servers to contact);</li>
+<li><em>W</em> (like "<strong>w</strong>rite") and <em>R</em> (like "<strong>r</strong>ead") determine the <em>minimum</em> number of servers that should respond positively to a <code>put()</code> and <code>get()</code> operation respectively.</li>
+</ul>
+<p>An appropriate choice of these values enables the global system to withstand certain server or network failures, while still allowing reasonable time performance for <code>put()</code> and <code>get()</code> operations.</p>
+<p>At the global level, in response to a <code>put()</code> or <code>get()</code> command, the "client" machine will contact between <em>W</em> or <em>R</em> and <em>N</em> "server" machines and, depending on their response (we'll explain how in detail later), will itself respond with a failure or success (consistent responses; we'll say that the <em>quorum</em> <em>W</em> or <em>R</em> has been reached).</p>
+<h3 id="examples">Examples</h3>
+<p>Let's look at a few examples (where the association between the value <code>b</code> and the key <code>a</code> is noted in a compact way as <code>a:b</code>):</p>
+<p><img src="/img/project/network-put-ok.png" alt="Example of a successful put() operation" /><br />
+<strong>Figure:</strong> <em>example of a successful <code>put()</code> operation.</em></p>
+<p>In the example illustrated above, the client executes a <code>put()</code> operation requested for <em>N</em>=3 servers, with a minimum of <em>W</em>=2 (simple quorum) in agreement. In the case illustrated, all 3 servers receive the request, store the <code>a:b</code> association and respond positively; so the client responds with a success.</p>
+<p><img src="/img/project/network-put-fault.png" alt="Example of put() operation with network failure" /><br />
+<strong>Figure:</strong> <em>example of <code>put()</code> operation with network failure.</em></p>
+<p>Suppose now (image above) that the client performs a new <code>put()</code> operation to update the previous value (replace <code>b</code> with <code>c</code>). But this time the message sent to "Server 3" is lost. The first two servers update their own association and store <code>a:c</code>, then respond positively; but "Server 3", being unaware of this, does nothing at all (keeps the <code>a:b</code> association and responds to nothing at all). At client level, however, the operation is a success, since the quorum of <em>W</em>=2 servers responding positively has been reached.</p>
+<p><img src="/img/project/network-get-ok.png" alt="Example of a successful get() operation" /><br />
+<strong>Figure:</strong> <em>example of a successful <code>get()</code> operation.</em></p>
+<p>Let's continue the example by now imagining that the client executes a <code>get()</code> operation to retrieve the value associated with the key <code>a</code>; and let's suppose that all the <em>N</em>=3 servers receive the request and respond. However, as it stands, they don't answer the same thing: one answers <code>b</code> and two answer <code>c</code>. At the client level, however, it's a success and the value <code>c</code> is returned, since it has reached the quorum of <em>R</em>=2 (the case where several different values reach the quorum will be dealt with in the corresponding detailed handout).</p>
+<p><img src="/img/project/network-get-fail.png" alt="Example of a failed get() operation" /><br />
+<strong>Figure:</strong> <em>example of a failed <code>get()</code> operation.</em></p>
+<p>To conclude this example, let's suppose that the client again executes a <code>get()</code> operation for key <code>a</code>, but that "Server 2" is unreachable. The client receives only two values: <code>b</code> and <code>c</code>, neither of which reaches quorum <em>R</em>=2. The client therefore responds with a failure. The parameters <em>N</em>=3, <em>W</em>=<em>R</em>=2 were chosen to withstand <em>one</em> error; but here we now have two (a write on "Server 3" and a read on "Server 2"), hence the failure.</p>
+<h3 id="partial-distribution-1-key-ring">Partial distribution -- (1) Key ring</h3>
+<p>The previous example illustrates a simple scenario in which <em>all</em> servers store all data. This is not realistic in practice for large data sets stored on a large number of servers. In reality, the space of possible keys is partitioned into different <em>segments</em>, each assigned to a server (a single server can be assigned to several segments; see the notion of "<em>node</em>" below). The idea is to order the space of possible keys in ascending order (this is called the "<em>key ring</em>" or "<em>ring</em>"; see illustration below), so that servers can be assigned to it, each responsible for the slice of keys up to their own node projection(s) (which are also values, in the same value-space as the keys). In this project, we'll be using the SHA-1 algorithm to represent/project the keys and the nodes in the key ring.</p>
+<p>Let's give an example: suppose for simplification that we map the keys to an integer between 0 and 255 and let's suppose we project 5 servers (A to E) as follows:</p>
+<p><img src="/img/project/dht5432-servers.png" alt="Example of 5 servers in the key ring" /><br />
+<strong>Figure:</strong> <em>example of 5 servers in the key ring.</em></p>
+<p>In reality, the SHA-1 values we're going to use to project the keys and the nodes vary between 0 and 1461501637330902918203684832716283019655932542975, which isn't easy to represent graphically...</p>
+<p>To determine which server(s) to contact for a given key, the client calculates the key's SHA-1 code (32 in this example, shown in green) and then searches in ascending order for the first matching server, i.e. the first server SHA-1 code (60 in this example):</p>
+<p><img src="/img/project/dht5432-key.png" alt="Example of key projection in the key ring" /><br />
+<strong>Figure:</strong> <em>example of key projection in the key ring.</em></p>
+<p>He then continues in ascending order until he has found <em>N</em> matching servers.</p>
+<h3 id="partial-distribution-2-nodes">Partial distribution -- (2) Nodes</h3>
+<p>So far, we haven't overemphasized the difference between <em>nodes</em> and <em>servers</em>, since each of the six nodes in the previous example corresponds to a different server. But if we simply spread <em>different</em> servers across the key ring, this can harm the efficiency of the system in practice; typically, when a server fails, it leaves a large "hole" in the key ring. For this reason, it's preferable for the same server to be distributed over different parts of the key ring. Hence the notion of "<em>node</em>": a single server (real machine) corresponds to several nodes (abstraction) in the ring. The same server continues to manage all its keys (and values) but can, thanks to the notion of "<em>node</em>", appear at several places in the key ring. A key ring node is therefore a pure abstraction, representing simply <strong>one</strong> of the possible projections of a server in the key ring.</p>
+<p>To illustrate this, let's consider that in the previous example, the letters (A-E) indeed correspond to the servers, and let's add an index to represent the nodes. For example, let's decide to have 9 nodes:</p>
+<p><img src="/img/project/dht5432.png" alt="Example position ring with 5 servers in 9 nodes" /><br />
+<strong>Figure:</strong> <em>example position ring with 5 servers in 9 nodes.</em></p>
+<p><strong>Note:</strong> the position of the nodes/servers in the ring can be quite arbitrary.<br />
+<strong>[end of note]</strong></p>
+<p>From the point of view of explaining how the client works, this changes almost nothing to what has been described above; simply, it's now possible that, for the same request, the client may actually contact the same server several times: in this case, we do <strong>not</strong> count this server several times: when searching for <em>N</em> servers, we therefore don't count the nodes coming from a server of a node already visited (in other words: we count the number of <em>different</em> servers responding to the request and not the number of nodes). This is why, in the above illustration, the search <em>N</em>=4 covers 5 nodes: node B2 is not counted, as it corresponds to a server (B) already contacted (via B1).</p>
+<p>To simplify for this project, we'll assume that the client knows the list of nodes and servers in advance (this will be a configuration file), rather than discovering them via another network protocol.</p>
+<p>A <a href="https://projprogsys-epfl.github.io/project/mainprj/01-main/#another-example">more complete example is detailed below</a>.</p>
+<h2 id="project-goals-and-organization">Project goals and organization</h2>
+<p>During the 8 weeks of this project, you will gradually implement, piece by piece, the three key components of a distributed hashing system:</p>
+<ul>
+<li>all the local work on a server (key-value storage, query responses);</li>
+<li>the <code>put()</code> operation on the client side;</li>
+<li>the <code>get()</code> operation on the client side.</li>
+</ul>
+<p>You'll also need to develop useful additional tools to observe and
+analyze the behavior of the DKVS. All these tools will be developed
+as independent programs (set of tools on the usual command line).</p>
+<p>Finally, in the last week, you will also carry out an experimental study of the impact of different parameters on system performance.</p>
+<p>To help you get organized, please also consult <a href="https://projprogsys-epfl.github.io/project/index/foreword/">the project foreword page</a> (and read it entirely).</p>
+<h2 id="data-structures-general-description">Data structures (general description)</h2>
+<p>Here is a general description of the main data structures required for this project. Details of their implementation will be given later, when necessary, in the corresponding specific handout.</p>
+<ul>
+<li><code>dksv_key_t</code>: to represent keys; typically a string;</li>
+<li><code>dksv_value_t</code>: to represent values; typically a string;</li>
+<li><code>bucket_t</code>: internal element ("<em>bucket</em>") of a local hash table (on servers);</li>
+<li><code>client_t</code>: representation of a client;</li>
+<li><code>Htable_t</code>: to store locally (on each server) the key-value associations for which it is responsible;</li>
+<li><code>node_t</code>: representation of a server (actually: a node, but the distinction won't be introduced until step 6);</li>
+<li><code>ring_t</code>: key ring: association table between positions in the ring and servers represented as a list of nodes (<code>node_t</code>).</li>
+</ul>
+<h2 id="another-example">Another example</h2>
+<p>Here is a complete example of the final version of this project. During the semester, there will be various simplified versions of this model: we'll gradually move from a very simple version to the example given here.</p>
+<p>Let's suppose we want to store string-to-string associations in a network of <em>S</em>=5 servers, to perform, for example, operations such as <code>get("my_key")</code> or <code>put("my_key", "my_value")</code>.</p>
+<p>Suppose also that (see figure below):</p>
+<ul>
+<li>the <code>Hring()</code> function for hashing keys at global level (position ring) returns values between 0 and 255;</li>
+<li>the <code>Hlocal()</code> function for hashing keys at local level (each server) returns values between 0 and 42;</li>
+<li><em>M</em> = 9 (a total of 9 nodes in the position ring);</li>
+<li><em>N</em> = 4 (read/write operations on 4 servers);</li>
+<li><em>R</em> = 2 (2 valid reads are required to retrieve a value from the network);</li>
+<li><em>W</em> = 3 (3 valid writes are required to insert a value into the network);</li>
+<li>the distribution of servers and nodes in the position ring is as follows:
+<ul>
+<li>server A: 25, 96, 170;</li>
+<li>server B: 48, 83;</li>
+<li>server C: 60, 224;</li>
+<li>server D: 128;</li>
+<li>server E: 188.</li>
+</ul>
+</li>
+</ul>
+<p>Here is a figure illustrating this architecture:</p>
+<p><img src="/img/project/dht5432.png" alt="A DKVS example with S=5, N=4, W=3 and R=2" /><br />
+<strong>Figure:</strong> <em>a DKVS example with S=5, N=4, W=3 and R=2.</em></p>
+<p>Furthermore, suppose  that:</p>
+<ul>
+<li>server B is down (it will be detected as down via a timeout);</li>
+<li><code>Hring("my_key")</code> = 32;</li>
+<li>and <code>Hlocal("my_key")</code> = 10.</li>
+</ul>
+<p>What happens with a <code>put("my_key", "my_value")</code>?</p>
+<ol>
+<li>We calculate <code>Hring("my_key")</code>, which gives 32.</li>
+<li>We try to write to N different servers in the ring, starting from 32: this gives servers B, C, A and D;<br />
+node 83 (server B) is ignored, as it corresponds to a server already under consideration (B).</li>
+<li>Since B has fallen, only writings to C, A and D do work.</li>
+<li>Since <em>W</em>=3 and 3 servers have responded positively to the write, the write is considered successful.</li>
+</ol>
+<p>In addition, on each of the servers A, C and D, the writing of the value <code>"my_value"</code> associated with the key <code>"my_key"</code> is done locally. With the choice we've made for local implementation, this is done using a (local) hash table whose hash function is <code>Hlocal()</code>.</p>
+<p>We therefore calculate <code>Hlocal("my_key")</code>, which is 10, and store the pair <code>("my_key", "my_value")</code> at position 10 of the local array.</p>
+<p>What happens next when you <code>get("my_key")</code> (while B is still down)?</p>
+<ol>
+<li>We calculate <code>Hring("my_key")</code>, which gives 32.</li>
+<li>We try to read positions from 32 on N different servers in the ring: this gives servers B, C, A and D.</li>
+<li>As B has fallen, only C, A and D respond, each with <code>"my_value"</code>.</li>
+<li>Since we have more than R=2 matching answers, we return <code>"my_value"</code>.</li>
+</ol>
+<p>What happens with <code>get("my_key")</code> if B is operational but C has fallen?</p>
+<p>Steps 1 and 2 proceed in the same way, but in step 3, B answers "anything" (either unknown, or an old value, let's assume different) and A and D each still answer "my_value". We therefore always have at least <em>R</em>=2 coherent answers, so we return <code>"my_value"</code>.</p>
+<p>What if A or D fall too?</p>
+<p>In this case, the value "my_value" will be read only once, and "anything" will be read once. No value has been read at least R times, so the global read is a failure.</p>
+<h2 id="glossary">Glossary</h2>
+<ul>
+<li>
+<p><strong>bucket</strong>: a hash table element;</p>
+</li>
+<li>
+<p><strong>client</strong>: the computer from where the distributed key-value store manipulation instructions are given;</p>
+</li>
+<li>
+<p><strong>hash function</strong>: the function that associates a key with an index to access a value stored in the hash table;<br />
+<em>Example</em>: <code>H()</code> in <code>index = H("my_key")</code>;
+we will actually have <strong>two</strong> different hash functions in this project:</p>
+<ul>
+<li>the position ring function, which transforms a key (or a node) into a ring position (integer, type <code>size_t</code>);</li>
+<li>the local hash function, local to each server, to store the values in its hash table;</li>
+</ul>
+</li>
+<li>
+<p><strong>hash table elements</strong>: sometimes called "<em>buckets</em>", the actual implementation of the content of a hash table;</p>
+</li>
+<li>
+<p><strong>index</strong>: position in a hash table local to a server; result of key hashing by the local hash function;<br />
+<em>Example</em>: <code>index = Hlocal("my_key")</code>;</p>
+</li>
+<li>
+<p><strong>key</strong>: unique identifier for a value to be stored; typically a string;<br />
+<em>Example</em>: <code>"my_key"</code> in <code>get("my_key")</code> or in <code>put("my_key", "my_value")</code>;</p>
+</li>
+<li>
+<p><strong>M</strong>: total number of nodes in the key ring;
+we must have M ≥ N;</p>
+</li>
+<li>
+<p><strong>N</strong>: maximum number of servers storing a particular key; also the maximum number of reads/writes performed for a given value (see <em>R</em> and <em>W</em>);</p>
+</li>
+<li>
+<p><strong>node</strong>: abstraction (= conceptual entity) of the key ring covering a subset of possible positions; this is an abstraction because a real server may represent several nodes (this node/server distinction allows the same server to be distributed to several different non-consecutive locations in the position ring);<br />
+<em>Example</em>: server 23 covers (= is represented by) nodes 3, 11 and 17;</p>
+</li>
+<li>
+<p><strong>position</strong>: position in the ring; result of hashing the key with the ring-specific hash function;<br />
+<em>Example</em>: <code>position = Hring("my_key")</code>;</p>
+</li>
+<li>
+<p><strong>R</strong>: (as in "<em>read</em>") number of functional servers required to retrieve a value from the network; a read operation attempts to read from <em>N</em> servers and succeeds if (at least) <em>R</em> of these reads are successful and coincide;</p>
+</li>
+<li>
+<p><strong>ring</strong>, <strong>position ring</strong>: abstraction used to map keys to servers (represented by nodes positioned on the ring); this is the same set of values as for <strong>keys</strong> (<strong>key ring</strong> and <strong>position ring</strong> are the same thing viewed differently: from the key or from the node perspective);</p>
+</li>
+<li>
+<p><strong>S</strong>: (as in "<em>server</em>") number of servers in the network;
+we must have M ≥ S ≥ N;</p>
+</li>
+<li>
+<p><strong>server</strong>: machine in the network used to physically store data; represented by one or more nodes in the position ring;</p>
+</li>
+<li>
+<p><strong>value</strong>: a value to be stored in the distributed hash table; typically a string;<br />
+<em>Example</em>: <code>"my_value"</code> in <code>put("my_key", "my_value")</code>;</p>
+</li>
+<li>
+<p><strong>W</strong>: (as in "<em>write</em>") number of functional servers required to store a value in the network; this is the minimum number of replications of each value in the network; a write operation attempts to write to N servers and succeeds if (at least) W of these writes are successful.</p>
+</li>
+</ul>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 21&#x2F;05&#x2F;2025</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

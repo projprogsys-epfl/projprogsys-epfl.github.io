@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>DKVS: Distributed Key-Value Store --- Monitoring | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/07-monitoring/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "07 Monitoring",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/07-monitoring/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-hashtable/">DKVS: Distributed Key-Value Store --- Hashtables</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">DKVS: Distributed Key-Value Store --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-local-server/">DKVS: Distributed Key-Value Store --- local server (S=N=R=W=1)</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/03-value-process/">DKVS: Distributed Key-Value Store --- values processing</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-multiple-servers/">DKVS: Distributed Key-Value Store --- The ring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-network/">DKVS: Distributed Key-Value Store --- Network layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-quorum/">DKVS: Distributed Key-Value Store --- Quorum</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/07-monitoring/">DKVS: Distributed Key-Value Store --- Monitoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/08-parallel/">DKVS: Distributed Key-Value Store --- Parallelism</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>DKVS: Distributed Key-Value Store --- Monitoring</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>The aim of this week's work is to develop a tool for dumping the current state of the ring:
+<code>dkvs-dump-ring</code> (to be created).
+The purpose of this tool is to ask each of the nodes specified in the <code>servers.txt</code> file, in their SHA-order, to send their list of key-value pairs.</p>
+<p>This command takes no input parameters (reads nothing from standard input) and first lists all nodes using <code>node_list_print()</code> (see full example at the end of this handout).
+Then, for each node, it prints the number of key-value pairs it stores (prints nothing if the node does not respond):</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>storing &lt;N&gt; key-value pairs:
+</span></code></pre>
+<p>and then it's (unsorted) list of key-value pairs:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>key1 --&gt; value1
+</span><span>key2 --&gt; value2
+</span></code></pre>
+<h2 id="i-dkvs-dump-ring">I. <code>dkvs-dump-ring</code></h2>
+<h3 id="i-1-the-big-picture">I.1 The big picture</h3>
+<p>The purpose of the <code>dkvs-dump-ring</code> tool (to be created with <code>dkvs-dump-ring.c</code>) is to display the entire key-value content of the ring.</p>
+<p>To ask a node to list its contents, we send it the special message "get empty key", i.e. we simply <code>udp_send()</code> it a 0 byte message.</p>
+<p>In response, the server will send one <strong>or more</strong> compound messages describing its contents. More details about server reply in the next section, but this means that in <code>dkvs-dump-ring</code>, contrary to <code>network_get()</code> of <code>network.c</code>, we have to deal with possibly <em>several</em> reply messages from the same server (this is actually the whole story of this week work).</p>
+<p>Concretely, here is what <code>dkvs-dump-ring</code> should do:</p>
+<ol>
+<li>
+<p>create and initialize a <code>ring_ t</code>, to be able to represent the ring;</p>
+</li>
+<li>
+<p>Print <code>"Ring nodes:"</code> and list all the nodes of the ring;</p>
+</li>
+<li>
+<p>get a communication socket;</p>
+</li>
+<li>
+<p>loop on all ring nodes to:</p>
+<ul>
+<li>send the empty (0 size) message;</li>
+<li>print an error message in case of unsuccessful sending;</li>
+<li>print the server address (using the provided <code>print_server()</code> function);</li>
+<li>print all the received message (detailed below).</li>
+</ul>
+</li>
+</ol>
+<p>Of course, all intermediate error must be properly handled, and all memory/used resources must be properly released.</p>
+<h3 id="i-2-printing-all-the-messages-from-one-server">I.2 Printing all the messages from one server</h3>
+<p>To print all the messages received from a server, we have to loop over UDP readings. But how many?<br />
+The idea here is to do <code>udp_read()</code> until we got the <code>EAGAIN</code> error in <code>errno</code> (don't forget to reset it to 0 before calling <code>udp_read()</code>). See <code>man recvfrom</code> for more details.</p>
+<p>Remember that UDP messages can only contain a maximum of <code>MAX_MSG_SIZE</code> bytes.</p>
+<p>We'd also want to check if we received a message from the right server. Use the 4th argument of <code>udp_read()</code> to check that.
+In case the message is received from another server, print it with the prefix <code>"/!\ FROM "</code>.
+For instance:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>/!\ FROM 192.168.1.12:4983: message
+</span></code></pre>
+<h3 id="i-3-optimization-don-t-contact-the-same-server-twice">I.3 Optimization: don't contact the same server twice</h3>
+<p>As you know, servers may actually be expressed as different nodes in the ring. Thus all the nodes corresponding to the same server have the same content and it is suboptimal to print it again and again.</p>
+<p>In order to avoid this, implement an optimization which consists of keeping track, in an hash-table, of the IP address and port of the nodes already printed. We'll use here the same trick as we did last week for the read quorum in <code>network_get()</code>: create an hash-table, the key of which will be their IP and port (the format is up to you) and the value of which will be a C-string of length 1, the first <code>char</code> of which simply being the (integer) value of the index (0-N) of the first corresponding node. See examples below.</p>
+<h2 id="ii-one-more-tool-for-htables">II. One more tool for Htables</h2>
+<p>In order to have the server send the content of its hash-table, we propose to add one more tool function: <code>Htable_dump()</code> (see newly provided update of <code>hashtable.h</code>).</p>
+<p>This function prints, in a buffer, <em>a part of</em> the content of the hash-table passed as its first argument, so that the resulting printing never exceeds the size indicated as its last argument. The format of for each key-value pair is:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>key --&gt; value\n
+</span></code></pre>
+<p>where <code>\n</code> indicates a newline.</p>
+<p>In order to indicate which portion of the hash-table was printed, we need two more arguments:</p>
+<ul>
+<li>input: the index (<code>from</code>) of the first bucket list to be printed</li>
+<li>output (passed by reference): the index (<code>to</code>) of the first bucket list that was <strong>not</strong>  printed.</li>
+</ul>
+<p>If <code>from</code> is <code>0</code> (which means we want to print from the beginning of the hash-table), the first thing to be printed is</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>storing &lt;N&gt; key-value pairs:\n
+</span></code></pre>
+<p>where <em>N</em> is the number of key-value pairs stored in the hash table. Pay attention to collisions and empty bucket lists!</p>
+<p>For instance, assume a hash-table that contains the following key-value association in the following bucket lists (values are of the form:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>0: key1:val1 ; key4:value444
+</span><span>1:
+</span><span>2: somekey3:a
+</span><span>3: key5:long_value
+</span><span>4: key2:value22
+</span><span>5:
+</span></code></pre>
+<p>and we call <code>Htable_dump()</code> from index <code>from</code> = 0, with a buffer of size 80.
+This first call will "return" a <code>to</code> value set to <code>3</code> and the buffer containing:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>storing 5 key-value pairs:
+</span><span>key1 --&gt; val1
+</span><span>key4 --&gt; value444
+</span><span>somekey3 --&gt; a
+</span></code></pre>
+<p>This correspond to the printing of the first two (non-empty) bucket lists (<code>0</code> and <code>2</code>; <code>1</code> is empty). It has a length of 74 characters (newlines included). Printing the next bucket list (index <code>3</code>) would require 20 more characters thus exceeding the maximum length of 79.</p>
+<p>The next call we (users) will make will thus set <code>from</code> to <code>3</code> (with the same buffer, for instance). We will then get a <code>to</code> value of <code>6</code> and the buffer containing:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>key5 --&gt; long_value
+</span><span>key2 --&gt; value22
+</span></code></pre>
+<p>(of length 37, newlines included).</p>
+<p>Since <code>6</code> equals the hash-table size, we (users) won't make any further call to <code>Htable_dump()</code>.</p>
+<p>The <code>Htable_dump()</code> function returns:</p>
+<ul>
+<li><code>ERR_INVALID_ARGUMENT</code> if <code>buffer</code> is <code>NULL</code> or <code>buffer_size</code> is <code>0</code> (see <code>hashtable.h</code>);</li>
+<li><code>ERR_RUNTIME</code> in case of unexpected internal error;</li>
+<li><code>ERR_INVALID_CONFIG</code> if it has to set <code>to</code> equal to <code>from</code> (which means it was unable to print the first required bucket list; for instance because <code>buffer_size</code> is too small to receive (the printing of) this first bucket list);</li>
+<li><code>ERR_NONE</code> otherwise (no  error).</li>
+</ul>
+<p>You're free to choose your implementation of this function.<br />
+In particular, if some of you already implemented the announced but finally not required <code>Htable_get_content()</code>, you're free to make use of it here (but this is <strong>not at all</strong> mandatory!).</p>
+<h2 id="iii-dkvs-server-update">III. <code>dkvs-server</code> update</h2>
+<p>The last remaining major step is to have the server reply to a "dump" request, i.e. to reply to a "get" with empty key, i.e. when receiving a 0-sized message.</p>
+<p>In such a case, the server calls <code>Htable_dump()</code> with the appropriate arguments, as many times as required to dump the whole content of its hash-table and sends the corresponding buffer over UDP.<br />
+Remember that UDP messages can only contain a maximum of <code>MAX_MSG_SIZE</code> bytes. It may therefore be necessary to send several consecutive messages: if a key and its value can no longer be added to the current message, they must both be included in the next UDP message; thus successive appropriate calls to <code>Htable_dump()</code>.</p>
+<p>Finally, if you didn't yet, don't allow "put" for empty keys. Simply do nothing in such a case and send 0-sized reply message (which, if you remember, does correspond to "error" reply from the server).</p>
+<h2 id="iv-get-empty-key-for-client">IV. Get empty key for client</h2>
+<p>Notice that now <code>dkvs-client</code> <code>get</code> on empty key has undefined behaviour. This is because (in order to make this project simpler) we make use of UDP and don't bother the address of the replying servers: as soon as we get 1 answer for a <code>get</code> from the ring, we take it. This is fine with all replies made of one and only one message. But now servers may send <em>several</em> messages to reply a <code>get</code> for an empty key.</p>
+<p>The simplest way to avoid this is simply to reject empty keys at the <code>dkvs-client-get</code> level, with <code>ERR_INVALID_ARGUMENT</code>.</p>
+<p>Pay attention that this will now make the <code>test_get_empty_key</code> from <code>week02.py</code> fail. This is why we provided an adapted version of it. Don't update it if you don't implement the above behaviour.</p>
+<h2 id="v-example-and-tests">V. Example and tests</h2>
+<p>To test your tool, you could make use of a <code>servers.txt</code> with several servers and several nodes per server, for instance:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>127.0.0.1 1234 1
+</span><span>127.0.0.1 1235 2
+</span><span>127.0.0.1 1236 3
+</span></code></pre>
+<p>and launch the corresponding servers, either by hand on several terminal, or using this command:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">cut -d</span><span>&#39; &#39;</span><span style="color:#bf616a;"> -f</span><span> 1-2 servers.txt | </span><span style="color:#bf616a;">sort -u </span><span>| </span><span style="color:#b48ead;">while </span><span style="color:#96b5b4;">read</span><span> line; </span><span style="color:#b48ead;">do </span><span style="color:#bf616a;">i</span><span>=$</span><span style="color:#a3be8c;">((</span><span>$</span><span style="color:#bf616a;">i </span><span>+ </span><span style="color:#d08770;">1</span><span style="color:#a3be8c;">))</span><span>; </span><span style="color:#bf616a;">./dkvs-server </span><span>$</span><span style="color:#bf616a;">line </span><span>&gt;LOG$</span><span style="color:#bf616a;">i</span><span>.txt </span><span style="color:#d08770;">2</span><span>&gt;&amp;</span><span style="color:#d08770;">1 </span><span>&amp; </span><span style="color:#b48ead;">done
+</span></code></pre>
+<p>Then populate a few, for instance:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-client put -- a b
+</span><span>./dkvs-client put -- cc dd
+</span><span>./dkvs-client put -- cc dd
+</span></code></pre>
+<p>and dump your ring:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>./dkvs-dump-ring
+</span></code></pre>
+<p>which should lead to:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>Ring nodes:
+</span><span>1bcd2db55b43d8c6b50583892f141a6bb3224c04 (127.0.0.1 1235)
+</span><span>5f26268754fcf2a51fcfacaaa2aaf4f0d83f6d67 (127.0.0.1 1236)
+</span><span>93149f866bf3acc9710375cb46706bf09960a6ab (127.0.0.1 1236)
+</span><span>aa66f3e5a8d9cdc5c0bd49708bc59847e6915634 (127.0.0.1 1234)
+</span><span>c484ea9b3b14d139b1456032a49990367b857fe6 (127.0.0.1 1235)
+</span><span>ee482fd6bcd8a1eb2a929a0d284b563404b64d19 (127.0.0.1 1236)
+</span><span>
+</span><span>127.0.0.1:1235:
+</span><span>storing 1 key-value pairs:
+</span><span>cc --&gt; dd
+</span><span>
+</span><span>127.0.0.1:1236:
+</span><span>storing 2 key-value pairs:
+</span><span>a --&gt; b
+</span><span>cc --&gt; dd
+</span><span>
+</span><span>127.0.0.1:1236: node 2 has same server as node 1
+</span><span>
+</span><span>127.0.0.1:1234:
+</span><span>storing 1 key-value pairs:
+</span><span>a --&gt; b
+</span><span>
+</span><span>127.0.0.1:1235: node 4 has same server as node 0
+</span><span>
+</span><span>127.0.0.1:1236: node 5 has same server as node 1
+</span></code></pre>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 21&#x2F;05&#x2F;2025</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

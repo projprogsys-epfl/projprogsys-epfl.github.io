@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>DKVS: Distributed Key-Value Store --- values processing | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/03-value-process/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "03 Value Process",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/03-value-process/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/foreword/">Foreword</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Project</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-hashtable/">DKVS: Distributed Key-Value Store --- Hashtables</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/01-main/">DKVS: Distributed Key-Value Store --- general description</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/02-local-server/">DKVS: Distributed Key-Value Store --- local server (S=N=R=W=1)</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/03-value-process/">DKVS: Distributed Key-Value Store --- values processing</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/04-multiple-servers/">DKVS: Distributed Key-Value Store --- The ring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/05-network/">DKVS: Distributed Key-Value Store --- Network layer</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/06-quorum/">DKVS: Distributed Key-Value Store --- Quorum</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/07-monitoring/">DKVS: Distributed Key-Value Store --- Monitoring</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/08-parallel/">DKVS: Distributed Key-Value Store --- Parallelism</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>DKVS: Distributed Key-Value Store --- values processing</h1>
+          
+          <h2 id="introduction">Introduction</h2>
+<p>The aim of this week's work is to create a series of tools for manipulating content associated with keys, such as:</p>
+<ul>
+<li>concatenate values;</li>
+<li>extract a substring from a value;</li>
+<li>search for a substring within a value.</li>
+</ul>
+<p>These tools follow the same general pattern:</p>
+<ol>
+<li>request one value (or more if needed) via its/their key;</li>
+<li>perform the necessary operations;</li>
+<li>if needed, store the result as the value of a given key.</li>
+</ol>
+<p>Examples are given below.</p>
+<p><strong>NOTE:</strong> just this once won't hurt, but the fact that we're asking you to code these tools in 3 separate source files might lead to a bit of "copy and paste" (between these files). A better alternative would have been to increase the genericity of the requested code and use pointers to functions; but in the end we didn't choose this (better) solution as it would have been too cumbersome for this project (requiring too much work in total).</p>
+<h2 id="i-dkvs-client-find">I. <code>dkvs-client find</code></h2>
+<p>The purpose of the <code>dkvs-client find</code> command (to be written in <code>dkvs-client-find.c</code>) is to return the position of a substring (value associated with a key) searched for in a value associated with (another) key. It takes two keys as arguments and returns the position of the value of the second key within the value of the first key. For instance, with the <code>fake2.h</code> fake network, which contains:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>a: hello a
+</span><span>bb: hello bb
+</span><span>ab: hello ab
+</span><span>bbb: hello bbb
+</span></code></pre>
+<p>we would have:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 find -- ab a
+</span><span style="color:#bf616a;">OK</span><span> 0
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 find -- a ab
+</span><span style="color:#bf616a;">OK -1
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 find -- ab invalid_key
+</span><span style="color:#bf616a;">FAIL
+</span><span style="color:#bf616a;">ERROR:</span><span> Not found
+</span><span style="color:#bf616a;">[+</span><span> help text]
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 find -- a
+</span><span style="color:#bf616a;">ERROR:</span><span> Invalid command
+</span><span style="color:#bf616a;">[+</span><span> help text]
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 find
+</span><span style="color:#bf616a;">ERROR:</span><span> Invalid command
+</span><span style="color:#bf616a;">[+</span><span> help text]
+</span></code></pre>
+<p>The position returned is the one furthest to the left (reading direction), starting from 0 (see example above). If the substring is not found, the returned position is -1 (see example above). Note that here (<code>dkvs-client find</code>), only <em>positive</em> positions are returned if the substring is found; thus the negative value $-1$ (the only possible negative value for return) indicates a "<em>not found</em>" (unlike the meaning of negative positions in <code>dkvs-client substr</code> below).</p>
+<p>The <code>dkvs-client find</code> command will simply reply <code>"OK position\n"</code> or <code>"FAIL\n"</code> depending on whether all the operations performed were successful and led to the <code>position</code> (including -1 when not found), or whether one of them failed. Not finding the required substring <strong>is not</strong> considered a failure, but simply returns the value -1 as the position.</p>
+<h2 id="ii-dkvs-client-substr">II. <code>dkvs-client substr</code></h2>
+<p>The purpose of the <code>dkvs-client substr</code> command (to be written in <code>dkvs-client-substr.c</code>) is to extract a substring from a value and store the result associated to a new key (or overwrite the value of an existing key). The <code>dkvs-client substr</code> command therefore takes as arguments:</p>
+<ul>
+<li>a key;</li>
+<li>a position (see details below);</li>
+<li>a length;</li>
+<li>a key;</li>
+</ul>
+<p>and:</p>
+<ol>
+<li>retrieves the value associated with the first provided key;</li>
+<li>extracts the corresponding substring as explained below;</li>
+<li>stores this substring as the (new) value associated with the second key supplied.</li>
+</ol>
+<p>For example, with the <code>fake2.h</code> fake network (more explanation below, read further):</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 substr -- bbb 2 5 new_key
+</span><span style="color:#bf616a;">[...]
+</span><span style="color:#bf616a;">bbb:</span><span> hello bbb
+</span><span style="color:#bf616a;">new_key:</span><span> llo b
+</span><span style="color:#bf616a;">--------------------------------
+</span><span style="color:#bf616a;">OK
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 substr -- bbb 0 1 new_key
+</span><span style="color:#bf616a;">[...]
+</span><span style="color:#bf616a;">bbb:</span><span> hello bbb
+</span><span style="color:#bf616a;">new_key:</span><span> h
+</span><span style="color:#bf616a;">--------------------------------
+</span><span style="color:#bf616a;">OK
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 substr -- bbb 0 9 new_key
+</span><span style="color:#bf616a;">[...]
+</span><span style="color:#bf616a;">bbb:</span><span> hello bbb
+</span><span style="color:#bf616a;">new_key:</span><span> hello bbb
+</span><span style="color:#bf616a;">--------------------------------
+</span><span style="color:#bf616a;">OK
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 substr -- bbb -1 1 new_key
+</span><span style="color:#bf616a;">[...]
+</span><span style="color:#bf616a;">bbb:</span><span> hello bbb
+</span><span style="color:#bf616a;">new_key:</span><span> b
+</span><span style="color:#bf616a;">--------------------------------
+</span><span style="color:#bf616a;">OK
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 substr -- bbb -5 4 new_key
+</span><span style="color:#bf616a;">[...]
+</span><span style="color:#bf616a;">bbb:</span><span> hello bbb
+</span><span style="color:#bf616a;">new_key:</span><span> o bb
+</span><span style="color:#bf616a;">--------------------------------
+</span><span style="color:#bf616a;">OK
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 substr -- bbb 3 new_key
+</span><span style="color:#bf616a;">ERROR:</span><span> Invalid command
+</span><span style="color:#bf616a;">[+</span><span> help text]
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 substr -- bbb 3 7 new_key
+</span><span style="color:#bf616a;">FAIL
+</span><span style="color:#bf616a;">ERROR:</span><span> Invalid command
+</span><span style="color:#bf616a;">[+</span><span> help text]
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 substr -- bbb 3 -1 new_key
+</span><span style="color:#bf616a;">FAIL
+</span><span style="color:#bf616a;">ERROR:</span><span> Invalid command
+</span><span style="color:#bf616a;">[+</span><span> help text]
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 substr -- bbb -2 3 new_key
+</span><span style="color:#bf616a;">FAIL
+</span><span style="color:#bf616a;">ERROR:</span><span> Invalid command
+</span><span style="color:#bf616a;">[+</span><span> help text]
+</span></code></pre>
+<p>The required substring is indicated by two integers: position and length. Position is measured positively from 0 in the read direction, or negatively from -1 in the reverse direction from the end of the string; length is simply the number of characters required (always greater than or equal to 0), with 0 indicating an empty string.</p>
+<p>Example illustrating all positive and negative positions (without their sign) for the word "example", then some examples of interpretation of the two parameters position and length:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>string:            example
+</span><span>positive position: 0123456
+</span><span>negative position: 7654321
+</span><span>length:            1234567
+</span><span>******************************
+</span><span>
+</span><span>position length --&gt; result
+</span><span>
+</span><span>   0 2 --&gt; ex
+</span><span>   1 1 --&gt; x
+</span><span>   4 3 --&gt; ple
+</span><span>
+</span><span>  -1 1 --&gt; e
+</span><span>  -2 2 --&gt; le
+</span><span>
+</span><span>   2 0 --&gt; &quot;&quot; (empty string)
+</span><span>  -2 0 --&gt; &quot;&quot;
+</span><span>
+</span><span>   5 3 --&gt; FAIL
+</span><span>  -1 2 --&gt; FAIL
+</span><span>   5 -3 --&gt; FAIL
+</span></code></pre>
+<p>The <code>dkvs-client substr</code> command will simply answer <code>OK\n</code> or <code>FAIL\n</code> depending on whether all the operations performed were successful or one of them failed. A length that is too long also corresponds to a failure, as shown in the example above.</p>
+<p>To handle the position and length parameters, we highly recommand you make use of the <code>atouint64()</code> function which is provided in the <strong>new</strong> version of <code>util.[ch]</code> (copy them again from <code>provided</code>).
+This function converts a string to an <code>uint64_t</code>. In case of error, it returns 0 <strong>and</strong> sets <code>errno</code> to <code>ERANGE</code> (from <code>errno.h</code>). Notice also that if the string contains a negative number (greater than <code>-UINT64_MAX</code>), it is silently converted to a positive number inside the <code>0</code>-<code>UINT64_MAX</code> range. You thus have to do a bit of arithmetics then. Pay attention not to overflow when doing so.</p>
+<p><strong>Note:</strong> the <code>dkvs-client-substr</code> command is therefore a simple way of copying a value to another key; for example:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 substr -- bbb 0 9 new_key
+</span><span style="color:#bf616a;">[...]
+</span><span style="color:#bf616a;">bbb:</span><span> hello bbb
+</span><span style="color:#bf616a;">new_key:</span><span> hello bbb
+</span><span style="color:#bf616a;">--------------------------------
+</span><span style="color:#bf616a;">OK
+</span></code></pre>
+<p>Notice also that you can overwrite the same key:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 substr -- bbb 1 4 bbb
+</span><span style="color:#bf616a;">[...]
+</span><span style="color:#bf616a;">ab:</span><span> hello ab
+</span><span style="color:#bf616a;">bbb:</span><span> ello
+</span><span style="color:#bf616a;">--------------------------------
+</span><span style="color:#bf616a;">OK
+</span></code></pre>
+<h2 id="iii-dkvs-client-cat">III. <code>dkvs-client cat</code></h2>
+<p>The purpose of the <code>dkvs-client cat</code> command (to be written in <code>dkvs-client-cat.c</code>) is to concatenate the values of several keys and store the result under a new key (or overwrite the value of an existing key). For example, with the <code>fake2.h</code> fake network:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 cat -- ab bbb new_key
+</span><span style="color:#bf616a;">[...]
+</span><span style="color:#bf616a;">new_key:</span><span> hello abhello bbb
+</span><span style="color:#bf616a;">--------------------------------
+</span><span style="color:#bf616a;">OK
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 cat -- bbb ab a ab new_key
+</span><span style="color:#bf616a;">[...]
+</span><span style="color:#bf616a;">new_key:</span><span> hello bbbhello abhello ahello ab
+</span><span style="color:#bf616a;">--------------------------------
+</span><span style="color:#bf616a;">OK
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 cat -- bbb ccc new_key
+</span><span style="color:#bf616a;">[...]
+</span><span style="color:#bf616a;">FAIL
+</span><span style="color:#bf616a;">ERROR:</span><span> Not found
+</span><span style="color:#bf616a;">[+</span><span> help text]
+</span></code></pre>
+<p>The <code>dkvs-client cat</code> command therefore takes one or more existing keys as input, performs as many "<em>get</em>" operations to obtain the corresponding values and concatenates them, without any separator character, to finally store this result as the value associated with the key received as the last parameter (see examples above).</p>
+<p>This command will simply answer "OK" or "FAIL" depending on whether all the operations performed were successful or one of them failed (see example above).</p>
+<p><strong>Note:</strong> this command can also be used to simply copy a value to another key (existing or not), for example:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 cat -- ab bbb
+</span><span style="color:#bf616a;">[...]
+</span><span style="color:#bf616a;">ab:</span><span> hello ab
+</span><span style="color:#bf616a;">bbb:</span><span> hello ab
+</span><span style="color:#bf616a;">--------------------------------
+</span><span style="color:#bf616a;">OK
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> ./fake-dkvs-client-2 cat -- ab new_key
+</span><span style="color:#bf616a;">[...]
+</span><span style="color:#bf616a;">ab:</span><span> hello ab
+</span><span style="color:#bf616a;">bbb:</span><span> hello bbb
+</span><span style="color:#bf616a;">new_key:</span><span> hello ab
+</span><span style="color:#bf616a;">--------------------------------
+</span><span style="color:#bf616a;">OK
+</span></code></pre>
+<h2 id="iv-testing-and-debugging">IV. Testing and debugging</h2>
+<p>As usual, we provide you with a few tests, only end-to-end tests this time, in <code>provided/tests/end-to-end</code>. We still strongly recommend you to add your own tests <strong>after copying them into your <code>done/</code> directory</strong>.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 21&#x2F;05&#x2F;2025</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

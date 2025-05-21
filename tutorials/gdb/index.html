@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Utilisation du débogueur gdb | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/tutorials/gdb/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Tutorials",
+            "item": "https://projprogsys-epfl.github.io/tutorials/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Gdb",
+            "item": "https://projprogsys-epfl.github.io/tutorials/gdb/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+    
+  
+
+<body class="page single">
+  
+    
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+  
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xxl-8">
+        <article>
+          <div class="page-header">
+            <h1>Utilisation du débogueur gdb</h1>
+          </div>
+          
+          <p>Un débogueur est un programme qui permet de suivre le déroulement d'un autre programme, de l'arrêter, d'ausculter l'état de la mémoire (valeur de variables par exemple), etc. ; ce qui est particulièrement utile pour rechercher des erreurs de programmation.</p>
+<p>Nous expliquons ici les bases de l'utilisation d'un débogueur à l'aide du débogueur <code>gdb</code> à la ligne de commande, mais vous pouvez bien sûr utiliser des versions avec interface graphique, souvent intégrées dans les IDE ; les principes de base restent les mêmes ; en salles CO, vous avez par exemple <code>ddd</code> ou le module <code>debuger</code> intégré dans <code>Geany</code> pour lequel vous pouvez trouver un tutoriel <a href="http://progsv.epfl.ch/www/series/serie12-0.php">là-bas</a> (<strong>attention !</strong> il s'agit d'un <em>autre</em> cours) ; pour d'autres GUI voir <a href="https://sourceware.org/gdb/wiki/GDB%20Front%20Ends">ce lien</a>, parmi lesquelles nous vous recommandons gdbgui (<a href="https://gdbgui.com/">site officiel</a> ; <a href="https://github.com/cs01/gdbgui/">site GitHub</a>).</p>
+<p>Vous pouvez aussi utiliser un autre débuger, comme par exemple <a href="http://lldb.llvm.org/"><code>lldb</code></a> ; là aussi, les principes de base restent les mêmes. La correspondance entre les commandes <code>gdb</code> et <code>lldb</code> <a href="http://lldb.llvm.org/lldb-gdb.html">se trouve ici</a>.</p>
+<p><strong>NOTE pour macOS :</strong>  depuis OS X 10.9, Apple est passé à LLVM ; il n'y a donc plus <code>gdb</code> de base. Si vous êtes sur Mac, vous avez alors deux options :</p>
+<ol>
+<li>
+<p>soit utiliser <code>lldb</code> ;</p>
+</li>
+<li>
+<p>soit installer <code>gdb</code> (via <code>brew</code>) <strong>et</strong> le signer ;<br />
+OS X a un mécanisme de contrôle d'accès aux autres processus qui nécessite un binaire signé (ce qui est nécessaire pour un débuggeur) ;<br />
+pour signer le binaire <code>gdb</code> après son installation, il faut suivre les instructions qu'on peut trouver sur Internet ; par exemple :</p>
+</li>
+</ol>
+<ul>
+<li>https://sourceware.org/gdb/wiki/PermissionsDarwin
+L'étape de création du certificat « <code>gdb-entitlement.xml</code> » est nécessaire pour les Mac avec système d'exploitation Big Sur.</li>
+</ul>
+<h2 id="video-tutorial">Video Tutorial</h2>
+<p>Avant de lire la suite, nous vous proposons en guise d'introduction de regarder un tutoriel vidéo de 23 minutes, crée par Chris Bourke et disponible <a href="https://www.youtube.com/watch?v=bWH-nL7v5F4">sur Youtube</a>. Ce tutoriel explique comment trouver des erreurs dans du code en utilisant le débogueur <code>gdb</code>. La plupart des notions évoquées dans cette vidéo sont ensuite reprise pas à pas dans la suite de ce tutoriel.</p>
+<p>Quelques remarques pour vous faciliter la comprehension de ce tutoriel vidéo :</p>
+<ul>
+<li>
+<p>À <strong>1:08</strong>, Chris dit que le débogueur, dans son exemple, se lance avec la commande suivante : <code>gdb a.out</code>. Il faut remarquer que, pour vous, <code>a.out</code> devrait être remplacé par le nom de votre programme (executable).</p>
+</li>
+<li>
+<p>À <strong>1:14</strong>, il faut (temporairement) ignorer l'histoire d'arguments du programme. Vous verrez ca plus tard dans le cours.</p>
+</li>
+<li>
+<p>À <strong>2:34</strong>, il lance le programme avec la commande <code>./a.out</code>. Ici aussi, utilisez le nom de votre programme (executable) à la place de <code>a.out</code>.</p>
+</li>
+<li>
+<p>Jusqu'à <strong>16:17</strong>, tout devrait être assez clair (sauf les arguments du programme en 1:14, comme dit ci-dessus). À partir de là, il utilise des notions de C non encore vues en cours. Vous pouvez donc arrêter ici cette vidéo et y revenir plus tard, ou continuer à la regarder pour voir comment utiliser <code>gdb</code> mais sans chercher à comprendre en profondeur les problèmes de C qui sont évoqués :</p>
+<ul>
+<li>De <strong>16:17</strong> à <strong>21:10</strong>, il montre comment corriger des erreurs liées aux arguments du programme. Ceux-ci seront abordés en semaine 10 du cours, mais les erreurs illustrées ici pourraient très bien avoir lieu sur d'autres variables ou tableaux.</li>
+<li>À <strong>21:10</strong>, il corrige une erreur liée à l'allocation (dynamique) de la mémoire, un concept qui sera vu en semaine 6 du cours.</li>
+</ul>
+</li>
+</ul>
+<p>Vous êtes maintenant prêts à lire et suivre les instructions et explications ci-dessous.</p>
+<h2 id="ajouter-les-informations-lors-de-la-compilation">Ajouter les informations lors de la compilation</h2>
+<p>La première chose à faire pour pouvoir utiliser un débogueur est de demander au compilateur de mettre des informations supplémentaires dans le programme afin de permettre au débogueur de se repérer. Cela se fait en ajoutant l'option <code>-g</code> lors de la compilation. Par exemple :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -g -o mon_programme mon_programme.c
+</span></code></pre>
+<p>Compilez de la sorte un des programmes fournis ; p.ex. :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -g -std=c99 -o ex1 ex1.c
+</span></code></pre>
+<p>ou</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gcc -g -std=c99 -o stats stats.c -lm
+</span></code></pre>
+<p><strong>NOTE :</strong> nous utiliserons pour ce cours la norme C99 ; pour certains compilateurs, la compilation peut alors nécessiter l'ajout de l'option <code>-std=c99</code> comme indiqué ci-dessus. Vous pouvez bien sûr aussi utiliser des normes plus récentes (p.ex. <code>-std=c17</code>).</p>
+<h2 id="lancer-le-debogueur-et-l-execution-du-programme">Lancer le débogueur et l'exécution du programme</h2>
+<p>Ensuite, on peut exécuter le programme <em>dans</em> le débogueur. On lance pour cela le débogueur avec comme argument le programme à déboguer ; p.ex. :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gdb ./ex1
+</span></code></pre>
+<p>ou</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gdb ./stats
+</span></code></pre>
+<p>On se retrouve dans le débogueur (c'est ici un interpréteur de commandes), dans lequel on ne voit pas grand chose pour le moment. Pour voir le code, tapez</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>layout src
+</span></code></pre>
+<p>Le code ne s'affiche pas encore car <code>gdb</code> n'a pas encore lancé notre programme.
+Lancez simplement son exécution avec la commande :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>run
+</span></code></pre>
+<p>Le programme se déroule alors normalement (on peut déjà remarquer l'un ou l'autre bugs <code>;-)</code>. Tapez <code>Ctrl-C</code> pour l'arrêter quand vous en avez assez).</p>
+<p>Tapez</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>quit
+</span></code></pre>
+<p>pour quitter le débogueur.</p>
+<h2 id="points-d-arret">Points d'arrêt</h2>
+<p>Si ce n'est pas déjà fait, ouvrez le code <code>stats.c</code> dans un éditeur pour voir de quoi il s'agit.<br />
+Le but de ce programme est de calculer la moyenne et l'écart-type (non biaisé) de l'âge d'un ensemble de 1 à 1024 personnes.</p>
+<p>Vous voyez au début du programme une variable <code>nb_people</code> qui est lue au clavier à la ligne 22. Utilisons le débogueur pour aller voir la valeur lue.
+Pour cela, relancez le débogueur sur notre programme :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gdb ./stats
+</span></code></pre>
+<p>puis</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>layout src
+</span></code></pre>
+<p>Mais cette fois, ajoutons un « point d'arrêt » (<em>breakpoint</em>) avant de lancer l'exécution. Cela se fait à l'aide de la commande <code>break</code> :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>break 22
+</span></code></pre>
+<p><strong>NOTE :</strong> pour en savoir plus sur cette commande, vous pouvez taper :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>help break
+</span></code></pre>
+<p>Vous verrez alors que l'on peut non seulement indiquer des numéros de ligne, mais aussi des noms de fonctions (entre autres).<br />
+On peut par ailleurs mettre autant de point d'arrêt que l'on veut.</p>
+<p>Une fois le point d'arrêt placé, lancer l'exécution :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>run
+</span></code></pre>
+<h2 id="voir-la-valeur-de-variables">Voir la valeur de variables</h2>
+<p>Cette fois le débogueur arrête l'exécution du programme à la ligne 22 et vous l'indique.
+Vous pouvez à ce stade donner des commandes au débogueur comme voir la valeur d'une variable, avancer d'un pas l'exécution du programme, continuer l'exécution ou ajouter un autre point d'arrêt.<br />
+Commençons par regarder la valeur de la variable <code>nb_people</code> :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>print nb_people
+</span></code></pre>
+<p>vous affiche le résultat :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>$1 = 0
+</span></code></pre>
+<p>(<code>$1</code> veut simplement dire que c'est la première expression que vous avez demandé qui est ici affichée).</p>
+<p><strong>NOTE :</strong> toutes les commande <code>gdb</code> peuvent être abrégées tant qu'elles ne sont pas ambiguës. Ici, on aurait donc simplement pu entrer :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>p nb_people
+</span></code></pre>
+<p>A noter aussi qu'on a la complétion automatique avec la touche <code>TAB</code>. Essayez :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>p nb_&lt;TAB&gt;
+</span></code></pre>
+<p>Mais il reste néanmoins fastidieux de toujours avoir à retaper des commandes <code>print</code> utiles. Il existe deux moyens d'éviter cela :</p>
+<ol>
+<li><code>gdb</code> garde toutes les commandes en mémoire ; il suffit donc de naviguer dans l'historique avec les flèches (Haut et Bas) pour retrouver une commande déjà entrée ;</li>
+<li>la commande <code>display</code> affiche automatiquement l'expression demandée à chaque arrêt du débogueur (si tant est que l'expression fait sens à l'endroit de l'arrêt).</li>
+</ol>
+<p>Essayons la commande <code>display</code> (on verra mieux son effet dans un instant) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>display nb_people
+</span></code></pre>
+<h2 id="execution-pas-a-pas">Exécution pas à pas</h2>
+<p>Essayons maintenant de continuer l'exécution.<br />
+Si vous ne savez plus où vous en êtes dans le programme, la commande :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>where
+</span></code></pre>
+<p>vous l'indiquera (ici : dans la fonction <code>main()</code> à la ligne 22 du programme <code>stats.c</code>).</p>
+<p><strong>NOTE :</strong> <code>where</code> est en fait un alias pour <code>backtrace</code> ou <code>bt</code>, qui sont aussi souvent utilisés.</p>
+<p>Pour avancer d'un pas, tapez :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>next
+</span></code></pre>
+<p>Le débogueur exécute alors le <code>scanf</code>. C'est pour cela que vous avez le texte de la question qui apparaît.<br />
+Répondez-y.</p>
+<p>Le débogueur vous indique alors s'être arrêté à la ligne 26 (vu qu'il n'y a pas de code aux lignes 23 à 25).<br />
+La commande <code>next</code> n'exécute en effet qu'une seule ligne du programme.<br />
+Si l'on avait voulu continuer l'exécution sans ne plus s'arrêter (en fait : continuer jusqu'au prochain point d'arrêt, mais comme nous n'en avons pas d'autre...), on aurait utilisé la commande (<strong>ATTENTION !</strong> <strong>NE</strong> le faites <strong>PAS</strong> ici) :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cont
+</span></code></pre>
+<p>Vous pouvez également remarquer qu'en plus de la ligne 26, le débogueur vous a affiché la nouvelle valeur (celle saisie) de la variable <code>nb_people</code>. C'est le résultat de votre <code>display</code> précédent. Sans cette commande <code>display</code>, la nouvelle valeur n'aurait pas été affichée et il vous aurait fallu entrer un nouveau <code>print</code> pour la voir.</p>
+<p><strong>REMARQUES :</strong></p>
+<ol>
+<li>
+<p><code>next</code> peut s'abréger <code>n</code> ;</p>
+</li>
+<li>
+<p>si l'on entre aucune commande, c'est simplement la commande précédente qui s'applique à nouveau ; cela est particulièrement pratique avec <code>next</code> : il suffit d'appuyer ensuite sur Enter plusieurs fois pour avancer pas à pas ;</p>
+</li>
+<li>
+<p><code>next</code> peut être complété d'un nombre de répétitions :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> next 8
+</span></code></pre>
+<p>fera par exemple 8 fois <code>next</code> ;<br />
+<code>next</code> tout seul est donc la même chose de <code>next 1</code> ;</p>
+</li>
+</ol>
+<h2 id="next-et-step">next et step</h2>
+<p>Une confusion fréquente lors de la prise en main de débogueur est celle entre <code>next</code>
+et <code>step</code> :</p>
+<ul>
+<li><code>next</code> passe à l'expression suivante en restant au <em>même</em> niveau ; <strong>sans</strong> rentrer dans les sous-routines (= appel de fonctions) ;</li>
+<li><code>step</code> passe à la prochaine expression à évaluer, où qu'elle soit ; <strong>même</strong> si celle-ci est dans une sous-routine (et même si ce n'est pas une sous-routine à nous).</li>
+</ul>
+<p>Illustrons cela en ajoutant un point d'arrêt supplémentaire un peu plus loin :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>break 42
+</span></code></pre>
+<p>et continuez l'exécution jusque là-bas avec un simple :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cont
+</span></code></pre>
+<p>(répondez normalement aux questions).</p>
+<p>Arrivé à la ligne 42, tapez</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>next
+</span></code></pre>
+<p>pour continuer. Vous voyez que la ligne 42 est exécutée et que l'on passe à la ligne 43.</p>
+<p>Reprenons l'exemple en relançant l'exécution depuis le début :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>run
+</span><span>y
+</span></code></pre>
+<p>Le débogueur arrête à nouveau l'exécution à la ligne 22. Comme cela ne nous intéresse plus, supprimons ce point d'arrêt :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>info br
+</span></code></pre>
+<p>nous montre qu'il s'agit du point d'arrêt numéro 1 ; que l'on supprime :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>delete 1
+</span></code></pre>
+<p>Puis l'on continue l'exécution :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cont
+</span></code></pre>
+<p>jusqu'à la ligne 42.</p>
+<p>Si l'on tape maintenant <code>step</code> au lieu de <code>next</code>, on passe à la ligne...<br />
+...28 ? [<strong>Note :</strong> cela ne fonctionne pas sur macOS sur cet exemple (<code>printf</code>), mais fonctionnera avec vos propres fonctions.]</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>__printf (format=0x40094d &quot;\nMoyenne    : %g\n&quot;) at printf.c:28
+</span><span>28      printf.c: No such file or directory.
+</span></code></pre>
+<p>Oui, 28 ! Mais pas de notre programme ; la ligne 28 de <code>printf.c</code> qui est le fichier qui a été compilé (il y a bien longtemps) pour donner le code de <code>printf</code> dans la bibliothèque C !<br />
+Et auquel nous n'avons pas accès (il n'est certainement pas sur votre ordinateur).</p>
+<p>Que s'est il passé ?</p>
+<p>Avec le <code>step</code>, nous sommes passés à la prochaine instruction C, qui se trouve en fait être à l'intérieur de <code>printf</code> lui-même (il a bien fallu l'écrire !!).</p>
+<p>Essayez encore quelques <code>step</code> (au moins 7). Vous voyez que l'on « s'enfonce » dans la bibliothèque C...<br />
+Un</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>where
+</span></code></pre>
+<p>après plus de 7 step est d'ailleurs intéressant :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>#0  _IO_vfprintf_internal (s=0x7ffff7ad1740 &lt;_IO_2_1_stdout_&gt;, format=0x40094d &quot;\nMoyenne    : %g\n&quot;, ap=ap@entry=0x7fffffffdcc8) at vfprintf.c:1278
+</span><span>#1  0x00007ffff7781209 in __printf (format=&lt;optimized out&gt;) at printf.c:33
+</span><span>#2  0x0000000000400839 in main () at stats.c:42
+</span></code></pre>
+<p>Nous sommes dans une fonction <code>_IO_vfprintf_internal</code> qui a elle-même été appelée par une fonction <code>__printf</code> que nous avons appelée depuis la ligne 42 de notre programme.<br />
+Ca commence à ressembler aux messages d'exceptions de Java <code>;-)</code> !</p>
+<p>Comme on est perdu, terminons l'exécution du programme (et ce tutoriel) avec un simple</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cont
+</span></code></pre>
+<h2 id="annexe-1-liste-des-commandes-vues-dans-ce-tutoriel">Annexe 1 : liste des commandes vues dans ce tutoriel</h2>
+<ul>
+<li>
+<p><code>layout src</code></p>
+</li>
+<li>
+<p><code>run</code> ou <code>r</code></p>
+</li>
+<li>
+<p><code>help</code></p>
+</li>
+<li>
+<p><code>break NUMERO_DE_LIGNE</code> ou <code>br NUMERO_DE_LIGNE</code></p>
+</li>
+<li>
+<p><code>break NOM_DE_FONCTION</code> ou <code>br NOM_DE_FONCTION</code></p>
+</li>
+<li>
+<p><code>delete</code></p>
+</li>
+<li>
+<p><code>info br</code></p>
+</li>
+<li>
+<p><code>where</code> ou <code>bt</code> (ou <code>backtrace</code>)</p>
+</li>
+<li>
+<p><code>print</code> ou <code>p</code></p>
+</li>
+<li>
+<p><code>display</code></p>
+</li>
+<li>
+<p><code>cont</code> ou <code>c</code></p>
+</li>
+<li>
+<p><code>next</code> ou <code>n</code></p>
+</li>
+<li>
+<p><code>step</code> ou <code>s</code></p>
+</li>
+</ul>
+<h2 id="annexe-2-deboguer-un-programme-multi-process">Annexe 2 : déboguer un programme multi-process</h2>
+<p>Plus tard dans le projet, vous utiliserez peut être des tests unitaires avec la bibliothèque <code>check</code>. Mais ces tests unitaires se lancent un nouveau sous-processus par test (<code>fork()</code>) et c'est donc plus difficile à suivre. Si vous souhaitez debogguer avec <code>gdb</code> ces programmes de tests-unitaires, voici quelques compléments :</p>
+<ol>
+<li>
+<p>entrez ces options dans <code>gdb</code> :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> set follow-fork-mode child
+</span><span> set detach-on-fork off
+</span></code></pre>
+</li>
+<li>
+<p>suivez dans quel sous-processus vous êtes avec la commande :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> info infe
+</span></code></pre>
+</li>
+<li>
+<p>changez de processus avec <code>infe</code> suivi d'un numéro (tel qu'indiqué par <code>info infe</code>) ; p.ex. :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span> infe 1
+</span></code></pre>
+</li>
+<li>
+<p>ne mettez pas de breakpoints sur le code des <code>unit-test-*</code> eux-mêmes (car ils sont écrit avec des macros en fait), mais sur du « vrai » code C, soit celui des fonctions-outils utilisées pour ces tests, soit carrément sur votre propre code à vous.</p>
+</li>
+</ol>
+<p>Exemple :</p>
+<p>Supposons que ce soit dans le 5e test que vous ayez des problèmes. Ce sera donc le 5e sous-processus qui vous intéresse.</p>
+<p>Commencez alors comme d'habitude par lancer le débogueur sur le programme de tests-unitaires :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>gdb ./unit-test-machin
+</span></code></pre>
+<p>Ajoutez les options suggérées :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>set follow-fork-mode child
+</span><span>set detach-on-fork off
+</span></code></pre>
+<p>Mettez le breakpoint à l'endroit qui vous intéresse, p.ex. ici sur une fonction <code>fait_machin_truc()</code> :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>break fait_machin_truc
+</span></code></pre>
+<p>Et lancez l'exécution dans le débogueur :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>run
+</span></code></pre>
+<p><code>gdb</code> s'arrêtera au premier break (ou alors au premier crash <code>;-)</code>).<br />
+On regarde où l'on se situe :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>info infe
+</span></code></pre>
+<p>On est p.ex. dans le 2e processus, c.-à-d. dans le 1er test (car le processus 1, c'est le <code>main()</code> et les tests créent un sous-processus à chaque fois) ; ce n'est pas celui-ci qui nous intéresse, donc on continue :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cont
+</span></code></pre>
+<p><code>gdb</code> nous dit alors, par exemple, que le 2e process (« <code>Inferior 2</code> ») est fini, mais il s'y trouve encore (faites « <code>info infe</code> » pour voir). Il faut donc ramener <code>gdb</code> au process père :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>infe 1
+</span></code></pre>
+<p>et on continue :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>cont
+</span></code></pre>
+<p>Il nous arrête à nouveau au breakpoint. On regarde à nouveau où l'on est :</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>info infe
+</span></code></pre>
+<p>...Et on continue comme ça jusqu'au breakpoint qui nous intéresse.
+Là on peut faire des <code>next</code>, <code>display</code>, <code>print</code> etc. comme d'habitude.</p>
+<p>On peut comme celà « se promener » de processus en processus (<code>infe &lt;numero&gt;</code>) et savoir où on est (<code>info infe</code>).<br />
+Avec un peu d'habitude on arrive à s'y retrouver <code>;-)</code></p>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 21&#x2F;05&#x2F;2025</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>
