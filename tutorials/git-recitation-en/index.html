@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Git Tutorial | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/tutorials/git-recitation-en/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Tutorials",
+            "item": "https://projprogsys-epfl.github.io/tutorials/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Git Recitation En",
+            "item": "https://projprogsys-epfl.github.io/tutorials/git-recitation-en/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+    
+  
+
+<body class="page single">
+  
+    
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+  
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xxl-8">
+        <article>
+          <div class="page-header">
+            <h1>Git Tutorial</h1>
+          </div>
+          
+          <!-- Authors:
+         Jonas Wenger (jonas.wenger@epfl.ch)
+         J.-C. Chappelier (jean-cedric.chappelier@epfl.ch)
+-->
+<h2 id="getting-started">Getting Started</h2>
+<p>The first thing to do before using <code>git</code> is to configure it.
+This only needs to be done once.</p>
+<p>In the command line, type the following code, line by line, replacing <code>#&lt;XXXX&gt;#</code> with your personal information:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git config --global user.name #&lt;A USERNAME&gt;#</span></span>
+<span class="giallo-l"><span>git config --global user.email #&lt;YOUR EPFL EMAIL&gt;#</span></span></code></pre>
+<p>Next, if you like color in the terminal, you can add:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git config --global color.diff auto</span></span>
+<span class="giallo-l"><span>git config --global color.status auto</span></span>
+<span class="giallo-l"><span>git config --global color.branch auto</span></span></code></pre>
+<p>Let's also add some aliases. To do this, create/edit a <code>~/.gitconfig</code> file
+(i.e., a file named ".gitconfig" in the root of your home directory.<br />
+On CO machines, don't forget to to copy it to your <code>myfiles</code> directory in order not to loose once logged off).<br />
+Add the following lines to it:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>[alias]</span></span>
+<span class="giallo-l"><span>    lg = log --graph --abbrev-commit --decorate --date=relative --format=format:&#39;%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)&#39; --all</span></span>
+<span class="giallo-l"><span>    glog = log --graph --decorate --oneline --all</span></span>
+<span class="giallo-l"><span>unstage = reset HEAD --</span></span>
+<span class="giallo-l"><span>    last = log -1 HEAD</span></span></code></pre><h2 id="basic-concepts">Basic Concepts</h2>
+<p>Before diving into using <code>git</code>, you need to understand its purpose and logic:</p>
+<ul>
+<li>
+<p>the goal is to collaborate on some shared content and to archive different versions of it (<code>git</code> is a "version control system");</p>
+</li>
+<li>
+<p>the key idea is to have <strong>three</strong> abstraction levels:</p>
+<ol>
+<li>a shared reference repository (called a "repo" or "main server");</li>
+<li>a local repository specific to each user, serving as a local reference (which you don't see);</li>
+<li>a local <em>working</em> directory where you can make and undo changes without any consequence as long as you haven't <em>committed</em> them to level 2; this is the directory you've cloned or will clone with <code>git clone</code> and where you'll be working (each of you).</li>
+</ol>
+</li>
+</ul>
+<p>Level 2 is actually quite "abstract" in the sense that you don't see it concretely; it is entirely managed by <code>git</code> commands.</p>
+<p>To move something from level 1 to levels 2 and 3 at the same time (i.e., retrieve something made available by others on the main server), you use (all these commands are detailed below; here we're focusing on the <em>concepts</em>):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git pull</span></span></code></pre>
+<p>I recommend doing this fairly regularly and, in any case, always <strong>before</strong> your <code>commit</code>/<code>push</code> (explained below).</p>
+<p>To commit something locally, i.e., move from level 3 to level 2 only:</p>
+<ul>
+<li>
+<p>either, to commit a new version of an existing file:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>  git commit -m &quot;MESSAGE&quot; FILE</span></span></code></pre>
+<p>be sure to include a relevant message each time;</p>
+<p>e.g., to commit a new version of the <code>core.c</code> file:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>  git commit -m &quot;fixed calculation bug&quot; core.c</span></span></code></pre></li>
+<li>
+<p>or, to add a new file (all of this is explained in details below):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>  git add FILE</span></span>
+<span class="giallo-l"><span>  git commit -m &quot;added EXPLANATION&quot;</span></span></code></pre>
+<p>e.g., to add the new file <code>io.c</code>:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>  git add io.c</span></span>
+<span class="giallo-l"><span>  git commit -m &quot;added input/output&quot;</span></span></code></pre>
+<p><strong>Note:</strong> There is no need to repeat the filename in the <code>commit</code> following one or more <code>add</code> commands; this actually allows you to add multiple files at once; for example:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>  git add io_core.c</span></span>
+<span class="giallo-l"><span>  git add io_errors.c</span></span>
+<span class="giallo-l"><span>  git add io.h</span></span>
+<span class="giallo-l"><span>  git commit -m &quot;adding input/output&quot;</span></span></code></pre></li>
+</ul>
+<p>To push your local changes to the repository, i.e., move from level 2 to level 1:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git push</span></span></code></pre>
+<p>We therefore emphasize that to publish a local change to everyone, you must do <strong>TWO</strong> things:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git commit</span></span></code></pre>
+<p><strong>then</strong></p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git push</span></span></code></pre>
+<p>Let's go over all of this (and more) in details.</p>
+<h2 id="git-keeps-all-successive-states-snapshots">Git keeps all successive states (snapshots)</h2>
+<p>Let's look at the first principle of <code>git</code>: archiving the work done.<br />
+To do this, create a directory and go into it:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>mkdir alice</span></span>
+<span class="giallo-l"><span>cd alice</span></span></code></pre>
+<p>Add a file to it:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>echo &quot;This is a README file&quot; &gt; README.md</span></span></code></pre>
+<p>then archive the current state of this directory in <code>git</code>:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git add .</span></span>
+<span class="giallo-l"><span>git commit -m &quot;Initial commit: README&quot;</span></span></code></pre>
+<ul>
+<li>
+<p><code>git add</code> allows you to propose (without yet confirming) a change;<br />
+here we added the entire current directory using its short name: "
+<code>.</code>", but we could also have added just one file, for example:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>  git add README.md</span></span></code></pre>
+<p>We <strong>DO NOT RECOMMEND</strong> using <code>git add .</code>, as this often adds a lot of unwanted items: <em>all</em> files in the current directory, including temporary files, drafts, etc.</p>
+<p>We also recommend running <code>git status</code> <strong>BEFORE</strong> performing your <code>git commit</code> to carefully <em>verify</em> what you are adding.</p>
+</li>
+<li>
+<p><code>git commit</code> confirms the (local) saving of the proposed changes;<br />
+it is <strong>strongly recommended</strong> (if not mandatory <code>;-)</code>) to comment on your changes by adding a message to the <code>commit</code>; this is what the <code>-m</code> option does.</p>
+</li>
+</ul>
+<p>If something has been modified, Git can tell you:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>echo &quot;A second line for the README&quot; &gt;&gt; README.md</span></span>
+<span class="giallo-l"><span>git status</span></span></code></pre>
+<p>We could propose adding this new change for a future <code>commit</code>:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git add README.md</span></span></code></pre>
+<p>This two-steps (and later three-steps, as we'll see in a moment) process may seem tedious, but it's a good <em>safety net</em> against mistakes and a good way to do things little by little, one at a time.</p>
+<p>Once you're ready to save (locally) your changes, make a <code>commit</code>...<br />
+...without forgetting to add a <em>relevant</em> comment with <code>-m</code>:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git commit -m &quot;Adding a second line to the README file&quot;</span></span></code></pre>
+<p>With Git, you can view all the saved states (snapshots) and even
+move from one to another (but this is more advanced and you
+shouldn't need it):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git log</span></span></code></pre>
+<p>or:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git lg  # if you defined the alias earlier...</span></span></code></pre>
+<p>To switch (used here for illustration purposes, but it's not necessary to understand this part for this course):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git checkout 5d340  # Choose an APPROPRIATE commit number here, an older one</span></span>
+<span class="giallo-l"><span>cat README.md</span></span></code></pre>
+<p>Notice that this is an older version.
+Let's return to the current state:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git checkout master</span></span>
+<span class="giallo-l"><span>cat README.md</span></span></code></pre>
+<p>You now understand the concept of Git snapshots, and thus the difference between the current working directory and the repository.</p>
+<p>The second concept you need to understand is that there are <strong>TWO</strong> repositories.<br />
+Git allows multiple people to work together (see next section) and uses <strong>two</strong> different repositories for this:</p>
+<ul>
+<li>a local repository, which we have been using so far;</li>
+<li>a global repository, on the chosen Git server, where everyone working on the same project will merge their changes.</li>
+</ul>
+<p>To "push" your locally saved changes (with <code>commit</code>) to the central server, you must do:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git push</span></span></code></pre>
+<p>I strongly recommend that you <strong>first</strong> run a</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git pull</span></span></code></pre>
+<p>before each of your</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git push</span></span></code></pre>
+<p>The <code>pull</code> command synchronizes in the other direction: it fetches the changes saved on the server and applies them locally.</p>
+<p>More details below...</p>
+<h2 id="git-can-handle-different-concurrent-states">Git can handle different "concurrent" states</h2>
+<p>Git is first and foremost a collaborative tool that many people use precisely to work "in parallel." It is therefore designed to facilitate the management of "concurrent" (or at least "parallel" <code>;-)</code>) changes.</p>
+<p>Suppose Alice has a collaborator, Bob, on her project, and he has made changes on his end:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>echo &quot;Hey, this is a line added by Bob&quot; &gt;&gt; README.md</span></span>
+<span class="giallo-l"><span>git commit -m &quot;Add greeting from Bob&quot; README.md</span></span></code></pre>
+<p>Meanwhile, Alice continued working in parallel:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>sed -i &#39;s/This is a README file/This is a README file with a twist/&#39; README.md</span></span>
+<span class="giallo-l"><span>git commit -am &quot;Add a twist to the first line of the README&quot;</span></span></code></pre>
+<p>Where are we now? What are the Git states?</p>
+<p>Starting from the last common state (the last <code>pull</code> on both sides), there are actually
+two distinct <code>commits</code>:</p>
+<ul>
+<li>one locally on Bob's machine (who doesn't see Alice's new commit yet);</li>
+<li>and one locally on Alice's machine (who doesn't see Bob's new commit yet).</li>
+</ul>
+<p>So far, there's no confusion.</p>
+<p>Alice and Bob can now collaborate by sharing their contributions.
+Let's assume Bob "pushes" first (no need to <code>pull</code> here):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git push</span></span></code></pre>
+<p>When Bob does this, the central server receives and saves Bob's change. No problem here.<br />
+A <code>git lg</code> on Bob's side shows that <code>origin/master</code> (the server's) and <code>master</code> (the local one) are now the same.</p>
+<p>Alice, on her end, doesn't know that Bob's change has been propagated to the central server.
+When she tries to "push" her changes to the server:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git push</span></span></code></pre>
+<p>she encounters a problem: a message tells her that her <code>push</code> has failed and that she must first <code>fetch</code> the changes stored on the central server...<br />
+Which she obediently does:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git fetch</span></span></code></pre>
+<p>With a</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git lg</span></span></code></pre>
+<p>on her side, Alice sees that she now has two <code>commits</code>:</p>
+<ul>
+<li>
+<p>one called <code>origin/master</code>, which corresponds to Bob's;</p>
+</li>
+<li>
+<p>and another called <code>master</code> or <code>HEAD</code>, which corresponds to hers.</p>
+</li>
+</ul>
+<p>If Alice wants to "push" her changes to the central server, she must first merge these two different states. If there are no conflicts (non-overlapping changes), this is done simply as follows:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git merge</span></span>
+<span class="giallo-l"><span># Enter a commit message...</span></span></code></pre>
+<p>She can check the status:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git lg</span></span></code></pre>
+<p>then "now" push this new state, resulting from the merge of the two changes:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git push</span></span></code></pre>
+<p>From there, Alice and the central server are synchronized.</p>
+<p>For Bob to be synchronized as well, he must also run:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git fetch</span></span></code></pre>
+<p>or, more simply, a</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git pull</span></span></code></pre>
+<p>This command (<code>git pull</code>) performs a <code>fetch</code> and a <code>merge</code> in one go.</p>
+<h2 id="tags">"Tags"</h2>
+<p>A "tag" is simply a name given to a saved state (snapshot).<br />
+We won't be using them specifically in our labs. But you can use them, if you wish, to label a specifiv version of your work; typically to keep track of a stable version. But that's a minor detail.</p>
+<p>To tag the current state, simply run:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git tag -a TAG_NAME -m &quot;message&quot;</span></span></code></pre>
+<p>For example, if you want to name the current state "version1.1," you would do:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git tag -a version1.1 -m &quot;Version 1.1 stable&quot;</span></span></code></pre>
+<p>The command</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git tag</span></span></code></pre>
+<p>simply lists all your "tags".</p>
+<p>To see what a given "tag" corresponds to: <code>git show TAG_NAME</code>; for example:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git show version1.1</span></span></code></pre>
+<p>To push the tag to GitHub, add <code>--tags</code> to the push command:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git push --tags</span></span></code></pre><h2 id="learn-more">Learn More</h2>
+<p>If you'd like to learn more about Git and GitHub, check out <a rel="external" href="https://try.github.io/">this tutorial</a>.</p>
+
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 22&#x2F;04&#x2F;2026</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

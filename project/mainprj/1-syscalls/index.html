@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Lab 2: Syscalls | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/1-syscalls/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "1 Syscalls",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/1-syscalls/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Labs</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/1-syscalls/">Lab 2: Syscalls</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/2-networkmeasurement/">Lab 3: Observing layers and measure network performance</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>Lab 2: Syscalls</h1>
+          
+          <h1 id="introduction">Introduction</h1>
+<p>The purpose of this Lab is to illustrate <a rel="external" href="https://docs.google.com/presentation/d/1Kz8XT3Ls-XWxRelDRnzJPz7qSRCATzdnQF8QXNL2QHA/">Lecture 5 about syscalls</a>.
+It consists of four parts:</p>
+<ol>
+<li>
+<p>We start smoothly by looking at pathnames and access rights.</p>
+</li>
+<li>
+<p>We then move from file (library-)function calls as you have seen in the C bootcamp, to file syscalls.</p>
+</li>
+<li>
+<p>The third part deals with network syscalls, creating a client-server toy architecture, first at UDP and then at TCP level.</p>
+</li>
+<li>
+<p>Finally, we merge all this, creating a simple client-server file exchange application.</p>
+</li>
+</ol>
+<p>Regarding group work organization, here are a few guidelines, but feel free to organize as better suited for you:</p>
+<ul>
+<li>do part 1 together, either on two computers (two login; maybe one can then <code>ssh</code> to the other to test access rights), or simply both on the same computer (only one login);</li>
+<li>for part 2 (files), maybe one can do the read part, while the other does the write part;</li>
+<li>for part 3 (network), we think it's better that one does <em>both</em> clients (UDP, then TCP), and the other does both servers; we do <strong>not</strong> recommend that one does whole UDP, while the other does whole TCP, because both codes are quite similar; thus it's more efficient to do TCP client code once UDP client had been made (and similarly for servers) rather than doing UDP on one side and doing TCP on the other independently.</li>
+</ul>
+<h1 id="1-pathnames-and-access-rights">1 Pathnames and access rights</h1>
+<p>This part refers to slides 22 to 25 of  <a rel="external" href="https://docs.google.com/presentation/d/1Kz8XT3Ls-XWxRelDRnzJPz7qSRCATzdnQF8QXNL2QHA/">Lecture 5</a>.</p>
+<p><strong>Preliminary note:</strong> the point of this exercise is not simply to answer the questions or blindly execute the given commands (both are usually trivial), but rather to truly <em>understand</em> what is happening and why a particular result is obtained. <strong>[end of note]</strong></p>
+<h2 id="1-1-moving-around-directories">1.1 Moving around directories</h2>
+<p>So first open a "Terminal". This "terminal" runs in fact a "Unix Shell", which is a command interpreter (infinite loop waiting for some command). It interprets these commands with respect to a given position in the filesystem, i.e. w.r.t. a given directory. Let's see where it is with the <code>pwd</code> command (<strong>p</strong>rint <strong>w</strong>orking <strong>d</strong>irectory).</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #0550AE;">pwd</span></span></code></pre>
+<p>If you did it from scratch on the EPFL VMs, you should be either in your home directory or in your <code>Desktop</code> directory (depending on how/where-from you launched the terminal).</p>
+<p>Let's now move to another, more appropriate directory. This is done with the <code>cd</code> command (<strong>c</strong>hange <strong>d</strong>irectory).</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #0550AE;">cd</span><span style="color: #0A3069;"> ~/Desktop/myfiles</span></span></code></pre>
+<p>or anywhere else below <code>myfiles</code> where you have cloned your repo.<br />
+(<strong>Note:</strong> The <code>~</code> (“tilde”) is a shortcut for <code>$HOME</code>, i.e., your home directory.)</p>
+<p>If you'd like to create a new directory, this is done with <code>mkdir</code> (<strong>m</strong>a<strong>k</strong>e <strong>dir</strong>ectory).</p>
+<h2 id="1-2-copying-and-listing-files">1.2 Copying and listing files</h2>
+<p>The Unix Shell command to copy a file is <code>cp</code>.</p>
+<p>Copy the <code>poem1.txt</code> and <code>poem2.txt</code> provided files from your <code>provided/data</code> directory to your home folder with a single <code>cp</code> command. (<code>man cp</code> can help.)</p>
+<p>Check they do exist using the <code>ls</code> (<strong>l</strong>i<strong>s</strong>t) command:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>ls -l $HOME</span></span></code></pre>
+<p><strong>Note:</strong>
+Learn how to take advantage of the mouse and the keyboard in your environment:<br />
+to copy the previous commands, instead of typing it yourself on the keyboard, use the mouse’s “copy-paste” function: simply select with the mouse what you want to copy (for example, double-click the left button for a word, <strong>triple-click</strong> for the entire line), then click the middle button where you want to paste what has been
+selected. In short, with just 4 clicks, you’ve entered this command. Simple, isn't it?<br />
+<strong>[end of note]</strong></p>
+<h2 id="1-3-basic-commands-and-various-file-operations">1.3 Basic commands and various file operations</h2>
+<p>Using the Unix command <code>mkdir</code>, create a subdirectory named <code>test</code> in you home directory.<br />
+Then, if you're not (<code>pwd</code>) in the <code>provided/data</code> directory of your repo, go there.</p>
+<ol>
+<li>
+<p>What is the difference between the following two commands:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">cp</span><span style="color: #0A3069;"> poem1.txt ~/test/f1.txt</span></span></code></pre>
+<p>and</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">mv</span><span style="color: #0A3069;"> poem1.txt ~/test/f1.txt</span></span></code></pre>
+<p>?</p>
+<p><code>man mv</code> can help.</p>
+<p>Do at least one of these two commands.<br />
+If you did the second command, retrieve the lost file using git:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>git restore poem1.txt</span></span></code></pre>
+<p><strong>Note:</strong>
+Learn how to take advantage of the mouse and the keyboard in your environment:<br />
+instead of "copy-pasting", you can also use the command history: in the terminal, press the up arrow. The previous command appears. Then change the <code>cp</code> into a <code>mv</code> and press 'Enter'. Simple, isn't it? <strong>[end of note]</strong></p>
+</li>
+<li>
+<p>What information is returned by the command <code>which ls</code>? And by <code>which man</code>? What does it represent?</p>
+</li>
+<li>
+<p>What does the command <code>ls -l *.txt ~/test/*.txt</code> give you? What are all these informations?</p>
+</li>
+<li>
+<p>When using special characters (<code>*</code>, <code>?</code>, or <code>[ ]</code>), it is important to understand that it is the shell (i.e., the command interpreter) that substitutes the arguments <em>before</em> sending the list of arguments to the command. This means that the command only receives arguments that have already been evaluated by the shell. But how can you test this?</p>
+<ul>
+<li>
+<p><code>echo</code> simply displays its arguments. The name comes from the fact that the command returns its arguments as an echo, without modification:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #0550AE;">echo 1 2 3</span></span>
+<span class="giallo-l"><span style="color: #953800;">1</span><span style="color: #0550AE;"> 2 3</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #0550AE;">echo</span><span style="color: #0A3069;"> &#39;Hello everyone!&#39;</span></span>
+<span class="giallo-l"><span style="color: #953800;">Hello</span><span style="color: #0A3069;"> everyone!</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #0550AE;">echo</span><span style="color: #0A3069;"> SHELL</span></span>
+<span class="giallo-l"><span style="color: #953800;">SHELL</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #0550AE;">echo</span><span> $SHELL</span></span>
+<span class="giallo-l"><span style="color: #953800;">/bin/bash</span></span>
+<span class="giallo-l"><span>    </span></span></code></pre>
+<p>In this last example, the <strong>shell</strong> replaces the <code>$SHELL</code> variable with its content. The <code>echo</code> command does not modify its arguments, it already received the content of the <code>$SHELL</code> variable.</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #0550AE;">echo *</span><span style="color: #0A3069;">.txt</span></span>
+<span class="giallo-l"><span style="color: #953800;">poem1.txt</span><span style="color: #0A3069;">        poem2.txt</span></span>
+<span class="giallo-l"><span>    </span></span></code></pre>
+<p>In this last example, the shell replaces <code>*.txt</code> with all matching files, <em>then</em> runs the <code>echo</code> command with the found arguments. The <code>echo</code> command therefore receives <code>"poem1.txt poem2.txt"</code> as arguments and does not modify its arguments itself.</p>
+</li>
+<li>
+<p><code>touch</code> modifies the access date and modification date of each specified file. Files that do not exist are created. This can thus be used to create empty files.</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">ls</span><span style="color: #0550AE;"> -l</span><span style="color: #0A3069;"> toto</span></span>
+<span class="giallo-l"><span style="color: #953800;">ls:</span><span style="color: #0A3069;"> toto: No such file or directory</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">touch</span><span style="color: #0A3069;"> toto</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">ls</span><span style="color: #0550AE;"> -l</span><span style="color: #0A3069;"> toto</span></span>
+<span class="giallo-l"><span style="color: #953800;">-rw-r--r--</span><span style="color: #0A3069;">  ....SOMETHING.....   toto</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">rm</span><span style="color: #0A3069;"> toto</span></span></code></pre>
+<p>In this example, we created and then deleted the file <code>toto</code>. <strong>BE CAREFUL!</strong> The <code>rm</code> command (<strong>r</strong>e<strong>m</strong>ove) is <strong>VERY DANGEROUS</strong>: once "<code>rm</code>ed", a file can <strong>ABSOLUTELY NOT</strong> be retrieved. It's gone forever!</p>
+</li>
+</ul>
+<p>Now:</p>
+<ol>
+<li>
+<p>Go to the <code>test</code> directory previously created and create there several files starting with <code>f</code>, and at least the three <em>files</em> (not directories!) <code>f1</code>, <code>f2</code>, and <code>f4</code> (that’s a <code>4</code> indeed, not a typo).</p>
+<p>To make things clearer later, put something different in each of these files (either using an editor; or simply using the <code>cat</code> command; for example <code>cat &gt; f1</code>, then type something and end with <code>Ctrl-D</code>).</p>
+<p>What is the result of the command <code>ls ??</code>?<br />
+(<code>ls</code> followed by two question marks?)</p>
+<p>What is the result of the command <code>ls f[123]</code>?</p>
+<p>What is the result of the command <code>cat f[123]</code>?  (/!\ no <code>&gt;</code> sign here)</p>
+</li>
+<li>
+<p>Create a few additional files: <code>bar</code>, <code>a.txt</code>, <code>zulu</code>, ...</p>
+</li>
+<li>
+<p>Test the wildcard characters:</p>
+<ul>
+<li>Print all filenames using <code>echo</code>;</li>
+<li>List all the files which name starts with an <code>a</code>;</li>
+<li>List all the files which name is exactly 5 characters long;</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p>Running the command <code>ls -l</code> produces the following result for a certain user somewhere:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">  -rw-r--r--</span><span style="color: #0550AE;">   1</span><span style="color: #0A3069;"> dupont  RGpolice</span><span style="color: #0550AE;">      75180</span><span style="color: #0A3069;"> Mar</span><span style="color: #0550AE;"> 28  2023</span><span style="color: #0A3069;"> misc</span></span>
+<span class="giallo-l"><span style="color: #953800;">  drwxr-x--x</span><span style="color: #0550AE;">   2</span><span style="color: #0A3069;"> dupond  RGpolice</span><span style="color: #0550AE;">       4096</span><span style="color: #0A3069;"> Mar</span><span style="color: #0550AE;"> 14  2023</span><span style="color: #0A3069;"> something</span></span></code></pre>
+<p>i.  Is <code>misc</code> a file or a directory?<br />
+Same question for <code>something</code>.<br />
+ii. Who (user and group) owns these files/directories?<br />
+iii. What command must the owner run to give everyone write permission to <code>misc</code>? (man <code>chmod</code> can help.)<br />
+iv. What can users in the <code>RGpolice</code> group <strong>not</strong> do with <code>something</code>?<br />
+v.  What is a random user (not in the <code>RGpolice</code> group) allowed to do with this <code>something</code>?</p>
+</li>
+<li>
+<p>What is the special characteristic of files whose names begin with the character <code>.</code>?<br />
+To discover this, run the following commands:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>ls ~</span></span></code></pre>
+<p>then</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>ls -a ~</span></span></code></pre>
+<p>What difference do you notice?</p>
+</li>
+<li>
+<p>Working with your group-mate (or one of your neighbors), grant them read permissions on your <code>~/test</code> directory.<br />
+Then try several scenarios: now you can see it, now you don't; now you can modify a given file in it, etc.</p>
+<p>Finally, remove all these additional permissions.</p>
+</li>
+<li>
+<p><strong>Note:</strong> for this part of the exercise, which covers symbolic links (also known as “shortcuts” or “aliases”), if it is not already the case, you must go <em>somewhere else</em> other than <code>myfiles</code> (since you cannot create symbolic links within <code>myfiles</code>), typically go in <code>~/tests/</code>.</p>
+<p>Then create a symbolic link:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">ln</span><span style="color: #0550AE;"> -s</span><span style="color: #0A3069;"> poem1.txt name2.txt</span></span></code></pre>
+<p>or if you're not in the <code>~/tests/</code> directory:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">ln</span><span style="color: #0550AE;"> -s</span><span style="color: #0A3069;"> ~/test/poem1.txt name2.txt</span></span></code></pre>
+<p>You can replace <code>~/test/poem1.txt</code> by any name of a file that exists somewhere (here it’s an absolute path, but you can also use a relative path).<br />
+You can also choose another name than <code>name2.txt</code> for the alias.</p>
+<p>Check the result:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">ls</span><span style="color: #0550AE;"> -lF</span></span></code></pre>
+<p><code>name2.txt</code> is a symbolic link to the file <code>poem1.txt</code>. This is very useful for avoiding the need to copy files (size, integrity, etc.) while still providing a local access to them.</p>
+<p>Note that you can create symbolic links to any file you have access to. For example:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">ln</span><span style="color: #0550AE;"> -s</span><span style="color: #0A3069;"> /usr/share/man/man1/ls.1.gz lsmanpage</span></span></code></pre>
+<p>Verify by reading this new link:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">gzip</span><span style="color: #0550AE;"> -cd</span><span style="color: #0A3069;"> lsmanpage</span><span style="color: #CF222E;"> |</span><span style="color: #953800;"> nroff</span><span style="color: #0550AE;"> -man</span><span style="color: #CF222E;"> |</span><span style="color: #953800;"> more</span></span></code></pre>
+<p>In your current working directory, create two subdirectories: <code>rep1</code> and <code>rep2</code>.</p>
+<p>In the <code>rep1</code> subdirectory, create the file <code>foo</code>.</p>
+<p>Then, in the <code>rep2</code> subdirectory, create a symbolic link named <code>bar</code> pointing to the <code>foo</code> file in the
+<code>rep1</code> subdirectory.</p>
+<p>Now modify the contents of the file <code>rep1/foo</code> (using the <code>cat</code> command or an editor), then read the file <code>rep2/bar</code>.
+What do you see?</p>
+<p>Next, modify the file <code>rep2/bar</code>, then read the file <code>rep1/foo</code>.<br />
+What do we see?</p>
+<p>Finally, delete the file <code>rep1/foo</code>, then read the file <code>rep2/bar</code>.
+What do you see?
+List (<code>ls -l</code>) the contents of the <code>rep2</code> directory.</p>
+</li>
+<li>
+<p>Finally, a short exercise on filenames (and their aliases):</p>
+<ol>
+<li>List the contents of the <code>/etc</code> directory;</li>
+<li>List everything in the <code>man1</code> subdirectory of the <code>man</code> subdirectory of the parent directory of <code>/usr/share/fonts</code> that starts with <code>rm</code>.</li>
+</ol>
+</li>
+</ol>
+<h1 id="2-files">2 Files</h1>
+<h2 id="2-1-from-library-functions-to-syscalls">2.1 From library functions to syscalls</h2>
+<p>This part refers to slides 30 to 53 of <a rel="external" href="https://docs.google.com/presentation/d/1Kz8XT3Ls-XWxRelDRnzJPz7qSRCATzdnQF8QXNL2QHA/">Lecture 5</a>.</p>
+<h3 id="2-1-1-file-library-functions">2.1.1 File library functions</h3>
+<p>Let's start from former exercises 10 and 11 in week 1. If you (nor your teammate) didn't do it, well... it's time to do it (one for you and one for your teammate).</p>
+<p>Import your writing and your reading codes in your <code>done/Lab2/Step2</code> directory and commit and push these two files.</p>
+<p>What are the library functions you used to create, write, read and close a file?</p>
+<p>This is the <em>usual</em> (and <strong>normal</strong>) way to proceed with files in C.<br />
+However, under the hood, those functions call "system calls". This is what we will now explore.</p>
+<p>Before moving forward, we first need to transform these code a bit (one of the teammates can work on one file and the other on the other file):</p>
+<ul>
+<li>
+<p><code>typedef</code> a type named <code>myFile</code> to be an alias to <code>FILE*</code> and change all the <code>FILE*</code> in your code by this <code>myFile</code>;</p>
+</li>
+<li>
+<p>transform the <code>fopen()</code> call into <code>my_fopen()</code> and define this <code>my_fopen()</code> function, for now just simply calling <code>fopen()</code>; <code>my_fopen()</code> return type is <code>myFile</code>;</p>
+</li>
+<li>
+<p>at each step, double check it compiles and runs properly;</p>
+</li>
+<li>
+<p>similarly transform <code>fclose()</code> call into a call to <code>my_fclose()</code>;</p>
+</li>
+<li>
+<p>then transform either the <code>fprintf()</code> or the <code>fscanf()</code> call into respectively:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>  my_write(myFile output, const char* name, unsigned int age);</span></span>
+<span class="giallo-l"><span>  </span></span>
+<span class="giallo-l"><span>  my_read(myFile input, char* name, unsigned int* p_age);</span></span></code></pre>
+<p>it's up to you to choose the most appropriate return type corresponding to your code (typically either <code>void</code> or <code>int</code>);</p>
+</li>
+</ul>
+<p>If you didn't do it yet, double check everything compiles and runs properly.</p>
+<p><em><strong>Commit and push this step.</strong></em></p>
+<h3 id="2-1-2-write-your-own-syscalls">2.1.2 Write your own syscalls</h3>
+<p>We will now transform our <code>my_...()</code> functions so as to directly do the syscalls, rather than going through library functions.</p>
+<p>First transform the <code>myFile</code> type to simply be an int (this will be the "file descriptor").</p>
+<p>Then transform <code>my_fopen()</code> not to use <code>fopen()</code> anymore, but to use the <code>open()</code> syscall.<br />
+<code>man 2 open</code> can help.</p>
+<p>For this simply map (with a <code>if</code>) the <code>fopen()</code> modes you use to the corresponding <code>open()</code> flags (I mean: we don't ask you to consider all possible <code>fopen()</code> modes, only the two you use in your two programs).</p>
+<p>If you want to do intermediate compilations (recommended), simply comment out the body of your other <code>my_...()</code> functions (which won't compile anymore due to the <code>myFile</code> type change).</p>
+<p>Similarly transform <code>my_fclose()</code> to use <code>close()</code> syscall.<br />
+<code>man 2 close</code> can help.</p>
+<p>Then transform <code>my_fwrite()</code> and <code>my_fread()</code> to use <code>write()</code> and <code>read()</code> syscalls respectively.<br />
+For these, create a temporary buffer of bytes, allocated at the proper size. <code>snprintf()</code> and <code>sscanf()</code> may help
+(<code>man snprintf</code> or <a rel="external" href="https://en.cppreference.com/w/c/io/fprintf">this page</a>).</p>
+<p><code>my_fread()</code> is a bit more tricky since we don't know how much we have to read (the name may be long or short, the age can be 1 or 3 digits). To deal with this, we propose:</p>
+<ul>
+<li>allocate a buffer to the maximum possible read size (remember max name size was 1024 in the exercise, and an age is at most 3 digits; and don't forget the whitespace in between, nor the <code>'\n'</code> (nor the <code>'\0'</code>));</li>
+<li>remember the file offset before <code>read()</code>;</li>
+<li><code>read()</code> the buffer-size amount of bytes;</li>
+<li>search for the first '\n' in the buffer (<code>man memchr</code> may help);</li>
+<li>reset the file offset to the corresponding position just after this first <code>'\n'</code>;</li>
+<li>fill the name and the age from the buffer (<code>man sscanf</code> may help).</li>
+</ul>
+<p>If you didn't do it yet, double check everything compiles and runs properly.</p>
+<p><em><strong>Commit and push this step.</strong></em></p>
+<h3 id="2-1-3-optional-look-at-the-real-code-of-library-functions">2.1.3 [optional] Look at the real code of library functions</h3>
+<p>So congratulations! You basically wrote your own "library" functions (the aim of which is to provided to the programmers higher level and easier abstractions than the low-level syscalls).</p>
+<p>If you'd like to, let's have a look how it is done in reality, e.g., in <code>fread()</code>.</p>
+<p>Things are in fact a bit more complex in real life. For instance the glibc version of <code>fread()</code>:</p>
+<ul>
+<li>prepare and check many things;</li>
+<li>handled some buffered refill;</li>
+<li>calls POSIX read();</li>
+<li>which makes the actual kernel read syscall.</li>
+</ul>
+<p><a rel="external" href="https://codebrowser.dev/glibc/glibc/libio/iofread.c.html#fread">Here is the code of <code>fread()</code> in the glibc</a> (line 44). It's thus simply an alias to the <code>_IO_fread()</code> function, which doesn’t directly make a system call. Instead, it reads data via the buffered I/O internals of glibc. The actual disk read happens further down, inside the FILE stream buffering and the POSIX <code>read()</code> wrapper:<br />
+<code>_IO_fread()</code> calls <code>_IO_sgetn()</code>, which fetches data from the internal buffer or refills the buffer from the OS;
+when the buffer needs to be refiled, glibc invokes the underlying file descriptor’s read operation (ultimately <code>read(fd, buffer, length)</code>) via its read() wrapper implemented as <a rel="external" href="https://codebrowser.dev/glibc/glibc/sysdeps/unix/sysv/linux/read.c.html#24"><code>__libc_read()</code></a> (click to see the code).
+<code>SYSCALL_CANCEL()</code> is a macro that expands to the actual syscall instruction on the corresponding architecture.</p>
+<h2 id="2-2-file-descriptors-and-concurrent-access">2.2 File descriptors and Concurrent access</h2>
+<h3 id="2-2-1-two-processes-read-the-same-file">2.2.1 Two processes read the same file</h3>
+<p>Now modify your read code to add, in the <code>main()</code>, a break after each name+age read. For instance:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="c"><span class="giallo-l"><span style="color: #8250DF;">puts</span><span>(</span><span style="color: #0A3069;">&quot;Press enter to continue&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #CF222E;">const int</span><span> c </span><span style="color: #CF222E;">=</span><span style="color: #8250DF;"> getchar</span><span>();</span></span></code></pre>
+<p>Create (e.g., with your write code) a <code>data.txt</code> which contains several lines (let's say more than 4).
+Open a least two terminals (or tabs) and launch at least two read processes (launch you read program at least twice, in different terminals/tabs).</p>
+<p>Have one of the two process read a few lines; then go to the other and make it read further. Where does it read?
+What do you conclude about the file descriptors of each process?</p>
+<p>Finish the two processes.
+Then edit again your read code and make it print the file descriptor received from <code>my_fopen()</code>.</p>
+<p>Run at least two processes again. Is is what you expected?</p>
+<h3 id="2-2-2-what-are-file-descriptors">2.2.2 What are file descriptors?</h3>
+<p>This part refers to slide 47 <a rel="external" href="https://docs.google.com/presentation/d/1Kz8XT3Ls-XWxRelDRnzJPz7qSRCATzdnQF8QXNL2QHA/">Lecture 5</a> and aims to go a bit deeper with the notion of "file descriptor".</p>
+<p>At the highest level, file descriptors are simply integers.
+<code>0</code> stands for <code>stdin</code>, and <code>1</code> for <code>stdout</code>. Try for instance:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="c"><span class="giallo-l"><span style="color: #CF222E;">int</span><span style="color: #8250DF;"> main</span><span>()</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #CF222E;">    const char*</span><span> s </span><span style="color: #CF222E;">=</span><span style="color: #0A3069;"> &quot;Some message to stdout</span><span style="color: #CF222E;">\n</span><span style="color: #0A3069;">&quot;</span></span>
+<span class="giallo-l"><span style="color: #8250DF;">    write</span><span>(</span><span style="color: #0550AE;">1</span><span>, s,</span><span style="color: #8250DF;"> strlen</span><span>(s));</span></span>
+<span class="giallo-l"><span style="color: #CF222E;">    return</span><span style="color: #0550AE;"> 0</span><span>;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>But what is hidden behind this integer?</p>
+<p>Have at least three terminals (or tabs). In two of them, relaunch two read process (on <code>data.txt</code> as you did earlier).
+On the third terminal/tab, find their process-id (their "number") using</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>pgrep -a file_read</span></span></code></pre>
+<p>You have to change "<code>file_read</code>" by the actual name of your program (the one you launched twice).</p>
+<p>Then assign those two numbers to two variables; let's say <code>p1</code> and <code>p2</code>. So for instance, if <code>pgrep</code> gave you:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>541598 ./file_read</span></span>
+<span class="giallo-l"><span>541607 ./file_read</span></span></code></pre>
+<p>then do (NO SPACE!):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span>p1</span><span style="color: #CF222E;">=</span><span style="color: #0A3069;">541598</span></span>
+<span class="giallo-l"><span>p2</span><span style="color: #CF222E;">=</span><span style="color: #0A3069;">541607</span></span></code></pre>
+<p>Double check with:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>echo &quot;p1=$p1 p2=$p2&quot;</span></span></code></pre>
+<p>Now let's have a look at their file descriptors:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">ls</span><span style="color: #0550AE;"> -l</span><span style="color: #0A3069;"> /proc/</span><span>$p1</span><span style="color: #0A3069;">/fd /proc/</span><span>$p2</span><span style="color: #0A3069;">/fd</span></span></code></pre>
+<p>See how file descriptor <code>3</code> is in fact a soft link to the file that is read. Actually</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">cat</span><span style="color: #0A3069;"> /proc/</span><span>$p1</span><span style="color: #0A3069;">/fd/3</span></span></code></pre>
+<p>should give you the content of your <code>data.txt</code> file.</p>
+<p>Now, what does the <em>process</em> know about its file descriptor?</p>
+<p>In slide 47 of lecture 5, it's said that a file descriptor refers to an actual file (we saw it above) and an offset.
+In fact, a file descriptor refers to more than that.
+In a process, each file descriptor (integer) refers to a file descriptors table in the kernel, which is an array of <code>struct file</code>.</p>
+<p>Let's see that for one of our processes:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span>fd</span><span style="color: #CF222E;">=</span><span style="color: #0A3069;">3</span></span>
+<span class="giallo-l"><span style="color: #953800;">cat</span><span style="color: #0A3069;"> /proc/</span><span>$p1</span><span style="color: #0A3069;">/fdinfo/</span><span>$fd</span></span></code></pre>
+<p><code>pos:</code> is the offset slide 47 refers to. Let's do a few read in one of the two processes (hit enter a few time), and compare the <code>pos</code> field of the two processes:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">cat</span><span style="color: #0A3069;"> /proc/</span><span>$p1</span><span style="color: #0A3069;">/fdinfo/</span><span>$fd</span><span style="color: #0A3069;"> /proc/</span><span>$p2</span><span style="color: #0A3069;">/fdinfo/</span><span>$fd</span><span style="color: #CF222E;"> |</span><span style="color: #953800;"> grep</span><span style="color: #0A3069;"> &#39;pos:&#39;</span></span></code></pre>
+<p>You should see they are not the same.
+So, although <code>/proc/$p1/fd/3</code> refer to the same file, the file descriptor <code>3</code> in each of the two processes does not refer to the same <code>struct file</code> in the kernel.</p>
+<p>This is what was meant in lecture 5 by "each process obtains it's own file descriptor". It's not, of course, about the value of that integer (3 in both cases above), but about what it <strong>refers to</strong>. This is handled by kernel internals as we will see in the OS part of the course.</p>
+<p><strong>[optional]</strong> If you want to know more about <code>struct file</code> and what <code>fdinfo</code>, please read further; otherwise skip to the next section "2.2.3 Concurrent read/write".</p>
+<p><code>fdinfo</code> provides the following information:</p>
+<ul>
+<li><code>pos</code> is the position in the file (the offset), as we have just seen;</li>
+<li><code>flags</code> describe the mode used to <code>open()</code> the file</li>
+<li><code>mnt_id</code> is the "mount point", where the file actually "shows up" in the directory hierarchy; more about mount point will be explained in the OS part of the course and in Lab 4;</li>
+<li><code>ino</code> is the "inode number"; an inode is the actual data structure used to represent a file in a Unix filesystem;
+more about inodes will be explained in the OS part of the course and in Lab 4.</li>
+</ul>
+<p>The <code>struct file</code> data structure in the Linux kernel can be seen there:
+<a rel="external" href="https://github.com/torvalds/linux/blob/master/include/linux/fs.h#L1259">https://github.com/torvalds/linux/blob/master/include/linux/fs.h#L1259</a></p>
+<p>The <code>pos</code> fields corresponds to:
+<a rel="external" href="https://github.com/torvalds/linux/blob/master/include/linux/fs.h#L1281">https://github.com/torvalds/linux/blob/master/include/linux/fs.h#L1281</a></p>
+<p>The <code>flags</code> to:
+<a rel="external" href="https://github.com/torvalds/linux/blob/master/include/linux/fs.h#L1266">https://github.com/torvalds/linux/blob/master/include/linux/fs.h#L1266</a></p>
+<p><code>mnt_id</code>is a bit more indirect: its <code>real_mount(f_path.mnt)-&gt;mnt_id</code>
+<a rel="external" href="https://github.com/torvalds/linux/blob/master/include/linux/fs.h#L1272">https://github.com/torvalds/linux/blob/master/include/linux/fs.h#L1272</a>,<br />
+<a rel="external" href="https://github.com/torvalds/linux/blob/master/include/linux/path.h#L9">https://github.com/torvalds/linux/blob/master/include/linux/path.h#L9</a>,<br />
+<a rel="external" href="https://github.com/torvalds/linux/blob/master/fs/mount.h#L87">https://github.com/torvalds/linux/blob/master/fs/mount.h#L87</a>.</p>
+<p>(<code>real_mount()</code> is there:
+<a rel="external" href="https://github.com/torvalds/linux/blob/master/fs/mount.h#L114">https://github.com/torvalds/linux/blob/master/fs/mount.h#L114</a>
+)</p>
+<p>And <code>ino</code> is also a bit more indirect, stored in the corresponding inode: it's <code>f_inode-&gt;i_ino</code>:
+<a rel="external" href="https://github.com/torvalds/linux/blob/master/include/linux/fs.h#L1265">https://github.com/torvalds/linux/blob/master/include/linux/fs.h#L1265</a>,<br />
+<a rel="external" href="https://github.com/torvalds/linux/blob/master/include/linux/fs.h#L786">https://github.com/torvalds/linux/blob/master/include/linux/fs.h#L786</a></p>
+<h3 id="2-2-3-concurrent-read-write">2.2.3 Concurrent read/write</h3>
+<p>This part refers to slides 49 to 51 of  <a rel="external" href="https://docs.google.com/presentation/d/1Kz8XT3Ls-XWxRelDRnzJPz7qSRCATzdnQF8QXNL2QHA/">Lecture 5</a>.</p>
+<p>Now open/use again two terminals/tabs. In the first one, launch the read process, and read, let's say, two records.
+In the second one, launch the write process, and write at least three new records, and finish that write process.
+Then proceed with reading again: what does it read?</p>
+<p>You can also follow the respective file offsets in a third terminal:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">pgrep</span><span style="color: #0550AE;"> -a</span><span style="color: #0A3069;"> file_read</span></span>
+<span class="giallo-l"><span style="color: #953800;">pgrep</span><span style="color: #0550AE;"> -a</span><span style="color: #0A3069;"> file_write</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>p1</span><span style="color: #CF222E;">=</span><span style="color: #0A3069;">....</span><span style="color: #6E7781;"> # put here the read  process id</span></span>
+<span class="giallo-l"><span>p2</span><span style="color: #CF222E;">=</span><span style="color: #0A3069;">....</span><span style="color: #6E7781;"> # put here the write process id</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6E7781;"># Then periodically do:</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">cat</span><span style="color: #0A3069;"> /proc/</span><span>$p1</span><span style="color: #0A3069;">/fdinfo/</span><span>$fd</span><span style="color: #0A3069;"> /proc/</span><span>$p2</span><span style="color: #0A3069;">/fdinfo/</span><span>$fd</span><span style="color: #CF222E;"> |</span><span style="color: #953800;"> grep</span><span style="color: #0A3069;"> &#39;pos:&#39;</span></span></code></pre><h3 id="2-2-4-concurrent-delete-read">2.2.4 Concurrent delete/read</h3>
+<p>This part refers to slide 52 of  <a rel="external" href="https://docs.google.com/presentation/d/1Kz8XT3Ls-XWxRelDRnzJPz7qSRCATzdnQF8QXNL2QHA/">Lecture 5</a>.</p>
+<p>Create a new C file, named <code>file_delete.c</code> which simply deletes the file <code>data.txt</code> once the return key has been hit:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="c"><span class="giallo-l"><span style="color: #8250DF;">printf</span><span>(</span><span style="color: #0A3069;">&quot;Press enter to delete file </span><span style="color: #CF222E;">\&quot;%s\&quot;\n</span><span style="color: #0A3069;">&quot;</span><span>, filename);</span></span>
+<span class="giallo-l"><span style="color: #CF222E;">const int</span><span> c </span><span style="color: #CF222E;">=</span><span style="color: #8250DF;"> getchar</span><span>();</span></span></code></pre>
+<p><code>man unlink</code> can help.</p>
+<p>At the end, inform if deletion was successful or not.</p>
+<p>Once this file compiled, use again two terminals/tabs. In the first one, launch the read process, and read one record.
+In the second one, launch the delete process. Launch the deletion (hit return key) before you read all the records with the other process. Double check that the file is indeed delete once the delete process is over:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>ls -l data.txt</span></span></code></pre>
+<p>Then proceed with reading again: does it work? (although the file is indeed deleted!)</p>
+<p><strong>Before</strong> the read process is over, look at its file descriptors:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">pgrep</span><span style="color: #0550AE;"> -a</span><span style="color: #0A3069;"> file_read</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>p1</span><span style="color: #CF222E;">=</span><span style="color: #0A3069;">....</span><span style="color: #6E7781;"> # put here the read  process id</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">ls</span><span style="color: #0550AE;"> -l</span><span style="color: #0A3069;"> /proc/</span><span>$p1</span><span style="color: #0A3069;">/fd</span></span></code></pre>
+<p>You should see that it indeed still points to a file... ...that is delete (it's written at the end).</p>
+<h1 id="3-networks">3 Networks</h1>
+<p>Let's now move to the network syscalls.</p>
+<p>This part refers to slides 2 to 21 of  <a rel="external" href="https://docs.google.com/presentation/d/1Kz8XT3Ls-XWxRelDRnzJPz7qSRCATzdnQF8QXNL2QHA/">Lecture 5</a>.</p>
+<p>For this, you will:</p>
+<ul>
+<li>create a socket layer for network communications: <code>socket_layer.h</code> and <code>socket_layer.c</code>;</li>
+<li>use that layer to create a dummy UDP client-server, just to see/create a <em>very simple</em> example: <code>udp-test-client.c</code> and <code>udp-test-server.c</code> (to be created);</li>
+<li>use that layer to have an actual file exchange client-server (next section).</li>
+</ul>
+<h2 id="3-1-socket-layer">3.1 Socket layer</h2>
+<p>We here focus on the transport layer (UDP), simply using standard Unix sockets in C to provide the basic functions required for network communication in this Lab. There are provided in <code>socket_layer.[ch]</code>:</p>
+<ul>
+<li><code>get_udp_socket()</code> to obtain a network socket for communication, specifying its waiting time ("timeout", in seconds);</li>
+<li><code>get_server_addr()</code> to obtain the address, in the "internal object" sense (<code>struct sockaddr_in</code>), of a given IP address and port;</li>
+<li><code>bind_server()</code> to associate a network communication (external representation: IP address, port) with a network socket (internal representation).</li>
+<li><code>udp_server_init()</code>, to initialize a network communication over UDP;</li>
+<li><code>udp_read()</code>, to create a call that reads the active socket once and stores the output in <code>buf</code>;</li>
+<li><code>udp_send()</code> to send a response message.</li>
+</ul>
+<p>Most of these functions are simply interfaces to <code>sys/socket.h</code> C syscalls <code>socket(2)</code>, <code>socket(7)</code>, <code>setsockopt(2)</code>, <code>bind(2)</code>, <code>recv(2)</code>, <code>recvfrom(2)</code> and <code>sendto(2)</code>. We <strong>strongly</strong> recommend you have a look at the corresponding man-pages. You will also need to look at <code>inet_pton(3)</code>, <code>htons(3)</code> and <code>close(2)</code>.</p>
+<p>Note that with the UDP network protocol, there is no guarantee that messages will be delivered. If the server response has not arrived within the allotted time (which is set using the <code>get_udp_socket()</code> function from <code>socket_layer</code>), consider the request to have failed (and return <code>ERR_NETWORK</code>).</p>
+<p>To send requests to the server, use the <code>sendto()</code> function (<code>man sendto</code>). To read requests received back from the server, use the <code>recvfrom()</code> function (<code>man recvfrom</code>).</p>
+<p>A few tips:</p>
+<ul>
+<li>read the documentation of the functions (in <code>socket_layer.h</code>) before implementing them;</li>
+<li>the port number needs to be converted using <code>htons()</code> for portability;</li>
+<li>you can safely cast a <code>struct sockaddr_in*</code> to a <code>struct sockaddr*</code>, and vice versa.</li>
+</ul>
+<h2 id="3-2-first-simple-test">3.2 First simple test</h2>
+<h3 id="3-2-1-test-framework">3.2.1 Test framework</h3>
+<p>Test your <code>socket_layer</code> implementation by creating two simple programs (see detailed usage examples below):</p>
+<ul>
+<li>
+<p>a client (<code>udp-test-client.c</code>) that:</p>
+<ul>
+<li>asks for a <code>unsigned int</code> (on <code>stdin</code>, see example below);</li>
+<li>sends it (over UDP) to <code>CS202_DEFAULT_IP</code>, port <code>CS202_DEFAULT_PORT</code>;</li>
+<li>waits for a reply and prints it;</li>
+<li>and properly terminates.</li>
+</ul>
+</li>
+<li>
+<p>a server (<code>udp-test-server.c</code>) that:</p>
+<ul>
+<li>waits for connections on <code>CS202_DEFAULT_IP</code>, port <code>CS202_DEFAULT_PORT</code>;</li>
+<li>convert received content to an <code>unsigned int</code>;</li>
+<li>adds 1 to it;</li>
+<li>send this new value back to the sender;</li>
+<li>should exit properly in case of read error.</li>
+</ul>
+</li>
+</ul>
+<p>Unless errors, the server never terminates, as it may have to serve several clients/requests.</p>
+<h3 id="3-2-2-example">3.2.2 Example</h3>
+<p>This is just an example. <strong>You are completely free to code the client and the server the most appropriate way for you</strong> (to understand and to debug) <strong>provided that they fulfill the two 4-items bullet lists above</strong>. In particular, you're free to choose the messages you'd like to be displayed on the terminal.</p>
+<p>Server (in one terminal):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">./udp-test-server</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">Server</span><span style="color: #0A3069;"> listening on 127.0.0.1:1234</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #6E7781;">### [AFTER THE CLIENT INTERACTION BELOW]</span></span>
+<span class="giallo-l"><span style="color: #953800;">Received</span><span style="color: #0A3069;"> message from 127.0.0.1:47601:</span><span style="color: #0550AE;"> 213</span></span>
+<span class="giallo-l"><span style="color: #953800;">Sending</span><span style="color: #0A3069;"> message to 127.0.0.1:47601:</span><span style="color: #0550AE;"> 214</span></span>
+<span class="giallo-l"><span style="color: #0550AE;">...</span></span></code></pre>
+<p>Client (in <em>another</em> terminal):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">./udp-test-client</span></span>
+<span class="giallo-l"><span style="color: #953800;">What</span><span style="color: #0A3069;"> int value do you want to send?</span><span style="color: #0550AE;"> 213</span></span>
+<span class="giallo-l"><span style="color: #953800;">Sending</span><span style="color: #0A3069;"> message to 127.0.0.1:1234:</span><span style="color: #0550AE;"> 213</span></span>
+<span class="giallo-l"><span style="color: #953800;">Received</span><span style="color: #0A3069;"> response:</span><span style="color: #0550AE;"> 214</span></span></code></pre>
+<p>You can launch the client several times, with different values; even launch several clients at the same time (use several terminals/tabs).<br />
+Terminate the server with Ctrl-C once done.</p>
+<h3 id="3-2-3-use-wireshark-to-debug">3.2.3 Use Wireshark to debug</h3>
+<p>Use Wireshark to debug your code.</p>
+<p>Try many clients at the same time:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #CF222E;">for</span><span> i</span><span style="color: #CF222E;"> in</span><span> $(</span><span style="color: #953800;">seq</span><span style="color: #0550AE;"> 15</span><span>);</span><span style="color: #CF222E;"> do</span><span style="color: #0550AE;"> echo</span><span> $i</span><span style="color: #CF222E;"> |</span><span style="color: #953800;"> ./udp-test-client</span><span style="color: #CF222E;"> &gt;</span><span style="color: #0A3069;"> log-</span><span>$i</span><span style="color: #CF222E;"> 2&gt;&amp;1</span><span> &amp;</span><span style="color: #CF222E;"> done</span></span></code></pre>
+<p>What happens? (maybe nothing particular, actually)</p>
+<p>Next Lab (Lab 3) will make more extensive use of Wireshark.</p>
+<h2 id="3-3-tcp">3.3 TCP</h2>
+<p>Now we have an UDP client-server architecture, let's try to make a TCP one.</p>
+<h3 id="3-3-1-socket-layer">3.3.1 Socket layer</h3>
+<h4 id="tcp-server-init"><code>tcp_server_init()</code></h4>
+<p>In a file <code>socket_layer.c</code>, define the following two functions:</p>
+<ul>
+<li>
+<p><code>get_tcp_socket()</code> to obtain a network socket for TCP communication; see <code>socket(2)</code> man-page; use <code>AF_INET</code> and <code>SOCK_STREAM</code>;</p>
+</li>
+<li>
+<p><code>tcp_server_init()</code> function (see its prototype in <code>socket_layer.h</code>) which:</p>
+<ul>
+<li>creates a TCP socket;</li>
+<li>creates the proper server address and binds the socket to the address (remember <code>bind_server()</code>);</li>
+<li>then starts listening for incoming connections (see <code>listen(2)</code>);</li>
+<li>returns the socket id.</li>
+</ul>
+</li>
+</ul>
+<p>Whenever an error is encountered, this function prints an informative message on stderr (see <code>perror(3)</code>), closes what should be, and returns <code>ERR_NETWORK</code>. Sockets must be closed using <code>close(3)</code>.</p>
+<h4 id="tcp-accept"><code>tcp_accept()</code></h4>
+<p>The <code>tcp_accept()</code> function (to be defined also in <code>socket_layer.c</code>) is simply a (one line of code) frontend to the <code>accept(2)</code> function.</p>
+<p>Make a distinction whether <code>cli_addr</code> is <code>NULL</code> or not.
+If not, create a dummy <code>socklen_t</code> variable to be used as <code>addr_len</code> arguments of <code>accept()</code>.</p>
+<p>The <code>tcp_accept()</code> function returns the return value of <code>accept()</code>.</p>
+<h4 id="tcp-read-and-tcp-send"><code>tcp_read()</code> and <code>tcp_send()</code></h4>
+<p>Similarly, <code>tcp_read()</code> and <code>tcp_send()</code> are also frontends to <code>recv(2)</code> and <code>send(2)</code> functions, respectively. They return either <code>ERR_INVALID_ARGUMENT</code> if they received an improper argument, or <code>ERR_NETWORK</code> if the syscall failed.</p>
+<h3 id="3-3-2-simple-test">3.3.2 Simple test</h3>
+<p>Test your implementation by creating two simple programs similar to the ones made for UDP:</p>
+<ul>
+<li>
+<p>a client (<code>tcp-test-client.c</code>) that:</p>
+<ul>
+<li>asks for a <code>unsigned int</code>;</li>
+<li>sends it (over TCP) to <code>CS202_DEFAULT_IP</code>, port <code>CS202_DEFAULT_PORT</code>;</li>
+<li>waits for a reply and prints it;</li>
+<li>then properly terminates;</li>
+</ul>
+</li>
+<li>
+<p>a server (<code>tcp-test-server.c</code>) that:</p>
+<ul>
+<li>waits for connections on <code>CS202_DEFAULT_IP</code>, port <code>CS202_DEFAULT_PORT</code>;</li>
+<li>convert received content to an <code>unsigned int</code>;</li>
+<li>adds 1 to it;</li>
+<li>send this new value back to the sender;</li>
+<li>should exit properly in case of errors.</li>
+</ul>
+</li>
+</ul>
+<p>Unless errors, the server never terminates, as it may have to serve several clients/requests.</p>
+<p>Notice that in the server code, you indeed have to create <strong>two</strong> sockets:</p>
+<ul>
+<li>one (called "passive socket") to listen to incoming requests from clients; this is the one coming from <code>tcp_server_init()</code> before the server main loop;</li>
+<li>others (called "active sockets") to communicate with each new client; these are the ones coming from each <code>tcp_accept()</code> in the server main loop; in our simple test case here, we will have blocking client communications: open only one active socket in the server main loop; if more than one clients are connecting the server, the first one will be served first, the others waiting for next round of the server main loop (there is nothing special to be done on your side for this, simply handle only one active socket in your loop).</li>
+</ul>
+<h4 id="3-3-3-example">3.3.3 Example</h4>
+<p>Server (in one terminal):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">./tcp-test-server</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">Server</span><span style="color: #0A3069;"> listening on 127.0.0.1:1234</span></span>
+<span class="giallo-l"><span style="color: #953800;">Received</span><span style="color: #0A3069;"> message from 127.0.0.1:49610: 42.</span></span>
+<span class="giallo-l"><span style="color: #953800;">Sending</span><span style="color: #0A3069;"> message to 127.0.0.1:49610: 43.</span></span></code></pre>
+<p>Client (in <em>another</em> terminal):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">Connected</span><span style="color: #0A3069;"> to 127.0.0.1:1234</span></span>
+<span class="giallo-l"><span style="color: #953800;">What</span><span style="color: #0A3069;"> int value do you want to send?</span><span style="color: #0550AE;"> 42</span></span>
+<span class="giallo-l"><span style="color: #953800;">Sending</span><span style="color: #0A3069;"> message to 127.0.0.1:1234:</span><span style="color: #0550AE;"> 42</span></span>
+<span class="giallo-l"><span style="color: #953800;">Waiting</span><span style="color: #0A3069;"> for its reply.</span></span>
+<span class="giallo-l"><span style="color: #953800;">Received</span><span style="color: #0A3069;"> reply:</span><span style="color: #0550AE;"> 43</span></span></code></pre>
+<p>Notice, in the above server example, the two ports: listening port ("passive socket") 1234 and communicating port ("active socket") 49610 (this might change).</p>
+<p>You can launch the client several times, with different values; even launch several clients at the same time (use several terminals/tabs).<br />
+Terminate the server with Ctrl-C once done.</p>
+<h1 id="4-put-it-all-together">4. Put it all together</h1>
+<p>Let's now try to send a file from a client to a server over TCP.
+Copy your client and server files into new ones (e.g. <code>send_file</code> and <code>get_file</code>).</p>
+<p>The client:</p>
+<ul>
+<li>ask for a filename and checks if it exists;</li>
+<li>opens the connection to the server;</li>
+<li>send the filename to the server in the format "<code>FILE: </code>" then the filename, then <code>'\0'</code> (sends a <code>'\0'</code>);</li>
+<li>then sends the file size;</li>
+<li>then sends the file content in batches of 1 KiB (except the last one which is contains only the remaining bytes);</li>
+<li>closes the connection.</li>
+</ul>
+<p>The server:</p>
+<ul>
+<li>waits for a filename (in the above described format);</li>
+<li>waits for a size;</li>
+<li>loops to get as many bytes as requested, by packets of 1 KiB;</li>
+<li>stores the file locally with the provided filename (overwrite);</li>
+<li>loop again.</li>
+</ul>
+<p><strong>Important point</strong></p>
+<p>You need to make sure that the two ends of the communication will
+never get stuck waiting for each other at the same point in time (this
+would lead in a "deadlock").</p>
+<p>However, when sending several messages using TCP, the boundaries of
+these messages get lost. For instance, if you use a TCP socket to
+transmit "Hello" and "Goodbye" as two separate messages, the receiver
+may interpret this as one single message: "HelloGoodbye". This is
+because all data transmitted using TCP get "serialized" into a single
+byte-stream.</p>
+<p>You thus need to construct your messages in a way such that you can
+<em>deserialize</em> the byte-stream back to the original messages. You can
+for instance make use of an appropriate delimiting character. For
+instance, if we know that the character <code>'|'</code> can never be part our
+message, we can transmit "Hello", then "|", then "Goodbye" to make the
+remote end (who may thus receive "Hello|Goodbye" altogether)
+understand that those are two different messages. In this case, the
+only role of <code>'|'</code> is that of a delimiter.</p>
+<p>If there is no character that can act as a delimiter for our protocol,
+you may add headers containing meta-data about the following message.
+These headers can be then used by the other end to deserialize the
+messages.</p>
+<p>To keep this exercise simple, we simply designed it in a two messages
+passing: first the size, then the content. But an issue may happen if
+the file sent starts with some digits. We thus propose you to add a
+simple delimiter character at the end of the size message.</p>
+<p>Similarly, to know the exact end of the file content you can either make use of its size information, or if you find it simple, could have a way to explicitly delimit the end of the file (otherwise the next "<code>FILE: </code>" message may still be considered to be part of a former file), for instance to add a simple delimiter string, e.g. <code>"&lt;EOF&gt;"</code>. If may be worth anyway to double check for the size of the file content.</p>
+<h1 id="5-conclusion">5. Conclusion</h1>
+<p>You might have noticed the similarities between file syscalls and network syscalls:</p>
+<ul>
+<li>communicate via sockets;</li>
+<li>socket creation: <code>open()</code> syscall for files, <code>socket()</code> and <code>bind()</code> for networks;<br />
+<strong>notice:</strong>
+1. <code>open()</code> for files does both: it creates the socket and "binds" it to the actual file in the filesystem;<br />
+2. network clients do indeed <code>bind()</code>, even if not explicit: either in <code>sendto()</code> or in <code>connect()</code>;</li>
+<li>information exchange: <code>read()</code> or <code>write()</code> syscalls for files, <code>recv()</code>, <code>recvfrom()</code>, <code>send()</code> or <code>sendto()</code> syscalls for networks;</li>
+<li>communication termination: <code>close()</code> syscall, for both.</li>
+</ul>
+<p>This is the power of abstractions!</p>
+<p>The TCP protocol having a higher level (connection-oriented), it requires more actions: <code>listen()</code>, <code>connect()</code> and <code>accept()</code>.</p>
+<p>Here is a recap table:<br />
+<img src="../syscall_recap.png" alt="" /> <!-- for Zola deployment, it should be ../syscall_recap.png --></p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 22&#x2F;04&#x2F;2026</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Lab 3: Observing layers and measure network performance | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/2-networkmeasurement/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "2 Networkmeasurement",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/2-networkmeasurement/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Labs</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/1-syscalls/">Lab 2: Syscalls</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/2-networkmeasurement/">Lab 3: Observing layers and measure network performance</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>Lab 3: Observing layers and measure network performance</h1>
+          
+          <h1 id="introduction">Introduction</h1>
+<p>The purpose of this Lab is twofold.</p>
+<p>First, you will use Wireshark to observe packets and better understand how the different Internet layers appear on the wire. This will make the abstract layered architecture seen in class much more concrete.</p>
+<p>Second, you will extend last week’s file transfer application so as to measure network performance. In particular, you will add support to measure <strong>one-way delay</strong> and <strong>throughput</strong>.</p>
+<h1 id="1-observing-layers-with-wireshark">1 Observing layers with Wireshark</h1>
+<p>The goal of this first part is to get you familiar with a network inspection tool called <strong>Wireshark</strong> and to help you visually identify the different Internet layers inside the same packet.</p>
+<p>Wireshark is already installed on the EPFL VM. If you are performing the lab on your own Windows/Mac computer, install Wireshark from its official website. On (your own) Ubuntu, you can install it with:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">sudo</span><span style="color: #0A3069;"> apt-get install wireshark</span></span></code></pre><h2 id="1-1-layers-and-headers">1.1 Layers and headers</h2>
+<p>The Internet architecture operates in layers. As a result, a packet that traverses the Internet looks, in a way, like an onion: On the “outside,” it is “wrapped up” in a link-layer header (which can be understood only by the link layer of computers and packet switches). If we “peel away” the link-layer header, we will find a network-layer header (which can be understood only by the network layer of computers and packet switches). If we also peel away the network-layer header, we will find a transport-layer header (which can be understood only by the transport layer of the end-point computers). And if we peel that away, too, we will find the application-layer header and data, which is the actual message that this packet is carrying.
+So, if we look inside an Internet packet, we will find a lot more information than the application-layer message that the packet is carrying: we will find meta-data, in the form of headers, which are needed by the various Internet layers in order to get the message from its source to its destination.</p>
+<p>We will now use Wireshark to look inside Internet packets. To get started, do the following:</p>
+<ol>
+<li>
+<p>Start your browser and clear its cache.
+For Firefox, click on the ≡ symbol on the upper-right, go to <strong>Settings → Privacy &amp; Security → Cookies &amp; Site Data → Clear Data</strong>.</p>
+</li>
+<li>
+<p>Start Wireshark, for instance by typing in the command line:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">wireshark</span></span></code></pre></li>
+<li>
+<p>You should see a list of your computer’s network interfaces. Identify the one whose packets you will capture.</p>
+<ul>
+<li>If you are working through an INFs computer or connected through VDI, capture packets from your <strong>ethernet</strong> interface.</li>
+<li>If you are working on a wirelessly connected computer, capture packets from your <strong>WiFi</strong> interface.</li>
+</ul>
+</li>
+<li>
+<p>Start a capture by double-clicking on the chosen interface. You may see data rolling inside the top part of your Wireshark window. These are the packets that are departing from and arriving at your network interface.</p>
+</li>
+<li>
+<p>Use your web browser to visit:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>http://www.mit.edu</span></span></code></pre></li>
+<li>
+<p>Once the page is fully loaded, stop the capture by clicking on the red square button at the left of the top menu.</p>
+</li>
+<li>
+<p>Right underneath the top menu, Wireshark lets you specify a display filter that you want to apply to the packets that you see. We will use it repeatedly below.</p>
+</li>
+</ol>
+<h3 id="questions">Questions</h3>
+<p>Answer the following questions.</p>
+<ol>
+<li>
+<p><strong>What messages were exchanged at the application layer, i.e. between your web browser and the MIT web server?</strong></p>
+<p>Type the following in the Wireshark filter line:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>http</span></span></code></pre>
+<p>You should now see the packets carrying HTTP messages. Look at the <strong>Info</strong> column and identify the request(s) and response(s).</p>
+<p>Is the MIT server really serving the final content over plain HTTP, or does it redirect your browser to another protocol? Look carefully at the HTTP response and its header fields.</p>
+</li>
+<li>
+<p><strong>Which transport protocol was used: TCP or UDP?</strong></p>
+<p>Click on one of the HTTP packets in the top section, then inspect the packet details in the middle section. You should see information about each layer.
+Near the bottom, you should see the application-layer entry, namely <strong>Hypertext Transfer Protocol</strong>. What is the line just above it?</p>
+</li>
+<li>
+<p><strong>What messages were exchanged at the transport layer between your computer and the MIT web server?</strong></p>
+<p>Replace <code>http</code> in the filter line by the proper transport protocol you identified above.
+Of course, using only <code>tcp</code> or only <code>udp</code> will display many unrelated packets, whereas you only want the ones exchanged with the computer running the MIT web server, so refine your filter to keep only the traffic exchanged with the MIT server.</p>
+<p>A possible strategy is to combine the transport filter with the relevant IP address.</p>
+</li>
+<li>
+<p><strong>Do application-layer and transport-layer messages travel in separate packets?</strong></p>
+<p>Explain, based on what you see, why the answer is no.</p>
+</li>
+</ol>
+<p><strong>Important note:</strong> a key point here is that the same packet carries information for several layers at once. The transport-layer information is stored in the transport-layer header, whereas the application-layer information is stored in the application-layer header and data.</p>
+<h2 id="1-2-encapsulation">1.2 Encapsulation</h2>
+<p>We now examine the notion of <strong>encapsulation</strong>, meaning that each layer wraps the data coming from the higher layer. For example, a network-layer message consists of a network-layer header plus a transport-layer message; that transport-layer message itself contains a transport-layer header plus an application-layer message.</p>
+<p>Display again the HTTP packets and click on one of them.
+In the packet details, identify where each of the following starts:</p>
+<ul>
+<li>link layer header;</li>
+<li>network layer header;</li>
+<li>transport layer header;</li>
+<li>application layer header and data.</li>
+</ul>
+<p><strong>Note:</strong> Notice that each header has different fields from the other headers. Each field is there to serve a specific functionality related to that layer.
+Then answer the following questions:</p>
+<ol>
+<li>
+<p><strong>How many bytes does the HTTP message contain?</strong></p>
+<p>Look in the transport-layer information and, in particular, at the <strong>Len</strong> field, which gives the size of the application-layer message encapsulated in the transport segment.</p>
+</li>
+<li>
+<p><strong>How many bytes do the transport-layer and network-layer headers add to the HTTP message?</strong></p>
+</li>
+<li>
+<p><strong>How many bytes does the link layer add?</strong></p>
+</li>
+<li>
+<p><strong>Which fields seem to identify the sender and the receiver at each layer?</strong></p>
+<p>You are not expected to know all field names yet, but you should already be able to spot that the different layers use different kinds of identifiers.</p>
+</li>
+</ol>
+<h2 id="1-3-use-wireshark-on-your-own-programs">1.3 Use Wireshark on your own programs</h2>
+<p>Before moving to the measurement part, use Wireshark once more, this time on the client-server programs you developed last week.</p>
+<p>If needed, restart your UDP and TCP toy examples from last week.
+Then:</p>
+<ol>
+<li>capture one execution of your UDP test client and server;</li>
+<li>capture one execution of your TCP test client and server;</li>
+<li>compare what Wireshark shows in both cases.</li>
+</ol>
+<p>Answer the following questions:</p>
+<ol>
+<li>How does a UDP exchange appear in Wireshark?</li>
+<li>How does a TCP exchange appear in Wireshark?</li>
+<li>Can you spot the TCP connection establishment?</li>
+<li>Can you spot when the client sends data and when the server replies?</li>
+<li>In which sense is TCP more verbose on the wire than UDP?</li>
+</ol>
+<p>This small comparison will be useful for the second part of the Lab.</p>
+<h1 id="2-measure-network-performance">2 Measure network performance</h1>
+<p>In this second part, you will extend last week’s work in two directions:</p>
+<ul>
+<li>a TCP file transfer application (reliable data transfer);</li>
+<li>a UDP measurement tool (to measure delay under different conditions).</li>
+</ul>
+<h2 id="2-1-restart-from-part-4-of-last-week">2.1 Restart from part 4 of last week</h2>
+<p>Start again from <strong>part 4 of last week’s Lab</strong>, namely the simple client-server file exchange application over TCP.</p>
+<p>Before adding any measurement feature, make sure that your TCP version is complete and robust enough:</p>
+<ul>
+<li>the client asks for a filename and checks that it exists;</li>
+<li>the client connects to the server;</li>
+<li>the client sends the filename;</li>
+<li>the client sends the file size;</li>
+<li>the client sends the file content in chunks;</li>
+<li>the server receives all this information in the correct order;</li>
+<li>the server stores the received file locally;</li>
+<li>both sides terminate properly in case of success and in case of error.</li>
+</ul>
+<p>If your TCP version is not finished yet, finish it first.</p>
+<p><strong>Commit and push this step.</strong></p>
+<h2 id="2-2-build-a-udp-based-delay-measurement-tool">2.2 Build a UDP-based delay measurement tool</h2>
+<p>We now want to add a measurement feature on top of your UDP client-server application.</p>
+<p>The first metric is <strong>one-way delay</strong>.</p>
+<p>The idea is simple:</p>
+<p>the client sends probe packets periodically (every t seconds);
+each probe contains a timestamp;
+the server receives the probes and measures one-way delay.</p>
+<p>For this, modify your protocol so that each data unit sent by the client carries a timestamp indicating when it was sent.
+The server, upon reception, records its own reception time.
+From these two times, you will compute the one-way delay.</p>
+<h3 id="important-remark">Important remark</h3>
+<p>One-way delay measurement requires that the clocks used on the sender and receiver be reasonably synchronized.
+If you run both programs on the same machine, this is naturally the case.
+If you run them on two different machines, you should keep in mind that clock differences may affect the results.</p>
+<h3 id="suggested-steps">Suggested steps</h3>
+<ol>
+<li>
+<p>Choose a time source.</p>
+<p>Use a sufficiently precise clock, for instance <code>gettimeofday()</code>.
+Prefer a monotonic clock if both timestamps are taken on the same machine.</p>
+</li>
+<li>
+<p>Modify your UDP client such that:
+sends one probe every t seconds (e.g., using usleep() or nanosleep() for 1ms or 5ms);
+includes a timestamp in each probe;
+runs for a fixed duration or a fixed number of probes.</p>
+</li>
+<li>
+<p>Extend your message format.
+For each transmitted packet(probe), include at least:</p>
+<ul>
+<li>a sequence number or chunk id;</li>
+<li>the sending timestamp;</li>
+</ul>
+</li>
+<li>
+<p>On the server side, upon reception of each packet(probe):</p>
+<ul>
+<li>record the reception timestamp;</li>
+<li>compute the delay for that chunk;</li>
+<li>print it;</li>
+<li>and, store it for later summary.</li>
+</ul>
+</li>
+<li>
+<p>Display summary statistics every 1 second as:</p>
+<ul>
+<li>average one-way delay.</li>
+</ul>
+</li>
+</ol>
+<h3 id="example">Example</h3>
+<p>This is just an example. <strong>You are completely free to code the client and the server the most appropriate way for you</strong> (to understand and to debug) <strong>provided that they fulfill the items bullet lists above</strong>. In particular, you're free to choose the messages you'd like to be displayed on the terminal.</p>
+<p>Server (in one terminal):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">./udp-test-server</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">Server</span><span style="color: #0A3069;"> listening on 127.0.0.1:1234</span></span>
+<span class="giallo-l"><span style="color: #6E7781;">### [AFTER THE CLIENT INTERACTION BELOW]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">Probe</span><span style="color: #0A3069;"> 0: One Way Delay =</span><span style="color: #0550AE;"> 204</span><span style="color: #0A3069;"> us.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">Probe</span><span style="color: #0A3069;"> 1: One Way Delay =</span><span style="color: #0550AE;"> 200</span><span style="color: #0A3069;"> us.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">Probe</span><span style="color: #0A3069;"> 2: One Way Delay =</span><span style="color: #0550AE;"> 200</span><span style="color: #0A3069;"> us.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">Probe</span><span style="color: #0A3069;"> 3: One Way Delay =</span><span style="color: #0550AE;"> 195</span><span style="color: #0A3069;"> us.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">Average</span><span style="color: #0A3069;"> one-way delay of past 1s :</span><span style="color: #0550AE;"> 199.75</span><span style="color: #0A3069;"> us.</span></span>
+<span class="giallo-l"><span style="color: #0550AE;">...</span></span></code></pre>
+<p>Client (in <em>another</em> terminal):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">./udp-test-client</span></span>
+<span class="giallo-l"><span style="color: #953800;">Connected</span><span style="color: #0A3069;"> to 127.0.0.1:1234</span></span>
+<span class="giallo-l"><span style="color: #953800;">Sent</span><span style="color: #0A3069;"> Probe 0.</span></span>
+<span class="giallo-l"><span style="color: #953800;">Sent</span><span style="color: #0A3069;"> Probe 1.</span></span>
+<span class="giallo-l"><span style="color: #953800;">Sent</span><span style="color: #0A3069;"> Probe 2.</span></span>
+<span class="giallo-l"><span style="color: #953800;">Sent</span><span style="color: #0A3069;"> Probe 3.</span></span></code></pre><h3 id="questions-1">Questions</h3>
+<ol>
+<li>Are the measured one-way delays stable from one probe to another?</li>
+<li>Do you observe variability between packets?</li>
+<li>What factors could explain this variability?</li>
+</ol>
+<h2 id="2-3-measure-delay-with-and-without-background-traffic">2.3 Measure delay with and without background traffic</h2>
+<p>We now use the TCP file transfer as <strong>background traffic</strong>.</p>
+<h3 id="experiment">Experiment</h3>
+<ul>
+<li>Run the UDP measurement tool alone:</li>
+<li>record the measured delays.
+Then run:</li>
+<li>the UDP measurement tool and a TCP file transfer at the same time.
+Compare the results.</li>
+</ul>
+<h3 id="questions-2">Questions</h3>
+<ol>
+<li>Does the delay change when the TCP transfer is running?</li>
+<li>Is the delay more variable?</li>
+<li>Can you observe signs of queuing?</li>
+<li>Which protocol (TCP or UDP) do you think is better for measureing one-way delay?</li>
+</ol>
+<h2 id="2-4-measure-throughput-optional">2.4 Measure throughput (Optional)</h2>
+<p>The second metric is <strong>throughput</strong>.</p>
+<p>At a high level, throughput is the amount of useful data transferred per unit of time.</p>
+<p>You now have two natural levels at which you may measure it:</p>
+<ul>
+<li><strong>per chunk</strong>, using the chunk size and the time difference between consecutive receptions;</li>
+<li><strong>for the whole file</strong>, using the total file size and the total transfer duration.</li>
+</ul>
+<p>For this Lab, we look at both ways and compare them.</p>
+<h3 id="suggested-steps-1">Suggested steps</h3>
+<ol>
+<li>
+<p>On the client side, record a timestamp just before sending the first piece of file data.</p>
+</li>
+<li>
+<p>On the server side, record:</p>
+<ul>
+<li>a timestamp when the first piece of file data is received;</li>
+<li>a timestamp when the last piece of file data is received.</li>
+<li>a timestamp when each piece of file data is received.</li>
+</ul>
+</li>
+<li>
+<p>Compute the throughput as:</p>
+<ul>
+<li><code> instantanous throughput = bytes_receveived / transfer_time</code></li>
+<li><code>overall throughput = total_bytes_received / transfer_duration </code></li>
+</ul>
+</li>
+<li>
+<p>Display the result in a readable unit, for example:</p>
+<ul>
+<li>bytes/s;</li>
+<li>KiB/s;</li>
+<li>MiB/s;</li>
+<li>or bits/s if you prefer.</li>
+</ul>
+</li>
+<li>
+<p>Run several experiments with files of different sizes.</p>
+</li>
+</ol>
+<h3 id="example-1">Example</h3>
+<p>This is just an example. <strong>You are completely free to code the client and the server the most appropriate way for you</strong> (to understand and to debug) <strong>provided that they fulfill the items bullet lists above</strong>. In particular, you're free to choose the messages you'd like to be displayed on the terminal.</p>
+<p>Server (in one terminal):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">./tcp-file-server</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">Server</span><span style="color: #0A3069;"> listening on 127.0.0.1:1234</span></span>
+<span class="giallo-l"><span style="color: #6E7781;">### [AFTER THE CLIENT INTERACTION BELOW]</span></span>
+<span class="giallo-l"><span style="color: #953800;">Receiving</span><span style="color: #0A3069;"> measured file &quot;temp.txt&quot; with size</span><span style="color: #0550AE;"> 4054</span><span style="color: #0A3069;"> bytes from 127.0.0.1:39572.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">Chunk</span><span style="color: #0A3069;"> 0: Payload length =</span><span style="color: #0550AE;"> 1024</span><span style="color: #0A3069;"> bytes.</span></span>
+<span class="giallo-l"><span style="color: #953800;">Chunk</span><span style="color: #0A3069;"> 0: throughput at receiver side =</span><span style="color: #0550AE;"> 5019607.84</span><span style="color: #0A3069;"> B/s.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">Chunk</span><span style="color: #0A3069;"> 1: Payload length =</span><span style="color: #0550AE;"> 1024</span><span style="color: #0A3069;"> bytes.</span></span>
+<span class="giallo-l"><span style="color: #953800;">Chunk</span><span style="color: #0A3069;"> 1: throughput at receiver side =</span><span style="color: #0550AE;"> 5120000.00</span><span style="color: #0A3069;"> B/s.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">Chunk</span><span style="color: #0A3069;"> 2: Payload length =</span><span style="color: #0550AE;"> 1024</span><span style="color: #0A3069;"> bytes.</span></span>
+<span class="giallo-l"><span style="color: #953800;">Chunk</span><span style="color: #0A3069;"> 2: throughput at receiver side =</span><span style="color: #0550AE;"> 5120000.00</span><span style="color: #0A3069;"> B/s.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">Chunk</span><span style="color: #0A3069;"> 3: Payload length =</span><span style="color: #0550AE;"> 982</span><span style="color: #0A3069;"> bytes.</span></span>
+<span class="giallo-l"><span style="color: #953800;">Chunk</span><span style="color: #0A3069;"> 3: throughput at receiver side =</span><span style="color: #0550AE;"> 5035897.44</span><span style="color: #0A3069;"> B/s.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">Stored</span><span style="color: #0A3069;"> file &quot;temp.txt&quot;</span><span> (4054</span><span style="color: #0A3069;"> bytes</span><span>).</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #953800;">Measured</span><span style="color: #0A3069;"> throughput at receiver side:</span><span style="color: #0550AE;"> 40949494.95</span><span style="color: #0A3069;"> B/s.</span></span>
+<span class="giallo-l"><span style="color: #0550AE;">...</span></span></code></pre>
+<p>Client (in <em>another</em> terminal):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">./tcp-file-client</span></span>
+<span class="giallo-l"><span style="color: #953800;">Filename</span><span style="color: #0A3069;"> to send: temp.txt</span></span>
+<span class="giallo-l"><span style="color: #953800;">Connected</span><span style="color: #0A3069;"> to 127.0.0.1:1234</span></span>
+<span class="giallo-l"><span style="color: #953800;">Sent</span><span style="color: #0A3069;"> file &quot;temp.txt&quot;</span><span> (4054</span><span style="color: #0A3069;"> bytes</span><span>).</span></span>
+<span class="giallo-l"><span style="color: #953800;">Measured</span><span style="color: #0A3069;"> throughput at sender side:</span><span style="color: #0550AE;"> 29591240.88</span><span style="color: #0A3069;"> B/s.</span></span></code></pre><h3 id="questions-3">Questions</h3>
+<ol>
+<li>Is the throughput the same for small and large files?</li>
+<li>How much of what you measure corresponds to actual file data, and how much is protocol overhead?</li>
+</ol>
+<h2 id="2-5-observe-the-measurements-in-wireshark">2.5 Observe the measurements in Wireshark</h2>
+<p>Now return to Wireshark and capture one TCP file transfer of your own application.</p>
+<p>Try to relate what you see on the wire with the performance values you measured.</p>
+<p>In particular:</p>
+<ol>
+<li>Compare the number of packets/datagrams needed for the same file.</li>
+<li>Compare the visible overhead.</li>
+<li>For TCP, look for connection setup and acknowledgments.</li>
+</ol>
+<h1 id="4-conclusion">4 Conclusion</h1>
+<p>In this Lab, you connected three viewpoints that are too often studied separately:</p>
+<ul>
+<li>the <strong>programmer viewpoint</strong>, where you implement communication with syscalls and sockets;</li>
+<li>the <strong>packet viewpoint</strong>, where Wireshark shows you the actual layers and headers sent on the network;</li>
+<li>the <strong>performance viewpoint</strong>, where you quantify what your application and protocol are doing in terms of delay and throughput.</li>
+</ul>
+<p>This is precisely why observing layers and measuring performance belong together: the protocol design choices made at one layer have a visible impact on what happens in the packets and on the performance perceived by the application.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 22&#x2F;04&#x2F;2026</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>
