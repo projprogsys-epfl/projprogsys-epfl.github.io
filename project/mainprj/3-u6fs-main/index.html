@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Lab 4: Filesystem -- General Framework and Concepts | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/3-u6fs-main/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "3 U6fs Main",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/3-u6fs-main/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Labs</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/1-syscalls/">Lab 2: Syscalls</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/2-networkmeasurement/">Lab 3: Observing layers and measure network performance</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/3-u6fs-main/">Lab 4: Filesystem -- General Framework and Concepts</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/4-inodes/">File System Lab, Part 1: Inodes</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/5-directories/">File System Lab, Part 2: Directories and File Names</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>Lab 4: Filesystem -- General Framework and Concepts</h1>
+          
+          <p><strong>Credit:</strong> The material for this lab is inspired by and derived from Prof. Rosenblum's former CS-110 course at Stanford.</p>
+<h1 id="outline-of-this-document">Outline of this document</h1>
+<ol>
+<li>Background and Objectives</li>
+<li>General Description</li>
+<li>Basic Data Structures</li>
+<li>Work Organization</li>
+<li>Final Advice</li>
+</ol>
+<h1 id="background-and-objectives">Background and Objectives</h1>
+<p>The goal of this lab assignment, which will span two weeks, is to give you hands-on practice in C with the inner mechanisms of a file system. It is inspired by the “UNIX Version 6” system from the 70s; of course in a simplified version. The idea is to have you develop, by step by step following a given specification, a simplified version of some of the concepts presented in the file systems lecture. Furthermore, file systems in general, and UNIX v6 in particular, are a very good example of modular, layered design.</p>
+<p>As you have seen, the primary purpose of a file system is to provide the “<em>file</em>“ and “<em>directory</em>“ abstractions on top of a disk’s structure. It is organized by layers (or “modules“): physical disk, sectors, partitions, inodes, directories. A <em>fundamental principle</em>, that you must keep firmly in mind throughout the implementation, is that a layer depends <strong>only</strong> on the layer directly below it. There is only one exception to this rule: the <code>inode</code> layer can access the <code>sector</code> layer directly; this is for practical reasons (this is also how traditional filesystems work).</p>
+<p>We will therefore begin by describing the different layers of a UNIX v6 filesystem, and then describe the <code>inode</code> data structure that you will need to implement.</p>
+<h1 id="general-description">General Description</h1>
+<p>The UNIX v6 file system consists of four distinct, successive levels of abstraction (in the sense that a higher level interacts exclusively with the level directly below it):</p>
+<ul>
+<li>sectors: writing/reading data to the disk;</li>
+<li>partitions: organization of the data on the disk;</li>
+<li>inodes: logical organization of the files;</li>
+<li>directories: hierarchical grouping of the files from the user’s perspective.</li>
+</ul>
+<p>This clear separation into layers means, for example, that nothing other than sectors will be written to disk (an inode will never be written directly to disk).</p>
+<p>Each layer will be described in its own <code>.h</code> file(s) and managed by the corresponding <code>.c</code> file(s).
+We provide the complete <code>.h</code> files. You will need to read them and complete the corresponding <code>.c</code> files (partially provided).</p>
+<h2 id="the-sector-or-block-layer">The “sector” or “block” layer</h2>
+<p>The lowest layer is the “<em>sector access</em>” layer, a.k.a. the “<em>block access</em>” layer, which we will refer to hereafter as the “sector layer”.</p>
+<p>One of the distinctive features of disks from the 70s is their 512-byte block access. This size became (and remained) a standard in IDE, ATA, and SCSI disks: a sector is 512 bytes in size (even though our disks are now much, much larger than they were back then).</p>
+<p>In a UNIX v6 file system, a disk can never be larger than 32 MiB (i.e., a maximum of 2<sup>16</sup> sectors). A sector can therefore be uniquely identified by a 16-bit positive integer (<code>uint16_t</code>).</p>
+<h2 id="the-partition-or-mount-layer">The “partition“ or “mount“ layer</h2>
+<p>The second layer is the “<em>partitioning layer</em>”, a.k.a. the “<em>mount layer</em>”.</p>
+<p>This layer is responsible for describing, at the disk level itself, the disk’s configuration and organization (order and role of sectors), such as specifying the size and position of various data structures on the disk, including inodes, data, etc. (more details to follow).</p>
+<p>The information of the mount layer is stored in the first two sectors of the disk. The first sector is called the “<em>boot sector</em>” (it does not contain much information). The second sector is called the “<em>superblock</em>” (where we see that the terminology “block” happily mixes with the terminology “sector”!). This is where all the key parameters of the file system are stored.</p>
+<h2 id="the-inode-or-file-content-layer">The “inode“ or “file content“ layer</h2>
+<p><strong>Tip:</strong> Make a sketch or two as you read this section.</p>
+<p>The third layer is the “<em>inode layer</em>”, a.k.a. the “<em>file layer</em>”, but which actually only handles the <em>content</em> of the files (and not their name nor path (hierarchical position)).</p>
+<p>The UNIX v6 file system effectively separates file names (which are stored in directories, the next layer) from their contents. The latter is stored on disk using data structures called “<em>inodes</em>.”</p>
+<p>Each file is indexed by exactly one inode.</p>
+<p>Each inode is identified by a number. In the UNIX v6 file system, this number is represented by 16 bits (<code>uint16_t</code>); this means there cannot be more than 2<sup>16</sup> different files on the disk (which is not a limitation in this assignment, given the 32 MiB size limit for disks).</p>
+<p>Each inode is a 32-byte data structure. Since sectors are 512 bytes, we can store up to 16 inodes per sector.<br />
+All inodes in the file system are written one after another in consecutive sectors; the following sectors contain the data, i.e., the contents of the files.</p>
+<p>For “small” files (referred to as such hereafter), the inode contains the sector numbers (16 bits) containing the file’s data. In the UNIX v6 specifications, an inode can contain up to 8 sector numbers. A small file is therefore no larger than 4 KiB.</p>
+<p>For larger files (between 4 and 896 KiB), inodes use indirect addressing for the file’s data sectors. The inode then contains the numbers of seven “<em>indirect sectors</em>” (the role of the eighth will be explained below); each of these “indirect sectors” contains the numbers of 256 data sectors. (The maximum size of such a file is therefore: 7 × 256 × 512 bytes = 896 KiB.)</p>
+<p>For even larger files (which will not be covered in this lab), inodes use <em>double</em> indirect addressing via the eighth sector number.</p>
+<p><strong>NOTE:</strong> The fact that we are not handling files larger than 896 KiB in this lab will also allow us to consider reading the entire contents of a file into memory, which will simplify other parts of this lab.</p>
+<h2 id="the-directory-layer-and-filenames">The “directory“ layer and filenames</h2>
+<p>Inodes do not store filenames. In fact, as you know, a filename (absolute name, relative name, also called a “<em>path</em>”) is a way of indicating its position within a fundamentally tree-like logical organization (excluding aliases). This is the role of this final layer, the “<em>directory</em>” layer.</p>
+<p>A directory is actually just a special file whose content is the list of files (including other directories) it contains. A directory therefore corresponds to a single inode.</p>
+<p>The specific content (data) of a directory is actually a sequence of pairs (filename, inode) indicating:</p>
+<ul>
+<li>the files contained in the directory;</li>
+<li>the mapping between filename and inode.</li>
+</ul>
+<p>The root directory (<code>/</code>) is always stored at inode number <code>ROOT_INUMBER == 1</code>. This inode therefore necessarily corresponds to a directory. All other inodes can be either files in the usual sense of the term or directories.</p>
+<h1 id="basic-data-structures">Basic Data Structures</h1>
+<p>In the provided material, you will find all the necessary header files (<code>.h</code>), and in particular the file <code>unixv6fs.h</code>, which contains the definitions of all the fundamental data structures for this lab.</p>
+<p>At this stage, we recommend that you open the <code>unixv6fs.h</code> file and review its contents in light of the previous description. Read through both the previous description and the <code>unixv6fs.h</code> file several times if necessary.</p>
+<h1 id="work-organization">Work Organization</h1>
+<p>We have broken this lab down into two steps, spread over two weeks:</p>
+<ul>
+<li>
+<p>this week: inode data structure;</p>
+</li>
+<li>
+<p>next week: directories.</p>
+</li>
+</ul>
+<p>You are free to organize your work as best as possible according to your goals and constraints; but be sure to divide the tasks fairly between the two group members.</p>
+<p>Note that dividing the work every other week (one person does it this week, the other next week) <strong>is</strong> <strong>not</strong> a good idea and generally increases the workload. It is much better to divide the work <em>by concepts</em>, by logical groupings; for example, by layers or by functions.</p>
+<p>In addition, here is a recommended procedure for efficient development:</p>
+<ol>
+<li>implement a feature (implement a function, add a command, etc.);</li>
+<li>if possible, test it with a unit test (provided or written by you);</li>
+<li>if this feature passes validation: <code>commit</code> (make frequent, “atomic” commits, i.e., “per concept”);</li>
+<li><strong>as soon as possible</strong> (several features implemented, but not necessarily all), run an end-to-end test;</li>
+<li>when everything is finished: rerun all tests (<code>make check</code>);</li>
+<li>if your code style isn’t clean yet: <code>make style</code>.</li>
+</ol>
+<p>You can check out <a rel="external" href="https://gist.github.com/luismts/495d982e8c5b1a0ced4a57cf3d93cf60">this page</a> for best practices on commits (you can ignore the rest about branches, etc.).</p>
+<h1 id="final-advice">Final advice</h1>
+<p>We recommend that you periodically refer back to this page as you work, as well as to the various <code>.h</code> files provided, which contain valuable guidance.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 13&#x2F;05&#x2F;2026</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>File System Lab, Part 2: Directories and File Names | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/5-directories/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "5 Directories",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/5-directories/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Labs</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/1-syscalls/">Lab 2: Syscalls</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/2-networkmeasurement/">Lab 3: Observing layers and measure network performance</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/3-u6fs-main/">Lab 4: Filesystem -- General Framework and Concepts</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/4-inodes/">File System Lab, Part 1: Inodes</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/5-directories/">File System Lab, Part 2: Directories and File Names</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>File System Lab, Part 2: Directories and File Names</h1>
+          
+          <h1 id="introduction">Introduction</h1>
+<p>So far, we have only manipulated files (and directories) at the level of their content (i.e., inodes), but not yet at the level of logical hierarchical organization, i.e., at the level of <em>file names</em> (<em>absolute</em> filenames, a.k.a. “<em>paths</em>”). In fact, the very concept of a directory hasn’t really been used yet. In short, we’re missing the final layer of organization: the directory layer (review <a href="https://projprogsys-epfl.github.io/project/mainprj/3-u6fs-main/">the main description file</a> if necessary). That is precisely the goal of this week’s work.</p>
+<p>Fortunately, this is fairly straightforward because in UNIX v6, a directory is (almost) just another file. This is still true for most file systems today: directories are simply a special type of file.</p>
+<p>Specifically, this week’s assignment involves using the <code>struct directory_reader</code> (defined in <code>direntv6.h</code>) and implementing the following four functions:</p>
+<ul>
+<li>
+<p><code>direntv6_opendir()</code>;</p>
+</li>
+<li>
+<p><code>direntv6_readdir()</code>;</p>
+</li>
+<li>
+<p><code>direntv6_print_tree()</code>;</p>
+</li>
+<li>
+<p>and <code>direntv6_dirlookup()</code>.</p>
+</li>
+</ul>
+<p>This week’s final test should display a list of all files and directories on a given disk (examples at the end of this handout).</p>
+<h1 id="description-of-the-work-to-be-done">Description of the work to be done</h1>
+<h2 id="provided-files">Provided files</h2>
+<p>All of this week’s work is to be done in the <code>direntv6.c</code> file.<br />
+The <code>direntv6.h</code> file is provided as usual in your <code>provided/</code> directory (to be copied to <code>done/</code>). Please check for the minor updates provided this week.</p>
+<h2 id="data-structure">Data structure</h2>
+<p>A directory is a special file, an inode of type <code>IFDIR</code>, which contains an (unordered) list of <code>struct direntv6</code> elements (see <code>unixv6fs.h</code>) indicating its contents (other files). Each of these elements (representing a file or another directory) is 16 bytes in size:</p>
+<ul>
+<li>
+<p>2 bytes for <code>d_inumber</code>, which contains the corresponding inode number;</p>
+</li>
+<li>
+<p>and <code>DIRENT_MAXLEN</code>=14 for <code>d_name</code>, which contains the (relative) name of the file; note that, contrary to common practice in C, this name is not terminated by a null character if it contains exactly 14 characters; pay attention to this point in the following!</p>
+</li>
+</ul>
+<p>A UNIX v6 filesystem always starts with a root directory (“<em>root</em>”), named <code>/</code>. By convention, its inode number is 1 (0 is never used actually), defined by <code>ROOT_NUMBER</code> in <code>unixv6fs.h</code></p>
+<p>The file system tree is then a recursive tree structure in which:</p>
+<ul>
+<li>
+<p>the nodes are inodes (the root node of the tree is the inode with number <code>ROOT_NUMBER</code>);</p>
+</li>
+<li>
+<p>the edges (parent-child) — in the code (<code>parent</code>-<code>child</code>) — are the <code>struct direntv6</code> elements listed in the corresponding directory file; the internal nodes of the tree are therefore necessarily directories (inodes of type <code>IFDIR</code>), with files in the usual sense of the term being the leaves of this tree.</p>
+</li>
+</ul>
+<h2 id="auxiliary-data-structure-for-traversing-directories">Auxiliary data structure for traversing directories</h2>
+<p>The most common use of directories is to traverse their contents, either to list them in full or to search for an item. It is therefore very useful to keep track of the position of the last item traversed (the last child seen/visited) so that we can eventually continue from there later. This is a “cursor” indicating the current position in the list of children.</p>
+<p>To implement this, we will use a <code>struct directory_reader</code> structure defined in <code>direntv6.h</code>, which contains:</p>
+<ul>
+<li>
+<p><code>fv6</code>: the <code>struct filev6</code> to which the directory belongs (stored in the structure);</p>
+</li>
+<li>
+<p><code>dirs</code>: an array of <code>DIRENTRIES_PER_SECTOR</code> <code>struct direntv6</code> instances, serving as the list of children;</p>
+</li>
+<li>
+<p><code>cur</code>: an integer indicating the position of the last child read (the “cursor” mentioned above);</p>
+</li>
+<li>
+<p><code>last</code>: an integer indicating the position of the first invalid child. For example, if 13 children have been read, <code>last</code> will be 14 (see below).</p>
+</li>
+</ul>
+<p><strong>Tip:</strong> once again, we strongly recommend sketching out your design before you start coding; pay particular attention to the roles of <code>cur</code> and <code>last</code>, especially for <code>direntv6_readdir()</code> below.</p>
+<h2 id="direntv6-opendir"><code>direntv6_opendir()</code></h2>
+<p>The first thing you want to do with a directory is initialize the structures for its use, making it active; this is called “opening” it. This is done with the <code>direntv6_opendir()</code> function (to be defined in <code>direntv6.c</code>).</p>
+<p>This function takes the following arguments (see also its description in <code>direntv6.h</code>):</p>
+<ul>
+<li>
+<p><code>u</code> is the corresponding (mounted) filesystem;</p>
+</li>
+<li>
+<p><code>inr</code> is the inode number of the directory to be used; it must, of course, specify an inode corresponding to a directory;</p>
+</li>
+<li>
+<p><code>d</code> is the <code>struct directory_reader</code> structure to be initialized (passed by reference).</p>
+</li>
+</ul>
+<p>It must return:</p>
+<ul>
+<li>
+<p><code>ERR_NONE</code> on success;</p>
+</li>
+<li>
+<p><code>ERR_INVALID_DIRECTORY_INODE</code> if <code>inr</code> does not correspond to a directory;</p>
+</li>
+<li>
+<p>propagate any error codes coming from lower layers.</p>
+</li>
+</ul>
+<p>The function must (in addition to the usual checks):</p>
+<ul>
+<li>
+<p>open the corresponding file and store it in the <code>fv6</code> field;</p>
+</li>
+<li>
+<p>initialize <code>cur</code> and <code>last</code> to 0.</p>
+</li>
+</ul>
+<h2 id="direntv6-readdir"><code>direntv6_readdir()</code></h2>
+<p><code>direntv6_readdir()</code> is <strong>THE</strong> main function of this week, the one that does the core of the interesting work. Its purpose is to retrieve information about the next child to be processed in a directory.</p>
+<p>It has the following parameters:</p>
+<ul>
+<li>
+<p><code>d</code> is the <code>directory_reader</code> to be processed, passed by reference;</p>
+</li>
+<li>
+<p><code>name</code> is a string or character array of at least <code>DIRENT_MAXLEN</code>+1 (i.e., 15) characters; this is where the function will store the name of the next entry (the next child) in directory <code>d</code>; this name must be valid in the C sense and therefore always terminated by a null character (<code>'\0'</code>);</p>
+</li>
+<li>
+<p><code>child_inr</code> (output) will contain the inode number of the next child to be processed (the one whose name was placed in <code>name</code>).</p>
+</li>
+</ul>
+<p>This function must return:</p>
+<ul>
+<li>
+<p>1 on success;</p>
+</li>
+<li>
+<p><code>ERR_NONE</code> if there are no more children to read;</p>
+</li>
+<li>
+<p>any error code coming from lower layers.</p>
+</li>
+</ul>
+<p>For its implementation, <code>direnvt6_readdir()</code> must rely solely on <code>filev6_readblock()</code>. As a reminder, <code>filev6_readblock()</code> reads a file block by block (512 bytes in size); whereas <code>direnvt6_readdir()</code> processes a single element (child) of the directory at a time, i.e., 16 bytes. There are then (at least) two ways to proceed:</p>
+<ul>
+<li>
+<p>either, for each call to <code>direntv6_readdir()</code>, we position the disk file read head (offset) at the correct sector (as done in <code>inode_read()</code> last week) and read the entire sector to access the correct data, which involves reading 512/16-1=31 unnecessary sectors;</p>
+</li>
+<li>
+<p>or, we read each necessary sector only <em>once</em> and store all the read values in memory to reuse them in subsequent calls to <code>direntv6_readdir()</code>; this solution is more economical in terms of disk access, but requires a <code>directory_reader</code> structure and a slightly more complex use of <code>direntv6_readdir()</code>.</p>
+</li>
+</ul>
+<p>We <strong>require</strong> you to follow and implement the <em>second</em> approach; i.e., “cache” (actually store) the last 512-byte portion read in the <code>dirs</code> field of the <code>directory_reader</code> structure and do not re-read it on every new call to <code>direntv6_readdir()</code> (only re-read the next portion if necessary, once these 512 bytes have been processed (via successive calls to <code>direntv6_readdir()</code>)).</p>
+<p>Specifically, the procedure is as follows:</p>
+<ul>
+<li>
+<p>if <code>cur</code> is equal to <code>last</code>: start reading the next sector; if successful, update <code>dirs</code> and <code>last</code> (otherwise return the error code, or 0 if finished);</p>
+</li>
+<li>
+<p>update the data for the next child based on the data stored in <code>dirs</code>; to copy the name, use <code>strncpy()</code> (<code>man strncpy</code>; this will be covered in class next week) and ensure that the last character of the name is indeed a null character (<code>'\0'</code>).</p>
+</li>
+</ul>
+<p>And don’t forget to update <code>cur</code>!</p>
+<h2 id="recursive-display-of-a-directory-s-contents">Recursive Display of a Directory's Contents</h2>
+<p>Use the two previous functions to implement a depth-first search of a file system tree, such as:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>DIR /</span></span>
+<span class="giallo-l"><span>DIR /usr/</span></span>
+<span class="giallo-l"><span>DIR /usr/bin/</span></span>
+<span class="giallo-l"><span>FIL /usr/bin/gcc</span></span>
+<span class="giallo-l"><span>FIL /usr/bin/vi</span></span>
+<span class="giallo-l"><span>FIL /usr/bin/python</span></span>
+<span class="giallo-l"><span>DIR /bin/</span></span>
+<span class="giallo-l"><span>FIL /bin/sh</span></span>
+<span class="giallo-l"><span>[...]</span></span></code></pre>
+<p>More specifically, in <code>direntv6.c</code> you must implement the function <code>direntv6_print_tree()</code>, which will be called by <code>u6fs.c</code>.</p>
+<p>This function takes the following parameters:</p>
+<ul>
+<li>
+<p><code>u</code>: the (mounted) filesystem to list;</p>
+</li>
+<li>
+<p><code>inr</code>: the number of the next inode to display;</p>
+</li>
+<li>
+<p><code>prefix</code>: the prefix to display before the current name, i.e., the path to the current name (next inode to display); this is a valid C-style string (terminated by a null character).</p>
+</li>
+</ul>
+<p>For the root directory (<code>ROOT_INUMBER</code>), this prefix must be the empty string (<code>""</code>).</p>
+<p>Your implementation must rely solely on <code>direntv6_opendir()</code> and <code>direntv6_readdir()</code>.</p>
+<p><strong>NOTES:</strong></p>
+<ol>
+<li>
+<p>use <code>snprintf()</code> (<code>man snprintf</code>) or, if necessary, <code>strncpy()</code> or <code>strncat()</code>;</p>
+</li>
+<li>
+<p>be sure, of course, not to corrupt memory when creating these character strings;</p>
+</li>
+<li>
+<p>and, again, make diagrams; e.g., to clearly lay out the problem on paper.</p>
+</li>
+</ol>
+<h2 id="direntv6-dirlookup-absolute-paths-and-inode-numbers"><code>direntv6_dirlookup()</code>: absolute paths and inode numbers</h2>
+<p>Some filesystem commands need to take an <em>absolute</em> path as an argument, which is not compatible with the operations written so far since they are based on the inode number (for example, <code>filev6_open()</code> from last week).</p>
+<p>We therefore need to write a function that adapts such absolute path interfaces to the existing one. This is the role of <code>direntv6_dirlookup()</code> (prototyped in <code>direntv6.h</code> and to be defined in <code>direntv6.c</code>).</p>
+<p>This function takes a mounted filesystem, an inode number corresponding to the current directory you want to inspect, and the name of a file or directory for which you are looking for the inode number. This name is <em>relative</em> to the inode passed as the second argument.</p>
+<p>Note that an absolute pathname is nothing more than a relative pathname relative to the root (for example, the absolute path <code>/tmp/foo.txt</code> is also a relative path relative to <code>/</code>). Conversely, a relative pathname is nothing more than an absolute pathname relative to the subtree rooted at the current directory (for example, <code>foo.txt</code> is the same as <code>/foo.txt</code> in a directory tree whose root is the current directory).</p>
+<p>The idea behind this is to search for the inode number <em>recursively</em> using a single function that is called by removing/ignoring the prefix already found/traversed in the name. For example, to find the inode with the absolute name <code>/tmp/foo.txt</code>, we will search for the inode with the relative name <code>/tmp/foo.txt</code> (the same thing here) starting from <code>ROOT_INUMBER</code>, which will search for the inode with the relative name <code>/foo.txt</code> starting from the inode of <code>/tmp</code>.</p>
+<p>You will have noticed in these examples that the initial <code>/</code> in the (relative) name is actually completely unnecessary (we could have written: “<em>we will look up the relative inode <code>tmp/foo.txt</code> from <code>ROOT_INUMBER</code>, which will look up the relative inode <code>foo.txt</code> from the inode of <code>/tmp</code></em>”). The first thing our recursive utility function will do, therefore, is to ignore this initial <code>/</code>.</p>
+<p>Another property of Unix filenames—one that may not be very well known—is that a sequence of consecutive <code>/</code> characters is equivalent to a single one. Thus, <code>///tmp///foo.txt</code> is the same as <code>/tmp/foo.txt</code>. This is handled very simply: our recursive utility function just needs to ignore any <em>sequence</em> of leading <code>/</code> characters.</p>
+<p>We referred to a “<em>recursive utility function</em>” above because the approach we propose is as follows: to avoid costly copies/iterations of character strings in all the recursive calls of the search, we propose working only on portions of the original string itself (without <em>any</em> copying or length calculation) by specifying them with a pointer and a length. With this approach, we therefore need an <em>additional</em> argument to the recursive version of <code>direntv6_dirlookup()</code>: the length of the string to be processed.</p>
+<p>In our proposal, we would thus have a recursive lookup, say <code>direntv6_dirlookup_core()</code>, with the same arguments as <code>direntv6_dirlookup()</code> plus a size; <code>direntv6_dirlookup()</code> would then be (practically) just a call to <code>direntv6_dirlookup_core()</code> with the size of its <code>entry</code> argument as the size.</p>
+<p>Thus, the list of function calls would be:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="c"><span class="giallo-l"><span style="color: #8250DF;">direntv6_dirlookup</span><span>(fs, INR1,</span><span style="color: #0A3069;"> &quot;/foo/bar/baz&quot;</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #8250DF;">direntv6_dirlookup_core</span><span>(fs, INR1,</span><span style="color: #0A3069;"> &quot;/foo/bar/baz&quot;</span><span>,</span><span style="color: #0550AE;"> 12</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #8250DF;">direntv6_dirlookup_core</span><span>(fs, INR2,</span><span style="color: #0A3069;"> &quot;/bar/baz&quot;</span><span>,</span><span style="color: #0550AE;"> 8</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #8250DF;">direntv6_dirlookup_core</span><span>(fs, INR3,</span><span style="color: #0A3069;"> &quot;/baz&quot;</span><span>,</span><span style="color: #0550AE;"> 4</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #8250DF;">direntv6_dirlookup_core</span><span>(fs, INR4,</span><span style="color: #0A3069;"> &quot;&quot;</span><span>,</span><span style="color: #0550AE;"> 0</span><span>)</span></span></code></pre>
+<p>Before implementing your function(s), think carefully about the algorithm you want to implement, as there are many potential sources of error. You might start with the termination condition (at what point can we <em>directly</em> return the received inode number?), then move on to the simple case of a local filename (searching for <code>foo.txt</code> directly in the inode of the directory containing it: how/with which function do we obtain its inode number?).</p>
+<p>Finally, in case of an error, the <code>direntv6_dirlookup()</code> function must return <code>ERR_NO_SUCH_FILE</code> if no inode is associated with that name or, of course, return any error code generated by a lower-level function.</p>
+<p><strong>Note:</strong> as a reminder, the <code>strchr()</code> function allows you to find the position of a character within a string (<code>man strchr</code>).<br />
+And, once again, draw diagrams (e.g., of the strings; this function should be quite instructive in this regard).</p>
+<h2 id="testing">Testing</h2>
+<p>If everything goes correctly, the command</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">./u6fs</span><span style="color: #0A3069;"> ../tests/data/simple.uv6 tree</span></span></code></pre>
+<p>should produce the following results:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>DIR /</span></span>
+<span class="giallo-l"><span>DIR /tmp/</span></span>
+<span class="giallo-l"><span>FIL /tmp/coucou.txt</span></span></code></pre>
+<p>And for the provided <code>first.uv6</code> file:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>DIR /</span></span>
+<span class="giallo-l"><span>DIR /hello/</span></span>
+<span class="giallo-l"><span>DIR /hello/os/</span></span>
+<span class="giallo-l"><span>DIR /hello/os/user/</span></span>
+<span class="giallo-l"><span>FIL /hello/os/user/user.go</span></span>
+<span class="giallo-l"><span>FIL /hello/os/user/lookup_unix.go</span></span>
+<span class="giallo-l"><span>FIL /hello/os/user/lookup.go</span></span>
+<span class="giallo-l"><span>FIL /hello/os/user/user_test.go</span></span>
+<span class="giallo-l"><span>FIL /hello/os/user/lookup_w.go</span></span>
+<span class="giallo-l"><span>FIL /hello/os/pipe_bsd.go</span></span>
+<span class="giallo-l"><span>FIL /hello/os/sys_unix.go</span></span>
+<span class="giallo-l"><span>FIL /hello/os/sys_freebsd.go</span></span>
+<span class="giallo-l"><span>FIL /hello/os/types.go</span></span>
+<span class="giallo-l"><span>FIL /hello/os/exec_plan9.go</span></span>
+<span class="giallo-l"><span>DIR /hello/os/signal/</span></span>
+<span class="giallo-l"><span>[...]</span></span>
+<span class="giallo-l"><span>DIR /hello/net/http/testdata/</span></span>
+<span class="giallo-l"><span>FIL /hello/net/http/testdata/index.html</span></span>
+<span class="giallo-l"><span>FIL /hello/net/http/testdata/style.css</span></span>
+<span class="giallo-l"><span>FIL /hello/net/http/testdata/file</span></span>
+<span class="giallo-l"><span>FIL /hello/net/http/jar.go</span></span>
+<span class="giallo-l"><span>FIL /hello/net/http/main_test.go</span></span>
+<span class="giallo-l"><span>FIL /hello/net/http/race.go</span></span>
+<span class="giallo-l"><span>FIL /hello/net/http/proxy_test.go</span></span>
+<span class="giallo-l"><span>FIL /hello/net/http/export_test.go</span></span>
+<span class="giallo-l"><span>FIL /hello/net/pipe_test.go</span></span>
+<span class="giallo-l"><span>DIR /hello/net/mail/</span></span>
+<span class="giallo-l"><span>FIL /hello/net/cgo_sockold.go</span></span></code></pre>
+<p>There are a total of 166 files and directories on this disk.</p>
+<h1 id="more-tests">More tests</h1>
+<p>As always, you can, of course, use the provided tests or even supplement them with your own tests.</p>
+<p>To run the "end-to-end" ("<em>end-to-end</em>" or "<em>black-box</em>") tests, get the updated version of the <code>Makefile</code> from <code>provided/</code>, or simply add the line</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>&lt;TAB&gt;$(call e2e_test,week06.robot)</span></span></code></pre>
+<p>right below the lines</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>$(call e2e_test,week04.robot)</span></span>
+<span class="giallo-l"><span>$(call e2e_test,week05.robot)</span></span></code></pre>
+<p>already present in the <code>end2end-tests:</code> target.<br />
+<strong>Warning!</strong> There must be a <em>tab</em> before this command. The easiest way may be to simply copy and paste one of the existing lines and replace the <code>4</code> or <code>5</code> with a <code>6</code>.</p>
+<h1 id="final-tip">Final Tip</h1>
+<p><strong>WARNING:</strong> As usual, there are several potential sources of errors in each of these functions. You must systematically return the values of the lower-level functions. You should assume that each function can be tested separately with “strange” inputs (which we will certainly do). If you have any questions, feel free to ask during the lab session.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 13&#x2F;05&#x2F;2026</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>

@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://projprogsys-epfl.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://projprogsys-epfl.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>File System Lab, Part 1: Inodes | CS-202</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://projprogsys-epfl.github.io/project/mainprj/4-inodes/">
+
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://projprogsys-epfl.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Project",
+            "item": "https://projprogsys-epfl.github.io/project/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Mainprj",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "4 Inodes",
+            "item": "https://projprogsys-epfl.github.io/project/mainprj/4-inodes/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#ff0000">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://projprogsys-epfl.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://projprogsys-epfl.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://projprogsys-epfl.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://projprogsys-epfl.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://projprogsys-epfl.github.io">CS-202</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https://projprogsys-epfl.github.io/tutorials/">Tutos</a>
+						</li>
+					
+						<li class="nav-item">
+                            <a class="nav-link" href="https:&#x2F;&#x2F;moodle.epfl.ch&#x2F;course&#x2F;view.php?id=18346">Moodle</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+    <nav class="docs-links" aria-label="Main navigation">
+            
+            
+            
+            
+                    
+                    
+                    
+                            <h3>General</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/index/warmup/">Warmup</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+                    
+                    
+                            <h3>Labs</h3>
+                            <ul class="list-unstyled">
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/1-syscalls/">Lab 2: Syscalls</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/2-networkmeasurement/">Lab 3: Observing layers and measure network performance</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/3-u6fs-main/">Lab 4: Filesystem -- General Framework and Concepts</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link active" href="https://projprogsys-epfl.github.io/project/mainprj/4-inodes/">File System Lab, Part 1: Inodes</a></li>
+                                 
+                              
+                            
+                              
+                                
+                                    <li><a class="docs-link" href="https://projprogsys-epfl.github.io/project/mainprj/5-directories/">File System Lab, Part 2: Directories and File Names</a></li>
+                                 
+                              
+                            
+                    </ul>
+                    
+                    
+            
+    </nav>
+</div>
+
+	  
+  
+
+      
+        
+        <main class="docs-content col-lg-11 col-xl-9">
+          <h1>File System Lab, Part 1: Inodes</h1>
+          
+          <h1 id="introduction">Introduction</h1>
+<p>The goal of this week's work is:</p>
+<ol>
+<li>to fully familiarize yourself with these two labs' framework and concepts (see later <a href="https://projprogsys-epfl.github.io/project/mainprj/3-u6fs-main/">the main description file</a>);</li>
+<li>to create the <code>inode</code> data structure;</li>
+<li>to be able to list all valid inodes (from a given filesystem);</li>
+<li>to identify which of them are directories;</li>
+<li>to display the size of each file;</li>
+<li>to read files, i.e., read inodes and their contents.</li>
+</ol>
+<p>The goal of this week’s program is to be able to perform the following tasks:</p>
+<ul>
+<li>
+<p>“mount” a file system; this will require several other subtasks;</p>
+</li>
+<li>
+<p>print the contents of the <code>superblock</code> (the function that prints it is provided);</p>
+</li>
+<li>
+<p>traverse the inode table and extract the desired information.</p>
+</li>
+</ul>
+<p>At all times, the implementation must strictly follow the layered architecture described in <a href="https://projprogsys-epfl.github.io/project/mainprj/3-u6fs-main/">the main description file</a>; in particular, each layer must interact only with the layer directly below it (and no others further down). Read the <a href="https://projprogsys-epfl.github.io/project/mainprj/3-u6fs-main/">main description file</a> before continuing.</p>
+<p>Your work this week will focus only on the three lowest layers:</p>
+<ul>
+<li>
+<p>the disk layer (<code>sector.h</code>) -- access to the physical contents of the disk via reading/writing one sector at a time;</p>
+</li>
+<li>
+<p>the mount layer (<code>mount.h</code>) -- management of the disk’s organization, including the <em>boot sector</em> and the <em>superblock</em>;</p>
+</li>
+<li>
+<p>the inode layer (<code>inode.h</code>) -- tools for reading, allocating, and writing inodes.</p>
+</li>
+</ul>
+<p>The fourth layer (directories) will be the focus of next week’s work.</p>
+<p>All the files mentioned above depend, of course, on the main data structure file, <code>unixv6fs.h</code>, already described in <a href="https://projprogsys-epfl.github.io/project/mainprj/3-u6fs-main/">the main description file</a>.</p>
+<h2 id="tips">Tips</h2>
+<p><strong>WARNING:</strong> There are <em>many</em> potential sources of errors in all these functions. You must systematically check all arguments, as well as the return values of functions from the lower layer. You should assume that each function can be tested separately with “<em>strange</em>” inputs.</p>
+<p>We also recommend that you create diagrams: of the disk structure, the (conceptual) layer logic, and the dependencies between calls, or even between files. Make sure you fully understand what is happening (or what should be happening).</p>
+<p>Finally, remember to <code>commit</code>+<code>push</code> your work frequently.</p>
+<h1 id="description-of-the-provided-to-be-written-files">Description of the provided/to-be-written files</h1>
+<h2 id="provided-materials">Provided materials</h2>
+<p>In your GitHub repository, you will find, in addition to the assignment and materials that will be useful in the future (including materials for your tests), the following source files useful for this week (in <code>src/</code>):</p>
+<ul>
+<li>
+<p>a fairly comprehensive <code>Makefile</code> with plenty of potentially useful targets, which you should be able to use as-is (<em>a priori</em> nothing to modify for now; maybe a few small additions as your labs progress); see the “Setup” section below;</p>
+</li>
+<li>
+<p>all the header files (<code>.h</code>) needed for these two labs; they will be described as needed;</p>
+</li>
+<li>
+<p><code>u6fs.c</code>: contains the <code>main()</code> function and interprets user-entered commands;</p>
+</li>
+<li>
+<p><code>u6fs_utils.c</code>: utility functions for these two labs;</p>
+</li>
+<li>
+<p><code>util.c</code>: useful (generic) functions;</p>
+</li>
+<li>
+<p><code>error.c</code>: the error messages  associated to the <code>error.h</code> for using error codes;</p>
+</li>
+<li>
+<p><code>sector.c</code>: implementation of the first layer (sectors);</p>
+</li>
+<li>
+<p><code>mount.c</code>: implementation of the mount layer;</p>
+</li>
+<li>
+<p><code>inode.c</code>: implementation of the inode part of the third layer (inode layer);</p>
+</li>
+<li>
+<p><code>filev6.c</code>: implementation of the file part of the inode layer;</p>
+</li>
+<li>
+<p><code>direntv6.c</code>: to implement the 4th layer (directories) functions; to be considered next week.</p>
+</li>
+</ul>
+<h2 id="files-to-be-completed">Files to be completed</h2>
+<p>In this week work, you will have to complete the following provided files:</p>
+<ul>
+<li>
+<p><code>sector.c</code>: implementation of the <code>sector_read()</code> function;</p>
+<p>[ workload: approx. 2-4 CLoC (C Lines of Code) ]</p>
+</li>
+<li>
+<p><code>mount.c</code>: implementation of the <code>mount()</code> and <code>umount()</code> functions;</p>
+<p>[ workload: approx. 25-30 CLoC ]</p>
+</li>
+<li>
+<p><code>inode.c</code>: implementation of the <code>inode_read()</code>, <code>inode_scan_print()</code> and <code>inode_findsector()</code> functions;</p>
+<p>[ workload: approx. 50-60 CLoC ]</p>
+</li>
+<li>
+<p><code>filev6.c</code>: implementation of the <code>filev6_readblock()</code> function;</p>
+<p>[ workload: approx. 20-25 CLoC ]</p>
+</li>
+<li>
+<p><code>u6fs_utils.c</code>: implementation of the <code>utils_cat_first_sector()</code> and <code>utils_print_shafile()</code> functions;</p>
+<p>[ workload: approx. 40 CLoC ]</p>
+</li>
+</ul>
+<h1 id="description-of-the-work-to-be-done">Description of the work to be done</h1>
+<h2 id="setup">Setup</h2>
+<h3 id="install-tools">Install tools</h3>
+<p>The provided test suites require several dependencies: <a rel="external" href="https://libcheck.github.io/check/index.html">Check</a> and <a rel="external" href="https://robotframework.org/?tab=1#getting-started">Robot Framework</a> (and its own dependency, <a rel="external" href="https://pypi.org/project/parse/">parse</a>).</p>
+<p>If you work on your own Ubuntu [<strong>for EPFL VMs, see below</strong>], you can install them with:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">sudo</span><span style="color: #0A3069;"> apt install check pip pkg-config</span></span></code></pre>
+<p>then, depending on how you're used to work in Python, either as root or in your Python virtual environment (maybe to be created):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">pip</span><span style="color: #0A3069;"> install parse robotframework</span></span></code></pre>
+<p>(If you make use of Python venv, then, of course you'll have to run the tests in that Python venv.)</p>
+<hr />
+<p><strong>ON EPFL VMs</strong>, you have to setup a personnal Python virtual environment.</p>
+<p>If you already have one, activate it and install the two above mentioned packages (<code>parse</code> and <code>robotframework</code>).</p>
+<p>It you don't, we recommand you create your personnal Python virtual environment in <code>myfiles</code>:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #0550AE;">cd</span><span style="color: #0A3069;"> ~/Desktop/myfile</span></span>
+<span class="giallo-l"><span style="color: #953800;">python</span><span style="color: #0550AE;"> -m</span><span style="color: #0A3069;"> venv mypyvenv</span></span></code></pre>
+<p>Then activate it:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #0550AE;">.</span><span style="color: #0A3069;"> mypyvenv/bin/activate</span></span></code></pre>
+<p>and then install the required packages:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">pip</span><span style="color: #0A3069;"> install parse robotframework</span></span></code></pre>
+<p>And you're done.</p>
+<p>The only thing you'll have to do next time you login <em>and</em> you want to run the "end to end" tests, is to activate your Python virtual environment:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #0550AE;">.</span><span style="color: #0A3069;"> ~/Desktop/myfiles/mypyvenv/bin/activate</span></span></code></pre>
+<p>Of course, you can also add that line to your <code>~/.bashrc</code>!</p>
+<hr />
+<h3 id="provided-tests">Provided tests</h3>
+<p>We provide you with some tests to run against your code by using <code>make check</code>, both unit tests (testing functions one by one) and end-to-end tests (testing the whole executable at once).</p>
+<p>We strongly advise you to complete them by adding your own tests for edge cases; the <code>imgFS</code> files are in <code>provided/test/data</code>. You can check the unit tests in <code>provided/test/unit</code> and the end-to-end ones in <code>provided/test/end-to-end</code> to understand how to write your own. <br />
+<strong>Note:</strong> Don't forget to never push modifications in the <code>provided/</code> directory; instead move the <code>test/</code> directory to <code>done/</code> and update the <code>TEST_DIR</code> variable in the <code>Makefile</code> accordingly.</p>
+<h3 id="compilation">Compilation</h3>
+<p>We provide you with a complete <code>Makefile</code> as a starting point.</p>
+<p>The essential compilation commands are:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>make         : standard compilation; creates the `u6fs` command-line tool</span></span>
+<span class="giallo-l"><span>make DEBUG=1 : compilation that defines &quot;debug_printf&quot; (see error.h)</span></span>
+<span class="giallo-l"><span>make clean   : deletes all compilation files</span></span>
+<span class="giallo-l"><span>make style   : reformats the source code</span></span>
+<span class="giallo-l"><span>make doc     : generates documentation</span></span>
+<span class="giallo-l"><span>make check   : runs the provided tests locally</span></span>
+<span class="giallo-l"><span>  make end2end-tests: local execution of the provided end-to-end tests</span></span>
+<span class="giallo-l"><span>  make unit-tests   : local execution of the provided unit tests</span></span></code></pre>
+<p>The provided programs obviously do not yet define a useful executable. However, you can already compile:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">make</span><span style="color: #0A3069;"> DEBUG=</span><span style="color: #0550AE;">1</span></span></code></pre>
+<p>It should work and produce the <code>u6fs</code> executable.</p>
+<p>To verify this first step, check by then running (two steps):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">./u6fs</span></span></code></pre>
+<p>then</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">./u6fs</span><span style="color: #0A3069;"> ../tests/data/simple.uv6 sb</span></span></code></pre>
+<p>which, of course, should complain (something is not implemented). But make sure you fully understand what is happening each time (check the <code>.c</code> files, starting with <code>u6fs.c</code>); this will help you become familiar with the program’s overall structure.</p>
+<p>To test your implementations, make use of the <code>./u6fs</code> command as often as possible .</p>
+<p>You can also try to launch all the provided tests with <code>make check</code>.<br />
+However, the end-to-end tests sould <strong>not</strong> be launched in <code>DEBUG</code> mode. To recompile everthing without <code>DEBUG</code>, simply lauch: <code>make new</code>.<br />
+(These last two can, of course, be combined: <code>make new check</code>.)</p>
+<h2 id="sector-c"><code>sector.c</code></h2>
+<p>The <code>sector.c</code> file implements the lowest layer, enabling the reading and writing of sectors. In the first part of the labs, we will focus solely on reading.</p>
+<h3 id="sector-read"><code>sector_read()</code></h3>
+<p>Looking at <code>sector.h</code>, you will find the description of the <code>sector_read()</code> function (note the <a rel="external" href="https://doxygen.nl/"><code>Doxygen</code></a> format, which we strongly recommend you follow for your own functions).</p>
+<p>The role of this function (which you must write in <code>sector.c</code>) is quite simple: given a disk file <code>f</code> and a sector number (<code>sector</code>), it must simply read the contents of that sector from the disk into the memory area (pointed to by) <code>data</code>. This read operation is, of course, performed in binary mode (review the C I/O lecture if necessary).</p>
+<p>The position of the sector to be read in the file <code>f</code> is simply the sector number multiplied by the size of a sector (<code>SECTOR_SIZE</code>).</p>
+<p>We will assume here that the file <code>f</code> has already been opened for reading.</p>
+<p><strong>Note:</strong> Keep <code>fseek()</code> and <code>fread()</code> in mind; if necessary, review the corresponding C lecture or the man pages for <code>fread(3)</code> and <code>fseek(3)</code>.</p>
+<p>Regarding the return value, the function will return <code>ERR_NONE</code> on success, and an error code otherwise (these error codes are defined in <code>error.h</code>):</p>
+<ul>
+<li>
+<p><code>ERR_IO</code> in case of a read error in the disk file;</p>
+</li>
+<li>
+<p><code>ERR_BAD_PARAMETER</code> if a <code>NULL</code> pointer is present in the parameters; to handle this, we simply use the <code>M_REQUIRE_NON_NULL()</code> “function” provided in <code>error.h</code> (it’s actually a macro).</p>
+</li>
+</ul>
+<h2 id="mount-c"><code>mount.c</code></h2>
+<p>In computer science in general, the term “mount” refers to the operations that make a file system available to applications. This is usually done automatically by the operating system as needed (system startup, plugging in a USB drive, inserting a DVD [yes, yes, they still exist!], etc.).</p>
+<p>In the labs, we’ll use this term simply to describe the operations required to make a UNIX v6 disk accessible to our programs. These operations will be grouped in the <code>mount.c</code> file.  You have to implement the two functions described below.</p>
+<h3 id="mountv6"><code>mountv6()</code></h3>
+<p>The first function to implement in <code>mount.c</code> is the <code>mountv6()</code> function, whose prototype is, as always, provided in the <code>mount.h</code> file (be sure to read it; it is also part of the handout).</p>
+<p>This is <strong>THE</strong> function that will mount the file system.<br />
+Its first argument, <code>filename</code>, is the name (local, on your machine) of the file containing a UNIX 6 disk (such as the provided files <code>simple.uv6</code>, <code>first.uv6</code>, and <code>aiw.uv6</code>).</p>
+<p>Its second argument is a data structure described in <code>mount.h</code> containing all the necessary information regarding a filesystem (take a look). This structure already contains everything that might be needed on a broader scope but we won’t be dealing with it in these labs (in particular, the <code>struct bmblock_array</code> witch would be required if the labs were continued to the writing part; our labs focus only on reading the filesystem, thus we won't make use of it).</p>
+<p>The main purpose of this <code>mountv6()</code> function is to open the disk file and read its superblock. Opening the file is a fairly costly operation and should therefore be performed only once (here by this function). The disk file will only be closed when we “unmount” the filesystem, via a specific operation described below (the <code>umountv6()</code> function (without any <code>n</code> after the first <code>u</code>)).</p>
+<p>First and foremost, start by setting the entire <code>struct unix_filesystem</code> structure to zero.</p>
+<p>The <code>fbm</code> and <code>ibm</code> fields are not used at this time.</p>
+<p>Next, open the file <code>filename</code> for reading into the <code>f</code> field of <code>u</code>. The <code>mountv6()</code> function should return <code>ERR_IO</code> if an opening error occurs.</p>
+<p>Next, verify that the opened file is indeed a UNIX v6 disk file. To do this, read the <em>boot sector</em> (refer to <a href="https://projprogsys-epfl.github.io/project/mainprj/3-u6fs-main/">the main description file</a> if necessary) and verify that the value <code>BOOTBLOCK_MAGIC_NUM</code> (defined in <code>unixv6fs.h</code>) is present at the <code>BOOTBLOCK_MAGIC_NUM_OFFSET</code> position.
+If this is not the case, the <code>mountv6()</code> function must return the error code <code>ERR_BAD_BOOT_SECTOR</code>.</p>
+<p>To remain consistent with the basic principle of layer independence (and usage) (as described in <a href="https://projprogsys-epfl.github.io/project/mainprj/3-u6fs-main/">the main description file</a>), disk reading must be performed using <code>sector_read()</code> (and not with <code>fread()</code>, for example). We will not reiterate this fundamental principle hereafter, but it must be adhered to at all levels of your work.</p>
+<p>Furthermore, it is important that whenever you call a lower-level function within the layers, that function be able to return its error code. For example, if you call <code>sector_read()</code> and it returns an error code, then the calling function (for example, <code>mountv6()</code> here) must immediately return that same error code.</p>
+<p>Finish by reading the superblock. The corresponding data structure is defined in <code>unixv6fs.h</code>. It is precisely the role of <code>mountv6()</code> to transfer this information from disk to memory (i.e., to read it), into the <code>s</code> field of the <code>struct unix_filesystem u</code>.</p>
+<p>If an error occurs, <code>mountv6()</code> is responsible for deallocating the resources it uses. In this case, that means closing the file <code>u-&gt;f</code>. We’ll cover this in more detail later in the course.</p>
+<h2 id="first-end-to-end-test">First end-to-end test</h2>
+<p>You are now ready for the first <code>end-to-end</code> test (also known as a “black-box” test) that validates the requested basic functionality.<br />
+In addition to end-to-end tests, we provide <em>unit</em> tests as well, whose purpose is to test various behaviors and error cases of the functions.</p>
+<p>The <code>utils_print_superblock()</code> function is provided (see its description in <code>u6fs_utils.h</code>).</p>
+<p>If your implementation is correct, the test</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">./u6fs</span><span style="color: #0A3069;"> ../tests/data/simple.uv6 sb</span></span></code></pre>
+<p>will display:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>**********FS SUPERBLOCK START**********</span></span>
+<span class="giallo-l"><span>s_isize             : 32</span></span>
+<span class="giallo-l"><span>s_fsize             : 1024</span></span>
+<span class="giallo-l"><span>s_fbmsize           : 0</span></span>
+<span class="giallo-l"><span>s_ibmsize           : 0</span></span>
+<span class="giallo-l"><span>s_inode_start       : 2</span></span>
+<span class="giallo-l"><span>s_block_start       : 34</span></span>
+<span class="giallo-l"><span>s_fbm_start         : 0</span></span>
+<span class="giallo-l"><span>s_ibm_start         : 0</span></span>
+<span class="giallo-l"><span>s_flock             : 0</span></span>
+<span class="giallo-l"><span>s_ilock             : 0</span></span>
+<span class="giallo-l"><span>s_fmod              : 0</span></span>
+<span class="giallo-l"><span>s_ronly             : 0</span></span>
+<span class="giallo-l"><span>s_time              : [0] 0</span></span>
+<span class="giallo-l"><span>**********FS SUPERBLOCK END**********</span></span></code></pre>
+<p><strong>Note:</strong>
+to display a positive integer on <code>X</code> bits, we use (without double quotes) the <code>PRIuX</code> tag defined in the <code>&lt;inttypes.h&gt;</code> library: for example, to display a variable <code>a</code> of type <code>uint16_t</code>, we make the following call:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #0550AE;">printf</span><span>(</span><span style="color: #953800;">&quot;a is: %&quot;</span><span style="color: #0A3069;"> PRIu16 &quot;\n&quot;, a</span><span>);</span></span></code></pre>
+<p>The <code>PRIu16</code> macro is not enclosed in quotes; this allows it to be concatenated with the strings before and after it. We will cover all of this later in the lesson on macros.<br />
+<strong>[end of note]</strong></p>
+<p><strong>Note 2:</strong> if you try this before implementing <code>umountv6()</code>, the program should stop and display the error <code>To be implemented</code>.</p>
+<h2 id="umountv6"><code>umountv6()</code></h2>
+<p>The second function to implement in the mount layer is the <code>umountv6()</code> function.
+Its role is to “cleanly undo” everything that <code>mountv6()</code> has done. For now, we just need to close the file opened by <code>mountv6()</code>.</p>
+<p>The function will return <code>ERR_IO</code> if it fails to close the file or if the file is null, and <code>ERR_NONE</code> on success.</p>
+<h2 id="first-unit-tests">First Unit Tests</h2>
+<p>We’re also providing you with unit tests.
+To run them, simply do <code>make unit-tests</code> (as explained above) or <code>make check</code> to lauch both end-to-end and unit tests.</p>
+<p>For unit tests, you can, of course, also adapt these tests or supplement them with your own tests; we <em>recommend</em> that you do this (tests tailored to your needs).</p>
+<p><strong>Note:</strong> For end-to-end tests, it is not at all necessary (and is even strongly <strong>DISCOURAGED</strong>!) to use Robot Framework on your own: simply reproduce the behavior of these tests by <strong>running your <code>./u6fs</code> program directly</strong>!
+<strong>[end of note]</strong></p>
+<h2 id="inode-c">inode.c</h2>
+<p>The next step this week is to implement the function that allows us to list all inodes and some information about them. To do this, you have to write the <code>inode_read()</code> and <code>inode_scan_print()</code> functions (see their descriptions in <code>inode.h</code>).</p>
+<h2 id="inode-read"><code>inode_read()</code></h2>
+<p>As its name suggests, the <code>inode_read()</code> function is designed to read an inode from disk (as usual, see its description in <code>inode.h</code>).</p>
+<p>Its arguments are <code>u</code>, a mounted UNIX v6 filesystem, and <code>inr</code>, the inode number to read. This number is the index of the inode in the <code>inode</code> section of the disk, starting at <code>ROOT_INUMBER</code> (defined in <code>unixv6fs</code>).
+Its only "write argument" is <code>inode</code> (where to write the read inode).</p>
+<p>To implement this function, use the <code>sector_read()</code> function. Important points to keep in mind are:</p>
+<ul>
+<li>
+<p>the superblock allows you to determine the start of the inode write area (<code>s_inode_start</code>);</p>
+</li>
+<li>
+<p>the superblock allows you to determine the size (in sectors) of the inode write area (<code>s_isize</code>);</p>
+</li>
+<li>
+<p>there are <code>INODES_PER_SECTOR</code> inodes written in a sector; even if we are looking for only one, the basic principle of interacting with the disk is to read it sector by sector (and not to read a single inode directly from the disk; physically, this actually makes no sense);</p>
+</li>
+<li>
+<p>the header file <code>unixv6fs.h</code> contains a diagram of the disk and inode organization;
+use it, and draw your own diagrams, to carefully consider how to call <code>sector_read()</code> and how to retrieve the desired inode.</p>
+</li>
+</ul>
+<p>The <code>inode_read()</code> function will return the following error codes:</p>
+<ul>
+<li>
+<p><code>ERR_INODE_OUT_OF_RANGE</code> if the <code>inr</code> parameter does not correspond to a valid inode number (too small or too large);</p>
+</li>
+<li>
+<p><code>ERR_UNALLOCATED_INODE</code> if the inode is not allocated (see below)</p>
+</li>
+<li>
+<p>any error code returned by <code>sector_read()</code>.</p>
+</li>
+</ul>
+<p>To check if an inode is in use, use the <code>IALLOC</code> mask:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="c"><span class="giallo-l"><span style="color: #CF222E;">if</span><span> (inode.i_mode </span><span style="color: #CF222E;">&amp;</span><span> IALLOC)</span></span></code></pre>
+<p><strong>Tip:</strong>  Use <code>debug_print()</code> (see <code>error.h</code>) to test your function.</p>
+<h2 id="inode-scan-print"><code>inode_scan_print()</code></h2>
+<p>The purpose of <code>inode_scan_print()</code> is to list all valid (used) inodes, indicate whether they refer to a directory (<em>directory</em>) or a file in the usual sense (<em>file</em>), and display the corresponding size. For example, on the provided disk <code>simple.uv6</code>, if you run</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">./u6fs</span><span style="color: #0A3069;"> ../tests/data/simple.uv6 inode</span></span></code></pre>
+<p>you will get:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>inode 1 (DIR) len 16</span></span>
+<span class="giallo-l"><span>inode 2 (DIR) len 16</span></span>
+<span class="giallo-l"><span>inode 3 (FIL) len 18</span></span></code></pre>
+<p>The number displayed is simply the count of used inodes (not the inode number; the two differ in the case of unused inodes (the <code>IALLOC</code> mask explained above)).</p>
+<p>Use the <code>inode_read()</code> function you defined earlier; you can derive the bounds for the <code>inr</code> parameter from the superblock.</p>
+<p>Just as with <code>IALLOC</code>, to test whether an inode refers to a directory, we’ll use the <code>IFDIR</code> mask:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="c"><span class="giallo-l"><span style="color: #CF222E;">if</span><span> (inode.i_mode </span><span style="color: #CF222E;">&amp;</span><span> IFDIR)</span></span></code></pre>
+<p>In these two labs, the inodes that are not directories are necessarily files in the usual sense of the term (this is not the case for real file systems, which have other possibilities but which we will not use in these labs).</p>
+<p>To display the information, use the constants <code>SHORT_DIR_NAME</code> and <code>SHORT_FIL_NAME</code> defined in <code>unixv6fs.h</code>.</p>
+<p>To get the size of a file associated with an inode, use the <code>inode_getsize()</code> function provided in <code>inode.h</code>.</p>
+<p>To display the results, <strong>do not use</strong> <code>printf()</code>, but <code>pps_printf()</code> (defined in <code>error.h</code>). This is a macro that you can use exactly like <code>printf()</code>. We need this for our tests.</p>
+<p>And as usual, this function must propagate error codes from the called functions if necessary.</p>
+<h2 id="end-to-end-tests">End-to-end tests</h2>
+<p>If everything went well, you should get the following result on the provided <code>simple.uv6</code> file:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>inode   1 (DIR) len   16</span></span>
+<span class="giallo-l"><span>inode   2 (DIR) len   16</span></span>
+<span class="giallo-l"><span>inode   3 (FIL) len   18</span></span></code></pre><h2 id="reading-files">Reading files</h2>
+<p>Now we are done with inodes themselves (i.e. file abstrations / logical structure), let's address the file <em>content</em>.</p>
+<p>The file content layer (<code>filev6.c</code>) will rely solely on the sector layer (<code>sector.c</code>) for all interactions with the physical disk. And, of course, it will use the functions related to inodes (<code>inode.c</code>) for everything pertaining to the logical structure of the files.</p>
+<p>Specifically, the work for this section consists of developing the following functions:</p>
+<ul>
+<li>
+<p><code>inode_findsector()</code>,  to find the disk sector corresponding to a given portion of a file;</p>
+</li>
+<li>
+<p><code>filev6_readblock()</code>, to find the sector corresponding to a file content (one level of abstraction above the former function); this corresponds to the usual <code>read()</code> function;</p>
+</li>
+<li>
+<p><code>utils_cat_first_sector()</code>, to print the first sector of a file;</p>
+</li>
+<li>
+<p><code>utils_print_shafile()</code>, to display the SHA256 of a file's contents, or at least the first 8 KiB of the file (with its inode as a parameter).</p>
+</li>
+</ul>
+<p>These functions are located in the files <code>inode.c</code>, <code>filev6.c</code> and <code>u6fs_utils.c</code>.</p>
+<h2 id="filev6-structure"><code>filev6</code> Structure</h2>
+<p>The main objective in this part is therefore to give concrete form to the concept of a UNIX v6 file (in the sense of its content, not yet in the sense of “filename”; review <a href="https://projprogsys-epfl.github.io/project/mainprj/3-u6fs-main/">the main description file</a> if necessary). The corresponding data structure is called <code>filev6</code>.</p>
+<p>The purpose of this data structure is to link the inode corresponding to the file with the disk (i.e., its position on the disk, concreatly for us its position in our disk file since our disks are represented as files). It must, of course, also be able to access the filesystem itself. It therefore consists of the following fields (see <code>filev6.h</code>):</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="c"><span class="giallo-l"><span style="color: #CF222E;">struct</span><span> filev6 {</span></span>
+<span class="giallo-l"><span style="color: #CF222E;">    struct</span><span> unix_filesystem </span><span style="color: #CF222E;">*</span><span>u;</span><span style="color: #6E7781;"> // the filesystem</span></span>
+<span class="giallo-l"><span style="color: #CF222E;">    uint16_t</span><span> i_number;</span><span style="color: #6E7781;">         // the inode number (on disk)</span></span>
+<span class="giallo-l"><span style="color: #CF222E;">    struct</span><span> inode i_node;</span><span style="color: #6E7781;">       // the content of the inode</span></span>
+<span class="giallo-l"><span style="color: #CF222E;">    int32_t</span><span> offset;</span><span style="color: #6E7781;">            // the current cursor within the disk file (in bytes)</span></span>
+<span class="giallo-l"><span>};</span></span></code></pre>
+<ul>
+<li>
+<p><code>u</code> is a pointer to the UNIX v6 filesystem, required for all I/O operations;</p>
+</li>
+<li>
+<p><code>i_number</code> is the file’s identifier on the UNIX v6 disk, i.e., its inode number; this field is assigned when a file is opened and is not modified thereafter;</p>
+</li>
+<li>
+<p><code>i_node</code> is the in-memory copy of the inode containing all information related to the file;</p>
+</li>
+<li>
+<p><code>offset</code> corresponds to the current read/write position in the UNIX v6 file in question.</p>
+</li>
+</ul>
+<h2 id="opening-and-reading-files">Opening and Reading Files</h2>
+<p>To read the content of a file, we make use of the two following functions:</p>
+<ul>
+<li>
+<p><code>filev6_open()</code> is used to open a UNIX v6 file.</p>
+<p>The purpose of this function (whose implementation is provided; you may have a look at its code) is to correctly initialize all fields of the <code>filev6</code> data structure and read its inode using the <code>inode_read()</code> function. The offset will, of course, be set to 0 (we place the read/write cursor at the beginning of this file).</p>
+</li>
+<li>
+<p>The second function, <code>filev6_readblock()</code>, is designed to read the contents of a file sector by sector. It has two parameters:</p>
+<ul>
+<li>
+<p><code>fv6</code>: the UNIX v6 file from which we want to read content;</p>
+</li>
+<li>
+<p><code>buf</code>: a buffer of size <code>SECTOR_SIZE</code> into which to read a sector of data from the file.</p>
+</li>
+</ul>
+<p>This function (whose implementation is detailed below) must determine the total size of the file on disk and, based on the position to read (offset), locate the correct file sector using <code>inode_findsector()</code>, described below; it will return the number of bytes read from the file or zero if the entire file has been read; further details are provided below.</p>
+</li>
+</ul>
+<p>Before that, we recommend you look at the provided small utility function <code>utils_print_inode()</code>, that can be useful for debugging.</p>
+<h2 id="inode-findsector"><code>inode_findsector()</code></h2>
+<p>The first thing to implement for this part is the <code>inode_findsector()</code> function. Its purpose is to find the disk sector corresponding to a portion of a file contents.</p>
+<p>Its read arguments are <code>u</code>, a mounted UNIX v6 filesystem,  <code>i</code> the inode of the file to be read (previously filled by <code>inode_read()</code>), and <code>file_sec_off</code>, the position (in number of sectors) of the file portion being sought:</p>
+<ul>
+<li>
+<p>if <code>file_sec_off</code> is zero, this means we are trying to read the beginning of the file;</p>
+</li>
+<li>
+<p>if <code>file_sec_off</code> is 4, this means we are trying to read its fifth sector, i.e., the portion of the file between its 2049<sup>th</sup> and 2560<sup>th</sup> bytes (reminder: a sector is 512 bytes).</p>
+</li>
+</ul>
+<p>The <code>inode_findsector()</code> function will return:</p>
+<ul>
+<li>
+<p>the corresponding sector number if everything is valid;</p>
+</li>
+<li>
+<p>a (negative) error code in case of an error, such as:</p>
+<ul>
+<li>
+<p><code>ERR_OFFSET_OUT_OF_RANGE</code> if the <code>file_sec_off</code> parameter is invalid (e.g., beyond the end of the file);</p>
+</li>
+<li>
+<p><code>ERR_UNALLOCATED_INODE</code> if inode <code>i</code> is not allocated (i.e., the <code>IALLOC</code> flag in its <code>i_mode</code> is set to 0)</p>
+</li>
+<li>
+<p><code>ERR_FILE_TOO_LARGE</code> if the file is too large for these labs (see below);</p>
+</li>
+<li>
+<p>any error code encountered by a lower-level operation.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>The behavior of the <code>inode_findsector()</code> function depends on the <em>file size</em> (as explained in the section “<em>The “inode“ or “file content“ layer</em>” of the <a href="https://projprogsys-epfl.github.io/project/mainprj/3-u6fs-main/">main description file</a>):</p>
+<ul>
+<li>
+<p>if the file occupies fewer than 8 sectors on disk, then the 8 entries <code>i_addr[0]</code>, ..., <code>i_addr[7]</code> of its inode directly contain the numbers of the corresponding sectors; the return value of <code>inode_findsector()</code> is therefore simply the correct <code>i_addr</code> (the one corresponding to <code>file_sec_off</code>);</p>
+</li>
+<li>
+<p>if the file’s contents occupy between 9 and 7 × 256 sectors on disk, the first seven values of the <code>i_addr</code> field in its inode have a different interpretation: these are “indirect sector” numbers, each indicating the number of a sector that contains <code>ADDRESSES_PER_SECTOR</code> data sector numbers from the file (the eighth <code>i_addr</code> field is ignored for these labs and is actually used for the “extra-large” files described below; <code>ADDRESSES_PER_SECTOR</code> is defined in <code>unixv6fs.h</code> and is 256); in other words, instead of <code>i_addr</code> directly containing the number of the file’s data sector, it contains the number of a sector (to be read) containing the numbers of the sectors holding the data;</p>
+</li>
+<li>
+<p>if the file occupies more than 7 × 256 sectors on disk (“<em>extra-large</em>”), it will suffice for these labs to return the error <code>ERR_FILE_TOO_LARGE</code>.<br />
+Just for information, in this case the first seven values of <code>i_addr</code> are used as above for indirect indexing, but the eighth value is used for <em>double</em> indirect indexing.</p>
+</li>
+</ul>
+<p>The file size can be easily obtained using the <code>inode_getsize()</code> function (provided in <code>inode.h</code>).</p>
+<p><strong>IMPORTANT TIP:</strong> Start by <strong>drawing diagrams</strong> on paper to represent the different cases and, above all, what happens with indirect sectors.</p>
+<p>To test this function, if you read inode 3 from the provided <code>simple.uv6</code> disk and request the content position for an offset (<code>file_sec_off</code>) of 0, you should get 37. If you request an offset of 1, you should get <code>ERR_OFFSET_OUT_OF_RANGE</code> because the length of the file associated with inode 3 on the provided <code>simple.uv6</code> disk is 18 bytes.</p>
+<p>If you read inode 5 of the provided <code>aiw.uv6</code> disk and request the position of the content at an offset of 0, you should get 71. If you request an offset of 1, you should get 72, and so on up to offset 33 (which gives 105; sector 79 is missing: offset 8 gives 80) because the length of the file associated with inode 5 on the provided <code>aiw.uv6</code> disk is 17,385 bytes.</p>
+<h2 id="implementation-of-filev6-readblock">Implementation of <code>filev6_readblock()</code></h2>
+<p>Now that all the lower-level components are in place, you can implement the file layer <code>filev6_readblock()</code> function above described.</p>
+<p>The <code>filev6_readblock()</code> function is a simplified version of the usual <code>read()</code> and <code>fread()</code> functions.
+In particular, we have removed the read size here since we designed this function to read only a 512-byte block (i.e., a data sector); that is, the user will read only block by block (using this function each time).<br />
+This implies, in particular, that in our labs <code>fv6-&gt;offset</code> will always be a multiple of <code>SECTOR_SIZE</code> (i.e., 512); except in the special case of the end of the file (the last data block is not necessarily full), in which case it will simply be the size of the file.</p>
+<p>This function must return:</p>
+<ul>
+<li>
+<p>0, if the end of the file is reached (i.e., the entire file has been read, i.e., the offset equals the file size);</p>
+</li>
+<li>
+<p>a (negative) error code if an error occurs (lower-level functions);</p>
+</li>
+<li>
+<p>the number of bytes actually read; this will be less than or equal to <code>SECTOR_SIZE</code>; it will be less than <code>SECTOR_SIZE</code> only if the data block read is the last data block of the file (and thus represents the size in bytes of the portion of that sector actually used by the end of the file; draw a diagram).</p>
+</li>
+</ul>
+<p>The implementation of <code>filev6_readblock()</code> will use <code>inode_getsize()</code>, <code>inode_findsector()</code>, and <code>sector_read()</code>.  You will also need to remember to update the file offset value (<code>fv6</code>).</p>
+<p><strong>Tip:</strong> Here too, we recommend drawing diagrams, both of what happens on disk and the call flow/conceptual diagrams showing which function does what.</p>
+<h2 id="finalizing-utils-cat-first-sector">Finalizing <code>utils_cat_first_sector()</code></h2>
+<p>We can now integrate into the <code>u6fs cat1</code> command, the printing of the first sector of the file’s content, in addition to the inode’s content. For this, complete the definition fo the <code>utils_cat_first_sector()</code> function, using the following logic:</p>
+<ol>
+<li>
+<p>Open the file with <code>filev6_open()</code>.  If an error occurs, call:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="c"><span class="giallo-l"><span style="color: #8250DF;">pps_printf</span><span>(</span><span style="color: #0A3069;">&quot;filev6_open failed for inode #</span><span style="color: #CF222E;">%d</span><span style="color: #0A3069;">.</span><span style="color: #CF222E;">\n</span><span style="color: #0A3069;">&quot;</span><span>, inr);</span></span></code></pre></li>
+<li>
+<p>If successful, call</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="c"><span class="giallo-l"><span style="color: #8250DF;">pps_printf</span><span>(</span><span style="color: #0A3069;">&quot;</span><span style="color: #CF222E;">\n</span><span style="color: #0A3069;">Printing inode #</span><span style="color: #CF222E;">%d</span><span style="color: #0A3069;">:</span><span style="color: #CF222E;">\n</span><span style="color: #0A3069;">&quot;</span><span>, inr);</span></span></code></pre>
+<p>and then call <code>utils_print_inode()</code> (as usual, don't forget to report errors);</p>
+</li>
+<li>
+<p>Next, if the inode is a directory, call</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="c"><span class="giallo-l"><span style="color: #8250DF;">pps_printf</span><span>(</span><span style="color: #0A3069;">&quot;which is a directory.</span><span style="color: #CF222E;">\n</span><span style="color: #0A3069;">&quot;</span><span>);</span></span></code></pre></li>
+<li>
+<p>or, if that is not the case, print the message “<code>the first sector of data of which contains:</code>” (on a single line), followed (on the next line) by the contents of the first sector of the file (read using <code>filev6_readblock()</code>), followed by “<code>----</code>” on a separate line. See a specific example below for the <code>simple.uv6</code> disk.</p>
+</li>
+</ol>
+<h2 id="test">Test</h2>
+<p>In general, remember to systematically test your functions, for example: immediately test a simple version of the <code>u6fs cat1</code> command, which calls the <code>utils_cat_first_sector()</code> function: in an initial version, this function will display only the inode.</p>
+<p>Now it should also display the first sector contents; e.g.:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">./u6fs</span><span style="color: #0A3069;"> ../tests/data/simple.uv6 cat1</span><span style="color: #0550AE;"> 3</span></span></code></pre>
+<p>should produce the following result:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>Printing inode #3:</span></span>
+<span class="giallo-l"><span>**********FS INODE START**********</span></span>
+<span class="giallo-l"><span>i_mode: 32768</span></span>
+<span class="giallo-l"><span>i_nlink: 0</span></span>
+<span class="giallo-l"><span>i_uid: 0</span></span>
+<span class="giallo-l"><span>i_gid: 0</span></span>
+<span class="giallo-l"><span>i_size0: 0</span></span>
+<span class="giallo-l"><span>i_size1: 18</span></span>
+<span class="giallo-l"><span>size: 18</span></span>
+<span class="giallo-l"><span>**********FS INODE END************</span></span>
+<span class="giallo-l"><span>the first sector of data of which contains:</span></span>
+<span class="giallo-l"><span>Hello world!</span></span>
+<span class="giallo-l"><span>----</span></span></code></pre>
+<p>You can also use the (few) unit tests provided or write your own unit tests.</p>
+<h2 id="sha-of-the-files">SHA of the files</h2>
+<p>To uniquely identify the contents of a file, either because we do not yet have another identifier (for example, here: we do not yet have the absolute file names), or to avoid duplicating identical content (not used in these labs), we use the SHA code of the content (review if necessary <a href="https://projprogsys-epfl.github.io/project/index/warmup/">the warmup lab</a>).</p>
+<p>To do this, we ask you to define the following functions in <code>u6fs_utils.c</code> (see also <code>u6fs_utils.h</code>):</p>
+<ul>
+<li><code>utils_print_shafile()</code></li>
+</ul>
+<p>which is used by the provided tool function <code>utils_print_sha_allfiles()</code>.</p>
+<p>For the implementation, you will use the <code>utils_print_SHA_buffer()</code> function already implemented in <code>u6fs_utils.c</code>.</p>
+<p>The <code>utils_print_shafile()</code> function uses the previous function to display the SHA256 of an inode’s contents. More specifically, it must:</p>
+<ul>
+<li>
+<p>open the file corresponding to the inode; if valid, it displays (see example below in the test section): “<code>SHA inode NB: </code>” where <code>NB</code> is the inode number;</p>
+</li>
+<li>
+<p>if it is a directory, it displays (see example below in the test section): “<code>DIR</code>”;</p>
+</li>
+<li>
+<p>if it is not a directory, it will read the entire contents of the corresponding file, but no more than 8 KiB (use the constant <code>UTILS_HASHED_LENGTH</code> provided in <code>unixv6fs.h</code>); you may allocate the 8 KiB buffer required for reading on the stack;</p>
+</li>
+<li>
+<p>then display the SHA256 of the read content.</p>
+</li>
+</ul>
+<h2 id="test-again-and-again">Test again (and again!)</h2>
+<p>The command</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #953800;">./u6fs</span><span style="color: #0A3069;"> ../tests/data/simple.uv6 shafiles</span></span></code></pre>
+<p>should produce:</p>
+<pre class="giallo" style="color: #1F2328; background-color: #FFFFFF;"><code data-lang="plain"><span class="giallo-l"><span>Listing SHA inodes</span></span>
+<span class="giallo-l"><span>SHA inode 1: DIR</span></span>
+<span class="giallo-l"><span>SHA inode 2: DIR</span></span>
+<span class="giallo-l"><span>SHA inode 3: 338fc4bb0d037f3747396a4c852d2a9d8b545d622c6c744c670cf95f715731d3</span></span></code></pre>
+<p>And, as mentioned earlier, you can, of course, use the provided tests or even supplement them with your own tests.</p>
+
+        </main>
+        
+      
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+                    <li class="list-inline-item">Made with <a href="https://www.getzola.org/">Zola</a>, by the CS-202 team; last updated on 13&#x2F;05&#x2F;2026</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://projprogsys-epfl.github.io/js/main.js" defer></script>
+
+  
+</body>
+</html>
